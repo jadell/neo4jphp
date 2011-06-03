@@ -1,0 +1,14 @@
+<?php
+function loaderTestAutoloader($sClass)
+{
+	$sLibPath = __DIR__.'/../lib/';
+	$sClassFile = str_replace('\\',DIRECTORY_SEPARATOR,$sClass).'.php';
+	$sClassPath = $sLibPath.$sClassFile;
+	
+	if (file_exists($sClassPath)) {
+		require($sClassPath);
+	}
+}
+
+chdir(__DIR__.'/..');
+spl_autoload_register('loaderTestAutoloader');

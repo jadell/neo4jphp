@@ -1,0 +1,5 @@
+<phpunit colors="true" bootstrap="./bootstrap.php">
+    <testsuite name="Neo4j PHP Test Results">
+        <directory>./unit</directory>
+    </testsuite>
+</phpunit>
