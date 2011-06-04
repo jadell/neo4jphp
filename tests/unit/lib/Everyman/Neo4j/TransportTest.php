@@ -15,6 +15,6 @@ class TransportTest extends \PHPUnit_Framework_TestCase
 
 	public function testGetEndpoint_ReturnsCorrectEndpointUrl()
 	{
-		$this->assertEquals("http://{$this->host}:{$this->port}/db/data/", $this->transport->getEndpoint());
+		$this->assertEquals("http://{$this->host}:{$this->port}/db/data", $this->transport->getEndpoint());
 	}
 }

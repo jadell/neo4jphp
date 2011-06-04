@@ -12,3 +12,5 @@ function loaderTestAutoloader($sClass)
 
 chdir(__DIR__.'/..');
 spl_autoload_register('loaderTestAutoloader');
+error_reporting(-1);
+ini_set('display_errors', 1);
