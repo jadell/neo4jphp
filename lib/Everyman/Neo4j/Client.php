@@ -57,11 +57,25 @@ class Client
 	{
 		$node = new Node($this);
 		$node->setId($id);
-		$result = $this->runCommand(new Command\GetNode($node));
+		$result = $this->loadNode($node);
 		if ($result) {
 			return $node;
 		}
 		return null;
+	}
+
+	/**
+	 * Load the given node with data from the server
+	 *
+	 * @param Node $node
+	 * @return boolean
+	 */
+	public function loadNode(Node $node)
+	{
+		if (!$node->getId()) {
+			throw new Exception('No node id specified for delete');
+		}
+		return $this->runCommand(new Command\GetNode($node));
 	}
 
 	/**

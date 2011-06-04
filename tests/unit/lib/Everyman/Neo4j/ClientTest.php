@@ -143,4 +143,12 @@ class ClientTest extends \PHPUnit_Framework_TestCase
 		$this->assertEquals($properties, $node->getProperties());
 		$this->assertNull($this->client->getLastError());
 	}
+
+	public function testLoadNode_NodeHasNoId_ThrowsException()
+	{
+		$node = new Node($this->client);
+
+		$this->setExpectedException('Everyman\Neo4j\Exception');
+		$this->client->loadNode($node);
+	}
 }
