@@ -42,6 +42,7 @@ class Transport
 	 * Make a request against the endpoint
 	 * Returned array has the following elements:
 	 *   'code' => the HTTP status code returned
+	 *   'headers' => array of HTTP headers, indexed by header name
 	 *   'data' => array return data
 	 *
 	 * @param string $method

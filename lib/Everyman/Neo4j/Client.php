@@ -31,24 +31,10 @@ class Client
 	 */
 	public function deleteNode(Node $node)
 	{
-		$this->resetLastError();
-		$nodeId = $node->getId();
-		if (!$nodeId) {
+		if (!$node->getId()) {
 			throw new Exception('No node id specified for delete');
 		}
-
-		$result = $this->transport->delete('/node/'.$nodeId);
-		$code = $result['code'];
-
-		if ((int)($code / 100) == 2) {
-			return true;
-		} else if ($code == 404) {
-			$this->setLastError(self::ErrorNotFound);
-		} else if ($code == 409) {
-			$this->setLastError(self::ErrorConflict);
-		}
-
-		return false;
+		return $this->runCommand(new Command\DeleteNode($node));
 	}
 
 	/**
@@ -62,6 +48,23 @@ class Client
 	}
 
 	/**
+	 * Get the requested node
+	 *
+	 * @param integer $id
+	 * @return Node
+	 */
+	public function getNode($id)
+	{
+		$node = new Node($this);
+		$node->setId($id);
+		$result = $this->runCommand(new Command\GetNode($node));
+		if ($result) {
+			return $node;
+		}
+		return null;
+	}
+
+	/**
 	 * Save the given node
 	 *
 	 * @param Node $node
@@ -69,7 +72,11 @@ class Client
 	 */
 	public function saveNode(Node $node)
 	{
-		// Stub
+		if ($node->getId()) {
+			return $this->runCommand(new Command\UpdateNode($node));
+		} else {
+			return $this->runCommand(new Command\CreateNode($node));
+		}
 	}
 
 	/**
@@ -78,6 +85,34 @@ class Client
 	protected function resetLastError()
 	{
 		$this->lastError = null;
+	}
+
+	/**
+	 * Run a command that will talk to the transport
+	 *
+	 * @param Command $command
+	 * @return boolean
+	 */
+	protected function runCommand(Command $command)
+	{
+		$this->resetLastError();
+
+		$method = $command->getMethod();
+		$path = $command->getPath();
+		$data = $command->getData();
+		$result = $this->transport->$method($path, $data);
+
+		$resultCode = isset($result['code']) ? $result['code'] : self::ErrorBadRequest;
+		$resultHeaders = isset($result['headers']) ? $result['headers'] : array();
+		$resultData = isset($result['data']) ? $result['data'] : array();
+		$parseResult = $command->handleResult($resultCode,$resultHeaders,$resultData);
+
+		if ($parseResult) {
+			$this->setLastError($parseResult);
+			return false;
+		} else {
+			return true;
+		}
 	}
 
 	/**
