@@ -1,6 +1,7 @@
 <?php
 namespace Everyman\Neo4j\Command;
 use Everyman\Neo4j\Command,
+	Everyman\Neo4j\Exception,
 	Everyman\Neo4j\Node;
 
 /**
@@ -47,6 +48,9 @@ class UpdateNode implements Command
 	 */
 	public function getPath()
 	{
+		if (!$this->node->getId()) {
+			throw new Exception('No node id specified');
+		}
 		return '/node/'.$this->node->getId().'/properties';
 	}
 

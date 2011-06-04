@@ -2,23 +2,23 @@
 namespace Everyman\Neo4j\Command;
 use Everyman\Neo4j\Command,
 	Everyman\Neo4j\Exception,
-	Everyman\Neo4j\Node;
+	Everyman\Neo4j\Relationship;
 
 /**
- * Delete a node
+ * Delete a relationship
  */
-class DeleteNode implements Command
+class DeleteRelationship implements Command
 {
-	protected $node = null;
+	protected $rel = null;
 
 	/**
-	 * Set the node to drive the command
+	 * Set the relationship to drive the command
 	 *
-	 * @param Node $node
+	 * @param Relationship $rel
 	 */
-	public function __construct(Node $node)
+	public function __construct(Relationship $rel)
 	{
-		$this->node = $node;
+		$this->rel = $rel;
 	}
 
 	/**
@@ -48,10 +48,10 @@ class DeleteNode implements Command
 	 */
 	public function getPath()
 	{
-		if (!$this->node->getId()) {
-			throw new Exception('No node id specified for delete');
+		if (!$this->rel->getId()) {
+			throw new Exception('No relationship id specified for delete');
 		}
-		return '/node/'.$this->node->getId();
+		return '/relationship/'.$this->rel->getId();
 	}
 
 	/**

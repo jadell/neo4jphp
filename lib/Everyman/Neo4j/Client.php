@@ -31,10 +31,18 @@ class Client
 	 */
 	public function deleteNode(Node $node)
 	{
-		if (!$node->getId()) {
-			throw new Exception('No node id specified for delete');
-		}
 		return $this->runCommand(new Command\DeleteNode($node));
+	}
+
+	/**
+	 * Delete the given relationship
+	 *
+	 * @param Relationship $relationship
+	 * @return boolean
+	 */
+	public function deleteRelationship(Relationship $relationship)
+	{
+		return $this->runCommand(new Command\DeleteRelationship($relationship));
 	}
 
 	/**
@@ -65,6 +73,23 @@ class Client
 	}
 
 	/**
+	 * Get the requested relationship
+	 *
+	 * @param integer $id
+	 * @return Relationship
+	 */
+	public function getRelationship($id)
+	{
+		$rel = new Relationship($this);
+		$rel->setId($id);
+		$result = $this->loadRelationship($rel);
+		if ($result) {
+			return $rel;
+		}
+		return null;
+	}
+
+	/**
 	 * Load the given node with data from the server
 	 *
 	 * @param Node $node
@@ -72,10 +97,18 @@ class Client
 	 */
 	public function loadNode(Node $node)
 	{
-		if (!$node->getId()) {
-			throw new Exception('No node id specified for delete');
-		}
 		return $this->runCommand(new Command\GetNode($node));
+	}
+
+	/**
+	 * Load the given relationship with data from the server
+	 *
+	 * @param Relationship $rel
+	 * @return boolean
+	 */
+	public function loadRelationship(Relationship $rel)
+	{
+		return $this->runCommand(new Command\GetRelationship($rel));
 	}
 
 	/**
@@ -91,6 +124,17 @@ class Client
 		} else {
 			return $this->runCommand(new Command\CreateNode($node));
 		}
+	}
+
+	/**
+	 * Save the given relationship
+	 *
+	 * @param Relationship $relationship
+	 * @return boolean
+	 */
+	public function saveRelationship(Relationship $relationship)
+	{
+		// Stub
 	}
 
 	/**

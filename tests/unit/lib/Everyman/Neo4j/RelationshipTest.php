@@ -1,34 +1,35 @@
 <?php
 namespace Everyman\Neo4j;
 
-class NodeTest extends \PHPUnit_Framework_TestCase
+class RelationshipTest extends \PHPUnit_Framework_TestCase
 {
 	protected $client = null;
-	protected $node = null;
+	protected $relationship = null;
+	protected $type = 'FOOTYPE';
 
 	public function setUp()
 	{
 		$this->client = $this->getMock('Everyman\Neo4j\Client', array(), array(), '', false);
-		$this->node = new Node($this->client);
+		$this->relationship = new Relationship($this->client);
 	}
 
 	public function testSave_SavesSelfUsingClient()
 	{
 		$this->client->expects($this->once())
-			->method('saveNode')
-			->with($this->node)
+			->method('saveRelationship')
+			->with($this->relationship)
 			->will($this->returnValue(true));
 
-		$this->assertTrue($this->node->save());
+		$this->assertTrue($this->relationship->save());
 	}
 
 	public function testDelete_DeletesSelfUsingClient()
 	{
 		$this->client->expects($this->once())
-			->method('deleteNode')
-			->with($this->node)
+			->method('deleteRelationship')
+			->with($this->relationship)
 			->will($this->returnValue(true));
 
-		$this->assertTrue($this->node->delete());
+		$this->assertTrue($this->relationship->delete());
 	}
 }
