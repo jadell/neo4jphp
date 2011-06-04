@@ -8,7 +8,7 @@ class NodeTest extends \PHPUnit_Framework_TestCase
 
 	public function setUp()
 	{
-		$this->client = $this->getMock('Everyman\Neo4j\Client');
+		$this->client = $this->getMock('Everyman\Neo4j\Client', array(), array(), '', false);
 		$this->node = new Node($this->client);
 	}
 
