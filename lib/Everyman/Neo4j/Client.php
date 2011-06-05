@@ -46,6 +46,16 @@ class Client
 	}
 
 	/**
+	 * Get the endpoint
+	 *
+	 * @return string
+	 */
+	public function getEndpoint()
+	{
+		return $this->transport->getEndpoint();
+	}
+
+	/**
 	 * Get the last error generated
 	 *
 	 * @return integer
@@ -129,12 +139,16 @@ class Client
 	/**
 	 * Save the given relationship
 	 *
-	 * @param Relationship $relationship
+	 * @param Relationship $rel
 	 * @return boolean
 	 */
-	public function saveRelationship(Relationship $relationship)
+	public function saveRelationship(Relationship $rel)
 	{
-		// Stub
+		if ($rel->getId()) {
+			return $this->runCommand(new Command\UpdateRelationship($rel));
+		} else {
+			return $this->runCommand(new Command\CreateRelationship($rel));
+		}
 	}
 
 	/**

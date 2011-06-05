@@ -5,10 +5,14 @@ class ClientTest extends \PHPUnit_Framework_TestCase
 {
 	protected $transport = null;
 	protected $client = null;
+	protected $endpoint = 'http://foo:1234/db/data';
 
 	public function setUp()
 	{
 		$this->transport = $this->getMock('Everyman\Neo4j\Transport');
+		$this->transport->expects($this->any())
+			->method('getEndpoint')
+			->will($this->returnValue($this->endpoint));
 		$this->client = new Client($this->transport);
 	}
 
@@ -241,5 +245,117 @@ class ClientTest extends \PHPUnit_Framework_TestCase
 
 		$this->setExpectedException('Everyman\Neo4j\Exception');
 		$this->client->deleteRelationship($rel);
+	}
+
+	public function testSaveRelationship_Create_NoStartNode_ThrowsException()
+	{
+		$rel = new Relationship($this->client);
+
+		$this->setExpectedException('Everyman\Neo4j\Exception');
+		$this->client->saveRelationship($rel);
+	}
+
+	public function testSaveRelationship_Create_NoEndNode_ThrowsException()
+	{
+		$start = new Node($this->client);
+		$start->setId(123);
+
+		$rel = new Relationship($this->client);
+		$rel->setStartNode($start);
+		
+		$this->setExpectedException('Everyman\Neo4j\Exception');
+		$this->client->saveRelationship($rel);
+	}
+
+	public function testSaveRelationship_Create_NoType_ThrowsException()
+	{
+		$start = new Node($this->client);
+		$start->setId(123);
+		$end = new Node($this->client);
+		$end->setId(456);
+
+		$rel = new Relationship($this->client);
+		$rel->setStartNode($start);
+		$rel->setEndNode($end);
+		
+		$this->setExpectedException('Everyman\Neo4j\Exception');
+		$this->client->saveRelationship($rel);
+	}
+
+	/**
+	 * @dataProvider dataProvider_CreateRelationshipScenarios
+	 */
+	public function testSaveRelationship_Create_ReturnsCorrectSuccessOrFailure($result, $success, $error, $id)
+	{
+		$data = array(
+			'data' => array(
+				'foo' => 'bar',
+				'baz' => 'qux',
+			),
+			'to' => $this->endpoint.'/node/456',
+			'type' => 'FOOTYPE',
+		);
+
+		$start = new Node($this->client);
+		$start->setId(123);
+		$end = new Node($this->client);
+		$end->setId(456);
+
+		$rel = new Relationship($this->client);
+		$rel->setType('FOOTYPE')
+			->setStartNode($start)
+			->setEndNode($end)
+			->setProperties($data['data']);
+
+		$this->transport->expects($this->once())
+			->method('post')
+			->with('/node/123/relationships', $data)
+			->will($this->returnValue($result));
+
+		$this->assertEquals($success, $this->client->saveRelationship($rel));
+		$this->assertEquals($error, $this->client->getLastError());
+		$this->assertEquals($id, $rel->getId());
+	}
+
+	public function dataProvider_CreateRelationshipScenarios()
+	{
+		return array(// result, success, error, id
+			array(array('code'=>201, 'headers'=>array('Location'=>'http://foo.com:1234/db/data/relationship/890')), true, null, 890),
+			array(array('code'=>400), false, Client::ErrorBadRequest, null),
+			array(array('code'=>404), false, Client::ErrorNotFound, null),
+		);
+	}
+
+	/**
+	 * @dataProvider dataProvider_UpdateRelationshipScenarios
+	 */
+	public function testSaveRelationship_Update_ReturnsCorrectSuccessOrFailure($result, $success, $error)
+	{
+		$properties = array(
+			'foo' => 'bar',
+			'baz' => 'qux',
+		);
+
+		$rel = new Relationship($this->client);
+		$rel->setId(123)
+			->setProperties($properties);
+		
+		$this->transport->expects($this->once())
+			->method('put')
+			->with('/relationship/123/properties', $properties)
+			->will($this->returnValue($result));
+
+		$this->assertEquals($success, $this->client->saveRelationship($rel));
+		$this->assertEquals($error, $this->client->getLastError());
+		$this->assertEquals(123, $rel->getId());
+	}
+
+	public function dataProvider_UpdateRelationshipScenarios()
+	{
+		return array(// result, success, error
+			array(array('code'=>204), true, null),
+			array(array('code'=>404), false, Client::ErrorNotFound),
+			array(array('code'=>400), false, Client::ErrorBadRequest),
+		);
 	}
 }
