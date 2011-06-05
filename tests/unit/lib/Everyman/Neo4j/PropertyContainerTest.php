@@ -9,7 +9,8 @@ class PropertyContainerTest extends \PHPUnit_Framework_TestCase
 	public function setUp()
 	{
 		$this->client = $this->getMock('Everyman\Neo4j\Client', array(), array(), '', false);
-		$this->entity = $this->getMock('Everyman\Neo4j\PropertyContainer', null, array($this->client));
+		$this->entity = $this->getMock('Everyman\Neo4j\PropertyContainer',
+			array('delete','save','load'), array($this->client));
 	}
 
 	public function testProperties_PropertyNotSet_ReturnsNull()

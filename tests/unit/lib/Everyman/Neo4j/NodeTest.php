@@ -31,4 +31,14 @@ class NodeTest extends \PHPUnit_Framework_TestCase
 
 		$this->assertTrue($this->node->delete());
 	}
+
+	public function testLoad_LoadsSelfUsingClient()
+	{
+		$this->client->expects($this->once())
+			->method('loadNode')
+			->with($this->node)
+			->will($this->returnValue(true));
+
+		$this->assertTrue($this->node->load());
+	}
 }

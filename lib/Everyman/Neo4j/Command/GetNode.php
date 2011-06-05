@@ -65,6 +65,7 @@ class GetNode implements Command
 	public function handleResult($code, $headers, $data)
 	{
 		if ((int)($code / 100) == 2) {
+			$this->node->useLazyLoad(false);
 			$this->node->setProperties($data);
 			return null;
 		}

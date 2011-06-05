@@ -8,7 +8,7 @@ abstract class PropertyContainer
 {
 	protected $id = null;
 	protected $client = null;
-	protected $properties = array();
+	protected $properties = null;
 
 	/**
 	 * Build the container and set its client
@@ -19,6 +19,27 @@ abstract class PropertyContainer
 	{
 		$this->client = $client;
 	}
+
+	/**
+	 * Delete this entity
+	 *
+	 * @return boolean
+	 */
+	abstract public function delete();
+
+	/**
+	 * Load this entity
+	 *
+	 * @return boolean
+	 */
+	abstract public function load();
+
+	/**
+	 * Save this entity
+	 *
+	 * @return boolean
+	 */
+	abstract public function save();
 
 	/**
 	 * Get the entity's client
@@ -47,6 +68,7 @@ abstract class PropertyContainer
 	 */
 	public function getProperties()
 	{
+		$this->loadProperties();
 		return $this->properties;
 	}
 
@@ -58,6 +80,7 @@ abstract class PropertyContainer
 	 */
 	public function getProperty($property)
 	{
+		$this->loadProperties();
 		return (isset($this->properties[$property])) ? $this->properties[$property] : null;
 	}
 
@@ -69,6 +92,7 @@ abstract class PropertyContainer
 	 */
 	public function removeProperty($property)
 	{
+		$this->loadProperties();
 		unset($this->properties[$property]);
 		return $this;
 	}
@@ -93,6 +117,7 @@ abstract class PropertyContainer
 	 */
 	public function setProperties($properties)
 	{
+		$this->loadProperties();
 		foreach ($properties as $property => $value) {
 			$this->setProperty($property, $value);
 		}
@@ -108,7 +133,22 @@ abstract class PropertyContainer
 	 */
 	public function setProperty($property, $value)
 	{
+		$this->loadProperties();
 		$this->properties[$property] = $value;
 		return $this;
+	}
+
+	/**
+	 * Set up the properties array the first time we need it
+	 *
+	 * @return boolean true if we loaded for the first time
+	 */
+	protected function loadProperties()
+	{
+		if ($this->properties === null) {
+			$this->properties = array();
+			return true;
+		}
+		return false;
 	}
 }

@@ -51,6 +51,16 @@ class Relationship extends PropertyContainer
 	}
 
 	/**
+	 * Load this relationship
+	 *
+	 * @return boolean
+	 */
+	public function load()
+	{
+		return $this->client->loadRelationship($this);
+	}
+
+	/**
 	 * Save this node
 	 *
 	 * @return boolean

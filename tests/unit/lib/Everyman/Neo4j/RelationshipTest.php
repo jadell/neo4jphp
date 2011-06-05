@@ -32,4 +32,14 @@ class RelationshipTest extends \PHPUnit_Framework_TestCase
 
 		$this->assertTrue($this->relationship->delete());
 	}
+
+	public function testLoad_LoadsSelfUsingClient()
+	{
+		$this->client->expects($this->once())
+			->method('loadRelationship')
+			->with($this->relationship)
+			->will($this->returnValue(true));
+
+		$this->assertTrue($this->relationship->load());
+	}
 }
