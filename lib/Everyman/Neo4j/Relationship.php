@@ -6,6 +6,10 @@ namespace Everyman\Neo4j;
  */
 class Relationship extends PropertyContainer
 {
+	const DirectionAll       = 'all';
+	const DirectionIn        = 'in';
+	const DirectionOut       = 'out';
+
 	protected $start = null;
 	protected $end = null;
 	protected $type = null;

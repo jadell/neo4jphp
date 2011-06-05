@@ -358,4 +358,86 @@ class ClientTest extends \PHPUnit_Framework_TestCase
 			array(array('code'=>400), false, Client::ErrorBadRequest),
 		);
 	}
+
+	public function testGetNodeRelationships_NodeNotFound_ReturnsFalse()
+	{
+		$node = new Node($this->client);
+		$node->setId(123);
+		$type = 'FOOTYPE';
+		$dir = Relationship::DirectionOut;
+
+		$this->transport->expects($this->once())
+			->method('get')
+			->with('/node/123/relationships/out/FOOTYPE')
+			->will($this->returnValue(array('code'=>404)));
+
+		$this->assertFalse($this->client->getNodeRelationships($node, $dir, $type));
+		$this->assertEquals(Client::ErrorNotFound, $this->client->getLastError());
+	}
+
+	public function testGetNodeRelationships_NoRelationships_ReturnsEmptyArray()
+	{
+		$node = new Node($this->client);
+		$node->setId(123);
+		$types = array('FOOTYPE','BARTYPE');
+		$dir = Relationship::DirectionIn;
+
+		$this->transport->expects($this->once())
+			->method('get')
+			->with('/node/123/relationships/in/FOOTYPE&BARTYPE')
+			->will($this->returnValue(array('code'=>200,'data'=>array())));
+
+		$this->assertEquals(array(), $this->client->getNodeRelationships($node, $dir, $types));
+		$this->assertNull($this->client->getLastError());
+	}
+
+	public function testGetNodeRelationships_Relationships_ReturnsArray()
+	{
+		$node = new Node($this->client);
+		$node->setId(123);
+		$types = array('FOOTYPE','BARTYPE');
+		$dir = Relationship::DirectionAll;
+
+		$data = array(
+			array(
+				"self" => "http://localhost:7474/db/data/relationship/56",
+				"start" => "http://localhost:7474/db/data/node/123",
+				"end" => "http://localhost:7474/db/data/node/93",
+				"type" => "KNOWS",
+				"data" => array('foo'=>'bar','baz'=>'qux'),
+			),
+			array(
+				"self" => "http://localhost:7474/db/data/relationship/834",
+				"start" => "http://localhost:7474/db/data/node/32",
+				"end" => "http://localhost:7474/db/data/node/123",
+				"type" => "LOVES",
+				"data" => array('bar'=>'foo','qux'=>'baz'),
+			),
+		);
+
+		$this->transport->expects($this->once())
+			->method('get')
+			->with('/node/123/relationships/all/FOOTYPE&BARTYPE')
+			->will($this->returnValue(array('code'=>200,'data'=>$data)));
+
+		$result = $this->client->getNodeRelationships($node, $dir, $types);
+		$this->assertEquals(2, count($result));
+		$this->assertNull($this->client->getLastError());
+
+		$this->assertInstanceOf('Everyman\Neo4j\Relationship', $result[0]);
+		$this->assertEquals(56, $result[0]->getId());
+		$this->assertEquals($data[0]['data'], $result[0]->getProperties());
+		$this->assertInstanceOf('Everyman\Neo4j\Node', $result[0]->getStartNode());
+		$this->assertEquals(123, $result[0]->getStartNode()->getId());
+		$this->assertInstanceOf('Everyman\Neo4j\Node', $result[0]->getEndNode());
+		$this->assertEquals(93, $result[0]->getEndNode()->getId());
+
+		$this->assertInstanceOf('Everyman\Neo4j\Relationship', $result[1]);
+		$this->assertEquals(834, $result[1]->getId());
+		$this->assertEquals($data[1]['data'], $result[1]->getProperties());
+		$this->assertInstanceOf('Everyman\Neo4j\Node', $result[1]->getStartNode());
+		$this->assertEquals(32, $result[1]->getStartNode()->getId());
+		$this->assertInstanceOf('Everyman\Neo4j\Node', $result[1]->getEndNode());
+		$this->assertEquals(123, $result[1]->getEndNode()->getId());
+	}
 }
