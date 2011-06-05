@@ -52,4 +52,14 @@ class PropertyContainerTest extends \PHPUnit_Framework_TestCase
 			'yakey' => 'yaval',
 		), $this->entity->getProperties());
 	}
+
+	public function testProperties_LazyLoad_OnlyLoadsTheFirstTime()
+	{
+		$this->entity->expects($this->once())
+			->method('load');
+		
+		$this->entity->setId(123);
+		$this->entity->getProperties();
+		$this->entity->getProperties();
+	}
 }

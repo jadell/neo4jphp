@@ -10,6 +10,8 @@ abstract class PropertyContainer
 	protected $client = null;
 	protected $properties = null;
 
+	protected $lazyLoad = true;
+
 	/**
 	 * Build the container and set its client
 	 *
@@ -139,16 +141,29 @@ abstract class PropertyContainer
 	}
 
 	/**
-	 * Set up the properties array the first time we need it
+	 * Should this entity be lazy-loaded if necessary?
 	 *
-	 * @return boolean true if we loaded for the first time
+	 * @param boolean $lazyLoad
+	 * @return PropertyContainer
+	 */
+	public function useLazyLoad($lazyLoad)
+	{
+		$this->lazyLoad = (bool)$lazyLoad;
+		return $this;
+	}
+
+	/**
+	 * Set up the properties array the first time we need it
+	 * This includes loading the properties from the server
+	 * if we can get them.
 	 */
 	protected function loadProperties()
 	{
 		if ($this->properties === null) {
 			$this->properties = array();
-			return true;
+			if ($this->getId() && $this->lazyLoad) {
+				$this->load();
+			}
 		}
-		return false;
 	}
 }

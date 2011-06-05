@@ -66,6 +66,7 @@ class GetRelationship implements Command
 	public function handleResult($code, $headers, $data)
 	{
 		if ((int)($code / 100) == 2) {
+			$this->rel->useLazyLoad(false);
 			$this->rel->setProperties($data['data']);
 			$this->rel->setType($data['type']);
 
