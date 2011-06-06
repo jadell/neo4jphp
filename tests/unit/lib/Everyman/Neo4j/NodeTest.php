@@ -41,4 +41,36 @@ class NodeTest extends \PHPUnit_Framework_TestCase
 
 		$this->assertTrue($this->node->load());
 	}
+
+	public function testGetRelationships_ReturnsArrayOfRelationships()
+	{
+		$dir = Relationship::DirectionOut;
+		$types = array('FOOTYPE','BARTYPE');
+
+		$returnRels = array(
+			new Relationship($this->client),
+			new Relationship($this->client),
+		);
+
+		$this->client->expects($this->once())
+			->method('getNodeRelationships')
+			->with($this->node, $dir, $types)
+			->will($this->returnValue($returnRels));
+
+		$rels = $this->node->getRelationships($dir, $types);
+		$this->assertEquals($returnRels, $rels);
+	}
+
+	public function testRelateTo_ReturnsRelationship()
+	{
+		$toNode = new Node($this->client);
+		$type = 'FOOTYPE';
+
+		$rel = $this->node->relateTo($toNode, $type);
+		$this->assertInstanceOf('Everyman\Neo4j\Relationship', $rel);
+		$this->assertSame($this->client, $rel->getClient());
+		$this->assertSame($this->node, $rel->getStartNode());
+		$this->assertSame($toNode, $rel->getEndNode());
+		$this->assertEquals($type, $rel->getType());
+	}
 }

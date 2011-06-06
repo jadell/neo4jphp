@@ -4,7 +4,6 @@ namespace Everyman\Neo4j;
 /**
  * Represents a single node in the database
  *
- * @todo: Relationships
  * @todo: Paths
  */
 class Node extends PropertyContainer
@@ -20,6 +19,18 @@ class Node extends PropertyContainer
 	}
 
 	/**
+	 * Get relationships of this node
+	 *
+	 * @param string $dir
+	 * @param mixed  $types string or array of strings
+	 * @return array of Relationship
+	 */
+	public function getRelationships($dir=null, $types=array())
+	{
+		return $this->client->getNodeRelationships($this, $dir, $types);
+	}
+
+	/**
 	 * Load this node
 	 *
 	 * @return boolean
@@ -27,6 +38,23 @@ class Node extends PropertyContainer
 	public function load()
 	{
 		return $this->client->loadNode($this);
+	}
+
+	/**
+	 * Make a new relationship
+	 *
+	 * @param Node $to
+	 * @param string $type
+	 * @return Relationship
+	 */
+	public function relateTo(Node $to, $type)
+	{
+		$rel = new Relationship($this->client);
+		$rel->setStartNode($this);
+		$rel->setEndNode($to);
+		$rel->setType($type);
+
+		return $rel;
 	}
 
 	/**
