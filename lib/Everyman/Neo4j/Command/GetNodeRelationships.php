@@ -1,6 +1,7 @@
 <?php
 namespace Everyman\Neo4j\Command;
 use Everyman\Neo4j\Command,
+	Everyman\Neo4j\Client,
 	Everyman\Neo4j\Exception,
 	Everyman\Neo4j\Relationship,
 	Everyman\Neo4j\Node;
@@ -8,7 +9,7 @@ use Everyman\Neo4j\Command,
 /**
  * Find relationships on a node
  */
-class GetNodeRelationships implements Command
+class GetNodeRelationships extends Command
 {
 	protected $node  = null;
 	protected $types = null;
@@ -18,12 +19,15 @@ class GetNodeRelationships implements Command
 	/**
 	 * Set the parameters to search
 	 *
+	 * @param Client $client
 	 * @param Node   $node
 	 * @param string $dir
 	 * @param mixed  $types a string or array of strings
 	 */
-	public function __construct(Node $node, $dir=null, $types=array())
+	public function __construct(Client $client, Node $node, $dir=null, $types=array())
 	{
+		parent::__construct($client);
+
 		if (empty($dir)) {
 			$dir = Relationship::DirectionAll;
 		}
@@ -43,7 +47,7 @@ class GetNodeRelationships implements Command
 	 *
 	 * @return mixed
 	 */
-	public function getData()
+	protected function getData()
 	{
 		return null;
 	}
@@ -53,7 +57,7 @@ class GetNodeRelationships implements Command
 	 *
 	 * @return string
 	 */
-	public function getMethod()
+	protected function getMethod()
 	{
 		return 'get';
 	}
@@ -63,7 +67,7 @@ class GetNodeRelationships implements Command
 	 *
 	 * @return string
 	 */
-	public function getPath()
+	protected function getPath()
 	{
 		$nodeId = $this->node->getId();
 		if (!$nodeId) {
@@ -96,7 +100,7 @@ class GetNodeRelationships implements Command
 	 * @param array   $data
 	 * @return integer on failure
 	 */
-	public function handleResult($code, $headers, $data)
+	protected function handleResult($code, $headers, $data)
 	{
 		if ((int)($code / 100) == 2) {
 			foreach ($data as $relData) {
@@ -136,8 +140,8 @@ class GetNodeRelationships implements Command
 	 */
 	protected function makeNode($uri)
 	{
-		$node = new Node($this->node->getClient());
-		$node->setId($this->getIdFromUri($uri));
+		$nodeId = $this->getIdFromUri($uri);
+		$node = $this->client->getNode($nodeId, true);
 		return $node;
 	}
 

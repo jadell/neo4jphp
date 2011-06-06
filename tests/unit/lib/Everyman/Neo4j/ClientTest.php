@@ -127,6 +127,19 @@ class ClientTest extends \PHPUnit_Framework_TestCase
 		$this->assertEquals(Client::ErrorNotFound, $this->client->getLastError());
 	}
 
+	public function testGetNode_Force_ReturnsNode()
+	{
+		$nodeId = 123;
+		
+		$this->transport->expects($this->never())
+			->method('get');
+
+		$node = $this->client->getNode($nodeId, true);
+		$this->assertInstanceOf('Everyman\Neo4j\Node', $node);
+		$this->assertEquals($nodeId, $node->getId());
+		$this->assertNull($this->client->getLastError());
+	}
+
 	public function testGetNode_Found_ReturnsNode()
 	{
 		$nodeId = 123;

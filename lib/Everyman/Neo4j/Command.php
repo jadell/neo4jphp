@@ -4,28 +4,40 @@ namespace Everyman\Neo4j;
 /**
  * Abstract the parameters needed to make a request and parse the response
  */
-interface Command
+abstract class Command
 {
+	protected $client;
+
+	/**
+	 * Set the client
+	 *
+	 * @param Client $client
+	 */
+	public function __construct(Client $client)
+	{
+		$this->client = $client;
+	}
+
 	/**
 	 * Return the data to pass
 	 *
 	 * @return mixed
 	 */
-	public function getData();
+	abstract protected function getData();
 
 	/**
 	 * Return the transport method to call
 	 *
 	 * @return string
 	 */
-	public function getMethod();
+	abstract protected function getMethod();
 
 	/**
 	 * Return the path to use
 	 *
 	 * @return string
 	 */
-	public function getPath();
+	abstract protected function getPath();
 
 	/**
 	 * Use the results in some way
@@ -35,6 +47,36 @@ interface Command
 	 * @param array   $data
 	 * @return integer on failure
 	 */
-	public function handleResult($code, $headers, $data);
+	abstract protected function handleResult($code, $headers, $data);
+
+	/**
+	 * Run the command and return a value signalling the result
+	 *
+	 * @return integer on failure
+	 */
+	public function execute()
+	{
+		$method = $this->getMethod();
+		$path = $this->getPath();
+		$data = $this->getData();
+		$result = $this->getTransport()->$method($path, $data);
+
+		$resultCode = isset($result['code']) ? $result['code'] : Client::ErrorBadRequest;
+		$resultHeaders = isset($result['headers']) ? $result['headers'] : array();
+		$resultData = isset($result['data']) ? $result['data'] : array();
+		$parseResult = $this->handleResult($resultCode,$resultHeaders,$resultData);
+
+		return $parseResult;
+	}
+
+	/**
+	 * Get the transport
+	 *
+	 * @return Transport
+	 */
+	protected function getTransport()
+	{
+		return $this->client->getTransport();
+	}
 }
 

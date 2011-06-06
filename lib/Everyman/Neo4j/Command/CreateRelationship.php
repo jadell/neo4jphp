@@ -1,6 +1,7 @@
 <?php
 namespace Everyman\Neo4j\Command;
 use Everyman\Neo4j\Command,
+	Everyman\Neo4j\Client,
 	Everyman\Neo4j\Exception,
 	Everyman\Neo4j\Relationship,
 	Everyman\Neo4j\Node;
@@ -8,17 +9,19 @@ use Everyman\Neo4j\Command,
 /**
  * Create a relationship
  */
-class CreateRelationship implements Command
+class CreateRelationship extends Command
 {
 	protected $rel = null;
 
 	/**
 	 * Set the relationship to drive the command
 	 *
+	 * @param Client $client
 	 * @param Relationship $rel
 	 */
-	public function __construct(Relationship $rel)
+	public function __construct(Client $client, Relationship $rel)
 	{
+		parent::__construct($client);
 		$this->rel = $rel;
 	}
 
@@ -27,7 +30,7 @@ class CreateRelationship implements Command
 	 *
 	 * @return mixed
 	 */
-	public function getData()
+	protected function getData()
 	{
 		$end = $this->rel->getEndNode();
 		$type = $this->rel->getType();
@@ -37,7 +40,7 @@ class CreateRelationship implements Command
 			throw new Exception('No relationship type specified');
 		}
 
-		$endUri = $end->getClient()->getEndpoint().'/node/'.$end->getId();
+		$endUri = $this->getTransport()->getEndpoint().'/node/'.$end->getId();
 		$data = array(
 			'data' => $this->rel->getProperties(),
 			'type' => $type,
@@ -52,7 +55,7 @@ class CreateRelationship implements Command
 	 *
 	 * @return string
 	 */
-	public function getMethod()
+	protected function getMethod()
 	{
 		return 'post';
 	}
@@ -62,7 +65,7 @@ class CreateRelationship implements Command
 	 *
 	 * @return string
 	 */
-	public function getPath()
+	protected function getPath()
 	{
 		$start = $this->rel->getStartNode();
 		if (!$start || !$start->getId()) {
@@ -79,7 +82,7 @@ class CreateRelationship implements Command
 	 * @param array   $data
 	 * @return integer on failure
 	 */
-	public function handleResult($code, $headers, $data)
+	protected function handleResult($code, $headers, $data)
 	{
 		if ((int)($code / 100) == 2) {
 			$locationParts = explode('/', $headers['Location']);

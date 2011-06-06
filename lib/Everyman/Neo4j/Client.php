@@ -31,7 +31,7 @@ class Client
 	 */
 	public function deleteNode(Node $node)
 	{
-		return $this->runCommand(new Command\DeleteNode($node));
+		return $this->runCommand(new Command\DeleteNode($this, $node));
 	}
 
 	/**
@@ -42,17 +42,7 @@ class Client
 	 */
 	public function deleteRelationship(Relationship $relationship)
 	{
-		return $this->runCommand(new Command\DeleteRelationship($relationship));
-	}
-
-	/**
-	 * Get the endpoint
-	 *
-	 * @return string
-	 */
-	public function getEndpoint()
-	{
-		return $this->transport->getEndpoint();
+		return $this->runCommand(new Command\DeleteRelationship($this, $relationship));
 	}
 
 	/**
@@ -67,14 +57,24 @@ class Client
 
 	/**
 	 * Get the requested node
+	 * Using the $force option disables the check
+	 * of whether or not the node exists and will
+	 * return a Node with the given id even if it
+	 * does not. 
 	 *
 	 * @param integer $id
+	 * @param boolean $force
 	 * @return Node
 	 */
-	public function getNode($id)
+	public function getNode($id, $force=false)
 	{
 		$node = new Node($this);
 		$node->setId($id);
+
+		if ($force) {
+			return $node;
+		}
+
 		$result = $this->loadNode($node);
 		if ($result) {
 			return $node;
@@ -92,7 +92,7 @@ class Client
 	 */
 	public function getNodeRelationships(Node $node, $dir=null, $types=array())
 	{
-		$command = new Command\GetNodeRelationships($node, $dir, $types);
+		$command = new Command\GetNodeRelationships($this, $node, $dir, $types);
 		$result = $this->runCommand($command);
 		if ($result) {
 			return $command->getResult();
@@ -119,6 +119,16 @@ class Client
 	}
 
 	/**
+	 * Get the transport
+	 *
+	 * @return Transport
+	 */
+	public function getTransport()
+	{
+		return $this->transport;
+	}
+
+	/**
 	 * Load the given node with data from the server
 	 *
 	 * @param Node $node
@@ -126,7 +136,7 @@ class Client
 	 */
 	public function loadNode(Node $node)
 	{
-		return $this->runCommand(new Command\GetNode($node));
+		return $this->runCommand(new Command\GetNode($this, $node));
 	}
 
 	/**
@@ -137,7 +147,7 @@ class Client
 	 */
 	public function loadRelationship(Relationship $rel)
 	{
-		return $this->runCommand(new Command\GetRelationship($rel));
+		return $this->runCommand(new Command\GetRelationship($this, $rel));
 	}
 
 	/**
@@ -149,9 +159,9 @@ class Client
 	public function saveNode(Node $node)
 	{
 		if ($node->getId()) {
-			return $this->runCommand(new Command\UpdateNode($node));
+			return $this->runCommand(new Command\UpdateNode($this, $node));
 		} else {
-			return $this->runCommand(new Command\CreateNode($node));
+			return $this->runCommand(new Command\CreateNode($this, $node));
 		}
 	}
 
@@ -164,9 +174,9 @@ class Client
 	public function saveRelationship(Relationship $rel)
 	{
 		if ($rel->getId()) {
-			return $this->runCommand(new Command\UpdateRelationship($rel));
+			return $this->runCommand(new Command\UpdateRelationship($this, $rel));
 		} else {
-			return $this->runCommand(new Command\CreateRelationship($rel));
+			return $this->runCommand(new Command\CreateRelationship($this, $rel));
 		}
 	}
 
@@ -188,18 +198,9 @@ class Client
 	{
 		$this->resetLastError();
 
-		$method = $command->getMethod();
-		$path = $command->getPath();
-		$data = $command->getData();
-		$result = $this->transport->$method($path, $data);
-
-		$resultCode = isset($result['code']) ? $result['code'] : self::ErrorBadRequest;
-		$resultHeaders = isset($result['headers']) ? $result['headers'] : array();
-		$resultData = isset($result['data']) ? $result['data'] : array();
-		$parseResult = $command->handleResult($resultCode,$resultHeaders,$resultData);
-
-		if ($parseResult) {
-			$this->setLastError($parseResult);
+		$result = $command->execute();
+		if ($result) {
+			$this->setLastError($result);
 			return false;
 		} else {
 			return true;

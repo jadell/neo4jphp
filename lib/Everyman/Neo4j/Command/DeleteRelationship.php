@@ -1,23 +1,26 @@
 <?php
 namespace Everyman\Neo4j\Command;
 use Everyman\Neo4j\Command,
+	Everyman\Neo4j\Client,
 	Everyman\Neo4j\Exception,
 	Everyman\Neo4j\Relationship;
 
 /**
  * Delete a relationship
  */
-class DeleteRelationship implements Command
+class DeleteRelationship extends Command
 {
 	protected $rel = null;
 
 	/**
 	 * Set the relationship to drive the command
 	 *
+	 * @param Client $client
 	 * @param Relationship $rel
 	 */
-	public function __construct(Relationship $rel)
+	public function __construct(Client $client, Relationship $rel)
 	{
+		parent::__construct($client);
 		$this->rel = $rel;
 	}
 
@@ -26,7 +29,7 @@ class DeleteRelationship implements Command
 	 *
 	 * @return mixed
 	 */
-	public function getData()
+	protected function getData()
 	{
 		return null;
 	}
@@ -36,7 +39,7 @@ class DeleteRelationship implements Command
 	 *
 	 * @return string
 	 */
-	public function getMethod()
+	protected function getMethod()
 	{
 		return 'delete';
 	}
@@ -46,7 +49,7 @@ class DeleteRelationship implements Command
 	 *
 	 * @return string
 	 */
-	public function getPath()
+	protected function getPath()
 	{
 		if (!$this->rel->getId()) {
 			throw new Exception('No relationship id specified for delete');
@@ -62,7 +65,7 @@ class DeleteRelationship implements Command
 	 * @param array   $data
 	 * @return integer on failure
 	 */
-	public function handleResult($code, $headers, $data)
+	protected function handleResult($code, $headers, $data)
 	{
 		if ((int)($code / 100) == 2) {
 			return null;

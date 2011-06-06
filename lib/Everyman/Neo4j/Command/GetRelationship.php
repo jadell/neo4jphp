@@ -1,6 +1,7 @@
 <?php
 namespace Everyman\Neo4j\Command;
 use Everyman\Neo4j\Command,
+	Everyman\Neo4j\Client,
 	Everyman\Neo4j\Exception,
 	Everyman\Neo4j\Relationship,
 	Everyman\Neo4j\Node;
@@ -8,17 +9,19 @@ use Everyman\Neo4j\Command,
 /**
  * Get and populate a relationship
  */
-class GetRelationship implements Command
+class GetRelationship extends Command
 {
 	protected $rel = null;
 
 	/**
 	 * Set the relationship to drive the command
 	 *
+	 * @param Client $client
 	 * @param Relationship $rel
 	 */
-	public function __construct(Relationship $rel)
+	public function __construct(Client $client, Relationship $rel)
 	{
+		parent::__construct($client);
 		$this->rel = $rel;
 	}
 
@@ -27,7 +30,7 @@ class GetRelationship implements Command
 	 *
 	 * @return mixed
 	 */
-	public function getData()
+	protected function getData()
 	{
 		return null;
 	}
@@ -37,7 +40,7 @@ class GetRelationship implements Command
 	 *
 	 * @return string
 	 */
-	public function getMethod()
+	protected function getMethod()
 	{
 		return 'get';
 	}
@@ -47,7 +50,7 @@ class GetRelationship implements Command
 	 *
 	 * @return string
 	 */
-	public function getPath()
+	protected function getPath()
 	{
 		if (!$this->rel->getId()) {
 			throw new Exception('No relationship id specified');
@@ -63,7 +66,7 @@ class GetRelationship implements Command
 	 * @param array   $data
 	 * @return integer on failure
 	 */
-	public function handleResult($code, $headers, $data)
+	protected function handleResult($code, $headers, $data)
 	{
 		if ((int)($code / 100) == 2) {
 			$this->rel->useLazyLoad(false);
@@ -88,8 +91,7 @@ class GetRelationship implements Command
 	{
 		$uriParts = explode('/', $uri);
 		$nodeId = array_pop($uriParts);
-		$node = new Node($this->rel->getClient());
-		$node->setId($nodeId);
+		$node = $this->client->getNode($nodeId, true);
 		return $node;
 	}
 }

@@ -1,22 +1,25 @@
 <?php
 namespace Everyman\Neo4j\Command;
 use Everyman\Neo4j\Command,
+	Everyman\Neo4j\Client,
 	Everyman\Neo4j\Node;
 
 /**
  * Create a node
  */
-class CreateNode implements Command
+class CreateNode extends Command
 {
 	protected $node = null;
 
 	/**
 	 * Set the node to drive the command
 	 *
+	 * @param Client $client
 	 * @param Node $node
 	 */
-	public function __construct(Node $node)
+	public function __construct(Client $client, Node $node)
 	{
+		parent::__construct($client);
 		$this->node = $node;
 	}
 
@@ -25,7 +28,7 @@ class CreateNode implements Command
 	 *
 	 * @return mixed
 	 */
-	public function getData()
+	protected function getData()
 	{
 		return $this->node->getProperties();
 	}
@@ -35,7 +38,7 @@ class CreateNode implements Command
 	 *
 	 * @return string
 	 */
-	public function getMethod()
+	protected function getMethod()
 	{
 		return 'post';
 	}
@@ -45,7 +48,7 @@ class CreateNode implements Command
 	 *
 	 * @return string
 	 */
-	public function getPath()
+	protected function getPath()
 	{
 		return '/node';
 	}
@@ -58,7 +61,7 @@ class CreateNode implements Command
 	 * @param array   $data
 	 * @return integer on failure
 	 */
-	public function handleResult($code, $headers, $data)
+	protected function handleResult($code, $headers, $data)
 	{
 		if ((int)($code / 100) == 2) {
 			$locationParts = explode('/', $headers['Location']);

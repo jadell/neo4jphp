@@ -1,23 +1,26 @@
 <?php
 namespace Everyman\Neo4j\Command;
 use Everyman\Neo4j\Command,
+	Everyman\Neo4j\Client,
 	Everyman\Neo4j\Exception,
 	Everyman\Neo4j\Node;
 
 /**
  * Delete a node
  */
-class DeleteNode implements Command
+class DeleteNode extends Command
 {
 	protected $node = null;
 
 	/**
 	 * Set the node to drive the command
 	 *
+	 * @param Client $client
 	 * @param Node $node
 	 */
-	public function __construct(Node $node)
+	public function __construct(Client $client, Node $node)
 	{
+		parent::__construct($client);
 		$this->node = $node;
 	}
 
@@ -26,7 +29,7 @@ class DeleteNode implements Command
 	 *
 	 * @return mixed
 	 */
-	public function getData()
+	protected function getData()
 	{
 		return null;
 	}
@@ -36,7 +39,7 @@ class DeleteNode implements Command
 	 *
 	 * @return string
 	 */
-	public function getMethod()
+	protected function getMethod()
 	{
 		return 'delete';
 	}
@@ -46,7 +49,7 @@ class DeleteNode implements Command
 	 *
 	 * @return string
 	 */
-	public function getPath()
+	protected function getPath()
 	{
 		if (!$this->node->getId()) {
 			throw new Exception('No node id specified for delete');
@@ -62,7 +65,7 @@ class DeleteNode implements Command
 	 * @param array   $data
 	 * @return integer on failure
 	 */
-	public function handleResult($code, $headers, $data)
+	protected function handleResult($code, $headers, $data)
 	{
 		if ((int)($code / 100) == 2) {
 			return null;
