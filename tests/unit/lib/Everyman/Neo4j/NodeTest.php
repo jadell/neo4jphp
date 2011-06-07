@@ -73,4 +73,18 @@ class NodeTest extends \PHPUnit_Framework_TestCase
 		$this->assertSame($toNode, $rel->getEndNode());
 		$this->assertEquals($type, $rel->getType());
 	}
+
+	public function testFindPathsTo_ReturnsPathFinder()
+	{
+		$toNode = new Node($this->client);
+		$type = 'FOOTYPE';
+		$dir = Relationship::DirectionOut;
+
+		$finder = $this->node->findPathsTo($toNode, $dir, $type);
+		$this->assertInstanceOf('Everyman\Neo4j\PathFinder', $finder);
+		$this->assertSame($this->node, $finder->getStartNode());
+		$this->assertSame($toNode, $finder->getEndNode());
+		$this->assertEquals($dir, $finder->getDirection());
+		$this->assertEquals($type, $finder->getType());
+	}
 }
