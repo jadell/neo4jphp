@@ -102,15 +102,42 @@ class Client
 	}
 
 	/**
+	 * Get an array of paths matching the finder's criteria
+	 *
+	 * @param PathFinder $finder
+	 * @return array
+	 */
+	public function getPaths(PathFinder $finder)
+	{
+		$command = new Command\GetPaths($this, $finder);
+		$result = $this->runCommand($command);
+		if ($result) {
+			return $command->getResult();
+		} else {
+			return false;
+		}
+	}
+	
+	/**
 	 * Get the requested relationship
+	 * Using the $force option disables the check
+	 * of whether or not the relationship exists and will
+	 * return a Relationship with the given id even if it
+	 * does not. 
 	 *
 	 * @param integer $id
+	 * @param boolean $force
 	 * @return Relationship
 	 */
-	public function getRelationship($id)
+	public function getRelationship($id, $force=false)
 	{
 		$rel = new Relationship($this);
 		$rel->setId($id);
+
+		if ($force) {
+			return $rel;
+		}
+
 		$result = $this->loadRelationship($rel);
 		if ($result) {
 			return $rel;
