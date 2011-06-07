@@ -529,4 +529,20 @@ class ClientTest extends \PHPUnit_Framework_TestCase
 		$this->assertInstanceOf('Everyman\Neo4j\Relationship', $rels[1]);
 		$this->assertEquals(97, $rels[1]->getId());
 	}
+	
+	public function testGetPaths_DirectionGivenButNoType_ThrowsException()
+	{
+		$startNode = new Node($this->client);
+		$startNode->setId(123);
+		$endNode = new Node($this->client);
+		$endNode->setId(456);
+		
+		$finder = new PathFinder($this->client);
+		$finder->setDirection(Relationship::DirectionOut)
+			->setStartNode($startNode)
+			->setEndNode($endNode);
+		
+		$this->setExpectedException('\Everyman\Neo4j\Exception');			
+		$paths = $this->client->getPaths($finder);
+	}
 }

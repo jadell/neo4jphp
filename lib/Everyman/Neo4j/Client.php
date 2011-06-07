@@ -185,7 +185,7 @@ class Client
 	 */
 	public function saveNode(Node $node)
 	{
-		if ($node->getId()) {
+		if ($node->hasId()) {
 			return $this->runCommand(new Command\UpdateNode($this, $node));
 		} else {
 			return $this->runCommand(new Command\CreateNode($this, $node));
@@ -200,7 +200,7 @@ class Client
 	 */
 	public function saveRelationship(Relationship $rel)
 	{
-		if ($rel->getId()) {
+		if ($rel->hasId()) {
 			return $this->runCommand(new Command\UpdateRelationship($this, $rel));
 		} else {
 			return $this->runCommand(new Command\CreateRelationship($this, $rel));

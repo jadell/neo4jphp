@@ -80,7 +80,7 @@ class NodeTest extends \PHPUnit_Framework_TestCase
 		$type = 'FOOTYPE';
 		$dir = Relationship::DirectionOut;
 
-		$finder = $this->node->findPathsTo($toNode, $dir, $type);
+		$finder = $this->node->findPathsTo($toNode, $type, $dir);
 		$this->assertInstanceOf('Everyman\Neo4j\PathFinder', $finder);
 		$this->assertSame($this->node, $finder->getStartNode());
 		$this->assertSame($toNode, $finder->getEndNode());

@@ -69,12 +69,11 @@ class GetNodeRelationships extends Command
 	 */
 	protected function getPath()
 	{
-		$nodeId = $this->node->getId();
-		if (!$nodeId) {
+		if (!$this->node->hasId()) {
 			throw new Exception('No node id specified');
 		}
 
-		$path = "/node/{$nodeId}/relationships/{$this->dir}";
+		$path = '/node/'.$this->node->getId().'/relationships/'.$this->dir;
 		if (!empty($this->types)) {
 			$path .= '/'.join('&', $this->types);
 		}

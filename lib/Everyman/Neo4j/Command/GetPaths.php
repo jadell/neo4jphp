@@ -37,7 +37,7 @@ class GetPaths extends Command
 		$data = array();
 		
 		$end = $this->finder->getEndNode();
-		if (!$end || !$end->getId()) {
+		if (!$end || !$end->hasId()) {
 			throw new Exception('No end node id specified');
 		}
 
@@ -52,11 +52,10 @@ class GetPaths extends Command
 		
 		$type = $this->finder->getType();
 		$dir = $this->finder->getDirection();
-		if ($type || $dir) {
-			$rel = array();
-			if ($type) {
-				$rel['type'] = $type;
-			}
+		if ($dir && !$type) {
+			throw new Exception('No relationship type specified');
+		} else if ($type) {
+			$rel = array('type'=>$type);
 			if ($dir) {
 				$rel['direction'] = $dir;
 			}
@@ -84,12 +83,11 @@ class GetPaths extends Command
 	protected function getPath()
 	{
 		$start = $this->finder->getStartNode();
-		if (!$start || !$start->getId()) {
+		if (!$start || !$start->hasId()) {
 			throw new Exception('No start node id specified');
 		}
 
-		$nodeId = $start->getId();
-		return "/node/{$nodeId}/paths";
+		return '/node/'.$start->getId().'/paths';
 	}
 
 	/**

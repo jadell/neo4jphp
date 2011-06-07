@@ -34,7 +34,7 @@ class CreateRelationship extends Command
 	{
 		$end = $this->rel->getEndNode();
 		$type = $this->rel->getType();
-		if (!$end || !$end->getId()) {
+		if (!$end || !$end->hasId()) {
 			throw new Exception('No relationship end node specified');
 		} else if (!$type) {
 			throw new Exception('No relationship type specified');
@@ -68,7 +68,7 @@ class CreateRelationship extends Command
 	protected function getPath()
 	{
 		$start = $this->rel->getStartNode();
-		if (!$start || !$start->getId()) {
+		if (!$start || !$start->hasId()) {
 			throw new Exception('No relationship start node specified');
 		}
 		return '/node/'.$start->getId().'/relationships';

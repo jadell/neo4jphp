@@ -51,7 +51,7 @@ class DeleteRelationship extends Command
 	 */
 	protected function getPath()
 	{
-		if (!$this->rel->getId()) {
+		if (!$this->rel->hasId()) {
 			throw new Exception('No relationship id specified for delete');
 		}
 		return '/relationship/'.$this->rel->getId();

@@ -51,7 +51,7 @@ class UpdateNode extends Command
 	 */
 	protected function getPath()
 	{
-		if (!$this->node->getId()) {
+		if (!$this->node->hasId()) {
 			throw new Exception('No node id specified');
 		}
 		return '/node/'.$this->node->getId().'/properties';

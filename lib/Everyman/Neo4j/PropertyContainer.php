@@ -87,6 +87,16 @@ abstract class PropertyContainer
 	}
 
 	/**
+	 * Is this entity identified?
+	 *
+	 * @return boolean
+	 */
+	public function hasId()
+	{
+		return $this->getId() !== null;
+	}
+
+	/**
 	 * Remove a property set on the entity
 	 *
 	 * @param string $property
@@ -161,7 +171,7 @@ abstract class PropertyContainer
 	{
 		if ($this->properties === null) {
 			$this->properties = array();
-			if ($this->getId() && $this->lazyLoad) {
+			if ($this->hasId() && $this->lazyLoad) {
 				$this->load();
 			}
 		}

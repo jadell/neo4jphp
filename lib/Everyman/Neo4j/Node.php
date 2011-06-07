@@ -22,16 +22,22 @@ class Node extends PropertyContainer
 	 * Find paths from this node to the given node
 	 *
 	 * @param Node $to
-	 * @param string $dir
 	 * @param string $type
+	 * @param string $dir
+	 * @return PathFinder
 	 */
-	public function findPathsTo(Node $to, $dir, $type)
+	public function findPathsTo(Node $to, $type=null, $dir=null)
 	{
 		$finder = new PathFinder($this->client);
 		$finder->setStartNode($this);
 		$finder->setEndNode($to);
-		$finder->setDirection($dir);
-		$finder->setType($type);
+		if ($dir) {
+			$finder->setDirection($dir);
+		}
+
+		if ($type) {
+			$finder->setType($type);
+		}
 
 		return $finder;
 	}
