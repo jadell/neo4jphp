@@ -45,13 +45,13 @@ class Node extends PropertyContainer
 	/**
 	 * Get relationships of this node
 	 *
-	 * @param string $dir
 	 * @param mixed  $types string or array of strings
+	 * @param string $dir
 	 * @return array of Relationship
 	 */
-	public function getRelationships($dir=null, $types=array())
+	public function getRelationships($types=array(), $dir=null)
 	{
-		return $this->client->getNodeRelationships($this, $dir, $types);
+		return $this->client->getNodeRelationships($this, $types, $dir);
 	}
 
 	/**

@@ -86,13 +86,13 @@ class Client
 	 * Get all relationships on a node matching the criteria
 	 *
 	 * @param Node   $node
-	 * @param string $dir
 	 * @param mixed  $types a string or array of strings
+	 * @param string $dir
 	 * @return mixed false on error, else an array of Relationship objects
 	 */
-	public function getNodeRelationships(Node $node, $dir=null, $types=array())
+	public function getNodeRelationships(Node $node, $types=array(), $dir=null)
 	{
-		$command = new Command\GetNodeRelationships($this, $node, $dir, $types);
+		$command = new Command\GetNodeRelationships($this, $node, $types, $dir);
 		$result = $this->runCommand($command);
 		if ($result) {
 			return $command->getResult();

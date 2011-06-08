@@ -54,10 +54,10 @@ class NodeTest extends \PHPUnit_Framework_TestCase
 
 		$this->client->expects($this->once())
 			->method('getNodeRelationships')
-			->with($this->node, $dir, $types)
+			->with($this->node, $types, $dir)
 			->will($this->returnValue($returnRels));
 
-		$rels = $this->node->getRelationships($dir, $types);
+		$rels = $this->node->getRelationships($types, $dir);
 		$this->assertEquals($returnRels, $rels);
 	}
 

@@ -21,10 +21,10 @@ class GetNodeRelationships extends Command
 	 *
 	 * @param Client $client
 	 * @param Node   $node
-	 * @param string $dir
 	 * @param mixed  $types a string or array of strings
+	 * @param string $dir
 	 */
-	public function __construct(Client $client, Node $node, $dir=null, $types=array())
+	public function __construct(Client $client, Node $node, $types=array(), $dir=null)
 	{
 		parent::__construct($client);
 

@@ -397,7 +397,7 @@ class ClientTest extends \PHPUnit_Framework_TestCase
 			->with('/node/123/relationships/out/FOOTYPE')
 			->will($this->returnValue(array('code'=>404)));
 
-		$this->assertFalse($this->client->getNodeRelationships($node, $dir, $type));
+		$this->assertFalse($this->client->getNodeRelationships($node, $type, $dir));
 		$this->assertEquals(Client::ErrorNotFound, $this->client->getLastError());
 	}
 
@@ -413,7 +413,7 @@ class ClientTest extends \PHPUnit_Framework_TestCase
 			->with('/node/123/relationships/in/FOOTYPE&BARTYPE')
 			->will($this->returnValue(array('code'=>200,'data'=>array())));
 
-		$this->assertEquals(array(), $this->client->getNodeRelationships($node, $dir, $types));
+		$this->assertEquals(array(), $this->client->getNodeRelationships($node, $types, $dir));
 		$this->assertNull($this->client->getLastError());
 	}
 
@@ -446,7 +446,7 @@ class ClientTest extends \PHPUnit_Framework_TestCase
 			->with('/node/123/relationships/all/FOOTYPE&BARTYPE')
 			->will($this->returnValue(array('code'=>200,'data'=>$data)));
 
-		$result = $this->client->getNodeRelationships($node, $dir, $types);
+		$result = $this->client->getNodeRelationships($node, $types, $dir);
 		$this->assertEquals(2, count($result));
 		$this->assertNull($this->client->getLastError());
 
