@@ -3,8 +3,6 @@ namespace Everyman\Neo4j;
 
 /**
  * Represents a single node in the database
- *
- * @todo: Paths
  */
 class Node extends PropertyContainer
 {

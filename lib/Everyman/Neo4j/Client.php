@@ -24,6 +24,31 @@ class Client
 	}
 
 	/**
+	 * Add an entity to an index
+	 *
+	 * @param Index $index
+	 * @param PropertyContainer $entity
+	 * @param string $key
+	 * @param string $value
+	 * @return boolean
+	 */
+	public function addToIndex(Index $index, PropertyContainer $entity, $key, $value)
+	{
+		return $this->runCommand(new Command\AddToIndex($this, $index, $entity, $key, $value));
+	}
+
+	/**
+	 * Delete the given index
+	 *
+	 * @param Index $index
+	 * @return boolean
+	 */
+	public function deleteIndex(Index $index)
+	{
+		return $this->runCommand(new Command\DeleteIndex($this, $index));
+	}
+
+	/**
 	 * Delete the given node
 	 *
 	 * @param Node $node
@@ -175,6 +200,34 @@ class Client
 	public function loadRelationship(Relationship $rel)
 	{
 		return $this->runCommand(new Command\GetRelationship($this, $rel));
+	}
+
+	/**
+	 * Remove an entity from an index
+	 * If $value is not given, all reference of the entity for the key
+	 * are removed.
+	 * If $key is not given, all reference of the entity are removed.
+	 *
+	 * @param Index $index
+	 * @param PropertyContainer $entity
+	 * @param string $key
+	 * @param string $value
+	 * @return boolean
+	 */
+	public function removeFromIndex(Index $index, PropertyContainer $entity, $key=null, $value=null)
+	{
+		return $this->runCommand(new Command\RemoveFromIndex($this, $index, $entity, $key, $value));
+	}
+
+	/**
+	 * Save the given index
+	 *
+	 * @param Index $index
+	 * @return boolean
+	 */
+	public function saveIndex(Index $index)
+	{
+		return $this->runCommand(new Command\SaveIndex($this, $index));
 	}
 
 	/**

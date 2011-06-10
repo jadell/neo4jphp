@@ -40,7 +40,7 @@ class Path implements \Countable, \IteratorAggregate
 		if ($length) {
 			return $this->relationships[$length-1]->getEndNode();
 		}
-		return $null;
+		return null;
 	}
 
 	/**
@@ -84,6 +84,6 @@ class Path implements \Countable, \IteratorAggregate
 		if ($length) {
 			return $this->relationships[0]->getStartNode();
 		}
-		return $null;
+		return null;
 	}
 }

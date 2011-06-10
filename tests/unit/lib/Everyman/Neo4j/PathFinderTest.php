@@ -12,6 +12,11 @@ class PathFinderTest extends \PHPUnit_Framework_TestCase
 		$this->finder = new PathFinder($this->client);
 	}
 
+	public function testGetClient_ClientSetCorrectly_ReturnsClient()
+	{
+		$this->assertSame($this->client, $this->finder->getClient());
+	}
+
 	public function testGetPaths_PassesThroughToClient()
 	{
 		$expectedPaths = array(new Path($this->client));

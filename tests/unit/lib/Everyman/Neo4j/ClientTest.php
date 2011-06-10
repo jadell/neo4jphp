@@ -50,6 +50,15 @@ class ClientTest extends \PHPUnit_Framework_TestCase
 		$this->client->deleteNode($node);
 	}
 
+	public function testSaveNode_Update_NodeHasNoId_ThrowsException()
+	{
+		$node = new Node($this->client);
+		$command = new Command\UpdateNode($this->client, $node);
+
+		$this->setExpectedException('Everyman\Neo4j\Exception');
+		$command->execute();
+	}
+
 	/**
 	 * @dataProvider dataProvider_UpdateNodeScenarios
 	 */
@@ -352,6 +361,15 @@ class ClientTest extends \PHPUnit_Framework_TestCase
 		);
 	}
 
+	public function testSaveRelationship_Update_RelationshipHasNoId_ThrowsException()
+	{
+		$rel = new Relationship($this->client);
+		$command = new Command\UpdateRelationship($this->client, $rel);
+
+		$this->setExpectedException('Everyman\Neo4j\Exception');
+		$command->execute();
+	}
+
 	/**
 	 * @dataProvider dataProvider_UpdateRelationshipScenarios
 	 */
@@ -385,19 +403,27 @@ class ClientTest extends \PHPUnit_Framework_TestCase
 		);
 	}
 
+	public function testGetNodeRelationships_NodeNotPersisted_ThrowsException()
+	{
+		$node = new Node($this->client);
+		$type = 'FOOTYPE';
+		$dir = Relationship::DirectionOut;
+
+		$this->setExpectedException('Everyman\Neo4j\Exception');
+		$this->client->getNodeRelationships($node, $type, $dir);
+	}
+
 	public function testGetNodeRelationships_NodeNotFound_ReturnsFalse()
 	{
 		$node = new Node($this->client);
 		$node->setId(123);
-		$type = 'FOOTYPE';
-		$dir = Relationship::DirectionOut;
 
 		$this->transport->expects($this->once())
 			->method('get')
-			->with('/node/123/relationships/out/FOOTYPE')
+			->with('/node/123/relationships/all')
 			->will($this->returnValue(array('code'=>404)));
 
-		$this->assertFalse($this->client->getNodeRelationships($node, $type, $dir));
+		$this->assertFalse($this->client->getNodeRelationships($node, array(), null));
 		$this->assertEquals(Client::ErrorNotFound, $this->client->getLastError());
 	}
 
@@ -405,12 +431,12 @@ class ClientTest extends \PHPUnit_Framework_TestCase
 	{
 		$node = new Node($this->client);
 		$node->setId(123);
-		$types = array('FOOTYPE','BARTYPE');
+		$types = array('FOOTYPE');
 		$dir = Relationship::DirectionIn;
 
 		$this->transport->expects($this->once())
 			->method('get')
-			->with('/node/123/relationships/in/FOOTYPE&BARTYPE')
+			->with('/node/123/relationships/in/FOOTYPE')
 			->will($this->returnValue(array('code'=>200,'data'=>array())));
 
 		$this->assertEquals(array(), $this->client->getNodeRelationships($node, $types, $dir));
@@ -422,7 +448,7 @@ class ClientTest extends \PHPUnit_Framework_TestCase
 		$node = new Node($this->client);
 		$node->setId(123);
 		$types = array('FOOTYPE','BARTYPE');
-		$dir = Relationship::DirectionAll;
+		$dir = Relationship::DirectionOut;
 
 		$data = array(
 			array(
@@ -443,7 +469,7 @@ class ClientTest extends \PHPUnit_Framework_TestCase
 
 		$this->transport->expects($this->once())
 			->method('get')
-			->with('/node/123/relationships/all/FOOTYPE&BARTYPE')
+			->with('/node/123/relationships/out/FOOTYPE&BARTYPE')
 			->will($this->returnValue(array('code'=>200,'data'=>$data)));
 
 		$result = $this->client->getNodeRelationships($node, $types, $dir);
@@ -544,5 +570,315 @@ class ClientTest extends \PHPUnit_Framework_TestCase
 		
 		$this->setExpectedException('\Everyman\Neo4j\Exception');			
 		$paths = $this->client->getPaths($finder);
+	}
+	
+	public function testGetPaths_StartNodeNotPersisted_ThrowsException()
+	{
+		$startNode = new Node($this->client);
+		$endNode = new Node($this->client);
+		$endNode->setId(456);
+		
+		$finder = new PathFinder($this->client);
+		$finder->setStartNode($startNode)
+			->setEndNode($endNode);
+		
+		$this->setExpectedException('\Everyman\Neo4j\Exception');			
+		$paths = $this->client->getPaths($finder);
+	}
+	
+	public function testGetPaths_EndNodeNotPersisted_ThrowsException()
+	{
+		$startNode = new Node($this->client);
+		$startNode->setId(123);
+		$endNode = new Node($this->client);
+		
+		$finder = new PathFinder($this->client);
+		$finder->setStartNode($startNode)
+			->setEndNode($endNode);
+		
+		$this->setExpectedException('\Everyman\Neo4j\Exception');			
+		$paths = $this->client->getPaths($finder);
+	}
+	
+	public function testGetPaths_TransportFails_ReturnsFalse()
+	{
+		$startNode = new Node($this->client);
+		$startNode->setId(123);
+		$endNode = new Node($this->client);
+		$endNode->setId(456);
+		
+		$finder = new PathFinder($this->client);
+		$finder->setType('FOOTYPE')
+			->setDirection(Relationship::DirectionOut)
+			->setMaxLength(3)
+			->setStartNode($startNode)
+			->setEndNode($endNode);
+		
+		$this->transport->expects($this->any())
+			->method('post')
+			->will($this->returnValue(array('code'=>400)));
+
+		$this->assertFalse($this->client->getPaths($finder));
+	}
+
+	public function testSaveIndex_UnknownIndexType_ThrowsException()
+	{
+		$index = new Index($this->client, 'FOO', 'indexname');
+		$this->setExpectedException('\Everyman\Neo4j\Exception');			
+		$this->client->saveIndex($index);
+	}
+
+	public function testSaveIndex_NoName_ThrowsException()
+	{
+		$index = new Index($this->client, Index::TypeNode, null);
+		$this->setExpectedException('\Everyman\Neo4j\Exception');			
+		$this->client->saveIndex($index);
+	}
+
+	/**
+	 * @dataProvider dataProvider_SaveIndexScenarios
+	 */
+	public function testSaveIndex_ReturnsCorrectSuccessOrFailure($type, $name, $result, $success, $error)
+	{
+		$index = new Index($this->client, $type, $name);
+
+		$this->transport->expects($this->once())
+			->method('post')
+			->with('/index/'.$type, array(
+				'name' => $name,
+			))
+			->will($this->returnValue($result));
+
+		$this->assertEquals($success, $this->client->saveIndex($index));
+		$this->assertEquals($error, $this->client->getLastError());
+	}
+
+	public function dataProvider_SaveIndexScenarios()
+	{
+		return array(// type, name, result, success, error
+			array(Index::TypeNode, 'somekey', array('code'=>201), true, null),
+			array(Index::TypeRelationship, 'somekey', array('code'=>201), true, null),
+			array(Index::TypeNode, 'somekey', array('code'=>400), false, Client::ErrorBadRequest),
+		);
+	}
+
+	public function testDeleteIndex_UnknownIndexType_ThrowsException()
+	{
+		$index = new Index($this->client, 'FOO', 'indexname');
+		$this->setExpectedException('\Everyman\Neo4j\Exception');			
+		$this->client->deleteIndex($index);
+	}
+
+	public function testDeleteIndex_NoName_ThrowsException()
+	{
+		$index = new Index($this->client, Index::TypeNode, null);
+		$this->setExpectedException('\Everyman\Neo4j\Exception');			
+		$this->client->deleteIndex($index);
+	}
+
+	/**
+	 * @dataProvider dataProvider_SaveIndexScenarios
+	 */
+	public function testDeleteIndex_ReturnsCorrectSuccessOrFailure($type, $name, $result, $success, $error)
+	{
+		$index = new Index($this->client, $type, $name);
+
+		$this->transport->expects($this->once())
+			->method('delete')
+			->with('/index/'.$type.'/'.$name)
+			->will($this->returnValue($result));
+
+		$this->assertEquals($success, $this->client->deleteIndex($index));
+		$this->assertEquals($error, $this->client->getLastError());
+	}
+
+	public function testAddToIndex_UnknownIndexType_ThrowsException()
+	{
+		$index = new Index($this->client, 'FOO', 'indexname');
+		$node = new Node($this->client);
+
+		$this->setExpectedException('\Everyman\Neo4j\Exception');			
+		$this->client->addToIndex($index, $node, 'somekey', 'somevalue');
+	}
+
+	public function dataProvider_AddToIndexScenarios_NoName_ThrowsException()
+	{
+		$index = new Index($this->client, Index::TypeNode, null);
+		$node = new Node($this->client);
+
+		$this->setExpectedException('\Everyman\Neo4j\Exception');			
+		$this->client->addToIndex($index, $node, 'somekey', 'somevalue');
+	}
+
+	public function dataProvider_AddToIndexScenarios_WrongEntityType_ThrowsException()
+	{
+		$index = new Index($this->client, Index::TypeRelationship, 'indexname');
+		$node = new Node($this->client);
+
+		$this->setExpectedException('\Everyman\Neo4j\Exception');
+		$this->client->addToIndex($index, $node, 'somekey', 'somevalue');
+	}
+
+	/**
+	 * @dataProvider dataProvider_AddToIndexScenarios
+	 */
+	public function testAddToIndex_ReturnsCorrectSuccessOrFailure($result, $success, $error)
+	{
+		$index = new Index($this->client, Index::TypeNode, 'indexname');
+		$node = new Node($this->client);
+		$node->setId(123);
+
+		$this->transport->expects($this->once())
+			->method('post')
+			->with('/index/node/indexname/somekey/somevalue', $this->endpoint.'/node/123')
+			->will($this->returnValue($result));
+
+		$this->assertEquals($success, $this->client->addToIndex($index, $node, 'somekey', 'somevalue'));
+		$this->assertEquals($error, $this->client->getLastError());
+	}
+	
+	public function dataProvider_AddToIndexScenarios()
+	{
+		return array(// type, name, result, success, error
+			array(array('code'=>201), true, null),
+			array(array('code'=>400), false, Client::ErrorBadRequest),
+		);
+	}
+
+	public function testAddToIndex_BadIndexName_ThrowsException()
+	{
+		$index = new Index($this->client, Index::TypeNode, null);
+		$node = new Node($this->client);
+		$node->setId(123);
+
+		$this->setExpectedException('\Everyman\Neo4j\Exception');			
+		$this->client->addToIndex($index, $node, 'somekey', 'somevalue');
+	}
+
+	public function testAddToIndex_EntityNotPersisted_ThrowsException()
+	{
+		$index = new Index($this->client, Index::TypeNode, 'indexname');
+		$node = new Node($this->client);
+
+		$this->setExpectedException('\Everyman\Neo4j\Exception');			
+		$this->client->addToIndex($index, $node, 'somekey', 'somevalue');
+	}
+
+	public function testAddToIndex_BadType_ThrowsException()
+	{
+		$index = new Index($this->client, 'FOOTYPE', 'indexname');
+		$node = new Node($this->client);
+		$node->setId(123);
+
+		$this->setExpectedException('\Everyman\Neo4j\Exception');			
+		$this->client->addToIndex($index, $node, 'somekey', 'somevalue');
+	}
+
+	public function testAddToIndex_BadKey_ThrowsException()
+	{
+		$index = new Index($this->client, Index::TypeNode, 'indexname');
+		$node = new Node($this->client);
+		$node->setId(123);
+
+		$this->setExpectedException('\Everyman\Neo4j\Exception');			
+		$this->client->addToIndex($index, $node, null, 'somevalue');
+	}
+
+	public function testAddToIndex_RelationshipTypeMismatch_ThrowsException()
+	{
+		$index = new Index($this->client, Index::TypeRelationship, 'indexname');
+		$node = new Node($this->client);
+		$node->setId(123);
+
+		$this->setExpectedException('\Everyman\Neo4j\Exception');			
+		$this->client->addToIndex($index, $node, 'somekey', 'somevalue');
+	}
+
+	public function testAddToIndex_NodeTypeMismatch_ThrowsException()
+	{
+		$index = new Index($this->client, Index::TypeNode, 'indexname');
+		$rel = new Relationship($this->client);
+		$rel->setId(123);
+
+		$this->setExpectedException('\Everyman\Neo4j\Exception');			
+		$this->client->addToIndex($index, $rel, 'somekey', 'somevalue');
+	}
+
+	/**
+	 * @dataProvider dataProvider_RemoveFromIndexScenarios
+	 */
+	public function testRemoveFromIndex_ReturnsCorrectSuccessOrFailure($key, $value, $path, $result, $success, $error)
+	{
+		$index = new Index($this->client, Index::TypeNode, 'indexname');
+		$node = new Node($this->client);
+		$node->setId(123);
+
+		$this->transport->expects($this->once())
+			->method('delete')
+			->with('/index/node/indexname'.$path.'/123')
+			->will($this->returnValue($result));
+
+		$this->assertEquals($success, $this->client->removeFromIndex($index, $node, $key, $value));
+		$this->assertEquals($error, $this->client->getLastError());
+	}
+	
+	public function dataProvider_RemoveFromIndexScenarios()
+	{
+		return array(// key, value, path, result, success, error
+			array('somekey', 'somevalue', '/somekey/somevalue', array('code'=>201), true, null),
+			array('somekey', 'somevalue', '/somekey/somevalue', array('code'=>404), true, null),
+			array('somekey', null, '/somekey', array('code'=>201), true, null),
+			array(null, null, '', array('code'=>201), true, null),
+			array('somekey', 'somevalue', '/somekey/somevalue', array('code'=>400), false, Client::ErrorBadRequest),
+		);
+	}
+
+	public function testRemoveFromIndex_BadIndexName_ThrowsException()
+	{
+		$index = new Index($this->client, Index::TypeNode, null);
+		$node = new Node($this->client);
+		$node->setId(123);
+
+		$this->setExpectedException('\Everyman\Neo4j\Exception');			
+		$this->client->removeFromIndex($index, $node);
+	}
+
+	public function testRemoveFromIndex_EntityNotPersisted_ThrowsException()
+	{
+		$index = new Index($this->client, Index::TypeNode, 'indexname');
+		$node = new Node($this->client);
+
+		$this->setExpectedException('\Everyman\Neo4j\Exception');			
+		$this->client->removeFromIndex($index, $node);
+	}
+
+	public function testRemoveFromIndex_BadType_ThrowsException()
+	{
+		$index = new Index($this->client, 'FOOTYPE', 'indexname');
+		$node = new Node($this->client);
+		$node->setId(123);
+
+		$this->setExpectedException('\Everyman\Neo4j\Exception');			
+		$this->client->removeFromIndex($index, $node);
+	}
+
+	public function testRemoveFromIndex_RelationshipTypeMismatch_ThrowsException()
+	{
+		$index = new Index($this->client, Index::TypeRelationship, 'indexname');
+		$node = new Node($this->client);
+		$node->setId(123);
+
+		$this->setExpectedException('\Everyman\Neo4j\Exception');			
+		$this->client->removeFromIndex($index, $node);
+	}
+
+	public function testRemoveFromIndex_NodeTypeMismatch_ThrowsException()
+	{
+		$index = new Index($this->client, Index::TypeNode, 'indexname');
+		$rel = new Relationship($this->client);
+		$rel->setId(123);
+
+		$this->setExpectedException('\Everyman\Neo4j\Exception');			
+		$this->client->removeFromIndex($index, $rel);
 	}
 }

@@ -38,6 +38,13 @@ class PathTest extends \PHPUnit_Framework_TestCase
 		$this->assertSame($this->rels[1]->getEndNode(), $this->path->getEndNode());
 	}
 
+	public function testEndpoints_NoRelationship_ReturnsNull()
+	{
+		$this->path = new Path($this->client);
+		$this->assertNull($this->path->getStartNode());
+		$this->assertNull($this->path->getEndNode());
+	}
+
 	public function testGetRelationships_ReturnsArray()
 	{
 		$rels = $this->path->getRelationships();
