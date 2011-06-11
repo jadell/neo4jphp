@@ -87,7 +87,11 @@ class AddToIndex extends Command
 			throw new Exception('No key specified to add to index');
 		}
 
-		return '/index/'.$type.'/'.$name.'/'.$key.'/'.$this->value;
+		$name = urlencode($name);
+		$key = urlencode($key);
+		$value = urlencode($this->value);
+
+		return '/index/'.$type.'/'.$name.'/'.$key.'/'.$value;
 	}
 
 	/**

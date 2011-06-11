@@ -692,6 +692,19 @@ class ClientTest extends \PHPUnit_Framework_TestCase
 		$this->assertEquals($error, $this->client->getLastError());
 	}
 
+	public function testDeleteIndex_UrlEntities_ReturnsCorrectSuccess()
+	{
+		$index = new Index($this->client, Index::TypeNode, 'ind@ex na$me');
+
+		$this->transport->expects($this->once())
+			->method('delete')
+			->with('/index/node/ind%40ex+na%24me')
+			->will($this->returnValue(array('code'=>200)));
+
+		$this->assertTrue($this->client->deleteIndex($index));
+		$this->assertNull($this->client->getLastError());
+	}
+
 	public function testAddToIndex_UnknownIndexType_ThrowsException()
 	{
 		$index = new Index($this->client, 'FOO', 'indexname');
@@ -743,6 +756,21 @@ class ClientTest extends \PHPUnit_Framework_TestCase
 			array(array('code'=>201), true, null),
 			array(array('code'=>400), false, Client::ErrorBadRequest),
 		);
+	}
+
+	public function testAddToIndex_UrlEntities_ReturnsCorrectSuccess()
+	{
+		$index = new Index($this->client, Index::TypeNode, 'index name');
+		$node = new Node($this->client);
+		$node->setId(123);
+
+		$this->transport->expects($this->once())
+			->method('post')
+			->with('/index/node/index+name/some%40key/some%24value', $this->endpoint.'/node/123')
+			->will($this->returnValue(array('code'=>200)));
+
+		$this->assertTrue($this->client->addToIndex($index, $node, 'some@key', 'some$value'));
+		$this->assertNull($this->client->getLastError());
 	}
 
 	public function testAddToIndex_BadIndexName_ThrowsException()
@@ -830,6 +858,7 @@ class ClientTest extends \PHPUnit_Framework_TestCase
 			array('somekey', null, '/somekey', array('code'=>201), true, null),
 			array(null, null, '', array('code'=>201), true, null),
 			array('somekey', 'somevalue', '/somekey/somevalue', array('code'=>400), false, Client::ErrorBadRequest),
+			array('some key@', 'som$e value', '/some+key%40/som%24e+value', array('code'=>201), true, null),
 		);
 	}
 
@@ -984,5 +1013,29 @@ class ClientTest extends \PHPUnit_Framework_TestCase
 		$this->assertEquals(123, $result[0]->getStartNode()->getId());
 		$this->assertInstanceOf('Everyman\Neo4j\Node', $result[0]->getEndNode());
 		$this->assertEquals(456, $result[0]->getEndNode()->getId());
+	}
+
+	public function testSearchIndex_UrlEntities_ReturnsArray()
+	{
+		$index = new Index($this->client, Index::TypeRelationship, 'index name');
+
+		$return = array(
+			array(
+				"start" => "http://localhost:7474/db/data/node/123",
+				"end" => "http://localhost:7474/db/data/node/456",
+				"self" => "http://localhost:7474/db/data/relationship/789",
+				"type" => "FOOTYPE",
+				"data" => array("foo"=>"bar"),
+			),
+		);
+
+		$this->transport->expects($this->once())
+			->method('get')
+			->with('/index/relationship/index+name/some%40key/some%24value')
+			->will($this->returnValue(array('code'=>200,'data'=>$return)));
+
+		$result = $this->client->searchIndex($index, 'some@key', 'some$value');
+		$this->assertEquals(1, count($result));
+		$this->assertNull($this->client->getLastError());
 	}
 }
