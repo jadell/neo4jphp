@@ -55,4 +55,18 @@ class IndexTest extends \PHPUnit_Framework_TestCase
 
 		$this->assertTrue($this->index->remove($node, 'somekey', 'somevalue'));
 	}
+
+	public function testFind_FindsNodesUsingClient()
+	{
+		$node = new Node($this->client);
+
+		$this->client->expects($this->once())
+			->method('searchIndex')
+			->with($this->index, 'somekey', 'somevalue')
+			->will($this->returnValue(array($node)));
+
+		$result = $this->index->find('somekey', 'somevalue');
+		$this->assertEquals(1, count($result));
+		$this->assertSame($node, $result[0]);
+	}
 }

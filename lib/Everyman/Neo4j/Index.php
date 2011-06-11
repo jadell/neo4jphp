@@ -51,6 +51,18 @@ class Index
 	}
 
 	/**
+	 * Find entities
+	 *
+	 * @param string $key
+	 * @param string $value
+	 * @return array
+	 */
+	public function find($key, $value)
+	{
+		return $this->client->searchIndex($this, $key, $value);
+	}
+
+	/**
 	 * Get the index name
 	 *
 	 * @return string

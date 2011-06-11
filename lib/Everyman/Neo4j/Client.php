@@ -261,6 +261,25 @@ class Client
 	}
 
 	/**
+	 * Search an index for matching entities
+	 *
+	 * @param Index $index
+	 * @param string $key
+	 * @param string $value
+	 * @return array
+	 */
+	public function searchIndex(Index $index, $key, $value)
+	{
+		$command = new Command\SearchIndex($this, $index, $key, $value);
+		$result = $this->runCommand($command);
+		if ($result) {
+			return $command->getResult();
+		} else {
+			return false;
+		}
+	}
+
+	/**
 	 * Reset the last error
 	 */
 	protected function resetLastError()
