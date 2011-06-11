@@ -129,8 +129,7 @@ class GetPaths extends Command
 	{
 		$path = new Path($this->client);
 		foreach ($data['relationships'] as $relUri) {
-			$uriParts = explode('/', $relUri);
-			$relId = array_pop($uriParts);
+			$relId = $this->getIdFromUri($relUri);
 			$rel = $this->client->getRelationship($relId, true);
 			$path->appendRelationship($rel);
 		}

@@ -117,9 +117,8 @@ class SearchIndex extends Command
 	 */
 	protected function makeRelationship($data)
 	{
-		$rel = new Relationship($this->client);
+		$rel = $this->client->getRelationship($this->getIdFromUri($data['self']), true);
 		$rel->useLazyLoad(false);
-		$rel->setId($this->getIdFromUri($data['self']));
 		$rel->setProperties($data['data']);
 		$rel->setType($data['type']);
 
@@ -139,24 +138,10 @@ class SearchIndex extends Command
 	 */
 	protected function makeNode($data)
 	{
-		$node = new Node($this->client);
+		$node = $this->client->getNode($this->getIdFromUri($data['self']), true);
 		$node->useLazyLoad(false)
-			->setId($this->getIdFromUri($data['self']))
 			->setProperties($data['data']);
 		return $node;
-	}
-
-	/**
-	 * Get an id from a URI
-	 *
-	 * @param string $uri
-	 * @return integer
-	 */
-	protected function getIdFromUri($uri)
-	{
-		$uriParts = explode('/', $uri);
-		$id = array_pop($uriParts);
-		return $id;
 	}
 }
 

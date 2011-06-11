@@ -85,8 +85,7 @@ class CreateRelationship extends Command
 	protected function handleResult($code, $headers, $data)
 	{
 		if ((int)($code / 100) == 2) {
-			$locationParts = explode('/', $headers['Location']);
-			$relId = array_pop($locationParts);
+			$relId = $this->getIdFromUri($headers['Location']);
 			$this->rel->setId($relId);
 			return null;
 		}

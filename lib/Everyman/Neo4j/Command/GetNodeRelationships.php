@@ -119,42 +119,17 @@ class GetNodeRelationships extends Command
 	 */
 	protected function makeRelationship($data)
 	{
-		$rel = new Relationship($this->node->getClient());
+		$rel = $this->client->getRelationship($this->getIdFromUri($data['self']), true);
 		$rel->useLazyLoad(false);
-		$rel->setId($this->getIdFromUri($data['self']));
 		$rel->setProperties($data['data']);
 		$rel->setType($data['type']);
 
-		$rel->setStartNode($this->makeNode($data['start']));
-		$rel->setEndNode($this->makeNode($data['end']));
+		$startId = $this->getIdFromUri($data['start']);
+		$endId = $this->getIdFromUri($data['end']);
+		$rel->setStartNode($this->client->getNode($startId, true));
+		$rel->setEndNode($this->client->getNode($endId, true));
 
 		return $rel;
-	}
-
-	/**
-	 * Parse a node URI into a node
-	 *
-	 * @param string $uri
-	 * @return Node
-	 */
-	protected function makeNode($uri)
-	{
-		$nodeId = $this->getIdFromUri($uri);
-		$node = $this->client->getNode($nodeId, true);
-		return $node;
-	}
-
-	/**
-	 * Get an id from a URI
-	 *
-	 * @param string $uri
-	 * @return integer
-	 */
-	protected function getIdFromUri($uri)
-	{
-		$uriParts = explode('/', $uri);
-		$id = array_pop($uriParts);
-		return $id;
 	}
 }
 

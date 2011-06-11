@@ -73,26 +73,14 @@ class GetRelationship extends Command
 			$this->rel->setProperties($data['data']);
 			$this->rel->setType($data['type']);
 
-			$this->rel->setStartNode($this->makeNode($data['start']));
-			$this->rel->setEndNode($this->makeNode($data['end']));
+			$startId = $this->getIdFromUri($data['start']);
+			$endId = $this->getIdFromUri($data['end']);
+			$this->rel->setStartNode($this->client->getNode($startId, true));
+			$this->rel->setEndNode($this->client->getNode($endId, true));
 
 			return null;
 		}
 		return $code;
-	}
-
-	/**
-	 * Parse a node URI into a node
-	 *
-	 * @param string $uri
-	 * @return Node
-	 */
-	protected function makeNode($uri)
-	{
-		$uriParts = explode('/', $uri);
-		$nodeId = array_pop($uriParts);
-		$node = $this->client->getNode($nodeId, true);
-		return $node;
 	}
 }
 
