@@ -42,10 +42,14 @@ class CreateRelationship extends Command
 
 		$endUri = $this->getTransport()->getEndpoint().'/node/'.$end->getId();
 		$data = array(
-			'data' => $this->rel->getProperties(),
 			'type' => $type,
 			'to'   => $endUri,
 		);
+
+		$properties = $this->rel->getProperties();
+		if ($properties) {
+			$data['data'] = $properties;
+		}
 
 		return $data;
 	}

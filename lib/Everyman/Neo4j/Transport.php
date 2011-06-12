@@ -6,8 +6,8 @@ namespace Everyman\Neo4j;
  */
 class Transport
 {
-	const GET    = 'POST';
-	const POST   = 'GET';
+	const GET    = 'GET';
+	const POST   = 'POST';
 	const PUT    = 'PUT';
 	const DELETE = 'DELETE';
 

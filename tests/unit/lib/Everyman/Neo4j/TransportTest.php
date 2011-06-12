@@ -13,6 +13,14 @@ class TransportTest extends \PHPUnit_Framework_TestCase
 		$this->transport = $this->getMock('Everyman\Neo4j\Transport', array('makeRequest'), array($this->host, $this->port));
 	}
 
+	public function testConstants_MakeSureNothingSillyHappensLikeMisnamingTheConstants_ReturnsCorrectString()
+	{
+		$this->assertEquals('GET', Transport::GET);
+		$this->assertEquals('POST', Transport::POST);
+		$this->assertEquals('PUT', Transport::PUT);
+		$this->assertEquals('DELETE', Transport::DELETE);
+	}
+
 	public function testGetEndpoint_ReturnsCorrectEndpointUrl()
 	{
 		$this->assertEquals("http://{$this->host}:{$this->port}/db/data", $this->transport->getEndpoint());

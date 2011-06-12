@@ -361,6 +361,37 @@ class ClientTest extends \PHPUnit_Framework_TestCase
 		);
 	}
 
+	/**
+	 * @dataProvider dataProvider_CreateRelationshipScenarios
+	 */
+	public function testSaveRelationship_CreateNoData_ReturnsCorrectSuccesOrFailure($result, $success, $error, $id)
+	{
+		$data = array(
+			'to' => $this->endpoint.'/node/456',
+			'type' => 'FOOTYPE',
+		);
+
+		$start = new Node($this->client);
+		$start->setId(123);
+		$end = new Node($this->client);
+		$end->setId(456);
+
+		$rel = new Relationship($this->client);
+		$rel->setType('FOOTYPE')
+			->setStartNode($start)
+			->setEndNode($end)
+			->setProperties(array());
+
+		$this->transport->expects($this->once())
+			->method('post')
+			->with('/node/123/relationships', $data)
+			->will($this->returnValue($result));
+
+		$this->assertEquals($success, $this->client->saveRelationship($rel));
+		$this->assertEquals($error, $this->client->getLastError());
+		$this->assertEquals($id, $rel->getId());
+	}
+
 	public function testSaveRelationship_Update_RelationshipHasNoId_ThrowsException()
 	{
 		$rel = new Relationship($this->client);
