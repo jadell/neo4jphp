@@ -45,10 +45,12 @@ class GetPaths extends Command
 		$data['to'] = $endUri;
 		$data['algorithm'] = 'shortestPath';
 		
-		$max = $this->finder->getMaxLength();
-		if ($max) {
-			$data['max_depth'] = $max;
+		$max = $this->finder->getMaxDepth();
+		if (!$max) {
+			$max = 1;
 		}
+		$data['max_depth'] = $max;
+		$data['max depth'] = $max;
 		
 		$type = $this->finder->getType();
 		$dir = $this->finder->getDirection();
@@ -132,6 +134,12 @@ class GetPaths extends Command
 			$relId = $this->getIdFromUri($relUri);
 			$rel = $this->client->getRelationship($relId, true);
 			$path->appendRelationship($rel);
+		}
+
+		foreach ($data['nodes'] as $nodeUri) {
+			$nodeId = $this->getIdFromUri($nodeUri);
+			$node = $this->client->getNode($nodeId, true);
+			$path->appendNode($node);
 		}
 
 		return $path;

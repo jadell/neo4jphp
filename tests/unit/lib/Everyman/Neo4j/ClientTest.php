@@ -534,7 +534,7 @@ class ClientTest extends \PHPUnit_Framework_TestCase
 		$finder = new PathFinder($this->client);
 		$finder->setType('FOOTYPE')
 			->setDirection(Relationship::DirectionOut)
-			->setMaxLength(3)
+			->setMaxDepth(3)
 			->setStartNode($startNode)
 			->setEndNode($endNode);
 		
@@ -542,6 +542,7 @@ class ClientTest extends \PHPUnit_Framework_TestCase
 			'to' => $this->endpoint.'/node/456',
 			'relationships' => array('type'=>'FOOTYPE', 'direction'=>Relationship::DirectionOut),
 			'max_depth' => 3,
+			'max depth' => 3,
 			'algorithm' => 'shortestPath'
 		);
 		
@@ -578,6 +579,15 @@ class ClientTest extends \PHPUnit_Framework_TestCase
 		$this->assertEquals(564, $rels[0]->getId());
 		$this->assertInstanceOf('Everyman\Neo4j\Relationship', $rels[1]);
 		$this->assertEquals(32, $rels[1]->getId());
+
+		$nodes = $paths[0]->getNodes();
+		$this->assertEquals(3, count($nodes));
+		$this->assertInstanceOf('Everyman\Neo4j\Node', $nodes[0]);
+		$this->assertEquals(123, $nodes[0]->getId());
+		$this->assertInstanceOf('Everyman\Neo4j\Node', $nodes[1]);
+		$this->assertEquals(341, $nodes[1]->getId());
+		$this->assertInstanceOf('Everyman\Neo4j\Node', $nodes[2]);
+		$this->assertEquals(456, $nodes[2]->getId());
 		
 		$rels = $paths[1]->getRelationships();
 		$this->assertEquals(2, count($rels));
@@ -585,8 +595,49 @@ class ClientTest extends \PHPUnit_Framework_TestCase
 		$this->assertEquals(437, $rels[0]->getId());
 		$this->assertInstanceOf('Everyman\Neo4j\Relationship', $rels[1]);
 		$this->assertEquals(97, $rels[1]->getId());
+
+		$nodes = $paths[1]->getNodes();
+		$this->assertEquals(3, count($nodes));
+		$this->assertInstanceOf('Everyman\Neo4j\Node', $nodes[0]);
+		$this->assertEquals(123, $nodes[0]->getId());
+		$this->assertInstanceOf('Everyman\Neo4j\Node', $nodes[1]);
+		$this->assertEquals(41, $nodes[1]->getId());
+		$this->assertInstanceOf('Everyman\Neo4j\Node', $nodes[2]);
+		$this->assertEquals(456, $nodes[2]->getId());
 	}
 	
+	public function testGetPaths_NoMaxDepth_MaxDepthDefaultsToOne_ReturnsArray()
+	{
+		$startNode = new Node($this->client);
+		$startNode->setId(123);
+		$endNode = new Node($this->client);
+		$endNode->setId(456);
+		
+		$finder = new PathFinder($this->client);
+		$finder->setType('FOOTYPE')
+			->setDirection(Relationship::DirectionOut)
+			->setStartNode($startNode)
+			->setEndNode($endNode);
+		
+		$data = array(
+			'to' => $this->endpoint.'/node/456',
+			'relationships' => array('type'=>'FOOTYPE', 'direction'=>Relationship::DirectionOut),
+			'max_depth' => 1,
+			'max depth' => 1,
+			'algorithm' => 'shortestPath'
+		);
+		
+		$returnData = array();
+		
+		$this->transport->expects($this->once())
+			->method('post')
+			->with('/node/123/paths', $data)
+			->will($this->returnValue(array('code'=>200,'data'=>$returnData)));
+			
+		$paths = $this->client->getPaths($finder);
+		$this->assertEquals(0, count($paths));
+	}
+
 	public function testGetPaths_DirectionGivenButNoType_ThrowsException()
 	{
 		$startNode = new Node($this->client);
@@ -641,7 +692,7 @@ class ClientTest extends \PHPUnit_Framework_TestCase
 		$finder = new PathFinder($this->client);
 		$finder->setType('FOOTYPE')
 			->setDirection(Relationship::DirectionOut)
-			->setMaxLength(3)
+			->setMaxDepth(3)
 			->setStartNode($startNode)
 			->setEndNode($endNode);
 		

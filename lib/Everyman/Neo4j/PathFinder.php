@@ -11,7 +11,7 @@ class PathFinder
 	protected $start = null;
 	protected $end = null;
 	protected $type = null;
-	protected $maxLength = null;
+	protected $maxDepth = null;
 	protected $dir = Relationship::DirectionAll;
 
 	/**
@@ -58,9 +58,9 @@ class PathFinder
 	 *
 	 * @return integer
 	 */
-	public function getMaxLength()
+	public function getMaxDepth()
 	{
-		return $this->maxLength;
+		return $this->maxDepth;
 	}
 
 	/**
@@ -123,9 +123,9 @@ class PathFinder
 	 * @param integer $max
 	 * @return PathFinder
 	 */
-	public function setMaxLength($max)
+	public function setMaxDepth($max)
 	{
-		$this->maxLength = $max;
+		$this->maxDepth = $max;
 		return $this;
 	}
 

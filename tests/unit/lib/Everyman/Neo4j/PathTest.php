@@ -7,6 +7,7 @@ class PathTest extends \PHPUnit_Framework_TestCase
 	protected $path = null;
 
 	protected $rels = array();
+	protected $nodes = array();
 
 	public function setUp()
 	{
@@ -24,18 +25,39 @@ class PathTest extends \PHPUnit_Framework_TestCase
 		$rel->setEndNode(new Node($this->client));
 		$this->path->appendRelationship($rel);
 		$this->rels[1] = $rel;
+		
+		$node = new Node($this->client);
+		$this->path->appendNode($node);
+		$this->nodes[0] = $node;
+		
+		$node = new Node($this->client);
+		$this->path->appendNode($node);
+		$this->nodes[1] = $node;
+		
+		$node = new Node($this->client);
+		$this->path->appendNode($node);
+		$this->nodes[2] = $node;
+		
+		$node = new Node($this->client);
+		$this->path->appendNode($node);
+		$this->nodes[3] = $node;
 	}
 
 	public function testGetLength_ReturnsInteger()
 	{
+		$this->assertEquals(count($this->nodes), $this->path->getLength());
+		$this->assertEquals(count($this->nodes), count($this->path));
+		
+		$this->path->setContext(Path::ContextRelationship);
+
 		$this->assertEquals(count($this->rels), $this->path->getLength());
 		$this->assertEquals(count($this->rels), count($this->path));
 	}
 
 	public function testEndpoints_ReturnsCorrectNodes()
 	{
-		$this->assertSame($this->rels[0]->getStartNode(), $this->path->getStartNode());
-		$this->assertSame($this->rels[1]->getEndNode(), $this->path->getEndNode());
+		$this->assertSame($this->nodes[0], $this->path->getStartNode());
+		$this->assertSame($this->nodes[3], $this->path->getEndNode());
 	}
 
 	public function testEndpoints_NoRelationship_ReturnsNull()
@@ -53,9 +75,24 @@ class PathTest extends \PHPUnit_Framework_TestCase
 		$this->assertSame($this->rels[1], $rels[1]);
 	}
 
+	public function testGetNodes_ReturnsArray()
+	{
+		$nodes = $this->path->getNodes();
+		$this->assertEquals(count($this->nodes), count($nodes));
+		$this->assertSame($this->nodes[0], $nodes[0]);
+		$this->assertSame($this->nodes[1], $nodes[1]);
+		$this->assertSame($this->nodes[2], $nodes[2]);
+		$this->assertSame($this->nodes[3], $nodes[3]);
+	}
+
 	public function testIteration_PathCanBeIteratedOver()
 	{
 		$this->assertInstanceOf('Traversable', $this->path);
+		foreach ($this->path as $i => $node) {
+			$this->assertSame($this->nodes[$i], $node);
+		}
+
+		$this->path->setContext(Path::ContextRelationship);
 		foreach ($this->path as $i => $rel) {
 			$this->assertSame($this->rels[$i], $rel);
 		}
