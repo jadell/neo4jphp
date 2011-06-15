@@ -114,35 +114,11 @@ class GetPaths extends Command
 	{
 		if ((int)($code / 100) == 2) {
 			foreach ($data as $pathData) {
-				$this->paths[] = $this->makePath($pathData);
+				$this->paths[] = $this->makePath(new Path($this->client), $pathData);
 			}
 			return null;
 		}
 		return $code;
-	}
-
-	/**
-	 * Parse data into a path object
-	 *
-	 * @param array $data
-	 * @return Path
-	 */
-	protected function makePath($data)
-	{
-		$path = new Path($this->client);
-		foreach ($data['relationships'] as $relUri) {
-			$relId = $this->getIdFromUri($relUri);
-			$rel = $this->client->getRelationship($relId, true);
-			$path->appendRelationship($rel);
-		}
-
-		foreach ($data['nodes'] as $nodeUri) {
-			$nodeId = $this->getIdFromUri($nodeUri);
-			$node = $this->client->getNode($nodeId, true);
-			$path->appendNode($node);
-		}
-
-		return $path;
 	}
 }
 

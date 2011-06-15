@@ -104,48 +104,20 @@ class SearchIndex extends Command
 	protected function handleResult($code, $headers, $data)
 	{
 		if ((int)($code / 100) == 2) {
-			$buildMethod = $this->index->getType() == Index::TypeNode ? 'makeNode' : 'makeRelationship';
+			if ($this->index->getType() == Index::TypeNode) {
+				$getMethod = 'getNode';
+				$buildMethod = 'makeNode';
+			} else {
+				$getMethod = 'getRelationship';
+				$buildMethod = 'makeRelationship';
+			}
 			foreach ($data as $entityData) {
-				$this->results[] = $this->$buildMethod($entityData);
+				$entity = $this->client->$getMethod($this->getIdFromUri($entityData['self']), true);
+				$this->results[] = $this->$buildMethod($entity, $entityData);
 			}
 			return null;
 		}
 		return $code;
-	}
-
-	/**
-	 * Parse data into a relationship object
-	 *
-	 * @param array $data
-	 * @return Relationship
-	 */
-	protected function makeRelationship($data)
-	{
-		$rel = $this->client->getRelationship($this->getIdFromUri($data['self']), true);
-		$rel->useLazyLoad(false);
-		$rel->setProperties($data['data']);
-		$rel->setType($data['type']);
-
-		$startId = $this->getIdFromUri($data['start']);
-		$endId = $this->getIdFromUri($data['end']);
-		$rel->setStartNode($this->client->getNode($startId, true));
-		$rel->setEndNode($this->client->getNode($endId, true));
-
-		return $rel;
-	}
-
-	/**
-	 * Parse data into a node object
-	 *
-	 * @param array $data
-	 * @return Node
-	 */
-	protected function makeNode($data)
-	{
-		$node = $this->client->getNode($this->getIdFromUri($data['self']), true);
-		$node->useLazyLoad(false)
-			->setProperties($data['data']);
-		return $node;
 	}
 }
 

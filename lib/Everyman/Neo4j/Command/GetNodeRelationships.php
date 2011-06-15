@@ -103,33 +103,13 @@ class GetNodeRelationships extends Command
 	{
 		if ((int)($code / 100) == 2) {
 			foreach ($data as $relData) {
-				$this->rels[] = $this->makeRelationship($relData);
+				$rel = $this->client->getRelationship($this->getIdFromUri($relData['self']), true);
+				$this->rels[] = $this->makeRelationship($rel, $relData);
 			}
 
 			return null;
 		}
 		return $code;
-	}
-
-	/**
-	 * Parse data into a relationship object
-	 *
-	 * @param array $data
-	 * @return Relationship
-	 */
-	protected function makeRelationship($data)
-	{
-		$rel = $this->client->getRelationship($this->getIdFromUri($data['self']), true);
-		$rel->useLazyLoad(false);
-		$rel->setProperties($data['data']);
-		$rel->setType($data['type']);
-
-		$startId = $this->getIdFromUri($data['start']);
-		$endId = $this->getIdFromUri($data['end']);
-		$rel->setStartNode($this->client->getNode($startId, true));
-		$rel->setEndNode($this->client->getNode($endId, true));
-
-		return $rel;
 	}
 }
 

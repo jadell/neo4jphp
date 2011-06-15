@@ -90,5 +90,64 @@ abstract class Command
 	{
 		return $this->client->getTransport();
 	}
+
+	/**
+	 * Parse data array into a node
+	 *
+	 * @param Node $node
+	 * @param array $data
+	 * @return Node
+	 */
+	protected function makeNode(Node $node, $data)
+	{
+		$node->useLazyLoad(false);
+		$node->setProperties($data['data']);
+		return $node;
+	}
+
+	/**
+	 * Parse data array into a path object
+	 *
+	 * @param Path $path
+	 * @param array $data
+	 * @return Path
+	 */
+	protected function makePath(Path $path, $data)
+	{
+		foreach ($data['relationships'] as $relUri) {
+			$relId = $this->getIdFromUri($relUri);
+			$rel = $this->client->getRelationship($relId, true);
+			$path->appendRelationship($rel);
+		}
+
+		foreach ($data['nodes'] as $nodeUri) {
+			$nodeId = $this->getIdFromUri($nodeUri);
+			$node = $this->client->getNode($nodeId, true);
+			$path->appendNode($node);
+		}
+
+		return $path;
+	}
+
+	/**
+	 * Parse data array into a relationship
+	 *
+	 * @param Relationship $rel
+	 * @param array $data
+	 * @return Relationship
+	 */
+	protected function makeRelationship(Relationship $rel, $data)
+	{
+		$rel->useLazyLoad(false);
+		$rel->setProperties($data['data']);
+		$rel->setType($data['type']);
+
+		$startId = $this->getIdFromUri($data['start']);
+		$endId = $this->getIdFromUri($data['end']);
+		$rel->setStartNode($this->client->getNode($startId, true));
+		$rel->setEndNode($this->client->getNode($endId, true));
+
+		return $rel;
+	}
 }
 

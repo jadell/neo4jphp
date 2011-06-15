@@ -68,8 +68,7 @@ class GetNode extends Command
 	protected function handleResult($code, $headers, $data)
 	{
 		if ((int)($code / 100) == 2) {
-			$this->node->useLazyLoad(false);
-			$this->node->setProperties($data);
+			$this->node = $this->makeNode($this->node, array('data'=>$data));
 			return null;
 		}
 		return $code;

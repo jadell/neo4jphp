@@ -69,15 +69,7 @@ class GetRelationship extends Command
 	protected function handleResult($code, $headers, $data)
 	{
 		if ((int)($code / 100) == 2) {
-			$this->rel->useLazyLoad(false);
-			$this->rel->setProperties($data['data']);
-			$this->rel->setType($data['type']);
-
-			$startId = $this->getIdFromUri($data['start']);
-			$endId = $this->getIdFromUri($data['end']);
-			$this->rel->setStartNode($this->client->getNode($startId, true));
-			$this->rel->setEndNode($this->client->getNode($endId, true));
-
+			$this->rel = $this->makeRelationship($this->rel, $data);
 			return null;
 		}
 		return $code;
