@@ -63,6 +63,19 @@ class Index
 	}
 
 	/**
+	 * Find a single entity
+	 *
+	 * @param string $key
+	 * @param string $value
+	 * @return PropertyContainer
+	 */
+	public function findOne($key, $value)
+	{
+		$entities = $this->client->searchIndex($this, $key, $value);
+		return $entities ? $entities[0] : null;
+	}
+
+	/**
 	 * Get the index name
 	 *
 	 * @return string

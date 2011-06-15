@@ -12,7 +12,7 @@ class PathFinder
 	protected $end = null;
 	protected $type = null;
 	protected $maxDepth = null;
-	protected $dir = Relationship::DirectionAll;
+	protected $dir = null;
 
 	/**
 	 * Build the finder and set its client
@@ -71,6 +71,17 @@ class PathFinder
 	public function getPaths()
 	{
 		return $this->client->getPaths($this);
+	}
+
+	/**
+	 * Get a single path
+	 *
+	 * @return Path
+	 */
+	public function getSinglePath()
+	{
+		$paths = $this->getPaths();
+		return $paths ? $paths[0] : null;
 	}
 
 	/**

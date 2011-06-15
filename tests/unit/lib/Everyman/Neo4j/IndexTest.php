@@ -69,4 +69,29 @@ class IndexTest extends \PHPUnit_Framework_TestCase
 		$this->assertEquals(1, count($result));
 		$this->assertSame($node, $result[0]);
 	}
+
+	public function testFindOne_FindsNodesUsingClient()
+	{
+		$node = new Node($this->client);
+		$nodes = array($node, new Node($this->client));
+
+		$this->client->expects($this->once())
+			->method('searchIndex')
+			->with($this->index, 'somekey', 'somevalue')
+			->will($this->returnValue($nodes));
+
+		$result = $this->index->findOne('somekey', 'somevalue');
+		$this->assertSame($node, $result);
+	}
+
+	public function testFindOne_NoNode_ReturnsNull()
+	{
+		$this->client->expects($this->once())
+			->method('searchIndex')
+			->with($this->index, 'somekey', 'somevalue')
+			->will($this->returnValue(array()));
+
+		$result = $this->index->findOne('somekey', 'somevalue');
+		$this->assertNull($result);
+	}
 }
