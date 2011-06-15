@@ -5,6 +5,16 @@ Copyright (c) 2011
 
 PHP Wrapper for the Neo4j graph database REST interface
 
+Install
+-------
+Copy or symlink the `lib/Everyman` directory into your `include_path` or autoloader path.
+
+
+Examples
+--------
+Coming soon.
+
+
 API
 ---
 
@@ -126,9 +136,6 @@ Set the type of relationship.  Returns the relationship.
 
 ### Index
 
-	const TypeNode = 'node';
-	const TypeRelationship = 'relationship';
-
     __construct(Client $client, string $type, string $name)
 Create a new index.  Indexes are not saved to the server until `save` or `add` are called.  $type must be one of `Index::TypeNode` or `Index::TypeRelationship`
 
@@ -158,11 +165,81 @@ Save this index to the server.  Return true on success, false otherwise.
 
 ### Path
 
+    __construct()
+Create a new Path.  The default context for a Path is nodes.
+
+    count() : integer
+If current context is `Path::ContextNode`, returns the number of nodes in the Path.  Otherwise, returns the number of relationships in the Path.
+
+Path implements the `Countable` interface, which means it can be used as `count($path)`.
+
+    getContext() : string
+Returns the current context, one of `Path::ContextNode` or `Path::ContextRelationship`.
+	
+    getEndNode() : Node
+Return the Node at the end of the path.  Returns null if there are no nodes.
+
+    getLength() : integer
+Alias for `count`
+
+    getIterator() : ArrayIterator
+If current context is `Path::ContextNode`, returns the nodes in an ArrayIterator.  Otherwise, returns the relationships in an ArrayIterator.
+
+Path implement the `IteratorAggregate` interface, which means it can be looped over in `foreach` loops.  If the current context is nodes, `foreach` will loop over the nodes in the path, otherwise it will loop over the relationships.
+
+    getNodes() : array
+Return the ordered array of Node objects that make up this path.
+
+    getRelationships() : array
+Return the ordered array of Relationship objects that make up this path.
+
+    getStartNode() : Node
+Return the Node at the beginning of the path.  Returns null if there are no nodes.
+	
+    setContext($context) : Path
+Set whether `count` and `foreach` will refer to the nodes or relationships of this path.  $context should be one of `Path::ContextNode` or `Path::ContextRelationship`.  Returns the Path.
+
 ### PathFinder
 
+    __construct(Client $client)
+Create a new PathFinder object.
 
-Examples
---------
+    getDirection() : string
+Return the current path finding direction, one of the `Relationship::Direction` constants.
+
+    getEndNode() : Node
+Return the Node to find paths to.
+
+    getMaxDepth() : integer
+Return the current maximum length for found paths.
+
+    getPaths() : array
+Return an array of Path objects matching the search criteria.
+
+    getSinglePath() : Path
+Return the first Path matching the search criteria.
+
+    getStartNode() : Node
+Return the Node to find paths from.
+
+    getType() : string
+Return the current relationship type to which path relationships will be limited.
+
+    setDirection($dir) : PathFinder
+Set the path finding direction, one of the `Relationship::Direction` constants.  Returns the PathFinder.
+
+    setEndNode(Node $end) : PathFinder
+Set the Node to find paths to.  Returns the PathFinder.
+
+    setMaxDepth($max) : PathFinder
+Set the maximum length for found paths.  Returns the PathFinder.
+
+    setStartNode(Node $start) : PathFinder
+Set the Node to find paths from.  Returns the PathFinder.
+
+    setType($type) : PathFinder
+Set the relationship type to which path relationships will be limited.  Returns the PathFinder.
+
 
 
 

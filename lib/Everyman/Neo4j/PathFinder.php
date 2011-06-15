@@ -33,6 +33,7 @@ class PathFinder
 	{
 		return $this->client;
 	}
+
 	/**
 	 * Get the path direction type
 	 *
