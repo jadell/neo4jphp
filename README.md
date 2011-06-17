@@ -204,6 +204,15 @@ Set whether `count` and `foreach` will refer to the nodes or relationships of th
     __construct(Client $client)
 Create a new PathFinder object.
 
+    getAlgorithm() : string
+Return the current path search algorithm.  One of `PathFinder::AlgoShortest` (default), `PathFinder::AlgoAll`, `PathFinder::AlgoAllSimple` or `PathFinder::AlgoDijkstra`.
+
+    getCostProperty() : string
+Return the current relationship property to use to determine path cost.  Only used when `PathFinder::AlgoDijkstra` is the search algorithm.
+
+    getDefaultCost() : numeric
+Return the default cost to assign relationships without a cost property.  Only used when `PathFinder::AlgoDijkstra` is the search algorithm.
+
     getDirection() : string
 Return the current path finding direction, one of the `Relationship::Direction` constants.
 
@@ -224,6 +233,15 @@ Return the Node to find paths from.
 
     getType() : string
 Return the current relationship type to which path relationships will be limited.
+
+    setAlgorithm(string $algorithm) : PathFinder
+Set the path search algorithm.  One of `PathFinder::AlgoShortest` (default), `PathFinder::AlgoAll`, `PathFinder::AlgoAllSimple` or `PathFinder::AlgoDijkstra`.  Returns the PathFinder.
+
+    setCostProperty(string $property) : PathFinder
+Set the relationship property to use to determine path cost.  Only used when `PathFinder::AlgoDijkstra` is the search algorithm.  Returns the PathFinder.
+
+    setDefaultCost(numeric $cost) : PathFinder
+Set the default cost to assign relationships without a cost property.  Only used when `PathFinder::AlgoDijkstra` is the search algorithm.  Returns the PathFinder.
 
     setDirection($dir) : PathFinder
 Set the path finding direction, one of the `Relationship::Direction` constants.  Returns the PathFinder.

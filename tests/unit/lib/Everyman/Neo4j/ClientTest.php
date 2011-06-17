@@ -682,6 +682,58 @@ class ClientTest extends \PHPUnit_Framework_TestCase
 		$paths = $this->client->getPaths($finder);
 	}
 	
+	public function testGetPaths_DijkstraSearchNoCostProperty_ThrowsException()
+	{
+		$startNode = new Node($this->client);
+		$startNode->setId(123);
+		$endNode = new Node($this->client);
+		$endNode->setId(456);
+		
+		$finder = new PathFinder($this->client);
+		$finder->setStartNode($startNode)
+			->setEndNode($endNode)
+			->setAlgorithm(PathFinder::AlgoDijkstra);
+		
+		$this->setExpectedException('\Everyman\Neo4j\Exception');			
+		$paths = $this->client->getPaths($finder);
+	}
+	
+	public function testGetPaths_DijkstraSearch_ReturnsResult()
+	{
+		$startNode = new Node($this->client);
+		$startNode->setId(123);
+		$endNode = new Node($this->client);
+		$endNode->setId(456);
+		
+		$finder = new PathFinder($this->client);
+		$finder->setStartNode($startNode)
+			->setEndNode($endNode)
+			->setAlgorithm(PathFinder::AlgoDijkstra)
+			->setCostProperty('distance')
+			->setDefaultCost(2);
+		
+		$data = array(
+			'to' => $this->endpoint.'/node/456',
+			'max_depth' => 1,
+			'max depth' => 1,
+			'algorithm' => 'dijkstra',
+			'cost_property' => 'distance',
+			'cost property' => 'distance',
+			'default_cost' => 2,
+			'default cost' => 2,
+		);
+		
+		$returnData = array();
+		
+		$this->transport->expects($this->once())
+			->method('post')
+			->with('/node/123/paths', $data)
+			->will($this->returnValue(array('code'=>200,'data'=>$returnData)));
+			
+		$paths = $this->client->getPaths($finder);
+		$this->assertEquals(0, count($paths));
+	}
+	
 	public function testGetPaths_TransportFails_ReturnsFalse()
 	{
 		$startNode = new Node($this->client);

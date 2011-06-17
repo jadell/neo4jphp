@@ -164,7 +164,7 @@ class PathFinder
 	public function setCostProperty($property)
 	{
 		$this->costProperty = $property;
-		$this;
+		return $this;
 	}
 
 	/**

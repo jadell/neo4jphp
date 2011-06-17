@@ -43,8 +43,26 @@ class GetPaths extends Command
 
 		$endUri = $this->getTransport()->getEndpoint().'/node/'.$end->getId();
 		$data['to'] = $endUri;
-		$data['algorithm'] = 'shortestPath';
-		
+
+		$algo = $this->finder->getAlgorithm();
+		if ($algo == PathFinder::AlgoDijkstra) {
+			$property = $this->finder->getCostProperty();
+			if (!$property) {
+				throw new Exception('No cost property specified for Dijkstra path search');
+			}
+			$data['cost_property'] = $property;
+			$data['cost property'] = $property;
+
+			$cost = $this->finder->getDefaultCost();
+			if ($cost) {
+				$data['default_cost'] = $cost;
+				$data['default cost'] = $cost;
+			}
+		}
+		$data['algorithm'] = $algo;
+				
+
+
 		$max = $this->finder->getMaxDepth();
 		if (!$max) {
 			$max = 1;
