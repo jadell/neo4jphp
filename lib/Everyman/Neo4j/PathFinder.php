@@ -6,6 +6,11 @@ namespace Everyman\Neo4j;
  */
 class PathFinder
 {
+	const AlgoShortest  = 'shortestPath';
+	const AlgoAll       = 'allPaths';
+	const AlgoAllSimple = 'allSimplePaths';
+	const AlgoDijkstra  = 'dijkstra';
+
 	protected $client = null;
 
 	protected $start = null;
@@ -13,6 +18,9 @@ class PathFinder
 	protected $type = null;
 	protected $maxDepth = null;
 	protected $dir = null;
+	protected $algo = self::AlgoShortest;
+	protected $costProperty = null;
+	protected $defaultCost = null;
 
 	/**
 	 * Build the finder and set its client
@@ -25,6 +33,16 @@ class PathFinder
 	}
 
 	/**
+	 * Get the current path finding algorithm
+	 *
+	 * @return string
+	 */
+	public function getAlgorithm()
+	{
+		return $this->algo;
+	}	
+
+	/**
 	 * Get the finder's client
 	 *
 	 * @return Client
@@ -32,6 +50,26 @@ class PathFinder
 	public function getClient()
 	{
 		return $this->client;
+	}
+
+	/**
+	 * Get the cost property name for the Dijkstra search
+	 *
+	 * @return string
+	 */
+	public function getCostProperty()
+	{
+		return $this->costProperty;
+	}
+
+	/**
+	 * Get the default relationship cost for the Dijkstra search
+	 *
+	 * @return numeric
+	 */
+	public function getDefaultCost()
+	{
+		return $this->defaultCost;
 	}
 
 	/**
@@ -103,6 +141,42 @@ class PathFinder
 	public function getType()
 	{
 		return $this->type;
+	}
+
+	/**
+	 * Set the algorithm to use
+	 *
+	 * @param string $algo
+	 * @return PathFinder
+	 */
+	public function setAlgorithm($algo)
+	{
+		$this->algo = $algo;
+		return $this;
+	}
+
+	/**
+	 * Set the cost property name for the Dijkstra search
+	 *
+	 * @param string $property
+	 * @return PathFinder
+	 */
+	public function setCostProperty($property)
+	{
+		$this->costProperty = $property;
+		$this;
+	}
+
+	/**
+	 * Set the default relationship cost for the Dijkstra search
+	 *
+	 * @param numeric $cost
+	 * @return PathFinder
+	 */
+	public function setDefaultCost($cost)
+	{
+		$this->defaultCost = $cost;
+		return $this;
 	}
 
 	/**
