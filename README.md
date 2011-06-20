@@ -12,8 +12,37 @@ Copy or symlink the `lib/Everyman` directory into your `include_path` or autoloa
 
 Examples
 --------
-Coming soon.
+"Real" usage examples can be found in the `examples` directory.
 
+### Initialize the connection
+    $client = new Client(new Transport());
+
+### Create a node
+    $node = new Node($client);
+	$node->setProperty('name', 'John Smith')
+		->setProperty('age', '29')
+		->setProperty('role', 'admin')
+		->save();
+
+### Index a node
+    $users = new Index($client);
+	$users->add($node, 'name', $node->getProperty('name'));
+	$users->add($node, 'foo', 'bar');
+
+### Find a node
+    $user = $users->findOne('name', 'John Smith');
+	$allFooBars = $user->find('foo', 'bar');
+
+### Create a relationship
+    $relationship = $node->relateTo($otherNode, 'KNOWS');
+    $relationship->setProperty('from', 'school')
+        ->setProperty('how_long', '38 months')
+        ->save();
+
+### Find a path between two nodes
+    $path = $node->findPathsTo($otherNode, 'KNOWS', Relationship::DirectionOut)
+        ->maxDepth(4)
+        ->getSinglePath();
 
 API
 ---
