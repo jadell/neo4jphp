@@ -94,4 +94,43 @@ class IndexTest extends \PHPUnit_Framework_TestCase
 		$result = $this->index->findOne('somekey', 'somevalue');
 		$this->assertNull($result);
 	}
+
+	public function testQuery_QueriesUsingClient()
+	{
+		$node = new Node($this->client);
+
+		$this->client->expects($this->once())
+			->method('queryIndex')
+			->with($this->index, 'somekey:somevalue*')
+			->will($this->returnValue(array($node)));
+
+		$result = $this->index->query('somekey:somevalue*');
+		$this->assertEquals(1, count($result));
+		$this->assertSame($node, $result[0]);
+	}
+
+	public function testQueryOne_QueriesUsingClient()
+	{
+		$node = new Node($this->client);
+		$nodes = array($node, new Node($this->client));
+
+		$this->client->expects($this->once())
+			->method('queryIndex')
+			->with($this->index, 'somekey:somevalue*')
+			->will($this->returnValue($nodes));
+
+		$result = $this->index->queryOne('somekey:somevalue*');
+		$this->assertSame($node, $result);
+	}
+
+	public function testQueryOne_NoNode_ReturnsNull()
+	{
+		$this->client->expects($this->once())
+			->method('queryIndex')
+			->with($this->index, 'somekey:somevalue*')
+			->will($this->returnValue(array()));
+
+		$result = $this->index->queryOne('somekey:somevalue*');
+		$this->assertNull($result);
+	}
 }

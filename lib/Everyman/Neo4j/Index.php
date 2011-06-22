@@ -96,6 +96,29 @@ class Index
 	}
 
 	/**
+	 * Query index to find entities
+	 *
+	 * @param string $query
+	 * @return array
+	 */
+	public function query($query)
+	{
+		return $this->client->queryIndex($this, $query);
+	}
+
+	/**
+	 * Query index to find a single entity
+	 *
+	 * @param string $query
+	 * @return PropertyContainer
+	 */
+	public function queryOne($query)
+	{
+		$entities = $this->client->queryIndex($this, $query);
+		return $entities ? $entities[0] : null;
+	}
+
+	/**
 	 * Remove an entity from the index
 	 * If $value is not given, all reference of the entity for the key
 	 * are removed.

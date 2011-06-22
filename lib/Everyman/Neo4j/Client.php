@@ -203,6 +203,25 @@ class Client
 	}
 
 	/**
+	 * Query an index using a query string.
+	 * The default query language in Neo4j is Lucene
+	 *
+	 * @param Index $index
+	 * @param string $query
+	 * @return array
+	 */
+	public function queryIndex(Index $index, $query)
+	{
+#		$command = new Command\SearchIndex($this, $index, $key, $value);
+#		$result = $this->runCommand($command);
+#		if ($result) {
+#			return $command->getResult();
+#		} else {
+#			return false;
+#		}
+	}
+
+	/**
 	 * Remove an entity from an index
 	 * If $value is not given, all reference of the entity for the key
 	 * are removed.
