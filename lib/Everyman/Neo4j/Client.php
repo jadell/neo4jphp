@@ -212,13 +212,13 @@ class Client
 	 */
 	public function queryIndex(Index $index, $query)
 	{
-#		$command = new Command\SearchIndex($this, $index, $key, $value);
-#		$result = $this->runCommand($command);
-#		if ($result) {
-#			return $command->getResult();
-#		} else {
-#			return false;
-#		}
+		$command = new Command\QueryIndex($this, $index, $query);
+		$result = $this->runCommand($command);
+		if ($result) {
+			return $command->getResult();
+		} else {
+			return false;
+		}
 	}
 
 	/**

@@ -1172,4 +1172,113 @@ class ClientTest extends \PHPUnit_Framework_TestCase
 		$this->assertEquals(1, count($result));
 		$this->assertNull($this->client->getLastError());
 	}
+
+	public function testQueryIndex_BadType_ThrowsException()
+	{
+		$index = new Index($this->client, 'badtype', 'indexname');
+
+		$this->setExpectedException('\Everyman\Neo4j\Exception');			
+		$this->client->queryIndex($index, 'somekey:somevalue*');
+	}
+
+
+	public function testQueryIndex_NoIndexName_ThrowsException()
+	{
+		$index = new Index($this->client, Index::TypeNode, null);
+
+		$this->setExpectedException('\Everyman\Neo4j\Exception');			
+		$this->client->queryIndex($index, 'somekey:somevalue*');
+	}
+
+
+	public function testQueryIndex_NoQuerySpecified_ThrowsException()
+	{
+		$index = new Index($this->client, Index::TypeNode, 'indexname');
+
+		$this->setExpectedException('\Everyman\Neo4j\Exception');			
+		$this->client->queryIndex($index, null);
+	}
+
+
+	public function testQueryIndex_Error_ReturnsFalse()
+	{
+		$index = new Index($this->client, Index::TypeNode, 'indexname');
+
+		$this->transport->expects($this->once())
+			->method('get')
+			->with('/index/node/indexname?'.urlencode('somekey:somevalue*'))
+			->will($this->returnValue(array('code'=>400)));
+
+		$result = $this->client->queryIndex($index, 'somekey:somevalue*');
+		$this->assertFalse($result);
+		$this->assertEquals(Client::ErrorBadRequest, $this->client->getLastError());
+	}
+
+
+	public function testQueryIndex_NodesFound_ReturnsArray()
+	{
+		$index = new Index($this->client, Index::TypeNode, 'indexname');
+
+		$return = array(
+			array(
+				"self" => "http://localhost:7474/db/data/node/123",
+				"data" => array("foo"=>"bar"),
+			),
+			array(
+				"self" => "http://localhost:7474/db/data/node/456",
+				"data" => array("baz"=>"qux"),
+			)
+		);
+
+		$this->transport->expects($this->once())
+			->method('get')
+			->with('/index/node/indexname?'.urlencode('somekey:somevalue*'))
+			->will($this->returnValue(array('code'=>200,'data'=>$return)));
+
+		$result = $this->client->queryIndex($index, 'somekey:somevalue*');
+		$this->assertEquals(2, count($result));
+		$this->assertNull($this->client->getLastError());
+
+		$this->assertInstanceOf('Everyman\Neo4j\Node', $result[0]);
+		$this->assertEquals(123, $result[0]->getId());
+		$this->assertEquals(array('foo'=>'bar'), $result[0]->getProperties());
+
+		$this->assertInstanceOf('Everyman\Neo4j\Node', $result[1]);
+		$this->assertEquals(456, $result[1]->getId());
+		$this->assertEquals(array('baz'=>'qux'), $result[1]->getProperties());
+	}
+
+
+	public function testQueryIndex_RelationshipsFound_ReturnsArray()
+	{
+		$index = new Index($this->client, Index::TypeRelationship, 'indexname');
+
+		$return = array(
+			array(
+				"start" => "http://localhost:7474/db/data/node/123",
+				"end" => "http://localhost:7474/db/data/node/456",
+				"self" => "http://localhost:7474/db/data/relationship/789",
+				"type" => "FOOTYPE",
+				"data" => array("foo"=>"bar"),
+			),
+		);
+
+		$this->transport->expects($this->once())
+			->method('get')
+			->with('/index/relationship/indexname?'.urlencode('somekey:somevalue*'))
+			->will($this->returnValue(array('code'=>200,'data'=>$return)));
+
+		$result = $this->client->queryIndex($index, 'somekey:somevalue*');
+		$this->assertEquals(1, count($result));
+		$this->assertNull($this->client->getLastError());
+
+		$this->assertInstanceOf('Everyman\Neo4j\Relationship', $result[0]);
+		$this->assertEquals(789, $result[0]->getId());
+		$this->assertEquals(array('foo'=>'bar'), $result[0]->getProperties());
+
+		$this->assertInstanceOf('Everyman\Neo4j\Node', $result[0]->getStartNode());
+		$this->assertEquals(123, $result[0]->getStartNode()->getId());
+		$this->assertInstanceOf('Everyman\Neo4j\Node', $result[0]->getEndNode());
+		$this->assertEquals(456, $result[0]->getEndNode()->getId());
+	}
 }
