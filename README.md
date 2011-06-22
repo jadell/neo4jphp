@@ -292,7 +292,6 @@ Set the relationship type to which path relationships will be limited.  Returns 
 
 To Do
 -----
-* Querying an index
 * Traversal
 * Batch/transaction support? (experimental)
 * Caching
