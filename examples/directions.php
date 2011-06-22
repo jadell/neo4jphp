@@ -21,6 +21,35 @@ function loaderTestAutoloader($sClass)
 }
 spl_autoload_register('loaderTestAutoloader');
 
+$cmd = !empty($argv[1]) ? $argv[1] : null;
+$from = '';
+$to = '';
+$paths = array();
+
+if (!$cmd) {
+	echo <<<HELP
+Usage:
+{$argv[0]}
+	Display usage instructions
+
+{$argv[0]} init
+	Initialize the data.  This only needs to be done once.
+
+{$argv[0]} map
+	Display the available points and the connections and distances between them.
+
+{$argv[0]} path <start> <end> [<algorithm>]
+	Find a path from one node to another.
+	algorithm is optional, and can be one of:
+		optimal: Find the shortest paths by distance.  Default.
+		simple:  Find the shortest paths by number of nodes.
+		all:     Find all paths, regardless of length.
+
+
+HELP;
+	exit(0);
+}
+
 $transport = new Transport();
 $client = new Client($transport);
 $intersections = new Index($client, Index::TypeNode, 'intersections1');
@@ -75,12 +104,6 @@ $turns = array(
 		'west' => 'right',
 	),
 );
-
-
-$cmd = !empty($argv[1]) ? $argv[1] : null;
-$from = '';
-$to = '';
-$paths = array();
 
 // Initialize the data
 if ($cmd == 'init') {

@@ -19,13 +19,30 @@ function loaderTestAutoloader($sClass)
 }
 spl_autoload_register('loaderTestAutoloader');
 
-$transport = new Transport();
-$client = new Client($transport);
-$actors = new Index($client, Index::TypeNode, 'actors');
-
 $cmd = !empty($argv[1]) ? $argv[1] : null;
 $from = '';
 $to = '';
+
+if (!$cmd) {
+	echo <<<HELP
+Usage:
+{$argv[0]}
+	Display usage instructions
+
+{$argv[0]} init
+	Initialize the data.  This only needs to be done once.
+
+{$argv[0]} path <from name> <to name>
+	Find a path from one actor to another.
+
+
+HELP;
+	exit(0);
+}
+
+$transport = new Transport();
+$client = new Client($transport);
+$actors = new Index($client, Index::TypeNode, 'actors');
 
 // Initialize the data
 if ($cmd == 'init') {
