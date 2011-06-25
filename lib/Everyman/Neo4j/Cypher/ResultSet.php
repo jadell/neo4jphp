@@ -13,7 +13,7 @@ class ResultSet implements \Iterator, \Countable, \ArrayAccess
 
 	protected $client = null;
 	protected $entityMapper = null;
-	
+
 	protected $data = null;
 	protected $columns = null;
 	protected $position = 0;
@@ -30,46 +30,46 @@ class ResultSet implements \Iterator, \Countable, \ArrayAccess
 			$this->columns = array();
 		}
 	}
-	
+
 	/**
-	 * @return string An array of column names.
-	 */
+	* @return string An array of column names.
+	*/
 	public function getColumns() {
 		return $this->columns;
 	}
-	
+
 	// ArrayAccess API
-    
-    public function offsetExists($offset) {
-    	return isset($this->data[$offset]);
-    }
-    
-    public function offsetGet($offset) {
+
+	public function offsetExists($offset) {
+		return isset($this->data[$offset]);
+	}
+
+	public function offsetGet($offset) {
 		# TODO: Cache these Row instances
-    	return new Row($this->client,
-    	               $this->entityMapper,
-    	               $this->columns, 
-    	               $this->data[$offset]);
-    }
-	
+		return new Row($this->client,
+				   $this->entityMapper,
+				   $this->columns, 
+				   $this->data[$offset]);
+	}
+
 	public function offsetSet($offset, $value) {
-        throw new \BadMethodCallException("You cannot modify a query result.");
-    }
-    
-    public function offsetUnset($offset) {
-        throw new \BadMethodCallException("You cannot modify a query result.");
-    }
-	
-	
+		throw new \BadMethodCallException("You cannot modify a query result.");
+	}
+
+	public function offsetUnset($offset) {
+		throw new \BadMethodCallException("You cannot modify a query result.");
+	}
+
+
 	// Countable API
-	
+
 	function count() {
 		return count($this->data);
 	}
-	
-	
+
+
 	// Iterator API
-	
+
 	function rewind() {
 		$this->position = 0;
 	}

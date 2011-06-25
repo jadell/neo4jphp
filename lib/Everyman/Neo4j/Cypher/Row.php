@@ -23,49 +23,49 @@ class Row implements \Iterator, \Countable, \ArrayAccess
 		$this->client = $client;
 		$this->data = $rowData;
 		$this->columns = $columns;
-		
+
 		foreach($this->data as $i => $value) {
 			$this->data[$i] = $entityMapper->getEntityFor($value);
 		}
 	}
-	
-	
+
+
 	// ArrayAccess API
-    
-    public function offsetExists($offset) {
-    	if(!is_integer($offset)) {
-    		return in_array($offset, $this->columns);
-    	}
-    	
-    	return isset($this->data[$offset]);
-    }
-    
-    public function offsetGet($offset) {
-        if(!is_integer($offset)) {
-    		$offset = array_search($offset, $this->columns);
-    	}
-    	
-    	return $this->data[$offset];
-    }
-	
+
+	public function offsetExists($offset) {
+		if(!is_integer($offset)) {
+			return in_array($offset, $this->columns);
+		}
+
+		return isset($this->data[$offset]);
+	}
+
+	public function offsetGet($offset) {
+		if(!is_integer($offset)) {
+			$offset = array_search($offset, $this->columns);
+		}
+
+		return $this->data[$offset];
+	}
+
 	public function offsetSet($offset, $value) {
-        throw new \BadMethodCallException("You cannot modify a result row.");
-    }
-    
-    public function offsetUnset($offset) {
-        throw new \BadMethodCallException("You cannot modify a result row.");
-    }
-	
-	
+		throw new \BadMethodCallException("You cannot modify a result row.");
+	}
+
+	public function offsetUnset($offset) {
+		throw new \BadMethodCallException("You cannot modify a result row.");
+	}
+
+
 	// Countable API
-	
+
 	function count() {
 		return count($this->data);
 	}
-	
-	
+
+
 	// Iterator API
-	
+
 	function rewind() {
 		$this->position = 0;
 	}
