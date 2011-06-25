@@ -35,16 +35,16 @@ class QueryAssembler
 		
 		for($i=0,$l=strlen($template);$i<$l;$i++) {
 			$char = $template[$i];
-			
+
 			if ($char==='?' && !$escaped && !$doubleQuoted && !$singleQuoted) {
 				array_push($query, 
-				           $this->formatQueryVariable(array_shift($vars)));
+				$this->formatQueryVariable(array_shift($vars)));
 				continue;
-		    }
-		    
-	    	array_push($query, $char);
-		    
-		    switch($char) {
+			}
+
+			array_push($query, $char);
+
+			switch($char) {
 				case '\\':
 					$escaped = !$escaped;
 					break;
@@ -65,7 +65,7 @@ class QueryAssembler
 					break;
 			}
 		}
-		
+
 		return implode($query);
 	}
 	
