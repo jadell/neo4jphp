@@ -1,6 +1,8 @@
 <?php
 namespace Everyman\Neo4j;
 
+use Everyman\Neo4j\Cypher\QueryAssembler;
+
 /**
  * Point of interaction between client and neo4j server
  */
@@ -12,6 +14,8 @@ class Client
 
 	protected $transport = null;
 	protected $lastError = null;
+	protected $queryAssembler = null;
+	protected $entityMapper = null;
 
 	/**
 	 * Initialize the client
@@ -21,6 +25,8 @@ class Client
 	public function __construct(Transport $transport)
 	{
 		$this->transport = $transport;
+		$this->entityMapper = new EntityMapper($this);
+		$this->queryAssembler = new QueryAssembler();
 	}
 
 	/**
@@ -290,6 +296,32 @@ class Client
 	public function searchIndex(Index $index, $key, $value)
 	{
 		$command = new Command\SearchIndex($this, $index, $key, $value);
+		$result = $this->runCommand($command);
+		if ($result) {
+			return $command->getResult();
+		} else {
+			return false;
+		}
+	}
+
+	/**
+	 * Query the database using Cypher. For query syntax, please refer
+	 * to the Cypher documentation for your server version.
+	 *
+	 * Latest documentation:
+	 * http://docs.neo4j.org/chunked/snapshot/cypher-query-lang.html
+	 *
+	 * @param string $query A Cypher query, or a query template.
+	 * @param object $templateVariable,... Replacement variables. If you pass
+	 *        one or more of these, the $query parameter will be used as a 
+	 *        template. All occurrences of '?' in the template will be replaced
+	 *        with these variables, in order of occurrence.
+	 *        
+	 * @return ResultSet
+	 */
+	public function cypherQuery() {
+		$query = $this->queryAssembler->assembleQuery(func_get_args());
+		$command = new Command\ExecuteCypherQuery($this, $this->entityMapper, $query);
 		$result = $this->runCommand($command);
 		if ($result) {
 			return $command->getResult();

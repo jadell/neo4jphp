@@ -1,6 +1,8 @@
 <?php
 namespace Everyman\Neo4j;
 
+use Cypher\CypherExecutor;
+
 class ClientTest extends \PHPUnit_Framework_TestCase
 {
 	protected $transport = null;
@@ -1280,5 +1282,39 @@ class ClientTest extends \PHPUnit_Framework_TestCase
 		$this->assertEquals(123, $result[0]->getStartNode()->getId());
 		$this->assertInstanceOf('Everyman\Neo4j\Node', $result[0]->getEndNode());
 		$this->assertEquals(456, $result[0]->getEndNode()->getId());
+	}
+		
+	/**
+	 * @dataProvider dataProvider_TestCypherQuery
+	 */
+	public function testCypherQuery($returnValue, $resultCount)
+	{
+		$props = array(
+			'query' => 'START a=(0) RETURN a'
+		);
+
+		$this->transport->expects($this->once())
+			->method('post')
+			->with('/ext/CypherPlugin/graphdb/execute_query', $props)
+			->will($this->returnValue($returnValue));
+
+		$result = $this->client->cypherQuery('START a=(?) RETURN a', 0);
+		$this->assertEquals(count($result), $resultCount);
+	}
+	
+	public function dataProvider_TestCypherQuery() {
+		$return = array(
+			'columns' => array('name','age'),
+			'data' => array(
+				array('Bob', 12),
+				array('Lotta', 0),
+				array('Brenda', 14)
+			)
+		);
+		
+		return array(
+			array(array('code'=>204,'data'=>null), 0),
+			array(array('code'=>200,'data'=>$return), 3),
+		);
 	}
 }
