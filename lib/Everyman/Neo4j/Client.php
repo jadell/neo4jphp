@@ -80,8 +80,7 @@ class Client
 	 */
 	public function executeCypherQuery(Cypher\Query $query)
 	{
-		$queryString = $query->getAssembledQuery();
-		$command = new Command\ExecuteCypherQuery($this, $this->entityMapper, $queryString);
+		$command = new Command\ExecuteCypherQuery($this, $query, $this->entityMapper);
 		$result = $this->runCommand($command);
 		if ($result) {
 			return $command->getResult();

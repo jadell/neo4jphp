@@ -4,6 +4,7 @@ namespace Everyman\Neo4j\Command;
 use Everyman\Neo4j\EntityMapper,
     Everyman\Neo4j\Command,
 	Everyman\Neo4j\Client,
+	Everyman\Neo4j\Cypher\Query,
 	Everyman\Neo4j\Cypher\ResultSet;
 
 class ExecuteCypherQuery extends Command
@@ -17,10 +18,10 @@ class ExecuteCypherQuery extends Command
 	 * Set the query to execute
 	 *
 	 * @param Client $client
+	 * @param Query $query
 	 * @param EntityMapper $entityMapper
-	 * @param query $query
 	 */
-	public function __construct(Client $client, EntityMapper $entityMapper, $query)
+	public function __construct(Client $client, Query $query, EntityMapper $entityMapper)
 	{
 		parent::__construct($client);
 		$this->entityMapper = $entityMapper;
@@ -34,7 +35,8 @@ class ExecuteCypherQuery extends Command
 	 */
 	protected function getData()
 	{
-		return array('query'=>$this->query);
+		$queryString = $this->query->getAssembledQuery();
+		return array('query'=>$queryString);
 	}
 
 	/**
