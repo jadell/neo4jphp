@@ -1,8 +1,6 @@
 <?php
 namespace Everyman\Neo4j;
 
-use Cypher\CypherExecutor;
-
 class ClientTest extends \PHPUnit_Framework_TestCase
 {
 	protected $transport = null;
@@ -1298,7 +1296,9 @@ class ClientTest extends \PHPUnit_Framework_TestCase
 			->with('/ext/CypherPlugin/graphdb/execute_query', $props)
 			->will($this->returnValue($returnValue));
 
-		$result = $this->client->cypherQuery('START a=(?) RETURN a', 0);
+		$query = new Cypher\Query($this->client, 'START a=(?) RETURN a', array(0));
+
+		$result = $this->client->executeCypherQuery($query);
 		$this->assertEquals(count($result), $resultCount);
 	}
 	
