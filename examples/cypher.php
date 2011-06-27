@@ -30,8 +30,8 @@ Usage:
 {$argv[0]} init
 	Initialize the data.  This only needs to be done once.
 
-{$argv[0]} node <node>
-	Get node by id via cypher query.
+{$argv[0]} actors <movie_name>
+	Get a list of all actors in the movie.
 
 
 HELP;
@@ -74,7 +74,7 @@ if ($cmd == 'init') {
 	$laurence->relateTo($mysticRiver, 'IN')->save();
 	$kevin->relateTo($mysticRiver, 'IN')->save();
 
-// Find a path
+// Find all actors in a movie
 } else if ($cmd == 'root') {
 	
 	if(!empty($argv[2])) {
@@ -83,13 +83,13 @@ if ($cmd == 'init') {
 		$movie = "The Matrix";
 	}
 	
-	$result = $client->cypherQuery(
-		"START actor=(actors,'name:*') ".
+	$queryTemplate = "START actor=(actors,'name:*') ".
 		"MATCH (actor) -[:IN]- (movie)".
 		"WHERE movie.title = ?".
-		"RETURN actor",
-		$movie);
-		
+		"RETURN actor";
+	$query = new Cypher\Query($client, $queryTemplate, array($movie));
+	$result = $query->getResultSet();
+	
 	echo "Found ".count($result)." actors:\n";
 	foreach($result as $row) {
 		echo "  ".$row['actor']->getProperty('name')."\n";
