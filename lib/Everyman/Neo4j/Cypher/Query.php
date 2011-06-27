@@ -26,10 +26,11 @@ class Query
 	 *
 	 * @param Client $client
 	 * @param string $template A Cypher query string or template
-	 * @param object $templateVariable,... Replacement variables. If you pass
+	 * @param object $vars Replacement variables. If you pass
 	 *        one or more of these, the $template parameter will be used as a 
 	 *        template. All occurrences of '?' in the template will be replaced
 	 *        with these variables, in order of occurrence.
+	 *        Template variable values must be string or numeric.
 	 */
 	public function __construct(Client $client, $template, $vars)
 	{

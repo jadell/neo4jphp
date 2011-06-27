@@ -9,7 +9,16 @@ use Everyman\Neo4j\Client;
  */
 class QueryAssembler
 {
-
+	/**
+	 * Assemble a query, possibly with template vars
+	 *
+	 * @param array $args If args is a single element array,
+	 *        the first element is assumed to be the entire query with no variables.
+	 *        Otherwise, it is assumed to be a query template and all remaining elements
+	 *        are substituted in order for each '?' in the template.
+	 *
+	 * @return string
+	 */
 	public function assembleQuery($args)
 	{
 		$template = array_shift($args);
@@ -23,8 +32,13 @@ class QueryAssembler
 	
 	/**
 	 * Slow and naive template parser & replacer.
+	 *
+	 * @param string $template
+	 * @param array $vars
+	 * @return string
 	 */
-	protected function injectVariables($template, $vars) {
+	protected function injectVariables($template, $vars)
+	{
 		# Parser state
 		$escaped = false;
 		$doubleQuoted = false;
@@ -68,8 +82,15 @@ class QueryAssembler
 
 		return implode($query);
 	}
-	
-	protected function formatQueryVariable($variable) {
+
+	/**
+	 * Properly escape and format substitution variable values
+	 *
+	 * @param mixed $variable Must be string or numeric
+	 * @return mixed
+	 */	
+	protected function formatQueryVariable($variable)
+	{
 		if(is_string($variable)) {
 			return "'".addslashes($variable)."'";
 		} elseif (is_numeric($variable)) {

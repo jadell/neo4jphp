@@ -12,7 +12,6 @@ use Everyman\Neo4j\EntityMapper,
  */
 class Row implements \Iterator, \Countable, \ArrayAccess
 {
-
 	protected $client = null;
 	protected $data = null;
 	protected $columns = null;
@@ -29,10 +28,10 @@ class Row implements \Iterator, \Countable, \ArrayAccess
 		}
 	}
 
-
 	// ArrayAccess API
 
-	public function offsetExists($offset) {
+	public function offsetExists($offset)
+	{
 		if(!is_integer($offset)) {
 			return in_array($offset, $this->columns);
 		}
@@ -40,7 +39,8 @@ class Row implements \Iterator, \Countable, \ArrayAccess
 		return isset($this->data[$offset]);
 	}
 
-	public function offsetGet($offset) {
+	public function offsetGet($offset)
+	{
 		if(!is_integer($offset)) {
 			$offset = array_search($offset, $this->columns);
 		}
@@ -48,41 +48,49 @@ class Row implements \Iterator, \Countable, \ArrayAccess
 		return $this->data[$offset];
 	}
 
-	public function offsetSet($offset, $value) {
+	public function offsetSet($offset, $value)
+	{
 		throw new \BadMethodCallException("You cannot modify a result row.");
 	}
 
-	public function offsetUnset($offset) {
+	public function offsetUnset($offset)
+	{
 		throw new \BadMethodCallException("You cannot modify a result row.");
 	}
 
 
 	// Countable API
 
-	function count() {
+	public function count()
+	{
 		return count($this->data);
 	}
 
 
 	// Iterator API
 
-	function rewind() {
+	public function rewind()
+	{
 		$this->position = 0;
 	}
 
-	function current() {
+	public function current()
+	{
 		return $this[$this->position];
 	}
 
-	function key() {
+	public function key()
+	{
 		return $this->columns[$this->position];
 	}
 
-	function next() {
+	public function next()
+	{
 		++$this->position;
 	}
 
-	function valid() {
+	public function valid()
+	{
 		return isset($this->data[$this->position]);
 	}
 }

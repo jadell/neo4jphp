@@ -13,18 +13,25 @@ class EntityMapper
 {
 	protected $client = null;
 
+	/**
+	 * Set the client for retrieving related entities
+	 */
 	public function __construct(Client $client)
 	{
-	$this->client = $client;
+		$this->client = $client;
 	}
 
 	/**
-	* Given any object, see if it fulfills the contract
-	* for being node or relationship data returned by the
-	* server. If so, return a full Node or Relationship instance.
-	* Else, return the value untainted.
-	*/
-	public function getEntityFor($value) {
+	 * Given any object, see if it fulfills the contract
+	 * for being node or relationship data returned by the
+	 * server. If so, return a full Node or Relationship instance.
+	 * Else, return the value untainted.
+	 *
+	 * @param mixed $value
+	 * @return mixed
+	 */
+	public function getEntityFor($value)
+	{
 		if(is_array($value) && array_key_exists('self', $value)) {
 			if(array_key_exists('type', $value)) {
 				$item = new Relationship($this->client);
@@ -47,12 +54,12 @@ class EntityMapper
 	}
 
 	/**
-	* Get an id from a URI
-	* TODO: Duplicate method from Command class, refactor.
-	*
-	* @param string $uri
-	* @return integer
-	*/
+	 * Get an id from a URI
+	 * TODO: Duplicate method from Command class, refactor.
+	 *
+	 * @param string $uri
+	 * @return integer
+	 */
 	protected function getIdFromUri($uri)
 	{
 		$uriParts = explode('/', $uri);

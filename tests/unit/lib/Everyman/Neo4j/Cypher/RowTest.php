@@ -1,7 +1,8 @@
 <?php
 namespace Everyman\Neo4j\Cypher;
 
-use Everyman\Neo4j\EntityMapper,
+use Everyman\Neo4j\Client,
+	Everyman\Neo4j\EntityMapper,
     Everyman\Neo4j\Node,
     Everyman\Neo4j\Relationship;
 
@@ -12,7 +13,7 @@ class RowTest extends \PHPUnit_Framework_TestCase
 
 	public function setUp()
 	{
-		$this->client = $this->getMock('Everyman\Neo4j\Client', array('cypherQuery'), array(), '', false);
+		$this->client = new Client($this->getMock('Everyman\Neo4j\Transport', array(), array(), '', false));
 		$this->mapper = new EntityMapper($this->client);
 	}
 	

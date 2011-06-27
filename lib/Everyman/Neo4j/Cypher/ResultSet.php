@@ -10,7 +10,6 @@ use Everyman\Neo4j\EntityMapper,
  */
 class ResultSet implements \Iterator, \Countable, \ArrayAccess
 {
-
 	protected $client = null;
 	protected $entityMapper = null;
 
@@ -18,6 +17,13 @@ class ResultSet implements \Iterator, \Countable, \ArrayAccess
 	protected $columns = null;
 	protected $position = 0;
 
+	/**
+	 * Set the array of results to represent
+	 *
+	 * @param Client $client
+	 * @param EntityMapper $entityMapper
+	 * @param array $result
+	 */
 	public function __construct(Client $client, EntityMapper $entityMapper, $result)
 	{
 		$this->client = $client;
@@ -32,19 +38,24 @@ class ResultSet implements \Iterator, \Countable, \ArrayAccess
 	}
 
 	/**
-	* @return string An array of column names.
-	*/
-	public function getColumns() {
+	 * Return the list of column names
+	 *
+	 * @return array
+	 */
+	public function getColumns()
+	{
 		return $this->columns;
 	}
 
 	// ArrayAccess API
 
-	public function offsetExists($offset) {
+	public function offsetExists($offset)
+	{
 		return isset($this->data[$offset]);
 	}
 
-	public function offsetGet($offset) {
+	public function offsetGet($offset)
+	{
 		# TODO: Cache these Row instances
 		return new Row($this->client,
 				   $this->entityMapper,
@@ -52,41 +63,49 @@ class ResultSet implements \Iterator, \Countable, \ArrayAccess
 				   $this->data[$offset]);
 	}
 
-	public function offsetSet($offset, $value) {
+	public function offsetSet($offset, $value)
+	{
 		throw new \BadMethodCallException("You cannot modify a query result.");
 	}
 
-	public function offsetUnset($offset) {
+	public function offsetUnset($offset)
+	{
 		throw new \BadMethodCallException("You cannot modify a query result.");
 	}
 
 
 	// Countable API
 
-	function count() {
+	public function count()
+	{
 		return count($this->data);
 	}
 
 
 	// Iterator API
 
-	function rewind() {
+	public function rewind()
+	{
 		$this->position = 0;
 	}
 
-	function current() {
+	public function current()
+	{
 		return $this[$this->position];
 	}
 
-	function key() {
+	public function key()
+	{
 		return $this->position;
 	}
 
-	function next() {
+	public function next()
+	{
 		++$this->position;
 	}
 
-	function valid() {
+	public function valid()
+	{
 		return isset($this->data[$this->position]);
 	}
 }
