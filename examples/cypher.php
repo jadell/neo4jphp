@@ -4,7 +4,8 @@ use Everyman\Neo4j\Transport,
 	Everyman\Neo4j\Client,
 	Everyman\Neo4j\Index,
 	Everyman\Neo4j\Relationship,
-	Everyman\Neo4j\Node;
+	Everyman\Neo4j\Node,
+	Everyman\Neo4j\Cypher;
 error_reporting(-1);
 ini_set('display_errors', 1);
 
@@ -75,7 +76,7 @@ if ($cmd == 'init') {
 	$kevin->relateTo($mysticRiver, 'IN')->save();
 
 // Find all actors in a movie
-} else if ($cmd == 'root') {
+} else if ($cmd == 'actors') {
 	
 	if(!empty($argv[2])) {
 		$movie = implode(" ", array_slice($argv,2));
