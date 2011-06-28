@@ -12,6 +12,7 @@ class Client
 
 	protected $transport = null;
 	protected $lastError = null;
+	protected $entityMapper = null;
 
 	/**
 	 * Initialize the client
@@ -21,6 +22,7 @@ class Client
 	public function __construct(Transport $transport)
 	{
 		$this->transport = $transport;
+		$this->entityMapper = new EntityMapper($this);
 	}
 
 	/**
@@ -68,6 +70,23 @@ class Client
 	public function deleteRelationship(Relationship $relationship)
 	{
 		return $this->runCommand(new Command\DeleteRelationship($this, $relationship));
+	}
+
+	/**
+	 * Execute the given Cypher query and return the result
+	 *        
+	 * @param Cypher\Query $query A Cypher query, or a query template.
+	 * @return Cypher\ResultSet
+	 */
+	public function executeCypherQuery(Cypher\Query $query)
+	{
+		$command = new Command\ExecuteCypherQuery($this, $query, $this->entityMapper);
+		$result = $this->runCommand($command);
+		if ($result) {
+			return $command->getResult();
+		} else {
+			return false;
+		}
 	}
 
 	/**

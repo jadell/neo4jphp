@@ -1281,4 +1281,40 @@ class ClientTest extends \PHPUnit_Framework_TestCase
 		$this->assertInstanceOf('Everyman\Neo4j\Node', $result[0]->getEndNode());
 		$this->assertEquals(456, $result[0]->getEndNode()->getId());
 	}
+		
+	/**
+	 * @dataProvider dataProvider_TestCypherQuery
+	 */
+	public function testCypherQuery($returnValue, $resultCount)
+	{
+		$props = array(
+			'query' => 'START a=(0) RETURN a'
+		);
+
+		$this->transport->expects($this->once())
+			->method('post')
+			->with('/ext/CypherPlugin/graphdb/execute_query', $props)
+			->will($this->returnValue($returnValue));
+
+		$query = new Cypher\Query($this->client, 'START a=(?) RETURN a', array(0));
+
+		$result = $this->client->executeCypherQuery($query);
+		$this->assertEquals(count($result), $resultCount);
+	}
+	
+	public function dataProvider_TestCypherQuery() {
+		$return = array(
+			'columns' => array('name','age'),
+			'data' => array(
+				array('Bob', 12),
+				array('Lotta', 0),
+				array('Brenda', 14)
+			)
+		);
+		
+		return array(
+			array(array('code'=>204,'data'=>null), 0),
+			array(array('code'=>200,'data'=>$return), 3),
+		);
+	}
 }
