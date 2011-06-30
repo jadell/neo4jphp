@@ -90,6 +90,19 @@ class Client
 	}
 
 	/**
+	 * Execute the given traversal and return the result
+	 *        
+	 * @param Traversal $traversal
+	 * @param Node $startNode
+	 * @param string $returnType
+	 * @return array
+	 */
+	public function executeTraversal(Traversal $traversal, Node $startNode, $returnType)
+	{
+		return array();
+	}
+
+	/**
 	 * Get the last error generated
 	 *
 	 * @return integer
