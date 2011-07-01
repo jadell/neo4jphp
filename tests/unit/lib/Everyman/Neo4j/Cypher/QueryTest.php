@@ -25,6 +25,15 @@ class QueryTest extends \PHPUnit_Framework_TestCase
 		$this->assertEquals($result, $expected);
 	}
 
+	public function testGetAssembledQuery_NoVars_ReturnsString()
+	{
+		$template = 'START a=(0) RETURN a';
+		$query = new Query($this->client, $template);
+
+		$result = $this->query->getAssembledQuery();
+		$this->assertEquals($result, $template);
+	}
+
 	public function testGetResultSet_OnlyExecutesOnce_ReturnsResultSet()
 	{
 		$return = $this->getMock('Everyman\Neo4j\Cypher\ResultSet', array(), array(), '', false);

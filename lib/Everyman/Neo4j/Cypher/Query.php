@@ -32,7 +32,7 @@ class Query
 	 *        with these variables, in order of occurrence.
 	 *        Template variable values must be string or numeric.
 	 */
-	public function __construct(Client $client, $template, $vars)
+	public function __construct(Client $client, $template, $vars=array())
 	{
 		$this->client = $client;
 		$this->template = $template;
