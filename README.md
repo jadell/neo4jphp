@@ -44,6 +44,15 @@ Examples
         ->maxDepth(4)
         ->getSinglePath();
 
+### Traverse the graph
+	$traversal = new Traversal($client);
+	$traversal->setPruneEvaluator(Traversal::PruneNone)
+		->setReturnFilter('javascript', 'return true;')
+		->setOrder(Traversal::OrderBreadthFirst);
+	$nodes = $traversal->getResults($node, Traversal::ReturnTypeNode);
+	$firstRelationship = $traversal->getSingleResult($node, Traversal::ReturnTypeRelationship);
+	$paths = $traversal->getResults($node, Traversal::ReturnTypePath);
+
 API
 ---
 
@@ -288,11 +297,56 @@ Set the Node to find paths from.  Returns the PathFinder.
 Set the relationship type to which path relationships will be limited.  Returns the PathFinder.
 
 
+### Traversal
 
+    __construct(Client $client)
+Create a new Traversal object.
+
+    addRelationship(string $type, string $direction=null) : Traversal
+Add a new Relationship type to the Traversal.  $direction should be one of `Relationship::DirectionAll`, `Relationship::DirectionOut` or `Relationship::DirectionIn`.  Returns the Traversal.
+
+    getMaxDepth() : integer
+Return the maximum length to traverse before pruning.  If no prune evaluator is given, this defaults to 1.  If a prune evaluator is given, this value is ignored.
+
+    getOrder() : string
+Return the traversal order.  One of `Traversal::OrderDepthFirst` or `Traversal::OrderBreadthFirst`.
+
+    getPruneEvaluator() : array
+Returns the current prune evaluator function if set.  Array contains two elements 'language' and 'body'.
+
+    getRelationships() : array
+Return the set relationship types.  Each element is an array with elements 'type' and 'direction' (if direction is set.)
+
+    getResults(Node $startNode, string $returnType) : array
+Run the traversal and get the array of results.  $returnType is one of `Traversal::ReturnTypeNode` (returns an array of Node objects), `Traversal::ReturnTypeRelationship` (returns an array of Relationship objects), `Traversal::ReturnTypePath` or `Traversal::ReturnTypeFullPath` (returns an array of Path objects).
+
+    getReturnFilter() : array
+Returns the current return filter function if set.  Array contains two elements 'language' and 'body'.
+
+    getSingleResult(Node $startNode, string $returnType)
+Return the first result of the traversal.  $returnType is one of `Traversal::ReturnTypeNode` (returns an array of Node objects), `Traversal::ReturnTypeRelationship` (returns an array of Relationship objects), `Traversal::ReturnTypePath` or `Traversal::ReturnTypeFullPath` (returns an array of Path objects).
+
+    getUniqueness() : string
+Return the current uniqueness filter.  One of `Traversal::UniquenessNone`, `Traversal::UniquenessNodeGlobal`, `Traversal::UniquenessRelationshipGlobal`, `Traversal::UniquenessNodePath` or `Traversal::UniquenessRelationshipPath`.
+
+    setMaxDepth(integer $max) : Traversal
+Set the maximum length to traverse before pruning.  If a prune evaluator is given, this value is ignored.  Returns the Traversal.
+
+    setOrder(string $order) : Traversal
+Set the traversal order.  One of `Traversal::OrderDepthFirst` or `Traversal::OrderBreadthFirst`.  Returns the Traversal.
+
+    setPruneEvaluator(string $language=null, string $body=null) : Traversal
+Set the prune evaluator function. If language is the `Traversal::PruneNone` constant, the evaluator language will be set to 'builtin' and the body will be set to the value of the constant.  Returns the Traversal.
+
+    setReturnFilter(string $language=null, string $body=null) : Traversal
+Set the return filter function. If language is one of the `Traversal::ReturnAll` or `Traversal::ReturnAllButStart` constants, the filter language will be set to 'builtin' and the body will be set to the value of the constant.  Returns the Traversal.
+
+    setUniqueness(string $uniqueness) : Traversal
+Set the current uniqueness filter.  One of `Traversal::UniquenessNone`, `Traversal::UniquenessNodeGlobal`, `Traversal::UniquenessRelationshipGlobal`, `Traversal::UniquenessNodePath` or `Traversal::UniquenessRelationshipPath`.  Returns the Traversal.
 
 To Do
 -----
-* Traversal
+* Paged traversal
 * Batch/transaction support? (experimental)
 * Caching
 
