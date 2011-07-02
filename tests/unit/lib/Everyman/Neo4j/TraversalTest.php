@@ -50,34 +50,27 @@ class TraversalTest extends \PHPUnit_Framework_TestCase
 		$this->assertEquals(3, $this->traversal->getMaxDepth());
 	}
 
-	public function testRelationships_NoneGiven_ReturnsArrayOfNull()
+	public function testRelationships_NoneGiven_ReturnsEmptyArray()
 	{
-		$relationship = $this->traversal->getRelationships();
-		$this->assertNull($relationship['type']);
-		$this->assertNull($relationship['direction']);
+		$relationships = $this->traversal->getRelationships();
+		$this->assertEquals(array(), $relationships);
 	}
 
-	public function testRelationships_TypeGiven_ReturnsArray()
+	public function testRelationships_TypeGivenAndDirectionGiven_ReturnsArray()
 	{
-		$this->traversal->setRelationships('FOOTYPE');
+		$this->traversal->addRelationship('FOOTYPE');
+		$this->traversal->addRelationship('BARTYPE', Relationship::DirectionOut);
 
-		$relationship = $this->traversal->getRelationships();
-		$this->assertEquals('FOOTYPE', $relationship['type']);
-		$this->assertNull($relationship['direction']);
+		$relationships = $this->traversal->getRelationships();
+		$this->assertEquals(array(
+			array('type'=>'FOOTYPE'),
+			array('type'=>'BARTYPE', 'direction'=>Relationship::DirectionOut),
+		), $relationships);
 	}
 
-	public function testRelationships_TypeAndDirectionGiven_ReturnsArray()
+	public function testPruneEvaluator_NoneGiven_ReturnsNull()
 	{
-		$this->traversal->setRelationships('FOOTYPE', Relationship::DirectionOut);
-
-		$relationship = $this->traversal->getRelationships();
-		$this->assertEquals('FOOTYPE', $relationship['type']);
-		$this->assertEquals(Relationship::DirectionOut, $relationship['direction']);
-	}
-
-	public function testPruneEvaluator_NoneGiven_ReturnsString()
-	{
-		$this->assertEquals(Traversal::PruneNone, $this->traversal->getPruneEvaluator());
+		$this->assertNull($this->traversal->getPruneEvaluator());
 	}
 
 	public function testPruneEvaluator_LanguageAndBody_ReturnsArray()
@@ -89,17 +82,26 @@ class TraversalTest extends \PHPUnit_Framework_TestCase
 		$this->assertEquals('return true;', $evaluator['body']);
 	}
 
-	public function testPruneEvaluator_Reset_ReturnsString()
+	public function testPruneEvaluator_BuiltIn_ReturnsArray()
+	{
+		$this->traversal->setPruneEvaluator(Traversal::PruneNone);
+
+		$evaluator = $this->traversal->getPruneEvaluator();
+		$this->assertEquals('builtin', $evaluator['language']);
+		$this->assertEquals(Traversal::PruneNone, $evaluator['body']);
+	}
+
+	public function testPruneEvaluator_Reset_ReturnsNull()
 	{
 		$this->traversal->setPruneEvaluator('javascript', 'return true;');
 		$this->traversal->setPruneEvaluator();
 
-		$this->assertEquals(Traversal::PruneNone, $this->traversal->getPruneEvaluator());
+		$this->assertNull($this->traversal->getPruneEvaluator());
 	}
 
-	public function testReturnFilter_NoneGiven_ReturnsString()
+	public function testReturnFilter_NoneGiven_ReturnsNull()
 	{
-		$this->assertEquals(Traversal::ReturnAll, $this->traversal->getReturnFilter());
+		$this->assertNull($this->traversal->getReturnFilter());
 	}
 
 	public function testReturnFilter_LanguageAndBody_ReturnsArray()
@@ -111,11 +113,21 @@ class TraversalTest extends \PHPUnit_Framework_TestCase
 		$this->assertEquals('return true;', $filter['body']);
 	}
 
-	public function testReturnFilter_StringGiven_ReturnsString()
+	public function testReturnFilter_BuiltIn_ReturnsArray()
 	{
 		$this->traversal->setReturnFilter(Traversal::ReturnAllButStart);
 
-		$this->assertEquals(Traversal::ReturnAllButStart, $this->traversal->getReturnFilter());
+		$filter = $this->traversal->getReturnFilter();
+		$this->assertEquals('builtin', $filter['language']);
+		$this->assertEquals(Traversal::ReturnAllButStart, $filter['body']);
+	}
+
+	public function testReturnFilter_Reset_ReturnsNull()
+	{
+		$this->traversal->setReturnFilter('javascript', 'return true;');
+		$this->traversal->setReturnFilter();
+
+		$this->assertNull($this->traversal->getPruneEvaluator());
 	}
 
 	public function testGetResults_PassesThroughToClient()

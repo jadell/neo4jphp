@@ -99,7 +99,13 @@ class Client
 	 */
 	public function executeTraversal(Traversal $traversal, Node $startNode, $returnType)
 	{
-		return array();
+		$command = new Command\ExecuteTraversal($this, $traversal, $startNode, $returnType);
+		$result = $this->runCommand($command);
+		if ($result) {
+			return $command->getResult();
+		} else {
+			return false;
+		}
 	}
 
 	/**

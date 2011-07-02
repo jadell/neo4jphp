@@ -1302,7 +1302,8 @@ class ClientTest extends \PHPUnit_Framework_TestCase
 		$this->assertEquals(count($result), $resultCount);
 	}
 	
-	public function dataProvider_TestCypherQuery() {
+	public function dataProvider_TestCypherQuery()
+	{
 		$return = array(
 			'columns' => array('name','age'),
 			'data' => array(
@@ -1316,5 +1317,103 @@ class ClientTest extends \PHPUnit_Framework_TestCase
 			array(array('code'=>204,'data'=>null), 0),
 			array(array('code'=>200,'data'=>$return), 3),
 		);
+	}
+
+	public function testTraversal_NoNodeId_ThrowsException()
+	{
+		$traversal = new Traversal($this->client);
+		$node = new Node($this->client);
+
+		$this->setExpectedException('\Everyman\Neo4j\Exception');
+		$this->client->executeTraversal($traversal, $node, Traversal::ReturnTypeNode);
+	}
+
+	public function testTraversal_BadReturnType_ThrowsException()
+	{
+		$traversal = new Traversal($this->client);
+		$node = new Node($this->client);
+		$node->setId(1);
+
+		$this->setExpectedException('\Everyman\Neo4j\Exception');
+		$this->client->executeTraversal($traversal, $node, 'FOOTYPE');
+	}
+
+	/**
+	 * @dataProvider dataProvider_TestTraversal
+	 */
+	public function testTraversal_TraversalOptions_PassesThroughCorrectDataToTransport($traversal, $expectedData)
+	{
+		$node = new Node($this->client);
+		$node->setId(1);
+
+		$this->transport->expects($this->once())
+			->method('post')
+			->with('/node/1/traverse/node', $expectedData)
+			->will($this->returnValue(array("code"=>200,"data"=>array())));
+
+		$result = $this->client->executeTraversal($traversal, $node, Traversal::ReturnTypeNode);
+		$this->assertEquals(array(), $result);
+	}
+	
+	public function dataProvider_TestTraversal()
+	{
+		$this->transport = $this->getMock('Everyman\Neo4j\Transport');
+		$this->transport->expects($this->any())
+			->method('getEndpoint')
+			->will($this->returnValue($this->endpoint));
+		$this->client = new Client($this->transport);
+
+		$scenarios = array();
+
+		$traversal = new Traversal($this->client);
+		$scenarios[] = array($traversal, array());
+
+		$traversal = new Traversal($this->client);
+		$traversal->setOrder(Traversal::OrderDepthFirst);
+		$scenarios[] = array($traversal, array(
+			"order" => "depth_first",
+		));
+
+		$traversal = new Traversal($this->client);
+		$traversal->setUniqueness(Traversal::UniquenessNodePath);
+		$scenarios[] = array($traversal, array(
+			"uniqueness" => "node_path",
+		));
+
+		$traversal = new Traversal($this->client);
+		$traversal->setMaxDepth(2);
+		$scenarios[] = array($traversal, array(
+			"max_depth" => 2,
+		));
+
+		$traversal = new Traversal($this->client);
+		$traversal->addRelationship('FOOTYPE')
+			->addRelationship('BARTYPE', Relationship::DirectionIn);
+		$scenarios[] = array($traversal, array(
+			"relationships" => array(
+				array('type'=>'FOOTYPE'),
+				array('type'=>'BARTYPE', 'direction' => 'in'),
+			),
+		));
+
+		$traversal = new Traversal($this->client);
+		$traversal->setPruneEvaluator('javascript', "position.endNode().getProperty('date')>1234567;");
+		$scenarios[] = array($traversal, array(
+			"prune_evaluator" => array(
+				"language" => "javascript",
+				"body" => "position.endNode().getProperty('date')>1234567;",
+			),
+		));
+
+		$traversal = new Traversal($this->client);
+		$traversal->setReturnFilter('builtin', Traversal::ReturnAll);
+		$scenarios[] = array($traversal, array(
+			"return_filter" => array(
+				"language" => "builtin",
+				"body" => "all",
+			),
+		));
+
+		return $scenarios;
 	}
 }

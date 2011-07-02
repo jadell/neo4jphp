@@ -30,13 +30,10 @@ class Traversal
 	protected $order = null;
 	protected $uniqueness = null;
 	protected $maxDepth = null;
-	protected $relationships = array(
-		'type'=>null,
-		'direction'=>null
-	);
+	protected $relationships = array();
 
-	protected $pruneEvaluator = self::PruneNone;
-	protected $returnFilter = self::ReturnAll;
+	protected $pruneEvaluator = null;
+	protected $returnFilter = null;
 
 	/**
 	 * Build the traversal and set its client
@@ -46,6 +43,24 @@ class Traversal
 	public function __construct(Client $client)
 	{
 		$this->client = $client;
+	}
+
+	/**
+	 * Add a relationship type and direction
+	 *
+	 * @param string $type
+	 * @param string $direction
+	 * @return Traversal
+	 */
+	public function addRelationship($type, $direction=null)
+	{
+		$relationship = array('type'=>$type);
+		if ($direction) {
+			$relationship['direction'] = $direction;
+		}
+
+		$this->relationships[] = $relationship;
+		return $this;
 	}
 
 	/**
@@ -173,7 +188,9 @@ class Traversal
 
 	/**
 	 * Set the prune evaluator
-	 * If no language is specified, sets the evaluator to the 'none' builtin
+	 * If language is one of the special builtin self::Prune* constants,
+	 * the evaluator language will be set to 'builtin' and the body
+	 * will be set to the value of the constant.
 	 *
 	 * @param string $language
 	 * @param string $body
@@ -182,7 +199,12 @@ class Traversal
 	public function setPruneEvaluator($language=null, $body=null)
 	{
 		if (!$language) {
-			$this->pruneEvaluator = self::PruneNone;
+			$this->pruneEvaluator = null;
+		} else if ($language == self::PruneNone) {
+			$this->pruneEvaluator = array(
+				'language' => 'builtin',
+				'body' => $language,
+			);
 		} else {
 			$this->pruneEvaluator = array(
 				'language' => $language,
@@ -192,34 +214,24 @@ class Traversal
 	}
 
 	/**
-	 * Set the relationship type and description
-	 *
-	 * @param string $type
-	 * @param string $direction
-	 * @return Traversal
-	 */
-	public function setRelationships($type, $direction=null)
-	{
-		$this->relationships = array(
-			'type' => $type,
-			'direction' => $direction,
-		);
-		return $this;
-	}
-
-	/**
 	 * Set the return filter
-	 * If no $body parameter is specified, assumes the
-	 * $language parameter is a string name of a builtin filter
+	 * If language is one of the special builtin self::Return* constants,
+	 * the filter language will be set to 'builtin' and the body
+	 * will be set to the value of the constant.
 	 *
 	 * @param string $language
 	 * @param string $body
 	 * @return Traversal
 	 */
-	public function setReturnFilter($language, $body=null)
+	public function setReturnFilter($language=null, $body=null)
 	{
-		if (!$body) {
-			$this->returnFilter = $language;
+		if (!$language) {
+			$this->returnFilter = null;
+		} else if ($language == self::ReturnAll || $language == self::ReturnAllButStart) {
+			$this->returnFilter = array(
+				'language' => 'builtin',
+				'body' => $language,
+			);
 		} else {
 			$this->returnFilter = array(
 				'language' => $language,
