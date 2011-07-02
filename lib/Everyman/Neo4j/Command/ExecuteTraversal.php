@@ -132,6 +132,8 @@ class ExecuteTraversal extends Command
 				$this->handleRelationships($data);
 			} else if ($this->returnType == Traversal::ReturnTypePath) {
 				$this->handlePaths($data);
+			} else if ($this->returnType == Traversal::ReturnTypeFullPath) {
+				$this->handlePaths($data, true);
 			}
 			return null;
 		}
@@ -141,7 +143,7 @@ class ExecuteTraversal extends Command
 	/**
 	 * Handle nodes
 	 *
-	 * @param $data
+	 * @param array $data
 	 */
 	protected function handleNodes($data)
 	{
@@ -155,7 +157,7 @@ class ExecuteTraversal extends Command
 	/**
 	 * Handle relationships
 	 *
-	 * @param $data
+	 * @param array $data
 	 */
 	protected function handleRelationships($data)
 	{
@@ -169,13 +171,14 @@ class ExecuteTraversal extends Command
 	/**
 	 * Handle paths
 	 *
-	 * @param $data
+	 * @param array   $data
+	 * @param boolean $full
 	 */
-	protected function handlePaths($data)
+	protected function handlePaths($data, $full=false)
 	{
 		foreach ($data as $pathData) {
 			foreach ($data as $pathData) {
-				$this->results[] = $this->makePath(new Path($this->client), $pathData);
+				$this->results[] = $this->makePath(new Path($this->client), $pathData, $full);
 			}
 		}
 	}

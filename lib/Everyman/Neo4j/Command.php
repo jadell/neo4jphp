@@ -110,19 +110,28 @@ abstract class Command
 	 *
 	 * @param Path $path
 	 * @param array $data
+	 * @param boolean $full
 	 * @return Path
 	 */
-	protected function makePath(Path $path, $data)
+	protected function makePath(Path $path, $data, $full=false)
 	{
-		foreach ($data['relationships'] as $relUri) {
+		foreach ($data['relationships'] as $relData) {
+			$relUri = $full ? $relData['self'] : $relData;
 			$relId = $this->getIdFromUri($relUri);
 			$rel = $this->client->getRelationship($relId, true);
+			if ($full) {
+				$rel = $this->makeRelationship($rel, $relData);
+			}
 			$path->appendRelationship($rel);
 		}
 
-		foreach ($data['nodes'] as $nodeUri) {
+		foreach ($data['nodes'] as $nodeData) {
+			$nodeUri = $full ? $nodeData['self'] : $nodeData;
 			$nodeId = $this->getIdFromUri($nodeUri);
 			$node = $this->client->getNode($nodeId, true);
+			if ($full) {
+				$node = $this->makeNode($node, $nodeData);
+			}
 			$path->appendNode($node);
 		}
 

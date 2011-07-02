@@ -1512,4 +1512,70 @@ class ClientTest extends \PHPUnit_Framework_TestCase
 		$this->assertInstanceOf('Everyman\Neo4j\Node', $nodes[1]);
 		$this->assertEquals(3, $nodes[1]->getId());
 	}
+
+	public function testTraversal_ReturnTypeFullPath_ReturnsArrayOfPaths()
+	{
+		$traversal = new Traversal($this->client);
+		$node = new Node($this->client);
+		$node->setId(1);
+
+		$data = array(
+			array(
+				"relationships" => array(
+					array(
+						"self" => "http://localhost:7474/db/data/relationship/2",
+						"start" => "http://localhost:7474/db/data/node/1",
+						"end" => "http://localhost:7474/db/data/node/3",
+						"type" => "FOOTYPE",
+						"data" => array(
+							"name" => "baz",
+						),
+					),
+				),
+				"nodes" => array(
+					array(
+						"self" => "http://localhost:7474/db/data/node/1",
+						"data" => array(
+							"name" => "foo",
+						),
+					),
+					array(
+						"self" => "http://localhost:7474/db/data/node/3",
+						"data" => array(
+							"name" => "bar",
+						),
+					),
+				),
+			),
+		);
+
+		$this->transport->expects($this->once())
+			->method('post')
+			->with('/node/1/traverse/fullpath', array())
+			->will($this->returnValue(array("code"=>200,"data"=>$data)));
+
+		$result = $this->client->executeTraversal($traversal, $node, Traversal::ReturnTypeFullPath);
+		$this->assertEquals(1, count($result));
+		$this->assertInstanceOf('Everyman\Neo4j\Path', $result[0]);
+		
+		$rels = $result[0]->getRelationships();
+		$this->assertEquals(1, count($rels));
+		$this->assertInstanceOf('Everyman\Neo4j\Relationship', $rels[0]);
+		$this->assertEquals(2, $rels[0]->getId());
+		$this->assertEquals('FOOTYPE', $rels[0]->getType());
+		$this->assertEquals('baz', $rels[0]->getProperty('name'));
+		$this->assertInstanceOf('Everyman\Neo4j\Node', $rels[0]->getStartNode());
+		$this->assertInstanceOf('Everyman\Neo4j\Node', $rels[0]->getEndNode());
+		$this->assertEquals(1, $rels[0]->getStartNode()->getId());
+		$this->assertEquals(3, $rels[0]->getEndNode()->getId());
+
+		$nodes = $result[0]->getNodes();
+		$this->assertEquals(2, count($nodes));
+		$this->assertInstanceOf('Everyman\Neo4j\Node', $nodes[0]);
+		$this->assertEquals(1, $nodes[0]->getId());
+		$this->assertEquals('foo', $nodes[0]->getProperty('name'));
+		$this->assertInstanceOf('Everyman\Neo4j\Node', $nodes[1]);
+		$this->assertEquals(3, $nodes[1]->getId());
+		$this->assertEquals('bar', $nodes[1]->getProperty('name'));
+	}
 }
