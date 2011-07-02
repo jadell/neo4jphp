@@ -1206,7 +1206,7 @@ class ClientTest extends \PHPUnit_Framework_TestCase
 
 		$this->transport->expects($this->once())
 			->method('get')
-			->with('/index/node/indexname?'.urlencode('somekey:somevalue*'))
+			->with('/index/node/indexname?query='.urlencode('somekey:somevalue*'))
 			->will($this->returnValue(array('code'=>400)));
 
 		$result = $this->client->queryIndex($index, 'somekey:somevalue*');
@@ -1232,7 +1232,7 @@ class ClientTest extends \PHPUnit_Framework_TestCase
 
 		$this->transport->expects($this->once())
 			->method('get')
-			->with('/index/node/indexname?'.urlencode('somekey:somevalue*'))
+			->with('/index/node/indexname?query='.urlencode('somekey:somevalue*'))
 			->will($this->returnValue(array('code'=>200,'data'=>$return)));
 
 		$result = $this->client->queryIndex($index, 'somekey:somevalue*');
@@ -1265,7 +1265,7 @@ class ClientTest extends \PHPUnit_Framework_TestCase
 
 		$this->transport->expects($this->once())
 			->method('get')
-			->with('/index/relationship/indexname?'.urlencode('somekey:somevalue*'))
+			->with('/index/relationship/indexname?query='.urlencode('somekey:somevalue*'))
 			->will($this->returnValue(array('code'=>200,'data'=>$return)));
 
 		$result = $this->client->queryIndex($index, 'somekey:somevalue*');

@@ -195,6 +195,12 @@ Return the index name.
     getType() : string
 Return the index type, one of `Index::TypeNode` or `Index::TypeRelationship`.
 
+    query(string $query) : array
+Find Nodes or Relationships matching the given query (query language is Lucene).
+
+    queryOne($query) : mixed
+Find the first Node or Relationship matching the given query (query language is Lucene).  Returns null if no match is found.
+
     remove(mixed $entity, string $key=null, mixed $value=null) : boolean
 Remove the given Node or Relationship from the index.  If given, $value must be scalar.
 

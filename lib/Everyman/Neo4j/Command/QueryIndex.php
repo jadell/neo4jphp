@@ -34,7 +34,7 @@ class QueryIndex extends SearchIndex
 		$path = parent::getPath();
 		$path = join('/', array_slice(explode('/', $path), 0,4));
 		$query = urlencode($this->key);
-		return $path . '?' . $query;
+		return $path . '?query=' . $query;
 	}
 }
 
