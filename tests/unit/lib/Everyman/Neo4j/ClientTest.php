@@ -1477,4 +1477,39 @@ class ClientTest extends \PHPUnit_Framework_TestCase
 		$this->assertEquals(1, $result[0]->getStartNode()->getId());
 		$this->assertEquals(3, $result[0]->getEndNode()->getId());
 	}
+
+	public function testTraversal_ReturnTypePath_ReturnsArrayOfPaths()
+	{
+		$traversal = new Traversal($this->client);
+		$node = new Node($this->client);
+		$node->setId(1);
+
+		$data = array(
+			array(
+				"relationships" => array("http://localhost:7474/db/data/relationship/2"),
+				"nodes" => array("http://localhost:7474/db/data/node/1","http://localhost:7474/db/data/node/3"),
+			),
+		);
+
+		$this->transport->expects($this->once())
+			->method('post')
+			->with('/node/1/traverse/path', array())
+			->will($this->returnValue(array("code"=>200,"data"=>$data)));
+
+		$result = $this->client->executeTraversal($traversal, $node, Traversal::ReturnTypePath);
+		$this->assertEquals(1, count($result));
+		$this->assertInstanceOf('Everyman\Neo4j\Path', $result[0]);
+		
+		$rels = $result[0]->getRelationships();
+		$this->assertEquals(1, count($rels));
+		$this->assertInstanceOf('Everyman\Neo4j\Relationship', $rels[0]);
+		$this->assertEquals(2, $rels[0]->getId());
+
+		$nodes = $result[0]->getNodes();
+		$this->assertEquals(2, count($nodes));
+		$this->assertInstanceOf('Everyman\Neo4j\Node', $nodes[0]);
+		$this->assertEquals(1, $nodes[0]->getId());
+		$this->assertInstanceOf('Everyman\Neo4j\Node', $nodes[1]);
+		$this->assertEquals(3, $nodes[1]->getId());
+	}
 }

@@ -5,6 +5,7 @@ use Everyman\Neo4j\Command,
 	Everyman\Neo4j\Exception,
 	Everyman\Neo4j\Client,
 	Everyman\Neo4j\Traversal,
+	Everyman\Neo4j\Path,
 	Everyman\Neo4j\Node;
 
 class ExecuteTraversal extends Command
@@ -129,6 +130,8 @@ class ExecuteTraversal extends Command
 				$this->handleNodes($data);
 			} else if ($this->returnType == Traversal::ReturnTypeRelationship) {
 				$this->handleRelationships($data);
+			} else if ($this->returnType == Traversal::ReturnTypePath) {
+				$this->handlePaths($data);
 			}
 			return null;
 		}
@@ -160,6 +163,20 @@ class ExecuteTraversal extends Command
 			$relId = $this->getIdFromUri($relData['self']);
 			$rel = $this->client->getRelationship($relId, true);
 			$this->results[] = $this->makeRelationship($rel, $relData);
+		}
+	}
+
+	/**
+	 * Handle paths
+	 *
+	 * @param $data
+	 */
+	protected function handlePaths($data)
+	{
+		foreach ($data as $pathData) {
+			foreach ($data as $pathData) {
+				$this->results[] = $this->makePath(new Path($this->client), $pathData);
+			}
 		}
 	}
 }
