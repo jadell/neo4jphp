@@ -71,11 +71,11 @@ class Transport
 
 			case self::POST :
 				$options[CURLOPT_POST] = true;
-				$options[CURLOPT_POSTFIELDS] = json_encode($data);
+				$options[CURLOPT_POSTFIELDS] = json_encode($data, JSON_FORCE_OBJECT);
 				break;
 
 			case self::PUT :
-				$dataString = json_encode($data);
+				$dataString = json_encode($data, JSON_FORCE_OBJECT);
 				$options[CURLOPT_CUSTOMREQUEST] = self::PUT;
 				$options[CURLOPT_POSTFIELDS] = $dataString;
 				$options[CURLOPT_HTTPHEADER][] = 'Content-Length: '.strlen($dataString);
