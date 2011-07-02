@@ -1416,4 +1416,65 @@ class ClientTest extends \PHPUnit_Framework_TestCase
 
 		return $scenarios;
 	}
+
+	public function testTraversal_ReturnTypeNode_ReturnsArrayOfNodes()
+	{
+		$traversal = new Traversal($this->client);
+		$node = new Node($this->client);
+		$node->setId(1);
+
+		$data = array(
+			array(
+				"self" => "http://localhost:7474/db/data/node/2",
+				"data" => array(
+					"name" => "foo",
+				),
+			),
+		);
+
+		$this->transport->expects($this->once())
+			->method('post')
+			->with('/node/1/traverse/node', array())
+			->will($this->returnValue(array("code"=>200,"data"=>$data)));
+
+		$result = $this->client->executeTraversal($traversal, $node, Traversal::ReturnTypeNode);
+		$this->assertEquals(1, count($result));
+		$this->assertInstanceOf('Everyman\Neo4j\Node', $result[0]);
+		$this->assertEquals(2, $result[0]->getId());
+		$this->assertEquals('foo', $result[0]->getProperty('name'));
+	}
+
+	public function testTraversal_ReturnTypeRelationship_ReturnsArrayOfRelationships()
+	{
+		$traversal = new Traversal($this->client);
+		$node = new Node($this->client);
+		$node->setId(1);
+
+		$data = array(
+			array(
+				"self" => "http://localhost:7474/db/data/relationship/2",
+				"start" => "http://localhost:7474/db/data/node/1",
+				"end" => "http://localhost:7474/db/data/node/3",
+				"type" => "FOOTYPE",
+				"data" => array(
+					"name" => "foo",
+				),
+			),
+		);
+
+		$this->transport->expects($this->once())
+			->method('post')
+			->with('/node/1/traverse/relationship', array())
+			->will($this->returnValue(array("code"=>200,"data"=>$data)));
+
+		$result = $this->client->executeTraversal($traversal, $node, Traversal::ReturnTypeRelationship);
+		$this->assertEquals(1, count($result));
+		$this->assertInstanceOf('Everyman\Neo4j\Relationship', $result[0]);
+		$this->assertEquals(2, $result[0]->getId());
+		$this->assertEquals('foo', $result[0]->getProperty('name'));
+		$this->assertInstanceOf('Everyman\Neo4j\Node', $result[0]->getStartNode());
+		$this->assertInstanceOf('Everyman\Neo4j\Node', $result[0]->getEndNode());
+		$this->assertEquals(1, $result[0]->getStartNode()->getId());
+		$this->assertEquals(3, $result[0]->getEndNode()->getId());
+	}
 }

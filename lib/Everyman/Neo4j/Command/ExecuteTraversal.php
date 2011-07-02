@@ -125,9 +125,42 @@ class ExecuteTraversal extends Command
 	protected function handleResult($code, $headers, $data)
 	{
 		if ((int)($code / 100) == 2) {
+			if ($this->returnType == Traversal::ReturnTypeNode) {
+				$this->handleNodes($data);
+			} else if ($this->returnType == Traversal::ReturnTypeRelationship) {
+				$this->handleRelationships($data);
+			}
 			return null;
 		}
 		return $code;
+	}
+
+	/**
+	 * Handle nodes
+	 *
+	 * @param $data
+	 */
+	protected function handleNodes($data)
+	{
+		foreach ($data as $nodeData) {
+			$nodeId = $this->getIdFromUri($nodeData['self']);
+			$node = $this->client->getNode($nodeId, true);
+			$this->results[] = $this->makeNode($node, $nodeData);
+		}
+	}
+
+	/**
+	 * Handle relationships
+	 *
+	 * @param $data
+	 */
+	protected function handleRelationships($data)
+	{
+		foreach ($data as $relData) {
+			$relId = $this->getIdFromUri($relData['self']);
+			$rel = $this->client->getRelationship($relId, true);
+			$this->results[] = $this->makeRelationship($rel, $relData);
+		}
 	}
 }
 
