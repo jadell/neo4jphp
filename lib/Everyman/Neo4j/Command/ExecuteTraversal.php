@@ -148,9 +148,7 @@ class ExecuteTraversal extends Command
 	protected function handleNodes($data)
 	{
 		foreach ($data as $nodeData) {
-			$nodeId = $this->getIdFromUri($nodeData['self']);
-			$node = $this->client->getNode($nodeId, true);
-			$this->results[] = $this->getEntityMapper()->populateNode($node, $nodeData);
+			$this->results[] = $this->getEntityMapper()->makeNode($nodeData);
 		}
 	}
 
@@ -162,9 +160,7 @@ class ExecuteTraversal extends Command
 	protected function handleRelationships($data)
 	{
 		foreach ($data as $relData) {
-			$relId = $this->getIdFromUri($relData['self']);
-			$rel = $this->client->getRelationship($relId, true);
-			$this->results[] = $this->getEntityMapper()->populateRelationship($rel, $relData);
+			$this->results[] = $this->getEntityMapper()->makeRelationship($relData);
 		}
 	}
 

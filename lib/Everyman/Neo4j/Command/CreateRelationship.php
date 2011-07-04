@@ -89,7 +89,7 @@ class CreateRelationship extends Command
 	protected function handleResult($code, $headers, $data)
 	{
 		if ((int)($code / 100) == 2) {
-			$relId = $this->getIdFromUri($headers['Location']);
+			$relId = $this->getEntityMapper()->getIdFromUri($headers['Location']);
 			$this->rel->setId($relId);
 			return null;
 		}

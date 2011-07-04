@@ -70,18 +70,6 @@ abstract class Command
 	}
 
 	/**
-	 * Get an id from a URI
-	 *
-	 * @param string $uri
-	 * @return integer
-	 */
-	protected function getIdFromUri($uri)
-	{
-		$uriParts = explode('/', $uri);
-		return array_pop($uriParts);
-	}
-
-	/**
 	 * Get the entity mapper
 	 *
 	 * @return EntityMapper

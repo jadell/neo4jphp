@@ -103,8 +103,7 @@ class GetNodeRelationships extends Command
 	{
 		if ((int)($code / 100) == 2) {
 			foreach ($data as $relData) {
-				$rel = $this->client->getRelationship($this->getIdFromUri($relData['self']), true);
-				$this->rels[] = $this->getEntityMapper()->populateRelationship($rel, $relData);
+				$this->rels[] = $this->getEntityMapper()->makeRelationship($relData);
 			}
 
 			return null;

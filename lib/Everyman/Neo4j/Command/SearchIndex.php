@@ -104,16 +104,9 @@ class SearchIndex extends Command
 	protected function handleResult($code, $headers, $data)
 	{
 		if ((int)($code / 100) == 2) {
-			if ($this->index->getType() == Index::TypeNode) {
-				$getMethod = 'getNode';
-				$buildMethod = 'populateNode';
-			} else {
-				$getMethod = 'getRelationship';
-				$buildMethod = 'populateRelationship';
-			}
+			$buildMethod = $this->index->getType() == Index::TypeNode ? 'makeNode' : 'makeRelationship';
 			foreach ($data as $entityData) {
-				$entity = $this->client->$getMethod($this->getIdFromUri($entityData['self']), true);
-				$this->results[] = $this->getEntityMapper()->$buildMethod($entity, $entityData);
+				$this->results[] = $this->getEntityMapper()->$buildMethod($entityData);
 			}
 			return null;
 		}

@@ -13,6 +13,52 @@ class EntityMapperTest extends \PHPUnit_Framework_TestCase
 		$this->mapper = new EntityMapper($this->client);
 	}
 	
+	public function testGetIdFromUri_UriGiven_ReturnsInteger()
+	{
+		$uri = 'http://localhost:7474/db/data/node/1';
+		$this->assertEquals(1, $this->mapper->getIdFromUri($uri));
+	}
+
+	public function testMakeNode_NodeDataGiven_ReturnsNode()
+	{
+		$data = array(
+			'data' => array(
+				'name' => 'Bob'
+			),
+			'self' => 'http://localhost:7474/db/data/node/1',
+		);
+
+		$node = $this->mapper->makeNode($data);
+		
+		$this->assertInstanceOf('Everyman\Neo4j\Node', $node);
+		$this->assertEquals(1, $node->getId());
+		$this->assertEquals('Bob', $node->getProperty('name'));
+	}
+	
+	public function testMakeRelationship_RelationshipDataGiven_ReturnsRelationship()
+	{
+		$data = array(
+			'data' => array(
+				'name' => 'Bob'
+			),
+			'type' => 'KNOWS',
+			'start' => 'http://localhost/db/data/node/1', 
+			'end' => 'http://localhost/db/data/node/2', 
+			'self' => 'http://localhost:7474/db/data/relationship/3',
+		);
+
+		$rel = $this->mapper->makeRelationship($data);
+		
+		$this->assertInstanceOf('Everyman\Neo4j\Relationship', $rel);
+		$this->assertEquals(3, $rel->getId());
+		$this->assertEquals('KNOWS', $rel->getType());
+		$this->assertEquals('Bob', $rel->getProperty('name'));
+		$this->assertInstanceOf('Everyman\Neo4j\Node', $rel->getStartNode());
+		$this->assertInstanceOf('Everyman\Neo4j\Node', $rel->getEndNode());
+		$this->assertEquals(1, $rel->getStartNode()->getId());
+		$this->assertEquals(2, $rel->getEndNode()->getId());
+	}
+
 	public function testPopulateNode_NodeGiven_ReturnsNode()
 	{
 		$data = array(

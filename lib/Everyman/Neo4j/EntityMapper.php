@@ -33,17 +33,49 @@ class EntityMapper
 	public function getEntityFor($value)
 	{
 		if (is_array($value) && array_key_exists('self', $value)) {
-			$entityId = $this->getIdFromUri($value['self']);
 			if (array_key_exists('type', $value)) {
-				$item = $this->client->getRelationship($entityId, true);
-				$this->populateRelationship($item, $value);
+				$value = $this->makeRelationship($value);
 			} else {
-				$item = $this->client->getNode($entityId, true);
-				$this->populateNode($item, $value);
+				$value = $this->makeNode($value);
 			}
-			return $item;
 		}
 		return $value;
+	}
+
+	/**
+	 * Get an id from a URI
+	 *
+	 * @param string $uri
+	 * @return integer
+	 */
+	public function getIdFromUri($uri)
+	{
+		$uriParts = explode('/', $uri);
+		return (integer)array_pop($uriParts);
+	}
+
+	/**
+	 * Generate and populate a node from the given data
+	 *
+	 * @param array $data
+	 * @return Node
+	 */
+	public function makeNode($data)
+	{
+		$node = $this->getNodeFromUri($data['self']);
+		return $this->populateNode($node, $data);
+	}
+
+	/**
+	 * Generate and populate a relationship from the given data
+	 *
+	 * @param array $data
+	 * @return Relationship
+	 */
+	public function makeRelationship($data)
+	{
+		$rel = $this->getRelationshipFromUri($data['self']);
+		return $this->populateRelationship($rel, $data);
 	}
 
 	/**
@@ -72,8 +104,7 @@ class EntityMapper
 	{
 		foreach ($data['relationships'] as $relData) {
 			$relUri = $full ? $relData['self'] : $relData;
-			$relId = $this->getIdFromUri($relUri);
-			$rel = $this->client->getRelationship($relId, true);
+			$rel = $this->getRelationshipFromUri($relUri);
 			if ($full) {
 				$rel = $this->populateRelationship($rel, $relData);
 			}
@@ -82,8 +113,7 @@ class EntityMapper
 
 		foreach ($data['nodes'] as $nodeData) {
 			$nodeUri = $full ? $nodeData['self'] : $nodeData;
-			$nodeId = $this->getIdFromUri($nodeUri);
-			$node = $this->client->getNode($nodeId, true);
+			$node = $this->getNodeFromUri($nodeUri);
 			if ($full) {
 				$node = $this->populateNode($node, $nodeData);
 			}
@@ -106,24 +136,33 @@ class EntityMapper
 		$rel->setProperties($data['data']);
 		$rel->setType($data['type']);
 
-		$startId = $this->getIdFromUri($data['start']);
-		$endId = $this->getIdFromUri($data['end']);
-		$rel->setStartNode($this->client->getNode($startId, true));
-		$rel->setEndNode($this->client->getNode($endId, true));
+		$rel->setStartNode($this->getNodeFromUri($data['start']));
+		$rel->setEndNode($this->getNodeFromUri($data['end']));
 
 		return $rel;
 	}
 
 	/**
-	 * Get an id from a URI
-	 * TODO: Duplicate method from Command class, refactor.
+	 * Retrieve a node by it's 'self' uri
 	 *
 	 * @param string $uri
-	 * @return integer
+	 * @return Node
 	 */
-	protected function getIdFromUri($uri)
+	protected function getNodeFromUri($uri)
 	{
-		$uriParts = explode('/', $uri);
-		return array_pop($uriParts);
+		$nodeId = $this->getIdFromUri($uri);
+		return $this->client->getNode($nodeId, true);
+	}
+
+	/**
+	 * Retrieve a relationship by it's 'self' uri
+	 *
+	 * @param string $uri
+	 * @return Relationship
+	 */
+	protected function getRelationshipFromUri($uri)
+	{
+		$relId = $this->getIdFromUri($uri);
+		return $this->client->getRelationship($relId, true);
 	}
 }
