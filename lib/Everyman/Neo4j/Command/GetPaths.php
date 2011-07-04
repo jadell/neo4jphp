@@ -132,7 +132,7 @@ class GetPaths extends Command
 	{
 		if ((int)($code / 100) == 2) {
 			foreach ($data as $pathData) {
-				$this->paths[] = $this->makePath(new Path($this->client), $pathData);
+				$this->paths[] = $this->getEntityMapper()->populatePath(new Path($this->client), $pathData);
 			}
 			return null;
 		}

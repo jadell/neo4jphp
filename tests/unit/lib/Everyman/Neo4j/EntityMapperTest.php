@@ -1,39 +1,160 @@
 <?php
 namespace Everyman\Neo4j;
 
-use Everyman\Neo4j\Node,
-    Everyman\Neo4j\Relationship;
-
 class EntityMapperTest extends \PHPUnit_Framework_TestCase
 {
 	protected $client = null;
-	protected $mapepr = null;
+	protected $mapper = null;
 	
 	public function setUp()
 	{
-		$this->client = $this->getMock('Everyman\Neo4j\Client', array('cypherQuery'), array(), '', false);
-		$this->d = new EntityMapper($this->client);
+		$transport = $this->getMock('Everyman\Neo4j\Transport');
+		$this->client = new Client($transport);
+		$this->mapper = new EntityMapper($this->client);
 	}
 	
-	public function testRelationship()
+	public function testPopulateNode_NodeGiven_ReturnsNode()
+	{
+		$data = array(
+			'data' => array(
+				'name' => 'Bob'
+			),
+		);
+
+		$node = new Node($this->client);
+		$this->mapper->populateNode($node, $data);
+		
+		$this->assertEquals('Bob', $node->getProperty('name'));
+	}
+	
+	public function testPopulateRelationship_RelationshipGiven_ReturnsRelationship()
 	{
 		$data = array(
 			'data' => array(
 				'name' => 'Bob'
 			),
 			'type' => 'KNOWS',
-			'start' => 'http://localhost/db/data/node/0', 
-			'end' => 'http://localhost/db/data/node/1', 
+			'start' => 'http://localhost/db/data/node/1', 
+			'end' => 'http://localhost/db/data/node/2', 
+		);
+
+		$rel = new Relationship($this->client);
+		$this->mapper->populateRelationship($rel, $data);
+		
+		$this->assertEquals('KNOWS', $rel->getType());
+		$this->assertEquals('Bob', $rel->getProperty('name'));
+		$this->assertInstanceOf('Everyman\Neo4j\Node', $rel->getStartNode());
+		$this->assertInstanceOf('Everyman\Neo4j\Node', $rel->getEndNode());
+		$this->assertEquals(1, $rel->getStartNode()->getId());
+		$this->assertEquals(2, $rel->getEndNode()->getId());
+	}
+
+	public function testPopulatePath_PathGiven_ReturnsPath()
+	{
+		$data = array(
+			"nodes" => array("http://localhost:7474/db/data/node/123", "http://localhost:7474/db/data/node/341", "http://localhost:7474/db/data/node/456"),
+			"relationships" => array("http://localhost:7474/db/data/relationship/564", "http://localhost:7474/db/data/relationship/32"),
+		);
+		
+		$path = new Path($this->client);
+		$this->mapper->populatePath($path, $data);
+		
+		$rels = $path->getRelationships();
+		$this->assertEquals(2, count($rels));
+		$this->assertInstanceOf('Everyman\Neo4j\Relationship', $rels[0]);
+		$this->assertEquals(564, $rels[0]->getId());
+		$this->assertInstanceOf('Everyman\Neo4j\Relationship', $rels[1]);
+		$this->assertEquals(32, $rels[1]->getId());
+
+		$nodes = $path->getNodes();
+		$this->assertEquals(3, count($nodes));
+		$this->assertInstanceOf('Everyman\Neo4j\Node', $nodes[0]);
+		$this->assertEquals(123, $nodes[0]->getId());
+		$this->assertInstanceOf('Everyman\Neo4j\Node', $nodes[1]);
+		$this->assertEquals(341, $nodes[1]->getId());
+		$this->assertInstanceOf('Everyman\Neo4j\Node', $nodes[2]);
+		$this->assertEquals(456, $nodes[2]->getId());
+	}
+
+	public function testPopulatePath_FullPath_ReturnsPath()
+	{
+		$data = array(
+			"relationships" => array(
+				array(
+					"self" => "http://localhost:7474/db/data/relationship/2",
+					"start" => "http://localhost:7474/db/data/node/1",
+					"end" => "http://localhost:7474/db/data/node/3",
+					"type" => "FOOTYPE",
+					"data" => array(
+						"name" => "baz",
+					),
+				),
+			),
+			"nodes" => array(
+				array(
+					"self" => "http://localhost:7474/db/data/node/1",
+					"data" => array(
+						"name" => "foo",
+					),
+				),
+				array(
+					"self" => "http://localhost:7474/db/data/node/3",
+					"data" => array(
+						"name" => "bar",
+					),
+				),
+			),
+		);
+
+		$path = new Path($this->client);
+		$this->mapper->populatePath($path, $data, true);
+		
+		$rels = $path->getRelationships();
+		$this->assertEquals(1, count($rels));
+		$this->assertInstanceOf('Everyman\Neo4j\Relationship', $rels[0]);
+		$this->assertEquals(2, $rels[0]->getId());
+		$this->assertEquals('FOOTYPE', $rels[0]->getType());
+		$this->assertEquals('baz', $rels[0]->getProperty('name'));
+		$this->assertInstanceOf('Everyman\Neo4j\Node', $rels[0]->getStartNode());
+		$this->assertInstanceOf('Everyman\Neo4j\Node', $rels[0]->getEndNode());
+		$this->assertEquals(1, $rels[0]->getStartNode()->getId());
+		$this->assertEquals(3, $rels[0]->getEndNode()->getId());
+
+		$nodes = $path->getNodes();
+		$this->assertEquals(2, count($nodes));
+		$this->assertInstanceOf('Everyman\Neo4j\Node', $nodes[0]);
+		$this->assertEquals(1, $nodes[0]->getId());
+		$this->assertEquals('foo', $nodes[0]->getProperty('name'));
+		$this->assertInstanceOf('Everyman\Neo4j\Node', $nodes[1]);
+		$this->assertEquals(3, $nodes[1]->getId());
+		$this->assertEquals('bar', $nodes[1]->getProperty('name'));
+	}
+	
+	public function testGetEntityFor_RelationshipData_ReturnsRelationship()
+	{
+		$data = array(
+			'data' => array(
+				'name' => 'Bob'
+			),
+			'type' => 'KNOWS',
+			'start' => 'http://localhost/db/data/node/1', 
+			'end' => 'http://localhost/db/data/node/2', 
 			'self' => 'http://localhost/db/data/relationship/0'
 		);
 
-		$rel = $this->d->getEntityFor($data);
+		$rel = $this->mapper->getEntityFor($data);
 		
-		$this->assertTrue($rel instanceof Relationship);
-		$this->assertEquals($rel->getId(), 0);
+		$this->assertInstanceOf('Everyman\Neo4j\Relationship', $rel);
+		$this->assertEquals(0, $rel->getId());
+		$this->assertEquals('KNOWS', $rel->getType());
+		$this->assertEquals('Bob', $rel->getProperty('name'));
+		$this->assertInstanceOf('Everyman\Neo4j\Node', $rel->getStartNode());
+		$this->assertInstanceOf('Everyman\Neo4j\Node', $rel->getEndNode());
+		$this->assertEquals(1, $rel->getStartNode()->getId());
+		$this->assertEquals(2, $rel->getEndNode()->getId());
 	}
-	
-	public function testNode()
+
+	public function testGetEntityFor_NodeData_ReturnsNode()
 	{
 		$data = array(
 			'data' => array(
@@ -42,9 +163,10 @@ class EntityMapperTest extends \PHPUnit_Framework_TestCase
 			'self' => 'http://localhost/db/data/node/0'
 		);
 
-		$node = $this->d->getEntityFor($data);
+		$node = $this->mapper->getEntityFor($data);
 		
-		$this->assertTrue($node instanceof Node);
-		$this->assertEquals($node->getId(), 0);
+		$this->assertInstanceOf('Everyman\Neo4j\Node', $node);
+		$this->assertEquals(0, $node->getId());
+		$this->assertEquals('Bob', $node->getProperty('name'));
 	}
 }

@@ -106,14 +106,14 @@ class SearchIndex extends Command
 		if ((int)($code / 100) == 2) {
 			if ($this->index->getType() == Index::TypeNode) {
 				$getMethod = 'getNode';
-				$buildMethod = 'makeNode';
+				$buildMethod = 'populateNode';
 			} else {
 				$getMethod = 'getRelationship';
-				$buildMethod = 'makeRelationship';
+				$buildMethod = 'populateRelationship';
 			}
 			foreach ($data as $entityData) {
 				$entity = $this->client->$getMethod($this->getIdFromUri($entityData['self']), true);
-				$this->results[] = $this->$buildMethod($entity, $entityData);
+				$this->results[] = $this->getEntityMapper()->$buildMethod($entity, $entityData);
 			}
 			return null;
 		}

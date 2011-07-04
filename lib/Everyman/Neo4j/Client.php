@@ -22,7 +22,6 @@ class Client
 	public function __construct(Transport $transport)
 	{
 		$this->transport = $transport;
-		$this->entityMapper = new EntityMapper($this);
 	}
 
 	/**
@@ -80,7 +79,7 @@ class Client
 	 */
 	public function executeCypherQuery(Cypher\Query $query)
 	{
-		$command = new Command\ExecuteCypherQuery($this, $query, $this->entityMapper);
+		$command = new Command\ExecuteCypherQuery($this, $query);
 		$result = $this->runCommand($command);
 		if ($result) {
 			return $command->getResult();
@@ -106,6 +105,19 @@ class Client
 		} else {
 			return false;
 		}
+	}
+
+	/**
+	 * Get the entity mapper
+	 *
+	 * @return EntityMapper
+	 */
+	public function getEntityMapper()
+	{
+		if ($this->entityMapper === null) {
+			$this->entityMapper = new EntityMapper($this);
+		}
+		return $this->entityMapper;
 	}
 
 	/**

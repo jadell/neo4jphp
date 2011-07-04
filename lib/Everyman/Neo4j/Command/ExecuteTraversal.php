@@ -150,7 +150,7 @@ class ExecuteTraversal extends Command
 		foreach ($data as $nodeData) {
 			$nodeId = $this->getIdFromUri($nodeData['self']);
 			$node = $this->client->getNode($nodeId, true);
-			$this->results[] = $this->makeNode($node, $nodeData);
+			$this->results[] = $this->getEntityMapper()->populateNode($node, $nodeData);
 		}
 	}
 
@@ -164,7 +164,7 @@ class ExecuteTraversal extends Command
 		foreach ($data as $relData) {
 			$relId = $this->getIdFromUri($relData['self']);
 			$rel = $this->client->getRelationship($relId, true);
-			$this->results[] = $this->makeRelationship($rel, $relData);
+			$this->results[] = $this->getEntityMapper()->populateRelationship($rel, $relData);
 		}
 	}
 
@@ -178,7 +178,7 @@ class ExecuteTraversal extends Command
 	{
 		foreach ($data as $pathData) {
 			foreach ($data as $pathData) {
-				$this->results[] = $this->makePath(new Path($this->client), $pathData, $full);
+				$this->results[] = $this->getEntityMapper()->populatePath(new Path($this->client), $pathData, $full);
 			}
 		}
 	}

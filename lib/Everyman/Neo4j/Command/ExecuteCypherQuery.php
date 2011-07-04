@@ -10,7 +10,6 @@ use Everyman\Neo4j\EntityMapper,
 class ExecuteCypherQuery extends Command
 {
 	protected $query = null;
-	protected $entityMapper = null;
 
 	protected $results = array();
 
@@ -21,10 +20,9 @@ class ExecuteCypherQuery extends Command
 	 * @param Query $query
 	 * @param EntityMapper $entityMapper
 	 */
-	public function __construct(Client $client, Query $query, EntityMapper $entityMapper)
+	public function __construct(Client $client, Query $query)
 	{
 		parent::__construct($client);
-		$this->entityMapper = $entityMapper;
 		$this->query = $query;
 	}
 
@@ -80,7 +78,7 @@ class ExecuteCypherQuery extends Command
 	protected function handleResult($code, $headers, $data)
 	{
 		if ((int)($code / 100) == 2) {
-			$this->results = new ResultSet($this->client, $this->entityMapper, $data);
+			$this->results = new ResultSet($this->client, $this->client->getEntityMapper(), $data);
 			return null;
 		}
 		return $code;

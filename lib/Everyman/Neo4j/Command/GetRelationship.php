@@ -69,7 +69,7 @@ class GetRelationship extends Command
 	protected function handleResult($code, $headers, $data)
 	{
 		if ((int)($code / 100) == 2) {
-			$this->rel = $this->makeRelationship($this->rel, $data);
+			$this->rel = $this->getEntityMapper()->populateRelationship($this->rel, $data);
 			return null;
 		}
 		return $code;

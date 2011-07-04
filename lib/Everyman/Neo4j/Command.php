@@ -82,6 +82,16 @@ abstract class Command
 	}
 
 	/**
+	 * Get the entity mapper
+	 *
+	 * @return EntityMapper
+	 */
+	protected function getEntityMapper()
+	{
+		return $this->client->getEntityMapper();
+	}
+
+	/**
 	 * Get the transport
 	 *
 	 * @return Transport
@@ -89,74 +99,6 @@ abstract class Command
 	protected function getTransport()
 	{
 		return $this->client->getTransport();
-	}
-
-	/**
-	 * Parse data array into a node
-	 *
-	 * @param Node $node
-	 * @param array $data
-	 * @return Node
-	 */
-	protected function makeNode(Node $node, $data)
-	{
-		$node->useLazyLoad(false);
-		$node->setProperties($data['data']);
-		return $node;
-	}
-
-	/**
-	 * Parse data array into a path object
-	 *
-	 * @param Path $path
-	 * @param array $data
-	 * @param boolean $full
-	 * @return Path
-	 */
-	protected function makePath(Path $path, $data, $full=false)
-	{
-		foreach ($data['relationships'] as $relData) {
-			$relUri = $full ? $relData['self'] : $relData;
-			$relId = $this->getIdFromUri($relUri);
-			$rel = $this->client->getRelationship($relId, true);
-			if ($full) {
-				$rel = $this->makeRelationship($rel, $relData);
-			}
-			$path->appendRelationship($rel);
-		}
-
-		foreach ($data['nodes'] as $nodeData) {
-			$nodeUri = $full ? $nodeData['self'] : $nodeData;
-			$nodeId = $this->getIdFromUri($nodeUri);
-			$node = $this->client->getNode($nodeId, true);
-			if ($full) {
-				$node = $this->makeNode($node, $nodeData);
-			}
-			$path->appendNode($node);
-		}
-
-		return $path;
-	}
-
-	/**
-	 * Parse data array into a relationship
-	 *
-	 * @param Relationship $rel
-	 * @param array $data
-	 * @return Relationship
-	 */
-	protected function makeRelationship(Relationship $rel, $data)
-	{
-		$rel->useLazyLoad(false);
-		$rel->setProperties($data['data']);
-		$rel->setType($data['type']);
-
-		$startId = $this->getIdFromUri($data['start']);
-		$endId = $this->getIdFromUri($data['end']);
-		$rel->setStartNode($this->client->getNode($startId, true));
-		$rel->setEndNode($this->client->getNode($endId, true));
-
-		return $rel;
 	}
 }
 

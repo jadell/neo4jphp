@@ -68,7 +68,7 @@ class GetNode extends Command
 	protected function handleResult($code, $headers, $data)
 	{
 		if ((int)($code / 100) == 2) {
-			$this->node = $this->makeNode($this->node, array('data'=>$data));
+			$this->node = $this->getEntityMapper()->populateNode($this->node, array('data'=>$data));
 			return null;
 		}
 		return $code;
