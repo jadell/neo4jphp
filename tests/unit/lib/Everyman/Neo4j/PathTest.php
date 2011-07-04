@@ -97,4 +97,10 @@ class PathTest extends \PHPUnit_Framework_TestCase
 			$this->assertSame($this->rels[$i], $rel);
 		}
 	}
+
+	public function testContext_UnknownContextSet_SetsContextToNode()
+	{
+		$this->path->setContext('FOO');
+		$this->assertEquals(Path::ContextNode, $this->path->getContext());
+	}
 }

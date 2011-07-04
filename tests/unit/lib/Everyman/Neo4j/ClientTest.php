@@ -1319,6 +1319,24 @@ class ClientTest extends \PHPUnit_Framework_TestCase
 		);
 	}
 
+	public function testCypherQuery_ServerReturnsErrorCode_ReturnsFalse()
+	{
+		$props = array(
+			'query' => 'START a=(0) RETURN a'
+		);
+
+		$this->transport->expects($this->once())
+			->method('post')
+			->with('/ext/CypherPlugin/graphdb/execute_query', $props)
+			->will($this->returnValue(array('code'=>Client::ErrorBadRequest)));
+
+		$query = new Cypher\Query($this->client, 'START a=(?) RETURN a', array(0));
+
+		$result = $this->client->executeCypherQuery($query);
+		$this->assertFalse($result);
+		$this->assertEquals(Client::ErrorBadRequest, $this->client->getLastError());
+	}
+	
 	public function testTraversal_NoNodeId_ThrowsException()
 	{
 		$traversal = new Traversal($this->client);
@@ -1577,5 +1595,21 @@ class ClientTest extends \PHPUnit_Framework_TestCase
 		$this->assertInstanceOf('Everyman\Neo4j\Node', $nodes[1]);
 		$this->assertEquals(3, $nodes[1]->getId());
 		$this->assertEquals('bar', $nodes[1]->getProperty('name'));
+	}
+
+	public function testTraversal_ServerReturnsErrorCode_ReturnsFalse()
+	{
+		$traversal = new Traversal($this->client);
+		$node = new Node($this->client);
+		$node->setId(1);
+
+		$this->transport->expects($this->once())
+			->method('post')
+			->with('/node/1/traverse/node', array())
+			->will($this->returnValue(array("code"=>Client::ErrorBadRequest)));
+
+		$result = $this->client->executeTraversal($traversal, $node, Traversal::ReturnTypeNode);
+		$this->assertFalse($result);
+		$this->assertEquals(Client::ErrorBadRequest, $this->client->getLastError());
 	}
 }
