@@ -46,12 +46,12 @@ class EntityMapper
 	 * Get an id from a URI
 	 *
 	 * @param string $uri
-	 * @return integer
+	 * @return mixed
 	 */
 	public function getIdFromUri($uri)
 	{
 		$uriParts = explode('/', $uri);
-		return (integer)array_pop($uriParts);
+		return array_pop($uriParts);
 	}
 
 	/**

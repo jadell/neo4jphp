@@ -1612,4 +1612,69 @@ class ClientTest extends \PHPUnit_Framework_TestCase
 		$this->assertFalse($result);
 		$this->assertEquals(Client::ErrorBadRequest, $this->client->getLastError());
 	}
+
+	public function testPagedTraversal_TraversalGiven_ReturnsResultSets()
+	{
+		$traversal = new Traversal($this->client);
+		$traversal->setOrder(Traversal::OrderDepthFirst);
+
+		$node = new Node($this->client);
+		$node->setId(1);
+
+		$pager = new Pager($traversal, $node, Traversal::ReturnTypeNode);
+		$pager->setPageSize(1)
+			->setLeaseTime(30);
+
+		$data = array(
+			// First results page
+			array(
+				array(
+					"self" => "http://localhost:7474/db/data/node/2",
+					"data" => array(
+						"name" => "foo",
+					),
+				),
+			),
+
+			// Second results page
+			array(
+				array(
+					"self" => "http://localhost:7474/db/data/node/3",
+					"data" => array(
+						"name" => "bar",
+					),
+				),
+			),
+		);
+		
+		$this->transport->expects($this->at(0))
+			->method('post')
+			->with('/node/1/paged/traverse/node?pageSize=1&leaseTime=30',array("order" => "depth_first"))
+			->will($this->returnValue(array("code"=>200,"data"=>$data[0],"headers"=>array('Location' => "http://localhost:7474/db/data/node/1/paged/traverse/node/a1b2c3"))));
+
+		$this->transport->expects($this->at(1))
+			->method('get')
+			->with('/node/1/paged/traverse/node/a1b2c3', null)
+			->will($this->returnValue(array("code"=>200,"data"=>$data[1])));
+
+		$this->transport->expects($this->at(2))
+			->method('get')
+			->with('/node/1/paged/traverse/node/a1b2c3', null)
+			->will($this->returnValue(array("code"=>404)));
+
+		$result = $this->client->executePagedTraversal($pager);
+		$this->assertEquals(1, count($result));
+		$this->assertInstanceOf('Everyman\Neo4j\Node', $result[0]);
+		$this->assertEquals(2, $result[0]->getId());
+		$this->assertEquals('foo', $result[0]->getProperty('name'));
+
+		$result = $this->client->executePagedTraversal($pager);
+		$this->assertEquals(1, count($result));
+		$this->assertInstanceOf('Everyman\Neo4j\Node', $result[0]);
+		$this->assertEquals(3, $result[0]->getId());
+		$this->assertEquals('bar', $result[0]->getProperty('name'));
+
+		$result = $this->client->executePagedTraversal($pager);
+		$this->assertEquals(0, count($result));
+	}
 }

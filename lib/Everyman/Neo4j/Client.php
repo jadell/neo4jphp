@@ -89,6 +89,23 @@ class Client
 	}
 
 	/**
+	 * Execute a paged traversal and return the result
+	 *        
+	 * @param Pager $pager
+	 * @return array
+	 */
+	public function executePagedTraversal(Pager $pager)
+	{
+		$command = new Command\ExecutePagedTraversal($this, $pager);
+		$result = $this->runCommand($command);
+		if ($result) {
+			return $command->getResult();
+		} else {
+			return false;
+		}
+	}
+
+	/**
 	 * Execute the given traversal and return the result
 	 *        
 	 * @param Traversal $traversal

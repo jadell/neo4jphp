@@ -33,7 +33,7 @@ class TraversalTest extends \PHPUnit_Framework_TestCase
 		$this->assertNull($this->traversal->getUniqueness());
 	}
 
-	public function testOrder_UniquenessGiven_ReturnsString()
+	public function testUniqueness_UniquenessGiven_ReturnsString()
 	{
 		$this->traversal->setUniqueness(Traversal::UniquenessNodeGlobal);
 		$this->assertEquals(Traversal::UniquenessNodeGlobal, $this->traversal->getUniqueness());
@@ -44,7 +44,7 @@ class TraversalTest extends \PHPUnit_Framework_TestCase
 		$this->assertNull($this->traversal->getMaxDepth());
 	}
 
-	public function testOrder_MaxDepthGiven_ReturnsString()
+	public function testMaxDepth_MaxDepthGiven_ReturnsInteger()
 	{
 		$this->traversal->setMaxDepth(3);
 		$this->assertEquals(3, $this->traversal->getMaxDepth());
