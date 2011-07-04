@@ -110,16 +110,16 @@ if ($cmd == 'init') {
 
 	// Use the Cypher query language
 	if (!empty($argv[3]) && $argv[3] == 'cypher') {
-		$queryTemplate = "START part=(parts3,'name:*') ".
-			"MATCH (part)<-[:CONTAINS]-(order)<-[:SOLD]-(store) ".
-			"WHERE part.name = ? ".
-			"RETURN store";
-		$query = new Cypher\Query($client, $queryTemplate, array($partName));
+		$queryTemplate = "START part=(parts3,'name:{$partName}') ".
+			"MATCH (store)-[:SOLD]->()-[:CONTAINS]->(part) ".
+			// Use the count(*) to force distinct values until Cypher gets DISTINCT keyword support
+			"RETURN store, count(*)";
+		$query = new Cypher\Query($client, $queryTemplate);
 		$result = $query->getResultSet();
 	
 		echo "Found ".count($result)." stores:\n";
 		foreach($result as $row) {
-			echo "  ".$row['store']->getProperty('name')."\n";
+			echo "* ".$row['store']->getProperty('name')."\n";
 		}
 	
 	// Use javascript traversal
