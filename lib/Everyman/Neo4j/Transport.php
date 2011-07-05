@@ -39,6 +39,23 @@ class Transport
 	}
 
 	/**
+	 * Encode data for transport
+	 *
+	 * @param mixed $data
+	 * @return string
+	 */
+	public function encodeData($data)
+	{
+		$encoded = '';
+		if (is_scalar($data)) {
+			$encoded = json_encode($data);
+		} else {
+			$encoded = json_encode((object)$data);
+		}
+		return $encoded;
+	}
+	
+	/**
 	 * Make a request against the endpoint
 	 * Returned array has the following elements:
 	 *   'code' => the HTTP status code returned
@@ -71,11 +88,11 @@ class Transport
 
 			case self::POST :
 				$options[CURLOPT_POST] = true;
-				$options[CURLOPT_POSTFIELDS] = json_encode((object)$data);
+				$options[CURLOPT_POSTFIELDS] = $this->encodeData($data);
 				break;
 
 			case self::PUT :
-				$dataString = json_encode((object)$data);
+				$dataString = $this->encodeData($data);
 				$options[CURLOPT_CUSTOMREQUEST] = self::PUT;
 				$options[CURLOPT_POSTFIELDS] = $dataString;
 				$options[CURLOPT_HTTPHEADER][] = 'Content-Length: '.strlen($dataString);

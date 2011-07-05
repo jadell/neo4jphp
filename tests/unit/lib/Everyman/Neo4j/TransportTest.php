@@ -73,4 +73,38 @@ class TransportTest extends \PHPUnit_Framework_TestCase
 
 		$this->assertEquals($expected, $this->transport->get('/path','somedata'));
 	}
+	
+	public function testEncodeData_StringGiven_ReturnsString()
+	{
+		$data = 'http://localhost:7474/db/data/node/19';
+		$expected = '"http:\/\/localhost:7474\/db\/data\/node\/19"';
+		$result = $this->transport->encodeData($data);
+		$this->assertEquals($expected, $result);
+	}
+	
+	public function testEncodeData_ArrayWithNonNumericKeys_ReturnsString()
+	{
+		$obj = new \stdClass();
+		$obj->s = "hi";
+		$obj->i = 9;
+		$obj->a = array(7,8);
+	
+		$data = array(
+			'string' => 'http://localhost:7474/db/data/node/19',
+			'int' => 123,
+			'array' => array(4,5,6),
+			'object' => $obj,
+		);
+		$expected = '{"string":"http:\/\/localhost:7474\/db\/data\/node\/19","int":123,"array":[4,5,6],"object":{"s":"hi","i":9,"a":[7,8]}}';
+		$result = $this->transport->encodeData($data);
+		$this->assertEquals($expected, $result);
+	}
+	
+	public function testEncodeData_EmptyArray_ReturnsString()
+	{
+		$data = array();
+		$expected = '{}';
+		$result = $this->transport->encodeData($data);
+		$this->assertEquals($expected, $result);
+	}
 }
