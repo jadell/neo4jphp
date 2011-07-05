@@ -53,6 +53,17 @@ Examples
 	$firstRelationship = $traversal->getSingleResult($node, Traversal::ReturnTypeRelationship);
 	$paths = $traversal->getResults($node, Traversal::ReturnTypePath);
 
+### Paged traversal
+	$pager = new Pager($traversal, $node, Traversal::ReturnTypeNode);
+	$pager->setPageSize(10)
+		->setLeaseTime(30);
+
+	while ($results = $pager->getNextResults()) {
+		foreach ($results as $node) {
+			echo $node->getProperty('name');
+		}
+	}
+	
 API
 ---
 
@@ -352,7 +363,6 @@ Set the current uniqueness filter.  One of `Traversal::UniquenessNone`, `Travers
 
 To Do
 -----
-* Paged traversal
 * Batch/transaction support? (experimental)
 * Caching
 
