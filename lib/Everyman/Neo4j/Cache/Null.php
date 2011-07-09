@@ -25,7 +25,7 @@ class Null implements Cache
 	 * @param string $key
 	 * @return mixed
 	 */
-	public function get()
+	public function get($key)
 	{
 		return false;
 	}

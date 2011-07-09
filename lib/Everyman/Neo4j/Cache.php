@@ -22,7 +22,7 @@ interface Cache
 	 * @param string $key
 	 * @return mixed
 	 */
-	public function get();
+	public function get($key);
 
 	/**
 	 * Store a value in the cache
