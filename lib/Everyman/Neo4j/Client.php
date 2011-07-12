@@ -11,8 +11,10 @@ class Client
 	const ErrorConflict      = 409;
 
 	protected $transport = null;
-	protected $lastError = null;
 	protected $entityMapper = null;
+	protected $cache = null;
+
+	protected $lastError = null;
 
 	/**
 	 * Initialize the client
@@ -21,7 +23,7 @@ class Client
 	 */
 	public function __construct(Transport $transport)
 	{
-		$this->transport = $transport;
+		$this->setTransport($transport);
 	}
 
 	/**
@@ -125,6 +127,19 @@ class Client
 	}
 
 	/**
+	 * Get the cache
+	 *
+	 * @return Cache
+	 */
+	public function getCache()
+	{
+		if ($this->cache === null) {
+			$this->setCache(new Cache\Null());
+		}
+		return $this->cache;
+	}
+
+	/**
 	 * Get the entity mapper
 	 *
 	 * @return EntityMapper
@@ -132,7 +147,7 @@ class Client
 	public function getEntityMapper()
 	{
 		if ($this->entityMapper === null) {
-			$this->entityMapper = new EntityMapper($this);
+			$this->setEntityMapper(new EntityMapper($this));
 		}
 		return $this->entityMapper;
 	}
@@ -363,6 +378,36 @@ class Client
 		} else {
 			return false;
 		}
+	}
+
+	/**
+	 * Set the cache to use
+	 *
+	 * @param Cache $cache
+	 */
+	public function setCache(Cache $cache)
+	{
+		$this->cache = $cache;
+	}
+
+	/**
+	 * Set the entity mapper to use
+	 *
+	 * @param EntityMapper $mapper
+	 */
+	public function setEntityMapper(EntityMapper $mapper)
+	{
+		$this->entityMapper = $mapper;
+	}
+
+	/**
+	 * Set the transport to use
+	 *
+	 * @param Transport $transport
+	 */
+	public function setTransport(Transport $transport)
+	{
+		$this->transport = $transport;
 	}
 
 	/**
