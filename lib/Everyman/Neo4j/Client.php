@@ -59,7 +59,11 @@ class Client
 	 */
 	public function deleteNode(Node $node)
 	{
-		return $this->runCommand(new Command\DeleteNode($this, $node));
+		$result = $this->runCommand(new Command\DeleteNode($this, $node));
+		if ($result) {
+			$this->deleteCachedNode($node);
+		}
+		return $result;
 	}
 
 	/**
@@ -70,7 +74,11 @@ class Client
 	 */
 	public function deleteRelationship(Relationship $relationship)
 	{
-		return $this->runCommand(new Command\DeleteRelationship($this, $relationship));
+		$result = $this->runCommand(new Command\DeleteRelationship($this, $relationship));
+		if ($result) {
+			$this->deleteCachedRelationship($relationship);
+		}
+		return $result;
 	}
 
 	/**
@@ -438,6 +446,26 @@ class Client
 	public function setTransport(Transport $transport)
 	{
 		$this->transport = $transport;
+	}
+
+	/**
+	 * Delete a node from the cache
+	 *
+	 * @param Node $node
+	 */
+	protected function deleteCachedNode(Node $node)
+	{
+		$this->getCache()->delete('node-'.$node->getId());
+	}
+
+	/**
+	 * Delete a relationship from the cache
+	 *
+	 * @param Relationship $rel
+	 */
+	protected function deleteCachedRelationship(Relationship $rel)
+	{
+		$this->getCache()->delete('relationship-'.$rel->getId());
 	}
 
 	/**

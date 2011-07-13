@@ -131,4 +131,68 @@ class Client_CacheTest extends \PHPUnit_Framework_TestCase
 		$subseq = $this->client->getRelationship($relId);
 		$this->assertSame($rel, $subseq);
 	}
+
+	public function testDeleteNode_Success_NodeNotInCache()
+	{
+		$nodeId = 123;
+		$node = new Node($this->client);
+		$node->setId($nodeId);
+
+		$this->transport->expects($this->once())
+			->method('delete')
+			->with('/node/'.$nodeId)
+			->will($this->returnValue(array('code'=>'200')));
+
+		$this->cache->set("node-{$nodeId}", $node);
+		$this->client->deleteNode($node);
+		$this->assertFalse($this->cache->get("node-{$nodeId}"));
+	}
+
+	public function testDeleteNode_Failure_NodeRemainsInCache()
+	{
+		$nodeId = 123;
+		$node = new Node($this->client);
+		$node->setId($nodeId);
+
+		$this->transport->expects($this->once())
+			->method('delete')
+			->with('/node/'.$nodeId)
+			->will($this->returnValue(array('code'=>'400')));
+
+		$this->cache->set("node-{$nodeId}", $node);
+		$this->client->deleteNode($node);
+		$this->assertSame($node, $this->cache->get("node-{$nodeId}"));
+	}
+
+	public function testDeleteRelationship_Success_RelationshipNotInCache()
+	{
+		$relId = 123;
+		$rel = new Relationship($this->client);
+		$rel->setId($relId);
+
+		$this->transport->expects($this->once())
+			->method('delete')
+			->with('/relationship/'.$relId)
+			->will($this->returnValue(array('code'=>'200')));
+
+		$this->cache->set("relationship-{$relId}", $rel);
+		$this->client->deleteRelationship($rel);
+		$this->assertFalse($this->cache->get("relationship-{$relId}"));
+	}
+
+	public function testDeleteRelationship_Failure_RelationshipRemainsInCache()
+	{
+		$relId = 123;
+		$rel = new Relationship($this->client);
+		$rel->setId($relId);
+
+		$this->transport->expects($this->once())
+			->method('delete')
+			->with('/relationship/'.$relId)
+			->will($this->returnValue(array('code'=>'400')));
+
+		$this->cache->set("relationship-{$relId}", $rel);
+		$this->client->deleteRelationship($rel);
+		$this->assertSame($rel, $this->cache->get("relationship-{$relId}"));
+	}
 }
