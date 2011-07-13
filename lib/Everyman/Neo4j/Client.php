@@ -175,7 +175,7 @@ class Client
 	 */
 	public function getNode($id, $force=false)
 	{
-		$cached = $this->getCache()->get("node-{$id}");
+		$cached = $this->getCachedNode($id);
 		if ($cached) {
 			return $cached;
 		}
@@ -243,7 +243,7 @@ class Client
 	 */
 	public function getRelationship($id, $force=false)
 	{
-		$cached = $this->getCache()->get("relationship-{$id}");
+		$cached = $this->getCachedRelationship($id);
 		if ($cached) {
 			return $cached;
 		}
@@ -280,9 +280,15 @@ class Client
 	 */
 	public function loadNode(Node $node)
 	{
+		$cached = $this->getCachedNode($node->getId());
+		if ($cached) {
+			$node->setProperties($cached->getProperties());
+			return true;
+		}
+
 		$result = $this->runCommand(new Command\GetNode($this, $node));
 		if ($result) {
-			$this->getCache()->set('node-'.$node->getId(), $node);
+			$this->setCachedNode($node);
 		}
 		return $result;
 	}
@@ -295,9 +301,15 @@ class Client
 	 */
 	public function loadRelationship(Relationship $rel)
 	{
+		$cached = $this->getCachedRelationship($rel->getId());
+		if ($cached) {
+			$rel->setProperties($cached->getProperties());
+			return true;
+		}
+
 		$result = $this->runCommand(new Command\GetRelationship($this, $rel));
 		if ($result) {
-			$this->getCache()->set('relationship-'.$rel->getId(), $rel);
+			$this->setCachedRelationship($rel);
 		}
 		return $result;
 	}
@@ -429,6 +441,26 @@ class Client
 	}
 
 	/**
+	 * Get a node from the cache
+	 *
+	 * @param integer $id
+	 */
+	protected function getCachedNode($id)
+	{
+		return $this->getCache()->get("node-{$id}");
+	}
+
+	/**
+	 * Get a relationship from the cache
+	 *
+	 * @param integer $id
+	 */
+	protected function getCachedRelationship($id)
+	{
+		return $this->getCache()->get("relationship-{$id}");
+	}
+
+	/**
 	 * Reset the last error
 	 */
 	protected function resetLastError()
@@ -453,6 +485,26 @@ class Client
 		} else {
 			return true;
 		}
+	}
+
+	/**
+	 * Set a node in the cache
+	 *
+	 * @param Node $node
+	 */
+	protected function setCachedNode(Node $node)
+	{
+		$this->getCache()->set('node-'.$node->getId(), $node);
+	}
+
+	/**
+	 * Set a relationship in the cache
+	 *
+	 * @param Relationship $rel
+	 */
+	protected function setCachedRelationship(Relationship $rel)
+	{
+		$this->getCache()->set('relationship-'.$rel->getId(), $rel);
 	}
 
 	/**

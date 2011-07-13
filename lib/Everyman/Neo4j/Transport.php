@@ -70,6 +70,7 @@ class Transport
 	public function makeRequest($method, $path, $data=array())
 	{
 		$url = $this->getEndpoint().$path;
+echo "call: $url\n";
 
 		$options = array(
 			CURLOPT_URL => $url,

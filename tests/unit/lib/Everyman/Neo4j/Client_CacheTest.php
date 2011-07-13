@@ -22,13 +22,22 @@ class Client_CacheTest extends \PHPUnit_Framework_TestCase
 		$node = new Node($this->client);
 		$node->setId($nodeId);
 
+		$data = array(
+			'name' => 'FOO',
+		);
+
 		$this->transport->expects($this->once())
 			->method('get')
 			->with('/node/'.$nodeId.'/properties')
-			->will($this->returnValue(array('code'=>'200','data'=>array())));
+			->will($this->returnValue(array('code'=>'200','data'=>$data)));
 
 		$this->client->loadNode($node);
 		$this->assertSame($node, $this->cache->get("node-{$nodeId}"));
+		
+		$subseq = new Node($this->client);
+		$subseq->setId($nodeId);
+		$this->client->loadNode($subseq);
+		$this->assertEquals($node->getProperties(), $subseq->getProperties());
 	}
 
 	public function testLoadNode_NotFound_NodeNotInCache()
@@ -53,7 +62,9 @@ class Client_CacheTest extends \PHPUnit_Framework_TestCase
 		$rel->setId($relId);
 
 		$data = array(
-			'data' => array(),
+			'data' => array(
+				'name' => 'FOO',
+			),
 			'start' => 'http://foo:1234/db/data/node/567',
 			'end'   => 'http://foo:1234/db/data/node/890',
 			'type'  => 'FOOTYPE',
@@ -66,6 +77,11 @@ class Client_CacheTest extends \PHPUnit_Framework_TestCase
 
 		$this->client->loadRelationship($rel);
 		$this->assertSame($rel, $this->cache->get("relationship-{$relId}"));
+
+		$subseq = new Relationship($this->client);
+		$subseq->setId($relId);
+		$this->client->loadRelationship($subseq);
+		$this->assertEquals($rel->getProperties(), $subseq->getProperties());
 	}
 
 	public function testLoadRelationship_NotFound_RelationshipNotInCache()
