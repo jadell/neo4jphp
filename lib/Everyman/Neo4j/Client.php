@@ -175,6 +175,11 @@ class Client
 	 */
 	public function getNode($id, $force=false)
 	{
+		$cached = $this->getCache()->get("node-{$id}");
+		if ($cached) {
+			return $cached;
+		}
+
 		$node = new Node($this);
 		$node->setId($id);
 
@@ -238,6 +243,11 @@ class Client
 	 */
 	public function getRelationship($id, $force=false)
 	{
+		$cached = $this->getCache()->get("relationship-{$id}");
+		if ($cached) {
+			return $cached;
+		}
+
 		$rel = new Relationship($this);
 		$rel->setId($id);
 
