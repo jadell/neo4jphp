@@ -195,4 +195,64 @@ class Client_CacheTest extends \PHPUnit_Framework_TestCase
 		$this->client->deleteRelationship($rel);
 		$this->assertSame($rel, $this->cache->get("relationship-{$relId}"));
 	}
+
+	public function testSaveNode_Success_NodeInCache()
+	{
+		$nodeId = 123;
+		$node = new Node($this->client);
+		$node->setId($nodeId);
+
+		$this->transport->expects($this->once())
+			->method('put')
+			->with('/node/123/properties', array())
+			->will($this->returnValue(array('code'=>204)));
+
+		$this->client->saveNode($node);
+		$this->assertSame($node, $this->cache->get("node-{$nodeId}"));
+	}
+
+	public function testSaveNode_Failure_NodeNotInCache()
+	{
+		$nodeId = 123;
+		$node = new Node($this->client);
+		$node->setId($nodeId);
+
+		$this->transport->expects($this->once())
+			->method('put')
+			->with('/node/123/properties', array())
+			->will($this->returnValue(array('code'=>400)));
+
+		$this->client->saveNode($node);
+		$this->assertFalse($this->cache->get("node-{$nodeId}"));
+	}
+
+	public function testSaveRelationship_Success_RelationshipInCache()
+	{
+		$relId = 123;
+		$rel = new Relationship($this->client);
+		$rel->setId($relId);
+		
+		$this->transport->expects($this->once())
+			->method('put')
+			->with('/relationship/123/properties', array())
+			->will($this->returnValue(array('code'=>204)));
+
+		$this->client->saveRelationship($rel);
+		$this->assertSame($rel, $this->cache->get("relationship-{$relId}"));
+	}
+
+	public function testSaveRelationship_Failure_RelationshipNotInCache()
+	{
+		$relId = 123;
+		$rel = new Relationship($this->client);
+		$rel->setId($relId);
+		
+		$this->transport->expects($this->once())
+			->method('put')
+			->with('/relationship/123/properties', array())
+			->will($this->returnValue(array('code'=>400)));
+
+		$this->client->saveRelationship($rel);
+		$this->assertFalse($this->cache->get("relationship-{$relId}"));
+	}
 }

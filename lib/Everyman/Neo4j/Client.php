@@ -378,10 +378,16 @@ class Client
 	public function saveNode(Node $node)
 	{
 		if ($node->hasId()) {
-			return $this->runCommand(new Command\UpdateNode($this, $node));
+			$result = $this->runCommand(new Command\UpdateNode($this, $node));
 		} else {
-			return $this->runCommand(new Command\CreateNode($this, $node));
+			$result = $this->runCommand(new Command\CreateNode($this, $node));
 		}
+
+		if ($result) {
+			$this->setCachedNode($node);
+		}
+
+		return $result;
 	}
 
 	/**
@@ -393,10 +399,16 @@ class Client
 	public function saveRelationship(Relationship $rel)
 	{
 		if ($rel->hasId()) {
-			return $this->runCommand(new Command\UpdateRelationship($this, $rel));
+			$result = $this->runCommand(new Command\UpdateRelationship($this, $rel));
 		} else {
-			return $this->runCommand(new Command\CreateRelationship($this, $rel));
+			$result = $this->runCommand(new Command\CreateRelationship($this, $rel));
 		}
+
+		if ($result) {
+			$this->setCachedRelationship($rel);
+		}
+
+		return $result;
 	}
 
 	/**
