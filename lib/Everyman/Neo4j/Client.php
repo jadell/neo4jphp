@@ -270,7 +270,11 @@ class Client
 	 */
 	public function loadNode(Node $node)
 	{
-		return $this->runCommand(new Command\GetNode($this, $node));
+		$result = $this->runCommand(new Command\GetNode($this, $node));
+		if ($result) {
+			$this->getCache()->set('node-'.$node->getId(), $node);
+		}
+		return $result;
 	}
 
 	/**
@@ -281,7 +285,11 @@ class Client
 	 */
 	public function loadRelationship(Relationship $rel)
 	{
-		return $this->runCommand(new Command\GetRelationship($this, $rel));
+		$result = $this->runCommand(new Command\GetRelationship($this, $rel));
+		if ($result) {
+			$this->getCache()->set('relationship-'.$rel->getId(), $rel);
+		}
+		return $result;
 	}
 
 	/**
