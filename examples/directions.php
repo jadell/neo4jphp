@@ -6,7 +6,6 @@ use Everyman\Neo4j\Transport,
 	Everyman\Neo4j\Path,
 	Everyman\Neo4j\PathFinder,
 	Everyman\Neo4j\Relationship,
-	Everyman\Neo4j\Cache,
 	Everyman\Neo4j\Node;
 error_reporting(-1);
 ini_set('display_errors', 1);
@@ -53,7 +52,6 @@ HELP;
 
 $transport = new Transport();
 $client = new Client($transport);
-$client->setCache(new Cache\Variable());
 $intersections = new Index($client, Index::TypeNode, 'intersections1');
 
 $inters = array(
