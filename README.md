@@ -88,7 +88,7 @@ Create a new Neo4j client.
 Return any error code from the last operation.  Returns null if no error occurred.
 
     setCache(Cache $cache, integer $cacheTimeout)
-Set the caching mechanism to use.  $cacheTimeout is indicated in seconds.  There are two built-in cache wrappers that can be used: `Null` which does not cache anything (this is the default if no cache is set); and `Variable` which holds all cached values in memory for the length of the process or request.  New cache back-ends can be created by extending the `Cache` interface.
+Set the caching mechanism to use.  $cacheTimeout is indicated in seconds.  There are three built-in cache wrappers that can be used: `Cache\Null` which does not cache anything (this is the default if no cache is set); and `Cache\Variable` which holds all cached values in memory for the length of the process or request; and `Cache\Memcached` which uses the PHP Memcached extension to persist values across requests and processes.  New cache back-ends can be created by extending the `Cache` interface.
 
 ### Node
 
