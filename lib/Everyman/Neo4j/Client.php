@@ -490,7 +490,11 @@ class Client
 	 */
 	protected function getCachedNode($id)
 	{
-		return $this->getCache()->get("node-{$id}");
+		$node = $this->getCache()->get("node-{$id}");
+		if ($node) {
+			$node->setClient($this);
+		}
+		return $node;
 	}
 
 	/**
@@ -500,7 +504,11 @@ class Client
 	 */
 	protected function getCachedRelationship($id)
 	{
-		return $this->getCache()->get("relationship-{$id}");
+		$rel = $this->getCache()->get("relationship-{$id}");
+		if ($rel) {
+			$rel->setClient($this);
+		}
+		return $rel;
 	}
 
 	/**

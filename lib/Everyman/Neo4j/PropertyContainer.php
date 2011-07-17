@@ -19,7 +19,7 @@ abstract class PropertyContainer
 	 */
 	public function __construct(Client $client)
 	{
-		$this->client = $client;
+		$this->setClient($client);
 	}
 
 	/**
@@ -106,6 +106,18 @@ abstract class PropertyContainer
 	{
 		$this->loadProperties();
 		unset($this->properties[$property]);
+		return $this;
+	}
+
+	/**
+	 * Set the entity's client
+	 *
+	 * @param Client $client
+	 * @return PropertyContainer
+	 */
+	public function setClient(Client $client)
+	{
+		$this->client = $client;
 		return $this;
 	}
 
