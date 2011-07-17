@@ -13,6 +13,7 @@ class Client
 	protected $transport = null;
 	protected $entityMapper = null;
 	protected $cache = null;
+	protected $cacheTimeout = null;
 
 	protected $lastError = null;
 
@@ -142,7 +143,7 @@ class Client
 	public function getCache()
 	{
 		if ($this->cache === null) {
-			$this->setCache(new Cache\Null());
+			$this->setCache(new Cache\Null(), $this->cacheTimeout);
 		}
 		return $this->cache;
 	}
@@ -434,10 +435,12 @@ class Client
 	 * Set the cache to use
 	 *
 	 * @param Cache $cache
+	 * @param integer $cacheTimeout
 	 */
-	public function setCache(Cache $cache)
+	public function setCache(Cache $cache, $cacheTimeout=null)
 	{
 		$this->cache = $cache;
+		$this->cacheTimeout = $cacheTimeout;
 	}
 
 	/**
@@ -534,7 +537,7 @@ class Client
 	 */
 	protected function setCachedNode(Node $node)
 	{
-		$this->getCache()->set('node-'.$node->getId(), $node);
+		$this->getCache()->set('node-'.$node->getId(), $node, $this->cacheTimeout);
 	}
 
 	/**
@@ -544,7 +547,7 @@ class Client
 	 */
 	protected function setCachedRelationship(Relationship $rel)
 	{
-		$this->getCache()->set('relationship-'.$rel->getId(), $rel);
+		$this->getCache()->set('relationship-'.$rel->getId(), $rel, $this->cacheTimeout);
 	}
 
 	/**
