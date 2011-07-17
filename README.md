@@ -63,6 +63,12 @@ Examples
 			echo $node->getProperty('name');
 		}
 	}
+
+### Setting a cache
+    // By default, the caching back-end is set to `Cache\Null`.
+	// New cache back-ends can be created by implementing the `Cache` interface.
+    $client->setCache(new Cache\Variable());
+
 	
 API
 ---
@@ -79,6 +85,9 @@ Create a new Neo4j client.
 
     getLastError() : integer
 Return any error code from the last operation.  Returns null if no error occurred.
+
+    setCache(Cache $cache)
+Set the caching mechanism to use.  There are two built-in cache wrappers that can be used: `Null` which does not cache anything (this is the default if no cache is set); and `Variable` which holds all cached values in memory for the length of the process or request.  New cache back-ends can be created by extending the `Cache` interface.
 
 ### Node
 
@@ -364,6 +373,5 @@ Set the current uniqueness filter.  One of `Traversal::UniquenessNone`, `Travers
 To Do
 -----
 * Batch/transaction support? (experimental)
-* Caching
-
+* Gremlin support
 
