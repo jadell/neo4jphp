@@ -373,6 +373,7 @@ Set the current uniqueness filter.  One of `Traversal::UniquenessNone`, `Travers
 
 To Do
 -----
-* Batch/transaction support? (experimental)
 * Gremlin support
-
+* Batch/transaction support? (experimental)
+* UTF-8 support?
+* Paginated Cypher/Gremlin results?
