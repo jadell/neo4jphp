@@ -12,8 +12,9 @@ class ResultSet implements \Iterator, \Countable, \ArrayAccess
 {
 	protected $client = null;
 
-	protected $data = null;
-	protected $columns = null;
+	protected $rows = array();
+	protected $data = array();
+	protected $columns = array();
 	protected $position = 0;
 
 	/**
@@ -24,17 +25,11 @@ class ResultSet implements \Iterator, \Countable, \ArrayAccess
 	 */
 	public function __construct(Client $client, $result)
 	{
-/*
 		$this->client = $client;
-		$this->entityMapper = $entityMapper;
-		if(is_array($result) && array_key_exists('data', $result)){
+		if (is_array($result) && array_key_exists('data', $result)) {
 			$this->data = $result['data'];
 			$this->columns = $result['columns'];
-		} else {
-			$this->data = array();
-			$this->columns = array();
 		}
-*/
 	}
 
 	/**
@@ -44,33 +39,32 @@ class ResultSet implements \Iterator, \Countable, \ArrayAccess
 	 */
 	public function getColumns()
 	{
-//		return $this->columns;
+		return $this->columns;
 	}
 
 	// ArrayAccess API
 
 	public function offsetExists($offset)
 	{
-//		return isset($this->data[$offset]);
+		return isset($this->data[$offset]);
 	}
 
 	public function offsetGet($offset)
 	{
-//		# TODO: Cache these Row instances
-//		return new Row($this->client,
-//				   $this->entityMapper,
-//				   $this->columns, 
-//				   $this->data[$offset]);
+		if (!isset($this->rows[$offset])) {
+			$this->rows[$offset] = new Row($this->client, $this->columns, $this->data[$offset]);
+		}
+		return $this->rows[$offset];
 	}
 
 	public function offsetSet($offset, $value)
 	{
-//		throw new \BadMethodCallException("You cannot modify a query result.");
+		throw new \BadMethodCallException("You cannot modify a query result.");
 	}
 
 	public function offsetUnset($offset)
 	{
-//		throw new \BadMethodCallException("You cannot modify a query result.");
+		throw new \BadMethodCallException("You cannot modify a query result.");
 	}
 
 
@@ -78,7 +72,7 @@ class ResultSet implements \Iterator, \Countable, \ArrayAccess
 
 	public function count()
 	{
-//		return count($this->data);
+		return count($this->data);
 	}
 
 
@@ -86,26 +80,26 @@ class ResultSet implements \Iterator, \Countable, \ArrayAccess
 
 	public function rewind()
 	{
-//		$this->position = 0;
+		$this->position = 0;
 	}
 
 	public function current()
 	{
-//		return $this[$this->position];
+		return $this[$this->position];
 	}
 
 	public function key()
 	{
-//		return $this->position;
+		return $this->position;
 	}
 
 	public function next()
 	{
-//		++$this->position;
+		++$this->position;
 	}
 
 	public function valid()
 	{
-//		return isset($this->data[$this->position]);
+		return isset($this->data[$this->position]);
 	}
 }

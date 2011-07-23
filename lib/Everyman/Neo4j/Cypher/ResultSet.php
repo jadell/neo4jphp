@@ -13,8 +13,9 @@ class ResultSet implements \Iterator, \Countable, \ArrayAccess
 	protected $client = null;
 	protected $entityMapper = null;
 
-	protected $data = null;
-	protected $columns = null;
+	protected $rows = array();
+	protected $data = array();
+	protected $columns = array();
 	protected $position = 0;
 
 	/**
@@ -31,9 +32,6 @@ class ResultSet implements \Iterator, \Countable, \ArrayAccess
 		if(is_array($result) && array_key_exists('data', $result)){
 			$this->data = $result['data'];
 			$this->columns = $result['columns'];
-		} else {
-			$this->data = array();
-			$this->columns = array();
 		}
 	}
 
@@ -56,11 +54,13 @@ class ResultSet implements \Iterator, \Countable, \ArrayAccess
 
 	public function offsetGet($offset)
 	{
-		# TODO: Cache these Row instances
-		return new Row($this->client,
-				   $this->entityMapper,
-				   $this->columns, 
-				   $this->data[$offset]);
+		if (!isset($this->rows[$offset])) {
+			$this->rows[$offset] = new Row($this->client,
+									   $this->entityMapper,
+									   $this->columns,
+									   $this->data[$offset]);
+		}
+		return $this->rows[$offset];
 	}
 
 	public function offsetSet($offset, $value)
