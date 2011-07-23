@@ -100,6 +100,25 @@ class Client
 	}
 
 	/**
+	 * Execute the given Gremlin query and return the result
+	 *        
+	 * @param Gremlin\Query $query
+	 * @return Gremlin\ResultSet
+	 */
+	public function executeGremlinQuery(Gremlin\Query $query)
+	{
+/*
+		$command = new Command\ExecuteCypherQuery($this, $query);
+		$result = $this->runCommand($command);
+		if ($result) {
+			return $command->getResult();
+		} else {
+			return false;
+		}
+*/
+	}
+
+	/**
 	 * Execute a paged traversal and return the result
 	 *        
 	 * @param Pager $pager
