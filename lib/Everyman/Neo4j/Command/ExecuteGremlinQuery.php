@@ -4,10 +4,10 @@ namespace Everyman\Neo4j\Command;
 use Everyman\Neo4j\EntityMapper,
     Everyman\Neo4j\Command,
 	Everyman\Neo4j\Client,
-	Everyman\Neo4j\Cypher\Query,
-	Everyman\Neo4j\Cypher\ResultSet;
+	Everyman\Neo4j\Gremlin\Query,
+	Everyman\Neo4j\Gremlin\ResultSet;
 
-class ExecuteCypherQuery extends Command
+class ExecuteGremlinQuery extends Command
 {
 	protected $query = null;
 
@@ -32,8 +32,8 @@ class ExecuteCypherQuery extends Command
 	 */
 	protected function getData()
 	{
-		$queryString = $this->query->getAssembledQuery();
-		return array('query'=>$queryString);
+		$queryString = $this->query->getQuery();
+		return array('script'=>$queryString);
 	}
 
 	/**
@@ -53,7 +53,7 @@ class ExecuteCypherQuery extends Command
 	 */
 	protected function getPath()
 	{
-		return '/ext/CypherPlugin/graphdb/execute_query';
+		return '/ext/GremlinPlugin/graphdb/execute_script';
 	}
 
 	/**
@@ -77,10 +77,39 @@ class ExecuteCypherQuery extends Command
 	protected function handleResult($code, $headers, $data)
 	{
 		if ((int)($code / 100) == 2) {
-			$this->results = new ResultSet($this->client, $this->client->getEntityMapper(), $data);
+			$this->results = new ResultSet($this->client, $this->normalizeData($data));
 			return null;
 		}
 		return $code;
+	}
+
+	/**
+	 * Normalize the data so a proper ResultSet can be built
+	 * Normalized data has 'data' and 'columns' keys for result set.
+	 *
+	 * @param array $data
+	 * @return array 
+	 */
+	protected function normalizeData($data)
+	{
+		if (!array_key_exists('columns', $data)) {
+			$columns = array(0);
+
+			if (array_key_exists('self', $data)) {
+				$data = array(array($data));
+			} else {
+				foreach ($data as $i => $entity) {
+					$data[$i] = array($entity);
+				}
+			}
+
+			$data = array(
+				'columns' => $columns,
+				'data' => $data
+			);
+		}
+
+		return $data;
 	}
 }
 

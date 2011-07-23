@@ -107,15 +107,13 @@ class Client
 	 */
 	public function executeGremlinQuery(Gremlin\Query $query)
 	{
-/*
-		$command = new Command\ExecuteCypherQuery($this, $query);
+		$command = new Command\ExecuteGremlinQuery($this, $query);
 		$result = $this->runCommand($command);
 		if ($result) {
 			return $command->getResult();
 		} else {
 			return false;
 		}
-*/
 	}
 
 	/**
