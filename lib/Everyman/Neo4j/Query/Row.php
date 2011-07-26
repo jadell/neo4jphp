@@ -1,11 +1,10 @@
 <?php
-namespace Everyman\Neo4j\Cypher;
+namespace Everyman\Neo4j\Query;
 
-use Everyman\Neo4j\EntityMapper,
-    Everyman\Neo4j\Client;
+use Everyman\Neo4j\Client;
 
 /**
- * Represents a single result row from a cypher query.
+ * Represents a single result row from a query.
  * You can loop over this to get each value, or you can
  * use array access ($myRow['columnName'] or $myRow[0])
  * to get specific fields.
@@ -13,36 +12,45 @@ use Everyman\Neo4j\EntityMapper,
 class Row implements \Iterator, \Countable, \ArrayAccess
 {
 	protected $client = null;
+	protected $raw = null;
 	protected $data = null;
 	protected $columns = null;
 	protected $position = 0;
 
-	public function __construct(Client $client, EntityMapper $entityMapper, $columns, $rowData)
+	/**
+	 * Set the raw result data of this row
+	 *
+	 * @param Client $client
+	 * @param array $columns
+	 * @param array $rowData
+	 */
+	public function __construct(Client $client, $columns, $rowData)
 	{
 		$this->client = $client;
-		$this->data = $rowData;
+		$this->raw = $rowData;
+		$this->data = array();
 		$this->columns = $columns;
-
-		foreach($this->data as $i => $value) {
-			$this->data[$i] = $entityMapper->getEntityFor($value);
-		}
 	}
 
 	// ArrayAccess API
 
 	public function offsetExists($offset)
 	{
-		if(!is_integer($offset)) {
+		if (!is_integer($offset)) {
 			return in_array($offset, $this->columns);
 		}
 
-		return isset($this->data[$offset]);
+		return isset($this->raw[$offset]);
 	}
 
 	public function offsetGet($offset)
 	{
-		if(!is_integer($offset)) {
+		if (!is_integer($offset)) {
 			$offset = array_search($offset, $this->columns);
+		}
+
+		if (!isset($this->data[$offset])) {
+			$this->data[$offset] = $this->client->getEntityMapper()->getEntityFor($this->raw[$offset]);
 		}
 
 		return $this->data[$offset];
@@ -63,7 +71,7 @@ class Row implements \Iterator, \Countable, \ArrayAccess
 
 	public function count()
 	{
-		return count($this->data);
+		return count($this->raw);
 	}
 
 
@@ -91,6 +99,6 @@ class Row implements \Iterator, \Countable, \ArrayAccess
 
 	public function valid()
 	{
-		return isset($this->data[$this->position]);
+		return isset($this->raw[$this->position]);
 	}
 }

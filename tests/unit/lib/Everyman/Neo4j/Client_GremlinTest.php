@@ -45,7 +45,7 @@ class Client_GremlinTest extends \PHPUnit_Framework_TestCase
 			))));
 
 		$result = $this->client->executeGremlinQuery($query);
-		$this->assertInstanceOf('Everyman\Neo4j\Gremlin\ResultSet', $result);
+		$this->assertInstanceOf('Everyman\Neo4j\Query\ResultSet', $result);
 		$this->assertEquals('Brenda', $result[2]['name']);
 	}
 
@@ -64,7 +64,7 @@ class Client_GremlinTest extends \PHPUnit_Framework_TestCase
 			))));
 
 		$result = $this->client->executeGremlinQuery($query);
-		$this->assertInstanceOf('Everyman\Neo4j\Gremlin\ResultSet', $result);
+		$this->assertInstanceOf('Everyman\Neo4j\Query\ResultSet', $result);
 		$this->assertInstanceOf('Everyman\Neo4j\Node', $result[1][0]);
 		$this->assertEquals(2, $result[1][0]->getId());
 	}
@@ -83,7 +83,7 @@ class Client_GremlinTest extends \PHPUnit_Framework_TestCase
 			))));
 
 		$result = $this->client->executeGremlinQuery($query);
-		$this->assertInstanceOf('Everyman\Neo4j\Gremlin\ResultSet', $result);
+		$this->assertInstanceOf('Everyman\Neo4j\Query\ResultSet', $result);
 		$this->assertInstanceOf('Everyman\Neo4j\Node', $result[0][0]);
 		$this->assertEquals(2, $result[0][0]->getId());
 	}

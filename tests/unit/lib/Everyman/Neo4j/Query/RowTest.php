@@ -1,20 +1,17 @@
 <?php
-namespace Everyman\Neo4j\Cypher;
+namespace Everyman\Neo4j\Query;
 
 use Everyman\Neo4j\Client,
-	Everyman\Neo4j\EntityMapper,
     Everyman\Neo4j\Node,
     Everyman\Neo4j\Relationship;
 
 class RowTest extends \PHPUnit_Framework_TestCase
 {
 	protected $client = null;
-	protected $mapper = null;
 
 	public function setUp()
 	{
 		$this->client = new Client($this->getMock('Everyman\Neo4j\Transport', array(), array(), '', false));
-		$this->mapper = new EntityMapper($this->client);
 	}
 	
 	public function testCount()
@@ -22,7 +19,7 @@ class RowTest extends \PHPUnit_Framework_TestCase
 		$columns = array('name','age');
 		$data = array('Brenda', 14);
 
-		$row = new Row($this->client, $this->mapper, $columns, $data);
+		$row = new Row($this->client, $columns, $data);
 		$this->assertEquals(2, count($row));
 	}
 	
@@ -31,7 +28,7 @@ class RowTest extends \PHPUnit_Framework_TestCase
 		$columns = array('name','age');
 		$data = array('Brenda', 14);
 
-		$row = new Row($this->client, $this->mapper, $columns, $data);
+		$row = new Row($this->client, $columns, $data);
 		$i = 0;
 		foreach($row as $columnName => $fieldValue) {
 			$this->assertEquals($columns[$i], $columnName);
@@ -45,7 +42,7 @@ class RowTest extends \PHPUnit_Framework_TestCase
 		$columns = array('name','age');
 		$data = array('Brenda', 14);
 
-		$row = new Row($this->client, $this->mapper, $columns, $data);
+		$row = new Row($this->client, $columns, $data);
 		$i = 0;
 		foreach($columns as $column) {
 			$this->assertEquals(true, isset($row[$column]));
@@ -57,6 +54,26 @@ class RowTest extends \PHPUnit_Framework_TestCase
 		
 		$this->assertEquals(false, isset($row['blah']));
 		$this->assertEquals(false, isset($row[3]));
+	}
+
+	public function testArrayAccess_Set_ThrowsException()
+	{
+		$columns = array('name','age');
+		$data = array('Brenda', 14);
+		$row = new Row($this->client, $columns, $data);
+
+		$this->setExpectedException('BadMethodCallException');
+		$row['test'] = 'value';
+	}
+
+	public function testArrayAccess_Unset_ThrowsException()
+	{
+		$columns = array('name','age');
+		$data = array('Brenda', 14);
+		$row = new Row($this->client, $columns, $data);
+
+		$this->setExpectedException('BadMethodCallException');
+		unset($row['name']);
 	}
 	
 	public function testNodeCasting()
@@ -71,7 +88,7 @@ class RowTest extends \PHPUnit_Framework_TestCase
 			));
 
 		
-		$row = new Row($this->client, $this->mapper, $columns, $data);
+		$row = new Row($this->client, $columns, $data);
 		$i = 0;
 		
 		$this->assertTrue($row['user'] instanceof Node);
@@ -92,7 +109,7 @@ class RowTest extends \PHPUnit_Framework_TestCase
 			));
 
 		
-		$row = new Row($this->client, $this->mapper, $columns, $data);
+		$row = new Row($this->client, $columns, $data);
 		
 		$this->assertTrue($row['user'] instanceof Relationship);
 	}

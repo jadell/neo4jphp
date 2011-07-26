@@ -1,5 +1,5 @@
 <?php
-namespace Everyman\Neo4j\Gremlin;
+namespace Everyman\Neo4j\Query;
 
 use Everyman\Neo4j\Client;
 

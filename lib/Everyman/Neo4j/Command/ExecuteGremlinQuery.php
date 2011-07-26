@@ -5,7 +5,7 @@ use Everyman\Neo4j\EntityMapper,
     Everyman\Neo4j\Command,
 	Everyman\Neo4j\Client,
 	Everyman\Neo4j\Gremlin\Query,
-	Everyman\Neo4j\Gremlin\ResultSet;
+	Everyman\Neo4j\Query\ResultSet;
 
 class ExecuteGremlinQuery extends Command
 {

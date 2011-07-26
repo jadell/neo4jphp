@@ -24,7 +24,7 @@ class QueryTest extends \PHPUnit_Framework_TestCase
 
 	public function testGetResultSet_OnlyExecutesOnce_ReturnsResultSet()
 	{
-		$return = $this->getMock('Everyman\Neo4j\Gremlin\ResultSet', array(), array(), '', false);
+		$return = $this->getMock('Everyman\Neo4j\Query\ResultSet', array(), array(), '', false);
 
 		$this->client->expects($this->once())
 			->method('executeGremlinQuery')

@@ -1,7 +1,7 @@
 <?php
 namespace Everyman\Neo4j\Cypher;
 
-use Everyman\Neo4j\Client;
+use Everyman\Neo4j;
 
 /**
  * Represents a Cypher query string and variables
@@ -11,7 +11,7 @@ use Everyman\Neo4j\Client;
  * Latest documentation:
  * http://docs.neo4j.org/chunked/snapshot/cypher-query-lang.html
  */
-class Query
+class Query implements Neo4j\Query
 {
 	protected $client = null;
 	protected $template = null;
@@ -24,7 +24,7 @@ class Query
 	/**
 	 * Set the template to use
 	 *
-	 * @param Client $client
+	 * @param Neo4j\Client $client
 	 * @param string $template A Cypher query string or template
 	 * @param object $vars Replacement variables. If you pass
 	 *        one or more of these, the $template parameter will be used as a 
@@ -32,7 +32,7 @@ class Query
 	 *        with these variables, in order of occurrence.
 	 *        Template variable values must be string or numeric.
 	 */
-	public function __construct(Client $client, $template, $vars=array())
+	public function __construct(Neo4j\Client $client, $template, $vars=array())
 	{
 		$this->client = $client;
 		$this->template = $template;
@@ -40,11 +40,11 @@ class Query
 	}
 
 	/**
-	 * Get the fully assembled query string
+	 * Get the query script
 	 *
 	 * @return string
 	 */
-	public function getAssembledQuery()
+	public function getQuery()
 	{
 		$query = $this->getQueryAssembler()->assembleQuery(array_merge(array($this->template), $this->vars));
 		return $query;
@@ -53,7 +53,7 @@ class Query
 	/**
 	 * Retrieve the query results
 	 *
-	 * @return ResultSet
+	 * @return Neo4j\Query\ResultSet
 	 */
 	public function getResultSet()
 	{

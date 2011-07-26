@@ -86,7 +86,7 @@ class Client
 	 * Execute the given Cypher query and return the result
 	 *        
 	 * @param Cypher\Query $query A Cypher query, or a query template.
-	 * @return Cypher\ResultSet
+	 * @return Query\ResultSet
 	 */
 	public function executeCypherQuery(Cypher\Query $query)
 	{
@@ -103,7 +103,7 @@ class Client
 	 * Execute the given Gremlin query and return the result
 	 *        
 	 * @param Gremlin\Query $query
-	 * @return Gremlin\ResultSet
+	 * @return Query\ResultSet
 	 */
 	public function executeGremlinQuery(Gremlin\Query $query)
 	{

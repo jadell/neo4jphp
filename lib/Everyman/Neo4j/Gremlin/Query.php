@@ -1,7 +1,7 @@
 <?php
 namespace Everyman\Neo4j\Gremlin;
 
-use Everyman\Neo4j\Client;
+use Everyman\Neo4j;
 
 /**
  * Represents a Gremlin query
@@ -11,7 +11,7 @@ use Everyman\Neo4j\Client;
  * Latest documentation:
  * http://docs.neo4j.org/chunked/snapshot/gremlin-plugin.html
  */
-class Query
+class Query implements Neo4j\Query
 {
 	protected $client = null;
 	protected $script = null;
@@ -21,10 +21,10 @@ class Query
 	/**
 	 * Set the query script to use
 	 *
-	 * @param Client $client
+	 * @param Neo4j\Client $client
 	 * @param string $script A Gremlin query script
 	 */
-	public function __construct(Client $client, $script)
+	public function __construct(Neo4j\Client $client, $script)
 	{
 		$this->client = $client;
 		$this->script = $script;
@@ -43,7 +43,7 @@ class Query
 	/**
 	 * Retrieve the query results
 	 *
-	 * @return ResultSet
+	 * @return Neo4j\Query\ResultSet
 	 */
 	public function getResultSet()
 	{

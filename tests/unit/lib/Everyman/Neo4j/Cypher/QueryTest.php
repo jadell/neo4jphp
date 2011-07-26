@@ -18,25 +18,25 @@ class QueryTest extends \PHPUnit_Framework_TestCase
 		$this->query = new Query($this->client, $this->template, $this->vars);
 	}
 
-	public function testGetAssembledQuery_ReturnsString()
+	public function testGetQuery_ReturnsString()
 	{
 		$expected = 'START a=(0) RETURN a';
-		$result = $this->query->getAssembledQuery();
+		$result = $this->query->getQuery();
 		$this->assertEquals($result, $expected);
 	}
 
-	public function testGetAssembledQuery_NoVars_ReturnsString()
+	public function testGetQuery_NoVars_ReturnsString()
 	{
 		$template = 'START a=(0) RETURN a';
 		$query = new Query($this->client, $template);
 
-		$result = $this->query->getAssembledQuery();
+		$result = $this->query->getQuery();
 		$this->assertEquals($result, $template);
 	}
 
 	public function testGetResultSet_OnlyExecutesOnce_ReturnsResultSet()
 	{
-		$return = $this->getMock('Everyman\Neo4j\Cypher\ResultSet', array(), array(), '', false);
+		$return = $this->getMock('Everyman\Neo4j\Query\ResultSet', array(), array(), '', false);
 
 		$this->client->expects($this->once())
 			->method('executeCypherQuery')

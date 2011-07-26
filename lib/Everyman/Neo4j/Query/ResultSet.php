@@ -1,11 +1,10 @@
 <?php
-namespace Everyman\Neo4j\Gremlin;
+namespace Everyman\Neo4j\Query;
 
-use Everyman\Neo4j\EntityMapper,
-    Everyman\Neo4j\Client;
+use Everyman\Neo4j\Client;
 
 /**
- * This is what you get when you execute a Gremlin query. Looping
+ * This is what you get when you execute a query. Looping
  * over this will give you {@link Row} instances.
  */
 class ResultSet implements \Iterator, \Countable, \ArrayAccess

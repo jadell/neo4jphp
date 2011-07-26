@@ -5,7 +5,7 @@ use Everyman\Neo4j\EntityMapper,
     Everyman\Neo4j\Command,
 	Everyman\Neo4j\Client,
 	Everyman\Neo4j\Cypher\Query,
-	Everyman\Neo4j\Cypher\ResultSet;
+	Everyman\Neo4j\Query\ResultSet;
 
 class ExecuteCypherQuery extends Command
 {
@@ -32,7 +32,7 @@ class ExecuteCypherQuery extends Command
 	 */
 	protected function getData()
 	{
-		$queryString = $this->query->getAssembledQuery();
+		$queryString = $this->query->getQuery();
 		return array('query'=>$queryString);
 	}
 
@@ -77,7 +77,7 @@ class ExecuteCypherQuery extends Command
 	protected function handleResult($code, $headers, $data)
 	{
 		if ((int)($code / 100) == 2) {
-			$this->results = new ResultSet($this->client, $this->client->getEntityMapper(), $data);
+			$this->results = new ResultSet($this->client, $data);
 			return null;
 		}
 		return $code;
