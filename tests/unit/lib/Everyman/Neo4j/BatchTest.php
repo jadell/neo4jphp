@@ -37,21 +37,50 @@ class BatchTest extends \PHPUnit_Framework_TestCase
 		$this->assertEquals(2, $this->batch->save($nodeC));
 		$this->assertEquals(3, $this->batch->save($rel));
 	}
-	
-	public function testSave_RelationshipReferencesUnidentifiedNode_NodeAddedToOperands_ReturnsIntegerOperationIndex()
+
+	public function testSave_SameEntityMoreThanOnce_ReturnsIntegerOperationIndex()
 	{
 		$nodeA = new Node($this->client);
+			
+		$this->assertEquals(0, $this->batch->save($nodeA));
+		$this->assertEquals(0, $this->batch->save($nodeA));
+	}
+
+	public function testDelete_PropertyContainerEntities_ReturnsIntegerOperationIndex()
+	{
+		$nodeA = new Node($this->client);
+		$nodeA->setId(123);
+
 		$nodeB = new Node($this->client);
+		$nodeB->setId(456);
+
+		$nodeC = new Node($this->client);
 
 		$rel = new Relationship($this->client);
 		$rel->setId(987)
 			->setStartNode($nodeA)
 			->setEndNode($nodeB);
 			
-		$this->assertEquals(2, $this->batch->save($rel));
-		
-		$this->assertSame($nodeA, $this->batch->getOperand(0));
-		$this->assertSame($nodeB, $this->batch->getOperand(1));
+		$this->assertEquals(0, $this->batch->delete($nodeA));
+		$this->assertEquals(1, $this->batch->delete($nodeB));
+		$this->assertEquals(2, $this->batch->delete($nodeC));
+		$this->assertEquals(3, $this->batch->delete($rel));
+	}
+
+	public function testDelete_SameEntityMoreThanOnce_ReturnsIntegerOperationIndex()
+	{
+		$nodeA = new Node($this->client);
+			
+		$this->assertEquals(0, $this->batch->save($nodeA));
+		$this->assertEquals(0, $this->batch->save($nodeA));
+	}
+
+	public function testSaveAndDelete_SameEntityMoreThanOnce_ReturnsIntegerOperationIndex()
+	{
+		$nodeA = new Node($this->client);
+			
+		$this->assertEquals(0, $this->batch->save($nodeA));
+		$this->assertEquals(1, $this->batch->delete($nodeA));
 	}
 }
 

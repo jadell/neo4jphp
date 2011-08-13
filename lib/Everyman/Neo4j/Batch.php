@@ -8,7 +8,7 @@ class Batch
 {
     protected $client = null;
 
-	protected $operands = array();
+	protected $operations = array();
 
 	/**
 	 * Build the batch and set its client
@@ -18,6 +18,18 @@ class Batch
 	public function __construct(Client $client)
 	{
 		$this->client = $client;
+	}
+
+	/**
+	 * Add an entity to the batch to delete
+	 *
+	 * @param PropertyContainer $entity
+	 * @return integer
+	 */
+	public function delete(PropertyContainer $entity)
+	{
+		$opId = count($this->operations);
+		return $opId;
 	}
 
 	/**
@@ -31,17 +43,6 @@ class Batch
 	}
 
 	/**
-	 * Get the entity referenced by the given position
-	 *
-	 * @param integer $index
-	 * @return PropertyContainer
-	 */
-	public function getOperand($index)
-	{
-		return isset($this->operands[$index]) ? $this->operands[$index] : null;
-	}
-
-	/**
 	 * Add an entity to the batch to save
 	 *
 	 * @param PropertyContainer $entity
@@ -49,32 +50,7 @@ class Batch
 	 */
 	public function save(PropertyContainer $entity)
 	{
-		if ($entity instanceof Relationship) {
-			$this->checkAndSaveRelationshipEndpoints($entity);
-		}
-	
-		$opId = count($this->operands);
-		$this->operands[] = $entity;
-		
+		$opId = count($this->operations);
 		return $opId;
-	}
-	
-	/**
-	 * Check that a relationship's start and end don't need saving
-	 * Save them if they do
-	 *
-	 * @param Relationship $rel
-	 */
-	protected function checkAndSaveRelationshipEndpoints(Relationship $rel)
-	{
-		$start = $rel->getStartNode();
-		if ($start && !$start->hasId()) {
-			$this->save($start);
-		}
-		
-		$end = $rel->getEndNode();
-		if ($end && !$end->hasId()) {
-			$this->save($end);
-		}
 	}
 }
