@@ -71,8 +71,8 @@ class BatchTest extends \PHPUnit_Framework_TestCase
 	{
 		$nodeA = new Node($this->client);
 			
-		$this->assertEquals(0, $this->batch->save($nodeA));
-		$this->assertEquals(0, $this->batch->save($nodeA));
+		$this->assertEquals(0, $this->batch->delete($nodeA));
+		$this->assertEquals(0, $this->batch->delete($nodeA));
 	}
 
 	public function testSaveAndDelete_SameEntityMoreThanOnce_ReturnsIntegerOperationIndex()

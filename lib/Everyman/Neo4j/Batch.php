@@ -28,8 +28,7 @@ class Batch
 	 */
 	public function delete(PropertyContainer $entity)
 	{
-		$opId = count($this->operations);
-		return $opId;
+		return $this->addOperation('delete', $entity);
 	}
 
 	/**
@@ -50,7 +49,44 @@ class Batch
 	 */
 	public function save(PropertyContainer $entity)
 	{
-		$opId = count($this->operations);
+		return $this->addOperation('save', $entity);
+	}
+	
+	/**
+	 * Add an operation to the batch
+	 *
+	 * @param string $operation
+	 * @param PropertyContainer $entity
+	 * @return integer operation index
+	 */
+	protected function addOperation($operation, PropertyContainer $entity)
+	{
+		$opId = $this->checkOperation($operation, $entity);
+		if ($opId === null) {
+			$opId = count($this->operations);
+			$this->operations[] = array(
+				'operation' => $operation,
+				'entity' => $entity,
+			);
+		}
+	
 		return $opId;
+	}
+	
+	/**
+	 * Check to see if the given operation is already being performed on the given entity
+	 *
+	 * @param string $operation
+	 * @param PropertyContainer $entity
+	 * @return integer operation index if operation is found
+	 */
+	protected function checkOperation($operation, PropertyContainer $entity)
+	{
+		foreach ($this->operations as $i => $op) {
+			if ($op['operation'] == $operation && $op['entity'] === $entity) {
+				return $i;
+			}
+		}
+		return null;
 	}
 }
