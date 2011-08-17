@@ -42,6 +42,17 @@ class Client
 	}
 
 	/**
+	 * Commit a batch of operations
+	 *
+	 * @param Batch $batch
+	 * @return Query\ResultSet
+	 */
+	public function commitBatch(Batch $batch)
+	{
+		return null;
+	}
+
+	/**
 	 * Delete the given index
 	 *
 	 * @param Index $index

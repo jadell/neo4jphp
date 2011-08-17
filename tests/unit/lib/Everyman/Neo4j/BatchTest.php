@@ -17,6 +17,27 @@ class BatchTest extends \PHPUnit_Framework_TestCase
 		$this->assertSame($this->client, $this->batch->getClient());
 	}
 
+	public function testCommit_PassesSelfToClient_ReturnResultSet()
+	{
+		$return = $this->getMock('Everyman\Neo4j\Query\ResultSet', array(), array(), '', false);
+
+		$this->client->expects($this->once())
+			->method('commitBatch')
+			->will($this->returnValue($return));
+
+		$this->assertSame($return, $this->batch->commit());
+	}
+
+	public function testCommit_CommitMoreThanOnce_ThrowsException()
+	{
+		$this->client->expects($this->once())
+			->method('commitBatch');
+
+		$this->batch->commit();
+		$this->setExpectedException('Everyman\Neo4j\Exception');
+		$this->batch->commit();
+	}
+
 	public function testSave_PropertyContainerEntities_ReturnsIntegerOperationIndex()
 	{
 		$nodeA = new Node($this->client);

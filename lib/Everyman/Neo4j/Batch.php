@@ -8,6 +8,7 @@ class Batch
 {
     protected $client = null;
 
+	protected $committed = false;
 	protected $operations = array();
 
 	/**
@@ -18,6 +19,22 @@ class Batch
 	public function __construct(Client $client)
 	{
 		$this->client = $client;
+	}
+
+	/**
+	 * Commit the batch to the server
+	 *
+	 * @return Query\ResultSet
+	 */
+	public function commit()
+	{
+		if ($this->committed) {
+			throw new Exception('Cannot commit the same batch more than once.');
+		}
+		$this->committed = true;
+	
+		$result = $this->client->commitBatch($this);
+		return $result;
 	}
 
 	/**
