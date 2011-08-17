@@ -17,15 +17,22 @@ class BatchTest extends \PHPUnit_Framework_TestCase
 		$this->assertSame($this->client, $this->batch->getClient());
 	}
 
-	public function testCommit_PassesSelfToClient_ReturnResultSet()
+	public function testCommit_PassesSelfToClient_Success_ReturnsTrue()
 	{
-		$return = $this->getMock('Everyman\Neo4j\Query\ResultSet', array(), array(), '', false);
-
 		$this->client->expects($this->once())
 			->method('commitBatch')
-			->will($this->returnValue($return));
+			->will($this->returnValue(true));
 
-		$this->assertSame($return, $this->batch->commit());
+		$this->assertTrue($this->batch->commit());
+	}
+
+	public function testCommit_PassesSelfToClient_Failure_ReturnsFalse()
+	{
+		$this->client->expects($this->once())
+			->method('commitBatch')
+			->will($this->returnValue(false));
+
+		$this->assertFalse($this->batch->commit());
 	}
 
 	public function testCommit_CommitMoreThanOnce_ThrowsException()
@@ -96,12 +103,18 @@ class BatchTest extends \PHPUnit_Framework_TestCase
 		$this->assertEquals(0, $this->batch->delete($nodeA));
 	}
 
-	public function testSaveAndDelete_SameEntityMoreThanOnce_ReturnsIntegerOperationIndex()
+	public function testGetOperations_MixedOperations_ReturnsOperations()
 	{
 		$nodeA = new Node($this->client);
 			
 		$this->assertEquals(0, $this->batch->save($nodeA));
 		$this->assertEquals(1, $this->batch->delete($nodeA));
+		
+		$expected = array(
+			array('operation'=>'save', 'entity'=>$nodeA),
+			array('operation'=>'delete', 'entity'=>$nodeA),
+		);
+		$this->assertEquals($expected, $this->batch->getOperations());
 	}
 }
 

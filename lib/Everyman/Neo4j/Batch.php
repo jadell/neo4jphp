@@ -24,7 +24,7 @@ class Batch
 	/**
 	 * Commit the batch to the server
 	 *
-	 * @return Query\ResultSet
+	 * @return boolean
 	 */
 	public function commit()
 	{
@@ -33,8 +33,7 @@ class Batch
 		}
 		$this->committed = true;
 	
-		$result = $this->client->commitBatch($this);
-		return $result;
+		return $this->client->commitBatch($this);
 	}
 
 	/**
@@ -56,6 +55,16 @@ class Batch
 	public function getClient()
 	{
 		return $this->client;
+	}
+	
+	/**
+	 * Return the list of operations in this batch
+	 *
+	 * @return array
+	 */
+	public function getOperations()
+	{
+		return $this->operations;
 	}
 
 	/**
