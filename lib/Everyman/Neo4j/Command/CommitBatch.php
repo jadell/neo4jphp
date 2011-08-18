@@ -8,6 +8,7 @@ use Everyman\Neo4j\Command,
 
 /**
  * Commit a batch operation
+ * @todo: Handle the case of empty body or body\data needing to be objects not arrays
  */
 class CommitBatch extends Command
 {
@@ -195,6 +196,23 @@ class CommitBatch extends Command
 	protected function buildUpdateNodeOperation(Node $node)
 	{
 		$command = new UpdateNode($this->client, $node);
+		$opData = array(array(
+			'method' => $command->getMethod(),
+			'to' => $command->getPath(),
+			'body' => $command->getData(),
+		));
+		return $opData;
+	}
+	
+	/**
+	 * Update a relationship
+	 *
+	 * @param Relationship $rel
+	 * @return array
+	 */
+	protected function buildUpdateRelationshipOperation(Relationship $rel)
+	{
+		$command = new UpdateRelationship($this->client, $rel);
 		$opData = array(array(
 			'method' => $command->getMethod(),
 			'to' => $command->getPath(),

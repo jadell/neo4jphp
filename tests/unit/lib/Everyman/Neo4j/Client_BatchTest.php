@@ -97,6 +97,25 @@ class Client_BatchTest extends \PHPUnit_Framework_TestCase
 		$this->assertTrue($result);
 		$this->assertEquals(789, $rel->getId());
 	}
+	
+	public function testCommitBatch_UpdateRelationship_Success_ReturnsTrue()
+	{
+		$rel = new Relationship($this->client);
+		$rel->setId(123)
+			->setProperties(array('foo' => 'bar','baz' => 'qux'));
+
+		$request = array(array('method' => 'PUT', 'to' => '/relationship/123/properties',
+			'body' => array('foo' => 'bar','baz' => 'qux')));
+		
+		$return = array('code' => 200, 'data' => array(
+				array()));
+
+		$this->batch->save($rel);
+		$this->setupTransportExpectation($request, $this->returnValue($return));
+		$result = $this->client->commitBatch($this->batch);
+		
+		$this->assertTrue($result);
+	}
 
 	public function testCommitBatch_DeleteRelationship_Success_ReturnsTrue()
 	{
