@@ -102,6 +102,12 @@ class CommitBatch extends Command
 			} else {
 				$opData = $this->buildCreateNodeOperation($entity);
 			}
+		} else if ($operation == 'save' && $entity instanceof Relationship) {
+			if ($entity->hasId()) {
+				$opData = $this->buildUpdateRelationshipOperation($entity);
+			} else {
+				$opData = $this->buildCreateRelationshipOperation($entity);
+			}
 		} else if ($operation == 'delete' && $entity instanceof Node) {
 			$opData = $this->buildDeleteNodeOperation($entity);
 		} else if ($operation == 'delete' && $entity instanceof Relationship) {
@@ -131,6 +137,23 @@ class CommitBatch extends Command
 		return $opData;
 	}
 	
+	/**
+	 * Create a node
+	 *
+	 * @param Relationship $rel
+	 * @return array
+	 */
+	protected function buildCreateRelationshipOperation(Relationship $rel)
+	{
+		$command = new CreateRelationship($this->client, $rel);
+		$opData = array(array(
+			'method' => $command->getMethod(),
+			'to' => $command->getPath(),
+			'body' => $command->getData(),
+		));
+		return $opData;
+	}
+
 	/**
 	 * Delete a node
 	 *
@@ -199,6 +222,10 @@ class CommitBatch extends Command
 			if (!$entity->hasId()) {
 				$opData = $this->handleCreateNodeOperationResult($entity, $result);
 			}
+		} else if ($operation == 'save' && $entity instanceof Relationship) {
+			if (!$entity->hasId()) {
+				$opData = $this->handleCreateRelationshipOperationResult($entity, $result);
+			}
 		}
 	}
 
@@ -211,6 +238,18 @@ class CommitBatch extends Command
 	protected function handleCreateNodeOperationResult(Node $node, $result)
 	{
 		$command = new CreateNode($this->client, $node);
+		$command->handleResult(200, array('Location'=>$result['location']), array());
+	}
+
+	/**
+	 * Handle relationship creation
+	 *
+	 * @param Relationship $rel
+	 * @param array $result
+	 */
+	protected function handleCreateRelationshipOperationResult(Relationship $rel, $result)
+	{
+		$command = new CreateRelationship($this->client, $rel);
 		$command->handleResult(200, array('Location'=>$result['location']), array());
 	}
 }
