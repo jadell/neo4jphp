@@ -52,6 +52,23 @@ class Client_BatchTest extends \PHPUnit_Framework_TestCase
 		
 		$this->assertTrue($result);
 	}
+	
+	public function testCommitBatch_DeleteNode_Success_ReturnsTrue()
+	{
+		$node = new Node($this->client);
+		$node->setId(123);
+
+		$request = array(array('method' => 'DELETE', 'to' => '/node/123'));
+		
+		$return = array('code' => 200, 'data' => array(
+				array()));
+
+		$this->batch->delete($node);
+		$this->setupTransportExpectation($request, $this->returnValue($return));
+		$result = $this->client->commitBatch($this->batch);
+		
+		$this->assertTrue($result);
+	}
 
 	protected function setupTransportExpectation($request, $will)
 	{

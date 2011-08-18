@@ -95,12 +95,14 @@ class CommitBatch extends Command
 		$operation = $op['operation'];
 		$entity = $op['entity'];
 	
-		if ($op['operation'] == 'save' && $op['entity'] instanceof Node) {
+		if ($operation == 'save' && $entity instanceof Node) {
 			if ($entity->hasId()) {
 				$opData = $this->buildUpdateNodeOperation($entity);
 			} else {
 				$opData = $this->buildCreateNodeOperation($entity);
 			}
+		} else if ($operation == 'delete' && $entity instanceof Node) {
+			$opData = $this->buildDeleteNodeOperation($entity);
 		}
 		
 		$opData['method'] = strtoupper($opData['method']);
@@ -120,6 +122,22 @@ class CommitBatch extends Command
 			'method' => $command->getMethod(),
 			'to' => $command->getPath(),
 			'body' => $command->getData(),
+		);
+		return $opData;
+	}
+	
+	/**
+	 * Delete a node
+	 *
+	 * @param Node $node
+	 * @return array
+	 */
+	protected function buildDeleteNodeOperation(Node $node)
+	{
+		$command = new DeleteNode($this->client, $node);
+		$opData = array(
+			'method' => $command->getMethod(),
+			'to' => $command->getPath(),
 		);
 		return $opData;
 	}
@@ -156,7 +174,7 @@ class CommitBatch extends Command
 		$operation = $op['operation'];
 		$entity = $op['entity'];
 	
-		if ($op['operation'] == 'save' && $op['entity'] instanceof Node) {
+		if ($operation == 'save' && $entity instanceof Node) {
 			if (!$entity->hasId()) {
 				$opData = $this->handleCreateNodeOperationResult($entity, $result);
 			}
