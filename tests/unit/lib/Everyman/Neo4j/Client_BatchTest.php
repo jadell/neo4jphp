@@ -70,6 +70,23 @@ class Client_BatchTest extends \PHPUnit_Framework_TestCase
 		$this->assertTrue($result);
 	}
 
+	public function testCommitBatch_DeleteRelationship_Success_ReturnsTrue()
+	{
+		$rel = new Relationship($this->client);
+		$rel->setId(123);
+
+		$request = array(array('method' => 'DELETE', 'to' => '/relationship/123'));
+		
+		$return = array('code' => 200, 'data' => array(
+				array()));
+
+		$this->batch->delete($rel);
+		$this->setupTransportExpectation($request, $this->returnValue($return));
+		$result = $this->client->commitBatch($this->batch);
+		
+		$this->assertTrue($result);
+	}
+
 	protected function setupTransportExpectation($request, $will)
 	{
 		$this->transport->expects($this->once())

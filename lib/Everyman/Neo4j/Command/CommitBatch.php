@@ -3,6 +3,7 @@ namespace Everyman\Neo4j\Command;
 use Everyman\Neo4j\Command,
 	Everyman\Neo4j\Client,
 	Everyman\Neo4j\Node,
+	Everyman\Neo4j\Relationship,
 	Everyman\Neo4j\Batch;
 
 /**
@@ -34,7 +35,7 @@ class CommitBatch extends Command
 		$operations = $this->batch->getOperations();
 		$data = array();
 		foreach ($operations as $op) {
-			$data[] = $this->buildOperation($op);
+			$data = array_merge($this->buildOperation($op));
 		}
 		
 		return $data;
@@ -103,9 +104,13 @@ class CommitBatch extends Command
 			}
 		} else if ($operation == 'delete' && $entity instanceof Node) {
 			$opData = $this->buildDeleteNodeOperation($entity);
+		} else if ($operation == 'delete' && $entity instanceof Relationship) {
+			$opData = $this->buildDeleteRelationshipOperation($entity);
 		}
 		
-		$opData['method'] = strtoupper($opData['method']);
+		foreach ($opData as &$singleOp) {
+			$singleOp['method'] = strtoupper($singleOp['method']);
+		}
 		return $opData;
 	}
 	
@@ -118,11 +123,11 @@ class CommitBatch extends Command
 	protected function buildCreateNodeOperation(Node $node)
 	{
 		$command = new CreateNode($this->client, $node);
-		$opData = array(
+		$opData = array(array(
 			'method' => $command->getMethod(),
 			'to' => $command->getPath(),
 			'body' => $command->getData(),
-		);
+		));
 		return $opData;
 	}
 	
@@ -135,10 +140,26 @@ class CommitBatch extends Command
 	protected function buildDeleteNodeOperation(Node $node)
 	{
 		$command = new DeleteNode($this->client, $node);
-		$opData = array(
+		$opData = array(array(
 			'method' => $command->getMethod(),
 			'to' => $command->getPath(),
-		);
+		));
+		return $opData;
+	}
+	
+	/**
+	 * Delete a relationship
+	 *
+	 * @param Relationship $rel
+	 * @return array
+	 */
+	protected function buildDeleteRelationshipOperation(Relationship $rel)
+	{
+		$command = new DeleteRelationship($this->client, $rel);
+		$opData = array(array(
+			'method' => $command->getMethod(),
+			'to' => $command->getPath(),
+		));
 		return $opData;
 	}
 	
@@ -151,11 +172,11 @@ class CommitBatch extends Command
 	protected function buildUpdateNodeOperation(Node $node)
 	{
 		$command = new UpdateNode($this->client, $node);
-		$opData = array(
+		$opData = array(array(
 			'method' => $command->getMethod(),
 			'to' => $command->getPath(),
 			'body' => $command->getData(),
-		);
+		));
 		return $opData;
 	}
 
