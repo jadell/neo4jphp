@@ -65,14 +65,7 @@ class Batch
 	 */
 	public function getOperations()
 	{
-		$operations = array();
-		foreach ($this->operations as $op) {
-			$operations[] = array(
-				'operation' => $op->getOperation(),
-				'entity' => $op->getEntity(),
-			);			
-		}
-		return $operations;
+		return $this->operations;
 	}
 
 	/**
@@ -88,10 +81,7 @@ class Batch
 	public function reserve($opId)
 	{
 		if (isset($this->operations[$opId]) && $this->operations[$opId]->reserve()) {
-			return array(
-				'operation' => $this->operations[$opId]->getOperation(),
-				'entity' => $this->operations[$opId]->getEntity(),
-			);
+			return $this->operations[$opId];
 		}
 		return false;
 	}

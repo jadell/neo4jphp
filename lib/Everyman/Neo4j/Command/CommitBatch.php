@@ -4,6 +4,7 @@ use Everyman\Neo4j\Command,
 	Everyman\Neo4j\Client,
 	Everyman\Neo4j\Node,
 	Everyman\Neo4j\Relationship,
+	Everyman\Neo4j\Batch\Operation,
 	Everyman\Neo4j\Batch;
 
 /**
@@ -35,10 +36,9 @@ class CommitBatch extends Command
 	{
 		$operations = $this->batch->getOperations();
 		$data = array();
-		foreach ($operations as $i => $op) {
-			$reserved = $this->batch->reserve($i);
-			if ($reserved) {
-				$data = array_merge($data, $this->buildOperation($op, $i));
+		foreach ($operations as $op) {
+			if ($op->reserve()) {
+				$data = array_merge($data, $this->buildOperation($op));
 			}
 		}
 		return $data;
@@ -76,9 +76,8 @@ class CommitBatch extends Command
 	{
 		if ((int)($code / 100) == 2) {
 			$operations = $this->batch->getOperations();
-			foreach ($data as $i => $result) {
-				$opId = $result['id'];
-				$this->handleOperationResult($operations[$opId], $result);
+			foreach ($data as $result) {
+				$operations[$result['id']]->handleResult($result);
 			}
 			return null;
 		}
@@ -92,14 +91,14 @@ class CommitBatch extends Command
 	/**
 	 * Build the data needed for a single operation
 	 *
-	 * @param array $op
-	 * @param integer $opId
+	 * @param Operation $op
 	 * @return array
 	 */
-	protected function buildOperation($op, $opId)
+	protected function buildOperation(Operation $op)
 	{
-		$operation = $op['operation'];
-		$entity = $op['entity'];
+		$operation = $op->getOperation();
+		$entity = $op->getEntity();
+		$opId = $op->getId();
 	
 		if ($operation == 'save' && $entity instanceof Node) {
 			if ($entity->hasId()) {
@@ -266,56 +265,6 @@ class CommitBatch extends Command
 			'id' => $opId,
 		));
 		return $opData;
-	}
-
-	//////////////////////////////////////////////////////////////////////
-	// Result handlers //////////////////////////////////////////////////
-	////////////////////////////////////////////////////////////////////
-
-	/**
-	 * Handle a single operation's results
-	 *
-	 * @param array $op
-	 * @param array $result
-	 */
-	protected function handleOperationResult($op, $result)
-	{
-		$operation = $op['operation'];
-		$entity = $op['entity'];
-	
-		if ($operation == 'save' && $entity instanceof Node) {
-			if (!$entity->hasId()) {
-				$opData = $this->handleCreateNodeOperationResult($entity, $result);
-			}
-		} else if ($operation == 'save' && $entity instanceof Relationship) {
-			if (!$entity->hasId()) {
-				$opData = $this->handleCreateRelationshipOperationResult($entity, $result);
-			}
-		}
-	}
-
-	/**
-	 * Handle node creation
-	 *
-	 * @param Node $node
-	 * @param array $result
-	 */
-	protected function handleCreateNodeOperationResult(Node $node, $result)
-	{
-		$command = new CreateNode($this->client, $node);
-		$command->handleResult(200, array('Location'=>$result['location']), array());
-	}
-
-	/**
-	 * Handle relationship creation
-	 *
-	 * @param Relationship $rel
-	 * @param array $result
-	 */
-	protected function handleCreateRelationshipOperationResult(Relationship $rel, $result)
-	{
-		$command = new CreateRelationship($this->client, $rel);
-		$command->handleResult(200, array('Location'=>$result['location']), array());
 	}
 }
 

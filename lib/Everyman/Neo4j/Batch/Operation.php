@@ -33,6 +33,13 @@ abstract class Operation
 	}
 
 	/**
+	 * Handle the results of performing the operation
+	 *
+	 * @param array $result
+	 */
+	abstract public function handleResult($result);
+
+	/**
 	 * Is the given operation identical to this operation?
 	 *
 	 * @param Operation $op

@@ -109,12 +109,12 @@ class BatchTest extends \PHPUnit_Framework_TestCase
 			
 		$this->assertEquals(0, $this->batch->save($nodeA));
 		$this->assertEquals(1, $this->batch->delete($nodeA));
-		
-		$expected = array(
-			array('operation'=>'save', 'entity'=>$nodeA),
-			array('operation'=>'delete', 'entity'=>$nodeA),
-		);
-		$this->assertEquals($expected, $this->batch->getOperations());
+
+		$operations = $this->batch->getOperations();
+		$this->assertInternalType('array', $operations);
+		$this->assertEquals(2, count($operations));
+		$this->assertTrue($operations[0]->match(new Batch\Operation\Save($this->batch, $nodeA, 0)));
+		$this->assertTrue($operations[1]->match(new Batch\Operation\Delete($this->batch, $nodeA, 1)));
 	}
 
 	public function testReserve_OperationNotReserved_ReturnsOperation()
@@ -123,8 +123,8 @@ class BatchTest extends \PHPUnit_Framework_TestCase
 		$opId = $this->batch->save($nodeA);
 
 		$reservation = $this->batch->reserve($opId);
-		$this->assertEquals('save', $reservation['operation']);
-		$this->assertSame($nodeA, $reservation['entity']);
+		$this->assertInstanceOf('Everyman\Neo4j\Batch\Operation', $reservation);
+		$this->assertTrue($reservation->match(new Batch\Operation\Save($this->batch, $nodeA, $opId)));
 	}
 
 	public function testReserve_OperationAlreadyReserved_ReturnsFalse()

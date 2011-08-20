@@ -23,6 +23,14 @@ class Delete extends Batch\Operation
 	}
 
 	/**
+	 * Handle the results of performing the operation
+	 * There are no results to clean up a delete operation
+	 *
+	 * @param array $result
+	 */
+	public function handleResult($result){}
+
+	/**
 	 * Is the given operation identical to this operation?
 	 *
 	 * @param Operation $op

@@ -3,6 +3,9 @@ namespace Everyman\Neo4j\Batch\Operation;
 
 use Everyman\Neo4j\Batch,
 	Everyman\Neo4j\Batch\Operation,
+	Everyman\Neo4j\Batch\Command,
+	Everyman\Neo4j\Node,
+	Everyman\Neo4j\Relationship,
 	Everyman\Neo4j\PropertyContainer;
 
 /**
@@ -20,6 +23,28 @@ class Save extends Batch\Operation
 	public function __construct(Batch $batch, PropertyContainer $entity, $opId)
 	{
 		parent::__construct($batch, 'save', $entity, $opId);
+	}
+
+	/**
+	 * Handle the results of performing the operation
+	 *
+	 * @param array $result
+	 */
+	public function handleResult($result)
+	{
+		$entity = $this->entity;
+		$command = null;
+		if (!$entity->hasId()) {
+			if ($entity instanceof Node) {
+				$command = new Command\CreateNode($this->batch->getClient(), $entity);
+			} else if ($entity instanceof Relationship) {
+				$command = new Command\CreateRelationship($this->batch->getClient(), $entity);
+			}
+		}
+
+		if ($command) {
+			$command->handleResult(200, array('Location'=>$result['location']), array());
+		}
 	}
 
 	/**
