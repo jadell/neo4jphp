@@ -129,7 +129,7 @@ abstract class PropertyContainer
 	 */
 	public function setId($id)
 	{
-		$this->id = (int)$id;
+		$this->id = $id === null ? null : (int)$id;
 		return $this;
 	}
 

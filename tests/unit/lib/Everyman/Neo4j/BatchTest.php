@@ -116,5 +116,31 @@ class BatchTest extends \PHPUnit_Framework_TestCase
 		);
 		$this->assertEquals($expected, $this->batch->getOperations());
 	}
+
+	public function testReserve_OperationNotReserved_ReturnsOperation()
+	{
+		$nodeA = new Node($this->client);
+		$opId = $this->batch->save($nodeA);
+
+		$reservation = $this->batch->reserve($opId);
+		$this->assertEquals('save', $reservation['operation']);
+		$this->assertSame($nodeA, $reservation['entity']);
+	}
+
+	public function testReserve_OperationAlreadyReserved_ReturnsFalse()
+	{
+		$nodeA = new Node($this->client);
+		$opId = $this->batch->save($nodeA);
+
+		$temp = $this->batch->reserve($opId);
+		$reservation = $this->batch->reserve($opId);
+		$this->assertFalse($reservation);
+	}
+
+	public function testReserve_OperationNotExists_ReturnsFalse()
+	{
+		$reservation = $this->batch->reserve(0);
+		$this->assertFalse($reservation);
+	}
 }
 

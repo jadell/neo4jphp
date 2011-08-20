@@ -62,4 +62,32 @@ class PropertyContainerTest extends \PHPUnit_Framework_TestCase
 		$this->entity->getProperties();
 		$this->entity->getProperties();
 	}
+
+	public function testSetGetId_IntegerId_ReturnsInteger()
+	{
+		$this->entity->setId(123);
+		$this->assertTrue($this->entity->hasId());
+		$this->assertEquals(123, $this->entity->getId());
+	}
+
+	public function testSetGetId_ZeroIdIsValid_ReturnsInteger()
+	{
+		$this->entity->setId(0);
+		$this->assertTrue($this->entity->hasId());
+		$this->assertEquals(0, $this->entity->getId());
+	}
+
+	public function testSetGetId_NullValid_ReturnsNull()
+	{
+		$this->entity->setId(null);
+		$this->assertFalse($this->entity->hasId());
+		$this->assertNull($this->entity->getId());
+	}
+
+	public function testSetGetId_NonIntegerCastToInteger_ReturnsInteger()
+	{
+		$this->entity->setId('temp');
+		$this->assertTrue($this->entity->hasId());
+		$this->assertEquals(0, $this->entity->getId());
+	}
 }

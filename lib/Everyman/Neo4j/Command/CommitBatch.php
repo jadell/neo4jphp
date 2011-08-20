@@ -35,10 +35,12 @@ class CommitBatch extends Command
 	{
 		$operations = $this->batch->getOperations();
 		$data = array();
-		foreach ($operations as $op) {
-			$data = array_merge($this->buildOperation($op));
+		foreach ($operations as $i => $op) {
+			$reserved = $this->batch->reserve($i);
+			if ($reserved) {
+				$data = array_merge($data, $this->buildOperation($op, $i));
+			}
 		}
-		
 		return $data;
 	}
 
@@ -75,7 +77,8 @@ class CommitBatch extends Command
 		if ((int)($code / 100) == 2) {
 			$operations = $this->batch->getOperations();
 			foreach ($data as $i => $result) {
-				$this->handleOperationResult($operations[$i], $result);
+				$opId = $result['id'];
+				$this->handleOperationResult($operations[$opId], $result);
 			}
 			return null;
 		}
@@ -90,29 +93,30 @@ class CommitBatch extends Command
 	 * Build the data needed for a single operation
 	 *
 	 * @param array $op
+	 * @param integer $opId
 	 * @return array
 	 */
-	protected function buildOperation($op)
+	protected function buildOperation($op, $opId)
 	{
 		$operation = $op['operation'];
 		$entity = $op['entity'];
 	
 		if ($operation == 'save' && $entity instanceof Node) {
 			if ($entity->hasId()) {
-				$opData = $this->buildUpdateNodeOperation($entity);
+				$opData = $this->buildUpdateNodeOperation($entity, $opId);
 			} else {
-				$opData = $this->buildCreateNodeOperation($entity);
+				$opData = $this->buildCreateNodeOperation($entity, $opId);
 			}
 		} else if ($operation == 'save' && $entity instanceof Relationship) {
 			if ($entity->hasId()) {
-				$opData = $this->buildUpdateRelationshipOperation($entity);
+				$opData = $this->buildUpdateRelationshipOperation($entity, $opId);
 			} else {
-				$opData = $this->buildCreateRelationshipOperation($entity);
+				$opData = $this->buildCreateRelationshipOperation($entity, $opId);
 			}
 		} else if ($operation == 'delete' && $entity instanceof Node) {
-			$opData = $this->buildDeleteNodeOperation($entity);
+			$opData = $this->buildDeleteNodeOperation($entity, $opId);
 		} else if ($operation == 'delete' && $entity instanceof Relationship) {
-			$opData = $this->buildDeleteRelationshipOperation($entity);
+			$opData = $this->buildDeleteRelationshipOperation($entity, $opId);
 		}
 		
 		foreach ($opData as &$singleOp) {
@@ -125,15 +129,17 @@ class CommitBatch extends Command
 	 * Create a node
 	 *
 	 * @param Node $node
+	 * @param integer $opId
 	 * @return array
 	 */
-	protected function buildCreateNodeOperation(Node $node)
+	protected function buildCreateNodeOperation(Node $node, $opId)
 	{
 		$command = new CreateNode($this->client, $node);
 		$opData = array(array(
 			'method' => $command->getMethod(),
 			'to' => $command->getPath(),
 			'body' => $command->getData(),
+			'id' => $opId,
 		));
 		return $opData;
 	}
@@ -142,16 +148,49 @@ class CommitBatch extends Command
 	 * Create a node
 	 *
 	 * @param Relationship $rel
+	 * @param integer $opId
 	 * @return array
 	 */
-	protected function buildCreateRelationshipOperation(Relationship $rel)
+	protected function buildCreateRelationshipOperation(Relationship $rel, $opId)
 	{
 		$command = new CreateRelationship($this->client, $rel);
-		$opData = array(array(
+		$opData = array();
+
+		// Prevent the command from throwing an Exception if an unsaved start node
+		$startNode = $rel->getStartNode();
+		if (!$startNode->hasId()) {
+			$startId = $this->batch->save($startNode);
+			$reserved = $this->batch->reserve($startId);
+			if ($reserved) {
+				$opData = array_merge($opData, $this->buildCreateNodeOperation($startNode, $startId));
+			}
+			$start = "{{$startId}}/relationships";
+		} else {
+			$start = $command->getPath();
+		}
+
+		// Prevent the command from throwing an Exception if an unsaved end node
+		$endNode = $rel->getEndNode();
+		if (!$endNode->hasId()) {
+			$endId = $this->batch->save($endNode);
+			$reserved = $this->batch->reserve($endId);
+			if ($reserved) {
+				$opData = array_merge($opData, $this->buildCreateNodeOperation($endNode, $endId));
+			}
+			$endNode->setId('temp');
+			$data = $command->getData();
+			$endNode->setId(null);
+			$data['to'] = "{{$endId}}";
+		} else {
+			$data = $command->getData();
+		}
+
+		$opData[] = array(
 			'method' => $command->getMethod(),
-			'to' => $command->getPath(),
-			'body' => $command->getData(),
-		));
+			'to' => $start,
+			'body' => $data,
+			'id' => $opId,
+		);
 		return $opData;
 	}
 
@@ -159,14 +198,16 @@ class CommitBatch extends Command
 	 * Delete a node
 	 *
 	 * @param Node $node
+	 * @param integer $opId
 	 * @return array
 	 */
-	protected function buildDeleteNodeOperation(Node $node)
+	protected function buildDeleteNodeOperation(Node $node, $opId)
 	{
 		$command = new DeleteNode($this->client, $node);
 		$opData = array(array(
 			'method' => $command->getMethod(),
 			'to' => $command->getPath(),
+			'id' => $opId,
 		));
 		return $opData;
 	}
@@ -175,14 +216,16 @@ class CommitBatch extends Command
 	 * Delete a relationship
 	 *
 	 * @param Relationship $rel
+	 * @param integer $opId
 	 * @return array
 	 */
-	protected function buildDeleteRelationshipOperation(Relationship $rel)
+	protected function buildDeleteRelationshipOperation(Relationship $rel, $opId)
 	{
 		$command = new DeleteRelationship($this->client, $rel);
 		$opData = array(array(
 			'method' => $command->getMethod(),
 			'to' => $command->getPath(),
+			'id' => $opId,
 		));
 		return $opData;
 	}
@@ -191,15 +234,17 @@ class CommitBatch extends Command
 	 * Update a node
 	 *
 	 * @param Node $node
+	 * @param integer $opId
 	 * @return array
 	 */
-	protected function buildUpdateNodeOperation(Node $node)
+	protected function buildUpdateNodeOperation(Node $node, $opId)
 	{
 		$command = new UpdateNode($this->client, $node);
 		$opData = array(array(
 			'method' => $command->getMethod(),
 			'to' => $command->getPath(),
 			'body' => $command->getData(),
+			'id' => $opId,
 		));
 		return $opData;
 	}
@@ -208,15 +253,17 @@ class CommitBatch extends Command
 	 * Update a relationship
 	 *
 	 * @param Relationship $rel
+	 * @param integer $opId
 	 * @return array
 	 */
-	protected function buildUpdateRelationshipOperation(Relationship $rel)
+	protected function buildUpdateRelationshipOperation(Relationship $rel, $opId)
 	{
 		$command = new UpdateRelationship($this->client, $rel);
 		$opData = array(array(
 			'method' => $command->getMethod(),
 			'to' => $command->getPath(),
 			'body' => $command->getData(),
+			'id' => $opId,
 		));
 		return $opData;
 	}
