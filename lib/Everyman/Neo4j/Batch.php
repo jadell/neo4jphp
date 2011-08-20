@@ -45,7 +45,7 @@ class Batch
 	 */
 	public function delete(PropertyContainer $entity)
 	{
-		return $this->addOperation('delete', $entity);
+		return $this->addOperation(new Batch\Operation\Delete($this, $entity, $this->nextId()));
 	}
 
 	/**
@@ -65,7 +65,14 @@ class Batch
 	 */
 	public function getOperations()
 	{
-		return $this->operations;
+		$operations = array();
+		foreach ($this->operations as $op) {
+			$operations[] = array(
+				'operation' => $op->getOperation(),
+				'entity' => $op->getEntity(),
+			);			
+		}
+		return $operations;
 	}
 
 	/**
@@ -80,9 +87,11 @@ class Batch
 	 */
 	public function reserve($opId)
 	{
-		if (empty($this->reservations[$opId]) && isset($this->operations[$opId])) {
-			$this->reservations[$opId] = true;
-			return $this->operations[$opId];
+		if (isset($this->operations[$opId]) && $this->operations[$opId]->reserve()) {
+			return array(
+				'operation' => $this->operations[$opId]->getOperation(),
+				'entity' => $this->operations[$opId]->getEntity(),
+			);
 		}
 		return false;
 	}
@@ -95,44 +104,45 @@ class Batch
 	 */
 	public function save(PropertyContainer $entity)
 	{
-		return $this->addOperation('save', $entity);
+		return $this->addOperation(new Batch\Operation\Save($this, $entity, $this->nextId()));
 	}
 	
 	/**
 	 * Add an operation to the batch
 	 *
-	 * @param string $operation
-	 * @param PropertyContainer $entity
+	 * @param Batch\Operation $operation
 	 * @return integer operation index
 	 */
-	protected function addOperation($operation, PropertyContainer $entity)
+	protected function addOperation(Batch\Operation $operation)
 	{
-		$opId = $this->checkOperation($operation, $entity);
-		if ($opId === null) {
-			$opId = count($this->operations);
-			$this->operations[] = array(
-				'operation' => $operation,
-				'entity' => $entity,
-			);
-		}
-	
-		return $opId;
+		$foundOp = $this->checkOperation($operation);
+		$this->operations[$foundOp->getId()] = $foundOp;
+		return $foundOp->getId();
 	}
 	
 	/**
 	 * Check to see if the given operation is already being performed on the given entity
 	 *
-	 * @param string $operation
-	 * @param PropertyContainer $entity
-	 * @return integer operation index if operation is found
+	 * @param Batch\Operation $operation
+	 * @return Batch\Operation
 	 */
-	protected function checkOperation($operation, PropertyContainer $entity)
+	protected function checkOperation(Batch\Operation $operation)
 	{
-		foreach ($this->operations as $i => $op) {
-			if ($op['operation'] == $operation && $op['entity'] === $entity) {
-				return $i;
+		foreach ($this->operations as $testOp) {
+			if ($testOp->match($operation)) {
+				return $testOp;
 			}
 		}
-		return null;
+		return $operation;
+	}
+
+	/**
+	 * Get the next unused id
+	 *
+	 * @return integer
+	 */
+	protected function nextId()
+	{
+		return count($this->operations);
 	}
 }
