@@ -26,11 +26,23 @@ class Save extends Batch\Operation
 	}
 
 	/**
-	 * Handle the results of performing the operation
+	 * Build the data to send for this operation
 	 *
-	 * @param array $result
+	 * @return array of arrays
 	 */
-	public function handleResult($result)
+	public function buildData()
+	{
+		$command = $this->getCommand();
+		$opData = $command->getData($this->opId);
+		return $opData;
+	}
+
+	/**
+	 * Get the command that represents this operation
+	 *
+	 * @return Batch\Command
+	 */
+	public function getCommand()
 	{
 		$entity = $this->entity;
 		$command = null;
@@ -38,13 +50,27 @@ class Save extends Batch\Operation
 			if ($entity instanceof Node) {
 				$command = new Command\CreateNode($this->batch->getClient(), $entity);
 			} else if ($entity instanceof Relationship) {
-				$command = new Command\CreateRelationship($this->batch->getClient(), $entity);
+				$command = new Command\CreateRelationship($this->batch->getClient(), $entity, $this->batch);
+			}
+		} else {
+			if ($entity instanceof Node) {
+				$command = new Command\UpdateNode($this->batch->getClient(), $entity);
+			} else if ($entity instanceof Relationship) {
+				$command = new Command\UpdateRelationship($this->batch->getClient(), $entity);
 			}
 		}
+		return $command;
+	}
 
-		if ($command) {
-			$command->handleResult(200, array('Location'=>$result['location']), array());
-		}
+	/**
+	 * Handle the results of performing the operation
+	 *
+	 * @param array $result
+	 */
+	public function handleResult($result)
+	{
+		$command = $this->getCommand();
+		$command->handleResult(200, array(), $result);
 	}
 
 	/**

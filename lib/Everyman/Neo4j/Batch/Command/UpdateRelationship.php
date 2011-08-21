@@ -3,10 +3,10 @@ namespace Everyman\Neo4j\Batch\Command;
 use Everyman\Neo4j\Command;
 
 /**
- * Create a node
+ * Update a relationship's properties
  * Exposes methods for batches to use the command
  */
-class CreateNode extends Command\CreateNode
+class UpdateRelationship extends Command\UpdateRelationship
 {
 	/**
 	 * Return the data to pass
@@ -35,8 +35,10 @@ class CreateNode extends Command\CreateNode
 	 */
 	public function handleResult($code, $headers, $data)
 	{
-		$headers['Location'] = $data['location'];
-		return parent::handleResult($code, $headers, $data);
+		if ((int)($code / 100) == 2) {
+			return null;
+		}
+		return $code;
 	}
 }
 

@@ -100,18 +100,8 @@ class CommitBatch extends Command
 		$entity = $op->getEntity();
 		$opId = $op->getId();
 	
-		if ($operation == 'save' && $entity instanceof Node) {
-			if ($entity->hasId()) {
-				$opData = $this->buildUpdateNodeOperation($entity, $opId);
-			} else {
-				$opData = $this->buildCreateNodeOperation($entity, $opId);
-			}
-		} else if ($operation == 'save' && $entity instanceof Relationship) {
-			if ($entity->hasId()) {
-				$opData = $this->buildUpdateRelationshipOperation($entity, $opId);
-			} else {
-				$opData = $this->buildCreateRelationshipOperation($entity, $opId);
-			}
+		if ($operation == 'save') {
+			$opData = $op->buildData();
 		} else if ($operation == 'delete' && $entity instanceof Node) {
 			$opData = $this->buildDeleteNodeOperation($entity, $opId);
 		} else if ($operation == 'delete' && $entity instanceof Relationship) {
@@ -121,75 +111,6 @@ class CommitBatch extends Command
 		foreach ($opData as &$singleOp) {
 			$singleOp['method'] = strtoupper($singleOp['method']);
 		}
-		return $opData;
-	}
-	
-	/**
-	 * Create a node
-	 *
-	 * @param Node $node
-	 * @param integer $opId
-	 * @return array
-	 */
-	protected function buildCreateNodeOperation(Node $node, $opId)
-	{
-		$command = new CreateNode($this->client, $node);
-		$opData = array(array(
-			'method' => $command->getMethod(),
-			'to' => $command->getPath(),
-			'body' => $command->getData(),
-			'id' => $opId,
-		));
-		return $opData;
-	}
-	
-	/**
-	 * Create a node
-	 *
-	 * @param Relationship $rel
-	 * @param integer $opId
-	 * @return array
-	 */
-	protected function buildCreateRelationshipOperation(Relationship $rel, $opId)
-	{
-		$command = new CreateRelationship($this->client, $rel);
-		$opData = array();
-
-		// Prevent the command from throwing an Exception if an unsaved start node
-		$startNode = $rel->getStartNode();
-		if (!$startNode->hasId()) {
-			$startId = $this->batch->save($startNode);
-			$reserved = $this->batch->reserve($startId);
-			if ($reserved) {
-				$opData = array_merge($opData, $this->buildCreateNodeOperation($startNode, $startId));
-			}
-			$start = "{{$startId}}/relationships";
-		} else {
-			$start = $command->getPath();
-		}
-
-		// Prevent the command from throwing an Exception if an unsaved end node
-		$endNode = $rel->getEndNode();
-		if (!$endNode->hasId()) {
-			$endId = $this->batch->save($endNode);
-			$reserved = $this->batch->reserve($endId);
-			if ($reserved) {
-				$opData = array_merge($opData, $this->buildCreateNodeOperation($endNode, $endId));
-			}
-			$endNode->setId('temp');
-			$data = $command->getData();
-			$endNode->setId(null);
-			$data['to'] = "{{$endId}}";
-		} else {
-			$data = $command->getData();
-		}
-
-		$opData[] = array(
-			'method' => $command->getMethod(),
-			'to' => $start,
-			'body' => $data,
-			'id' => $opId,
-		);
 		return $opData;
 	}
 
@@ -224,44 +145,6 @@ class CommitBatch extends Command
 		$opData = array(array(
 			'method' => $command->getMethod(),
 			'to' => $command->getPath(),
-			'id' => $opId,
-		));
-		return $opData;
-	}
-	
-	/**
-	 * Update a node
-	 *
-	 * @param Node $node
-	 * @param integer $opId
-	 * @return array
-	 */
-	protected function buildUpdateNodeOperation(Node $node, $opId)
-	{
-		$command = new UpdateNode($this->client, $node);
-		$opData = array(array(
-			'method' => $command->getMethod(),
-			'to' => $command->getPath(),
-			'body' => $command->getData(),
-			'id' => $opId,
-		));
-		return $opData;
-	}
-	
-	/**
-	 * Update a relationship
-	 *
-	 * @param Relationship $rel
-	 * @param integer $opId
-	 * @return array
-	 */
-	protected function buildUpdateRelationshipOperation(Relationship $rel, $opId)
-	{
-		$command = new UpdateRelationship($this->client, $rel);
-		$opData = array(array(
-			'method' => $command->getMethod(),
-			'to' => $command->getPath(),
-			'body' => $command->getData(),
 			'id' => $opId,
 		));
 		return $opData;
