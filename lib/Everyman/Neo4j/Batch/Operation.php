@@ -33,11 +33,11 @@ abstract class Operation
 	}
 
 	/**
-	 * Handle the results of performing the operation
+	 * Get the underlying batch command for this operation
 	 *
-	 * @param array $result
+	 * @return Batch\Command
 	 */
-	abstract public function handleResult($result);
+	abstract public function getCommand();
 
 	/**
 	 * Is the given operation identical to this operation?
@@ -46,6 +46,18 @@ abstract class Operation
 	 * @return boolean
 	 */
 	abstract public function match(Operation $op);
+
+	/**
+	 * Build the data to send for this operation
+	 *
+	 * @return array of arrays
+	 */
+	public function getData()
+	{
+		$command = $this->getCommand();
+		$opData = $command->getData($this->opId);
+		return $opData;
+	}
 
 	/**
 	 * Return the entity
@@ -75,6 +87,17 @@ abstract class Operation
 	public function getOperation()
 	{
 		return $this->operation;
+	}
+
+	/**
+	 * Handle the results of performing the operation
+	 *
+	 * @param array $result
+	 */
+	public function handleResult($result)
+	{
+		$command = $this->getCommand();
+		$command->handleResult(200, array(), $result);
 	}
 
 	/**

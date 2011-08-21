@@ -38,7 +38,7 @@ class CommitBatch extends Command
 		$data = array();
 		foreach ($operations as $op) {
 			if ($op->reserve()) {
-				$data = array_merge($data, $this->buildOperation($op));
+				$data = array_merge($data, $op->getData());
 			}
 		}
 		return $data;
@@ -82,72 +82,6 @@ class CommitBatch extends Command
 			return null;
 		}
 		return $code;
-	}
-	
-	//////////////////////////////////////////////////////////////////////
-	// Operation builders ///////////////////////////////////////////////
-	////////////////////////////////////////////////////////////////////
-
-	/**
-	 * Build the data needed for a single operation
-	 *
-	 * @param Operation $op
-	 * @return array
-	 */
-	protected function buildOperation(Operation $op)
-	{
-		$operation = $op->getOperation();
-		$entity = $op->getEntity();
-		$opId = $op->getId();
-	
-		if ($operation == 'save') {
-			$opData = $op->buildData();
-		} else if ($operation == 'delete' && $entity instanceof Node) {
-			$opData = $this->buildDeleteNodeOperation($entity, $opId);
-		} else if ($operation == 'delete' && $entity instanceof Relationship) {
-			$opData = $this->buildDeleteRelationshipOperation($entity, $opId);
-		}
-		
-		foreach ($opData as &$singleOp) {
-			$singleOp['method'] = strtoupper($singleOp['method']);
-		}
-		return $opData;
-	}
-
-	/**
-	 * Delete a node
-	 *
-	 * @param Node $node
-	 * @param integer $opId
-	 * @return array
-	 */
-	protected function buildDeleteNodeOperation(Node $node, $opId)
-	{
-		$command = new DeleteNode($this->client, $node);
-		$opData = array(array(
-			'method' => $command->getMethod(),
-			'to' => $command->getPath(),
-			'id' => $opId,
-		));
-		return $opData;
-	}
-	
-	/**
-	 * Delete a relationship
-	 *
-	 * @param Relationship $rel
-	 * @param integer $opId
-	 * @return array
-	 */
-	protected function buildDeleteRelationshipOperation(Relationship $rel, $opId)
-	{
-		$command = new DeleteRelationship($this->client, $rel);
-		$opData = array(array(
-			'method' => $command->getMethod(),
-			'to' => $command->getPath(),
-			'id' => $opId,
-		));
-		return $opData;
 	}
 }
 

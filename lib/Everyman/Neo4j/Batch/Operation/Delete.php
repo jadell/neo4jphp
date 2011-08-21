@@ -3,6 +3,9 @@ namespace Everyman\Neo4j\Batch\Operation;
 
 use Everyman\Neo4j\Batch,
 	Everyman\Neo4j\Batch\Operation,
+	Everyman\Neo4j\Batch\Command,
+	Everyman\Neo4j\Node,
+	Everyman\Neo4j\Relationship,
 	Everyman\Neo4j\PropertyContainer;
 
 /**
@@ -23,12 +26,21 @@ class Delete extends Batch\Operation
 	}
 
 	/**
-	 * Handle the results of performing the operation
-	 * There are no results to clean up a delete operation
+	 * Get the command that represents this operation
 	 *
-	 * @param array $result
+	 * @return Batch\Command
 	 */
-	public function handleResult($result){}
+	public function getCommand()
+	{
+		$entity = $this->entity;
+		$command = null;
+		if ($entity instanceof Node) {
+			$command = new Command\DeleteNode($this->batch->getClient(), $entity);
+		} else if ($entity instanceof Relationship) {
+			$command = new Command\DeleteRelationship($this->batch->getClient(), $entity);
+		}
+		return $command;
+	}
 
 	/**
 	 * Is the given operation identical to this operation?

@@ -42,7 +42,7 @@ class CreateRelationship extends Command\CreateRelationship
 			$startId = $this->batch->save($startNode);
 			$reserved = $this->batch->reserve($startId);
 			if ($reserved) {
-				$opData = array_merge($opData, $reserved->buildData());
+				$opData = array_merge($opData, $reserved->getData());
 			}
 			$start = "{{$startId}}/relationships";
 		} else {
@@ -55,7 +55,7 @@ class CreateRelationship extends Command\CreateRelationship
 			$endId = $this->batch->save($endNode);
 			$reserved = $this->batch->reserve($endId);
 			if ($reserved) {
-				$opData = array_merge($opData, $reserved->buildData());
+				$opData = array_merge($opData, $reserved->getData());
 			}
 			$endNode->setId('temp');
 			$data = parent::getData();

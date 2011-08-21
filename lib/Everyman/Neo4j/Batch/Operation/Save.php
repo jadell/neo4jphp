@@ -26,18 +26,6 @@ class Save extends Batch\Operation
 	}
 
 	/**
-	 * Build the data to send for this operation
-	 *
-	 * @return array of arrays
-	 */
-	public function buildData()
-	{
-		$command = $this->getCommand();
-		$opData = $command->getData($this->opId);
-		return $opData;
-	}
-
-	/**
 	 * Get the command that represents this operation
 	 *
 	 * @return Batch\Command
@@ -60,17 +48,6 @@ class Save extends Batch\Operation
 			}
 		}
 		return $command;
-	}
-
-	/**
-	 * Handle the results of performing the operation
-	 *
-	 * @param array $result
-	 */
-	public function handleResult($result)
-	{
-		$command = $this->getCommand();
-		$command->handleResult(200, array(), $result);
 	}
 
 	/**
