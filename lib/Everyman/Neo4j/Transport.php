@@ -47,11 +47,21 @@ class Transport
 	public function encodeData($data)
 	{
 		$encoded = '';
-		if (is_scalar($data)) {
-			$encoded = json_encode($data);
-		} else {
-			$encoded = json_encode((object)$data);
+		if (!is_scalar($data)) {
+			if ($data) {
+				$keys = array_keys($data);
+				$nonNumeric = array_filter($keys, function ($var){
+					return !is_int($var);
+				});
+				if ($nonNumeric) {
+					$data = (object)$data;
+				}
+			} else {
+				$data = (object)$data;
+			}
 		}
+
+		$encoded = json_encode($data);
 		return $encoded;
 	}
 	
