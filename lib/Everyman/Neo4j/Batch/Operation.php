@@ -40,14 +40,6 @@ abstract class Operation
 	abstract public function getCommand();
 
 	/**
-	 * Is the given operation identical to this operation?
-	 *
-	 * @param Operation $op
-	 * @return boolean
-	 */
-	abstract public function match(Operation $op);
-
-	/**
 	 * Get the operation id
 	 *
 	 * @return integer
@@ -55,6 +47,16 @@ abstract class Operation
 	public function getId()
 	{
 		return $this->opId;
+	}
+
+	/**
+	 * Based on this operations parameters, generate a consistent id
+	 *
+	 * @return mixed
+	 */
+	public function matchId()
+	{
+		return $this->operation . spl_object_hash($this->entity);
 	}
 
 	/**

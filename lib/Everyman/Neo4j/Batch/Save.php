@@ -48,15 +48,4 @@ class Save extends Operation
 		}
 		return $command;
 	}
-
-	/**
-	 * Is the given operation identical to this operation?
-	 *
-	 * @param Operation $op
-	 * @return boolean
-	 */
-	public function match(Operation $op)
-	{
-		return ($this->operation == $op->operation && $this->entity === $op->entity);
-	}
 }

@@ -10,7 +10,7 @@ class Batch
 
 	protected $committed = false;
 	protected $operations = array();
-	protected $reservations = array();
+	protected $matches = array();
 
 	/**
 	 * Build the batch and set its client
@@ -105,25 +105,16 @@ class Batch
 	 */
 	protected function addOperation(Batch\Operation $operation)
 	{
-		$foundOp = $this->checkOperation($operation);
-		$this->operations[$foundOp->getId()] = $foundOp;
-		return $foundOp->getId();
-	}
-	
-	/**
-	 * Check to see if the given operation is already being performed on the given entity
-	 *
-	 * @param Batch\Operation $operation
-	 * @return Batch\Operation
-	 */
-	protected function checkOperation(Batch\Operation $operation)
-	{
-		foreach ($this->operations as $testOp) {
-			if ($testOp->match($operation)) {
-				return $testOp;
-			}
+		$opId = $operation->getId();
+		$matchId = $operation->matchId();
+
+		if (isset($this->matches[$matchId])) {
+			return $this->matches[$matchId]->getId();
 		}
-		return $operation;
+
+		$this->operations[$opId] = $operation;
+		$this->matches[$matchId] = $operation;
+		return $opId;
 	}
 
 	/**
