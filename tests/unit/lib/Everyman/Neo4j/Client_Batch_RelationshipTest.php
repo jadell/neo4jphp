@@ -17,8 +17,6 @@ class Client_Batch_RelationshipTest extends \PHPUnit_Framework_TestCase
 
 	public function testCommitBatch_CreateRelationship_Success_ReturnsTrue()
 	{
-		$this->markTestIncomplete();
-
 		$startNode = new Node($this->client);
 		$startNode->setId(123);
 		$endNode = new Node($this->client);
@@ -47,8 +45,6 @@ class Client_Batch_RelationshipTest extends \PHPUnit_Framework_TestCase
 
 	public function testCommitBatch_CreateRelationship_StartNodeUnidentified_ReturnsTrue()
 	{
-		$this->markTestIncomplete();
-
 		$startNode = new Node($this->client);
 		$endNode = new Node($this->client);
 		$endNode->setId(456);
@@ -80,8 +76,6 @@ class Client_Batch_RelationshipTest extends \PHPUnit_Framework_TestCase
 
 	public function testCommitBatch_CreateRelationship_EndNodeUnidentified_ReturnsTrue()
 	{
-		$this->markTestIncomplete();
-
 		$startNode = new Node($this->client);
 		$startNode->setId(456);
 		$endNode = new Node($this->client);
@@ -115,8 +109,6 @@ class Client_Batch_RelationshipTest extends \PHPUnit_Framework_TestCase
 
 	public function testCommitBatch_CreateRelationship_NeitherNodeUnidentified_ReturnsTrue()
 	{
-		$this->markTestIncomplete();
-
 		$startNode = new Node($this->client);
 		$endNode = new Node($this->client);
 
@@ -152,8 +144,6 @@ class Client_Batch_RelationshipTest extends \PHPUnit_Framework_TestCase
 
 	public function testCommitBatch_CreateRelationship_UnidentifiedNodeAlreadySavedInBatch_ReturnsTrue()
 	{
-		$this->markTestIncomplete();
-
 		$startNode = new Node($this->client);
 		$endNode = new Node($this->client);
 
@@ -165,21 +155,21 @@ class Client_Batch_RelationshipTest extends \PHPUnit_Framework_TestCase
 
 		$request = array(
 			array('id' => 0, 'method' => 'POST', 'to' => '/node', 'body' => array()),
-			array('id' => 1, 'method' => 'POST', 'to' => '/node', 'body' => array()),
-			array('id' => 2, 'method' => 'POST', 'to' => '{0}/relationships',
-				'body' => array('to' => '{1}', 'type' => 'TEST',
+			array('id' => 2, 'method' => 'POST', 'to' => '/node', 'body' => array()),
+			array('id' => 1, 'method' => 'POST', 'to' => '{0}/relationships',
+				'body' => array('to' => '{2}', 'type' => 'TEST',
 					'data' => array('foo' => 'bar','baz' => 'qux'))),
 		);
 
 		$return = array('code' => 200, 'data' => array(
 			array('id' => 0, 'location' => 'http://foo:1234/db/data/node/123'),
-			array('id' => 1, 'location' => 'http://foo:1234/db/data/node/456'),
-			array('id' => 2, 'location' => 'http://foo:1234/db/data/relationship/789'),
+			array('id' => 2, 'location' => 'http://foo:1234/db/data/node/456'),
+			array('id' => 1, 'location' => 'http://foo:1234/db/data/relationship/789'),
 		));
 
 		$this->batch->save($startNode);
-		$this->batch->save($endNode);
 		$this->batch->save($rel);
+		$this->batch->save($endNode);
 		$this->setupTransportExpectation($request, $this->returnValue($return));
 		$result = $this->client->commitBatch($this->batch);
 
@@ -191,8 +181,6 @@ class Client_Batch_RelationshipTest extends \PHPUnit_Framework_TestCase
 
 	public function testCommitBatch_UpdateRelationship_Success_ReturnsTrue()
 	{
-		$this->markTestIncomplete();
-
 		$rel = new Relationship($this->client);
 		$rel->setId(123)
 			->setProperties(array('foo' => 'bar','baz' => 'qux'));
@@ -212,8 +200,6 @@ class Client_Batch_RelationshipTest extends \PHPUnit_Framework_TestCase
 
 	public function testCommitBatch_DeleteRelationship_Success_ReturnsTrue()
 	{
-		$this->markTestIncomplete();
-
 		$rel = new Relationship($this->client);
 		$rel->setId(123);
 

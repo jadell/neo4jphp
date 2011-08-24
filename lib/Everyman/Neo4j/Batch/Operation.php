@@ -48,16 +48,6 @@ abstract class Operation
 	abstract public function match(Operation $op);
 
 	/**
-	 * Return the entity
-	 *
-	 * @return string
-	 */
-	public function getEntity()
-	{
-		return $this->entity;
-	}
-
-	/**
 	 * Get the operation id
 	 *
 	 * @return integer

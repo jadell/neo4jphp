@@ -36,7 +36,7 @@ class Delete extends Operation
 		if ($entity instanceof Node) {
 			$command = new Command\DeleteNode($this->batch->getClient(), $entity, $this->opId);
 		} else if ($entity instanceof Relationship) {
-			$command = new Command\DeleteRelationship($this->batch->getClient(), $entity);
+			$command = new Command\DeleteRelationship($this->batch->getClient(), $entity, $this->opId);
 		}
 		return $command;
 	}

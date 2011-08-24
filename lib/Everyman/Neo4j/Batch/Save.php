@@ -37,13 +37,13 @@ class Save extends Operation
 			if ($entity instanceof Node) {
 				$command = new Command\CreateNode($this->batch->getClient(), $entity, $this->opId);
 			} else if ($entity instanceof Relationship) {
-				$command = new Command\CreateRelationship($this->batch->getClient(), $entity, $this->batch);
+				$command = new Command\CreateRelationship($this->batch->getClient(), $entity, $this->opId, $this->batch);
 			}
 		} else {
 			if ($entity instanceof Node) {
 				$command = new Command\UpdateNode($this->batch->getClient(), $entity, $this->opId);
 			} else if ($entity instanceof Relationship) {
-				$command = new Command\UpdateRelationship($this->batch->getClient(), $entity);
+				$command = new Command\UpdateRelationship($this->batch->getClient(), $entity, $this->opId);
 			}
 		}
 		return $command;
