@@ -1,9 +1,8 @@
 <?php
-namespace Everyman\Neo4j\Batch\Operation;
+namespace Everyman\Neo4j\Batch;
 
 use Everyman\Neo4j\Batch,
-	Everyman\Neo4j\Batch\Operation,
-	Everyman\Neo4j\Batch\Command,
+	Everyman\Neo4j\Command\Batch as Command,
 	Everyman\Neo4j\Node,
 	Everyman\Neo4j\Relationship,
 	Everyman\Neo4j\PropertyContainer;
@@ -11,7 +10,7 @@ use Everyman\Neo4j\Batch,
 /**
  * A delete operation
  */
-class Delete extends Batch\Operation
+class Delete extends Operation
 {
 	/**
 	 * Build the operation
@@ -35,7 +34,7 @@ class Delete extends Batch\Operation
 		$entity = $this->entity;
 		$command = null;
 		if ($entity instanceof Node) {
-			$command = new Command\DeleteNode($this->batch->getClient(), $entity);
+			$command = new Command\DeleteNode($this->batch->getClient(), $entity, $this->opId);
 		} else if ($entity instanceof Relationship) {
 			$command = new Command\DeleteRelationship($this->batch->getClient(), $entity);
 		}
@@ -50,8 +49,6 @@ class Delete extends Batch\Operation
 	 */
 	public function match(Operation $op)
 	{
-		$otherOperation = $op->getOperation();
-		$otherEntity = $op->getEntity();
-		return ($this->operation == $otherOperation && $this->entity === $otherEntity);
+		return ($this->operation == $op->operation && $this->entity === $op->entity);
 	}
 }

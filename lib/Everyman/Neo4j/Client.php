@@ -49,7 +49,7 @@ class Client
 	 */
 	public function commitBatch(Batch $batch)
 	{
-		return $this->runCommand(new Command\CommitBatch($this, $batch));
+		return $this->runCommand(new Command\Batch\Commit($this, $batch));
 	}
 
 	/**

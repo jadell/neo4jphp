@@ -1,9 +1,8 @@
 <?php
-namespace Everyman\Neo4j\Batch\Operation;
+namespace Everyman\Neo4j\Batch;
 
 use Everyman\Neo4j\Batch,
-	Everyman\Neo4j\Batch\Operation,
-	Everyman\Neo4j\Batch\Command,
+	Everyman\Neo4j\Command\Batch as Command,
 	Everyman\Neo4j\Node,
 	Everyman\Neo4j\Relationship,
 	Everyman\Neo4j\PropertyContainer;
@@ -11,7 +10,7 @@ use Everyman\Neo4j\Batch,
 /**
  * A save operation
  */
-class Save extends Batch\Operation
+class Save extends Operation
 {
 	/**
 	 * Build the operation
@@ -36,13 +35,13 @@ class Save extends Batch\Operation
 		$command = null;
 		if (!$entity->hasId()) {
 			if ($entity instanceof Node) {
-				$command = new Command\CreateNode($this->batch->getClient(), $entity);
+				$command = new Command\CreateNode($this->batch->getClient(), $entity, $this->opId);
 			} else if ($entity instanceof Relationship) {
 				$command = new Command\CreateRelationship($this->batch->getClient(), $entity, $this->batch);
 			}
 		} else {
 			if ($entity instanceof Node) {
-				$command = new Command\UpdateNode($this->batch->getClient(), $entity);
+				$command = new Command\UpdateNode($this->batch->getClient(), $entity, $this->opId);
 			} else if ($entity instanceof Relationship) {
 				$command = new Command\UpdateRelationship($this->batch->getClient(), $entity);
 			}
@@ -58,8 +57,6 @@ class Save extends Batch\Operation
 	 */
 	public function match(Operation $op)
 	{
-		$otherOperation = $op->getOperation();
-		$otherEntity = $op->getEntity();
-		return ($this->operation == $otherOperation && $this->entity === $otherEntity);
+		return ($this->operation == $op->operation && $this->entity === $op->entity);
 	}
 }

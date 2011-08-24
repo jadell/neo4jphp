@@ -113,8 +113,8 @@ class BatchTest extends \PHPUnit_Framework_TestCase
 		$operations = $this->batch->getOperations();
 		$this->assertInternalType('array', $operations);
 		$this->assertEquals(2, count($operations));
-		$this->assertTrue($operations[0]->match(new Batch\Operation\Save($this->batch, $nodeA, 0)));
-		$this->assertTrue($operations[1]->match(new Batch\Operation\Delete($this->batch, $nodeA, 1)));
+		$this->assertTrue($operations[0]->match(new Batch\Save($this->batch, $nodeA, 0)));
+		$this->assertTrue($operations[1]->match(new Batch\Delete($this->batch, $nodeA, 1)));
 	}
 
 	public function testReserve_OperationNotReserved_ReturnsOperation()
@@ -124,7 +124,7 @@ class BatchTest extends \PHPUnit_Framework_TestCase
 
 		$reservation = $this->batch->reserve($opId);
 		$this->assertInstanceOf('Everyman\Neo4j\Batch\Operation', $reservation);
-		$this->assertTrue($reservation->match(new Batch\Operation\Save($this->batch, $nodeA, $opId)));
+		$this->assertTrue($reservation->match(new Batch\Save($this->batch, $nodeA, $opId)));
 	}
 
 	public function testReserve_OperationAlreadyReserved_ReturnsFalse()

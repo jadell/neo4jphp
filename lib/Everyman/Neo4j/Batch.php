@@ -45,7 +45,7 @@ class Batch
 	 */
 	public function delete(PropertyContainer $entity)
 	{
-		return $this->addOperation(new Batch\Operation\Delete($this, $entity, $this->nextId()));
+		return $this->addOperation(new Batch\Delete($this, $entity, $this->nextId()));
 	}
 
 	/**
@@ -94,7 +94,7 @@ class Batch
 	 */
 	public function save(PropertyContainer $entity)
 	{
-		return $this->addOperation(new Batch\Operation\Save($this, $entity, $this->nextId()));
+		return $this->addOperation(new Batch\Save($this, $entity, $this->nextId()));
 	}
 	
 	/**

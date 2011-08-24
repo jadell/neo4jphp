@@ -48,18 +48,6 @@ abstract class Operation
 	abstract public function match(Operation $op);
 
 	/**
-	 * Build the data to send for this operation
-	 *
-	 * @return array of arrays
-	 */
-	public function getData()
-	{
-		$command = $this->getCommand();
-		$opData = $command->getData($this->opId);
-		return $opData;
-	}
-
-	/**
 	 * Return the entity
 	 *
 	 * @return string
@@ -77,27 +65,6 @@ abstract class Operation
 	public function getId()
 	{
 		return $this->opId;
-	}
-
-	/**
-	 * Return the operation type
-	 *
-	 * @return string
-	 */
-	public function getOperation()
-	{
-		return $this->operation;
-	}
-
-	/**
-	 * Handle the results of performing the operation
-	 *
-	 * @param array $result
-	 */
-	public function handleResult($result)
-	{
-		$command = $this->getCommand();
-		$command->handleResult(200, array(), $result);
 	}
 
 	/**
