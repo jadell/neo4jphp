@@ -34,8 +34,10 @@ class Commit extends Command
 		$data = array();
 		foreach ($operations as $op) {
 			if ($op->reserve()) {
-				$command = $op->getCommand();
-				$data = array_merge($data, $command->getData());
+				$opData = $op->getCommand()->getData();
+				foreach ($opData as $datum) {
+					$data[] = $datum;
+				}
 			}
 		}
 		return $data;
