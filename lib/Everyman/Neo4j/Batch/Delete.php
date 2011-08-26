@@ -12,6 +12,8 @@ use Everyman\Neo4j\Batch,
  */
 class Delete extends Operation
 {
+	protected $command = null;
+
 	/**
 	 * Build the operation
 	 *
@@ -31,13 +33,17 @@ class Delete extends Operation
 	 */
 	public function getCommand()
 	{
-		$entity = $this->entity;
-		$command = null;
-		if ($entity instanceof Node) {
-			$command = new Command\DeleteNode($this->batch->getClient(), $entity, $this->opId);
-		} else if ($entity instanceof Relationship) {
-			$command = new Command\DeleteRelationship($this->batch->getClient(), $entity, $this->opId);
+		if (!$this->command) {
+			$entity = $this->entity;
+			$command = null;
+			if ($entity instanceof Node) {
+				$command = new Command\DeleteNode($this->batch->getClient(), $entity, $this->opId);
+			} else if ($entity instanceof Relationship) {
+				$command = new Command\DeleteRelationship($this->batch->getClient(), $entity, $this->opId);
+			}
+
+			$this->command = $command;
 		}
-		return $command;
+		return $this->command;
 	}
 }

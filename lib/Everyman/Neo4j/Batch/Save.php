@@ -12,6 +12,8 @@ use Everyman\Neo4j\Batch,
  */
 class Save extends Operation
 {
+	protected $command = null;
+
 	/**
 	 * Build the operation
 	 *
@@ -31,21 +33,25 @@ class Save extends Operation
 	 */
 	public function getCommand()
 	{
-		$entity = $this->entity;
-		$command = null;
-		if (!$entity->hasId()) {
-			if ($entity instanceof Node) {
-				$command = new Command\CreateNode($this->batch->getClient(), $entity, $this->opId);
-			} else if ($entity instanceof Relationship) {
-				$command = new Command\CreateRelationship($this->batch->getClient(), $entity, $this->opId, $this->batch);
+		if (!$this->command) {
+			$entity = $this->entity;
+			$command = null;
+			if (!$entity->hasId()) {
+				if ($entity instanceof Node) {
+					$command = new Command\CreateNode($this->batch->getClient(), $entity, $this->opId);
+				} else if ($entity instanceof Relationship) {
+					$command = new Command\CreateRelationship($this->batch->getClient(), $entity, $this->opId, $this->batch);
+				}
+			} else {
+				if ($entity instanceof Node) {
+					$command = new Command\UpdateNode($this->batch->getClient(), $entity, $this->opId);
+				} else if ($entity instanceof Relationship) {
+					$command = new Command\UpdateRelationship($this->batch->getClient(), $entity, $this->opId);
+				}
 			}
-		} else {
-			if ($entity instanceof Node) {
-				$command = new Command\UpdateNode($this->batch->getClient(), $entity, $this->opId);
-			} else if ($entity instanceof Relationship) {
-				$command = new Command\UpdateRelationship($this->batch->getClient(), $entity, $this->opId);
-			}
+
+			$this->command = $command;
 		}
-		return $command;
+		return $this->command;
 	}
 }
