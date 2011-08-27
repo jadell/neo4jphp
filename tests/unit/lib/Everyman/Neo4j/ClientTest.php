@@ -123,6 +123,19 @@ class ClientTest extends \PHPUnit_Framework_TestCase
 		);
 	}
 
+	public function testSaveNode_CreateNoProperties_ReturnsSuccess()
+	{
+		$node = new Node($this->client);
+		
+		$this->transport->expects($this->once())
+			->method('post')
+			->with('/node',null)
+			->will($this->returnValue(array('code'=>201, 'headers'=>array('Location'=>'http://foo.com:1234/db/data/node/123'))));
+
+		$this->assertTrue($this->client->saveNode($node));
+		$this->assertEquals(123, $node->getId());
+	}
+
 	public function testGetNode_NotFound_ReturnsNull()
 	{
 		$nodeId = 123;

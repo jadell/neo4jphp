@@ -30,7 +30,7 @@ class CreateNode extends Command
 	 */
 	protected function getData()
 	{
-		return $this->node->getProperties();
+		return $this->node->getProperties() ?: null;
 	}
 
 	/**

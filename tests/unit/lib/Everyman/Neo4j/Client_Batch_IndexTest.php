@@ -46,7 +46,7 @@ class Client_Batch_IndexTest extends \PHPUnit_Framework_TestCase
 		$index = new Index($this->client, Index::TypeNode, 'indexname');
 
 		$request = array(
-			array('id' => 1, 'method' => 'POST', 'to' => '/node', 'body' => array()),
+			array('id' => 1, 'method' => 'POST', 'to' => '/node', 'body' => null),
 			array('id' => 0, 'method' => 'POST',
 				'to' => '/index/node/indexname/somekey/somevalue',
 				'body' => '{1}'
@@ -97,8 +97,8 @@ class Client_Batch_IndexTest extends \PHPUnit_Framework_TestCase
 		$index = new Index($this->client, Index::TypeRelationship, 'indexname');
 
 		$request = array(
-			array('id' => 2, 'method' => 'POST', 'to' => '/node', 'body' => array()),
-			array('id' => 3, 'method' => 'POST', 'to' => '/node', 'body' => array()),
+			array('id' => 2, 'method' => 'POST', 'to' => '/node', 'body' => null),
+			array('id' => 3, 'method' => 'POST', 'to' => '/node', 'body' => null),
 			array('id' => 1, 'method' => 'POST', 'to' => '{2}/relationships',
 				'body' => array('to' => '{3}', 'type' => 'TEST')
 			),

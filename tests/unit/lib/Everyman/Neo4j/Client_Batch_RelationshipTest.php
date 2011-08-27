@@ -55,7 +55,7 @@ class Client_Batch_RelationshipTest extends \PHPUnit_Framework_TestCase
 			->setEndNode($endNode);
 
 		$request = array(
-			array('id' => 1, 'method' => 'POST', 'to' => '/node', 'body' => array()),
+			array('id' => 1, 'method' => 'POST', 'to' => '/node', 'body' => null),
 			array('id' => 0, 'method' => 'POST', 'to' => '{1}/relationships',
 				'body' => array('to' => '/node/456', 'type' => 'TEST')),
 		);
@@ -87,7 +87,7 @@ class Client_Batch_RelationshipTest extends \PHPUnit_Framework_TestCase
 			->setProperties(array('foo' => 'bar','baz' => 'qux'));
 
 		$request = array(
-			array('id' => 1, 'method' => 'POST', 'to' => '/node', 'body' => array()),
+			array('id' => 1, 'method' => 'POST', 'to' => '/node', 'body' => null),
 			array('id' => 0, 'method' => 'POST', 'to' => '/node/456/relationships',
 				'body' => array('to' => '{1}', 'type' => 'TEST',
 					'data' => array('foo' => 'bar','baz' => 'qux'))),
@@ -119,8 +119,8 @@ class Client_Batch_RelationshipTest extends \PHPUnit_Framework_TestCase
 			->setProperties(array('foo' => 'bar','baz' => 'qux'));
 
 		$request = array(
-			array('id' => 1, 'method' => 'POST', 'to' => '/node', 'body' => array()),
-			array('id' => 2, 'method' => 'POST', 'to' => '/node', 'body' => array()),
+			array('id' => 1, 'method' => 'POST', 'to' => '/node', 'body' => null),
+			array('id' => 2, 'method' => 'POST', 'to' => '/node', 'body' => null),
 			array('id' => 0, 'method' => 'POST', 'to' => '{1}/relationships',
 				'body' => array('to' => '{2}', 'type' => 'TEST',
 					'data' => array('foo' => 'bar','baz' => 'qux'))),
@@ -154,8 +154,8 @@ class Client_Batch_RelationshipTest extends \PHPUnit_Framework_TestCase
 			->setProperties(array('foo' => 'bar','baz' => 'qux'));
 
 		$request = array(
-			array('id' => 0, 'method' => 'POST', 'to' => '/node', 'body' => array()),
-			array('id' => 2, 'method' => 'POST', 'to' => '/node', 'body' => array()),
+			array('id' => 0, 'method' => 'POST', 'to' => '/node', 'body' => null),
+			array('id' => 2, 'method' => 'POST', 'to' => '/node', 'body' => null),
 			array('id' => 1, 'method' => 'POST', 'to' => '{0}/relationships',
 				'body' => array('to' => '{2}', 'type' => 'TEST',
 					'data' => array('foo' => 'bar','baz' => 'qux'))),
