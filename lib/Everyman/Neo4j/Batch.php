@@ -23,6 +23,20 @@ class Batch
 	}
 
 	/**
+	 * Add the given entity to the given index with the given key/value
+	 *
+	 * @param Index $index
+	 * @param PropertyContainer $entity
+	 * @param string $key
+	 * @param string $value
+	 * @return integer
+	 */
+	public function addTo(Index $index, PropertyContainer $entity, $key, $value)
+	{
+		return $this->addOperation(new Batch\AddTo($this, $index, $entity, $key, $value, $this->nextId()));
+	}
+
+	/**
 	 * Commit the batch to the server
 	 *
 	 * @return boolean
