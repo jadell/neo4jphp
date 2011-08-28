@@ -402,7 +402,7 @@ Remove a Node or Relationship from the server.  Returns the operation id.
     removeFromIndex(Index $index, mixed $entity, string $key=null, mixed $value=null) : integer
 Remove the given Node or Relationship from the index.  If given, $value must be scalar.  Returns the operation id.
 
-    save(mixed $entity) : boolean
+    save(mixed $entity) : integer
 Save a Node or Relationship to the server.  If the Node or Relationship does not exist, it is created, otherwise, it is updated.  If the start or end nodes of the Relationship do not exist, they will be created.  Returns the operation id.
 
 
