@@ -25,7 +25,7 @@ Examples
 		->save();
 
 ### Index a node
-    $users = new Index($client);
+    $users = new Index($client, Index::TypeNode, 'users');
 	$users->add($node, 'name', $node->getProperty('name'));
 	$users->add($node, 'foo', 'bar');
 
@@ -69,6 +69,20 @@ Examples
     // New cache back-ends can be created by implementing the `Cache` interface.
     $cacheExpire = 30;
     $client->setCache(new Cache\Variable(), $cacheExpire);
+
+### Batch operations
+    $batch = new Batch($client);
+    
+    $nodeA = new Node($client);
+    $nodeB = new Node($client);
+    $relationship = $nodeA->relateTo($nodeB, 'KNOWS');
+    $userIndex = new Index($client, Index::TypeNode, 'users');
+    
+    $batch->save($nodeA);
+    $batch->save($nodeB);
+    $batch->save($relationship);
+    $batch->addToIndex($nodeIndex, $nodeB, 'username', 'bob123');
+    $batch->commit();
 
 	
 API
@@ -371,8 +385,29 @@ Set the return filter function. If language is one of the `Traversal::ReturnAll`
     setUniqueness(string $uniqueness) : Traversal
 Set the current uniqueness filter.  One of `Traversal::UniquenessNone`, `Traversal::UniquenessNodeGlobal`, `Traversal::UniquenessRelationshipGlobal`, `Traversal::UniquenessNodePath` or `Traversal::UniquenessRelationshipPath`.  Returns the Traversal.
 
+### Batch
+
+    __construct(Client $client)
+Create a new batch operation.  Batches are committed to the server in one request, and the entire batch succeeds or fails as a whole.
+
+    addToIndex(Index $index, mixed $entity, string $key, mixed $value) : integer
+Add a Node or Relationship to the Index.  $value must be scalar.  If the index does not exist on the server, it is created.  If the Relationship or Node does not exist on the server, it is created.  Returns the operation id.
+
+    commit() : boolean
+Commit the batch to the server.  A Batch cannot be committed more than once.  Returns true on success, false otherwise.
+
+    delete(mixed $entity) : integer
+Remove a Node or Relationship from the server.  Returns the operation id.
+
+    removeFromIndex(Index $index, mixed $entity, string $key=null, mixed $value=null) : integer
+Remove the given Node or Relationship from the index.  If given, $value must be scalar.  Returns the operation id.
+
+    save(mixed $entity) : boolean
+Save a Node or Relationship to the server.  If the Node or Relationship does not exist, it is created, otherwise, it is updated.  If the start or end nodes of the Relationship do not exist, they will be created.  Returns the operation id.
+
+
+
 To Do
 -----
-* Batch/transaction support? (experimental)
 * UTF-8 support?
 * Paginated Cypher/Gremlin results?
