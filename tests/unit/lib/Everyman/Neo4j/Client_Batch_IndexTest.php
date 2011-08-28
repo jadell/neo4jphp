@@ -32,7 +32,7 @@ class Client_Batch_IndexTest extends \PHPUnit_Framework_TestCase
 		
 		$return = array('code' => 200, 'data' => array(array('id' => 0)));
 
-		$this->batch->addTo($index, $node, 'somekey', 'somevalue');
+		$this->batch->addToIndex($index, $node, 'somekey', 'somevalue');
 		$this->setupTransportExpectation($request, $this->returnValue($return));
 		$result = $this->client->commitBatch($this->batch);
 		
@@ -57,7 +57,7 @@ class Client_Batch_IndexTest extends \PHPUnit_Framework_TestCase
 			array('id' => 0)
 		));
 
-		$this->batch->addTo($index, $node, 'somekey', 'somevalue');
+		$this->batch->addToIndex($index, $node, 'somekey', 'somevalue');
 		$this->setupTransportExpectation($request, $this->returnValue($return));
 		$result = $this->client->commitBatch($this->batch);
 		
@@ -78,7 +78,7 @@ class Client_Batch_IndexTest extends \PHPUnit_Framework_TestCase
 		
 		$return = array('code' => 200, 'data' => array(array('id' => 0)));
 
-		$this->batch->addTo($index, $rel, 'somekey', 'somevalue');
+		$this->batch->addToIndex($index, $rel, 'somekey', 'somevalue');
 		$this->setupTransportExpectation($request, $this->returnValue($return));
 		$result = $this->client->commitBatch($this->batch);
 		
@@ -115,7 +115,7 @@ class Client_Batch_IndexTest extends \PHPUnit_Framework_TestCase
 			array('id' => 0)
 		));
 
-		$this->batch->addTo($index, $rel, 'somekey', 'somevalue');
+		$this->batch->addToIndex($index, $rel, 'somekey', 'somevalue');
 		$this->setupTransportExpectation($request, $this->returnValue($return));
 		$result = $this->client->commitBatch($this->batch);
 		
@@ -123,6 +123,63 @@ class Client_Batch_IndexTest extends \PHPUnit_Framework_TestCase
 		$this->assertEquals(123, $nodeA->getId());
 		$this->assertEquals(456, $nodeB->getId());
 		$this->assertEquals(789, $rel->getId());
+	}
+
+	public function testCommitBatch_RemoveFromIndex_Entity_Success_ReturnsTrue()
+	{
+		$node = new Node($this->client);
+		$node->setId(123);
+
+		$index = new Index($this->client, Index::TypeNode, 'indexname');
+
+		$request = array(array('id' => 0, 'method' => 'DELETE',
+			'to' => '/index/node/indexname/123'));
+		
+		$return = array('code' => 200, 'data' => array(array('id' => 0)));
+
+		$this->batch->removeFromIndex($index, $node);
+		$this->setupTransportExpectation($request, $this->returnValue($return));
+		$result = $this->client->commitBatch($this->batch);
+		
+		$this->assertTrue($result);
+	}
+
+	public function testCommitBatch_RemoveFromIndex_EntityKey_Success_ReturnsTrue()
+	{
+		$node = new Node($this->client);
+		$node->setId(123);
+
+		$index = new Index($this->client, Index::TypeNode, 'indexname');
+
+		$request = array(array('id' => 0, 'method' => 'DELETE',
+			'to' => '/index/node/indexname/somekey/123'));
+		
+		$return = array('code' => 200, 'data' => array(array('id' => 0)));
+
+		$this->batch->removeFromIndex($index, $node, 'somekey');
+		$this->setupTransportExpectation($request, $this->returnValue($return));
+		$result = $this->client->commitBatch($this->batch);
+		
+		$this->assertTrue($result);
+	}
+
+	public function testCommitBatch_RemoveFromIndex_EntityKeyValue_Success_ReturnsTrue()
+	{
+		$node = new Node($this->client);
+		$node->setId(123);
+
+		$index = new Index($this->client, Index::TypeNode, 'indexname');
+
+		$request = array(array('id' => 0, 'method' => 'DELETE',
+			'to' => '/index/node/indexname/somekey/somevalue/123'));
+		
+		$return = array('code' => 200, 'data' => array(array('id' => 0)));
+
+		$this->batch->removeFromIndex($index, $node, 'somekey', 'somevalue');
+		$this->setupTransportExpectation($request, $this->returnValue($return));
+		$result = $this->client->commitBatch($this->batch);
+		
+		$this->assertTrue($result);
 	}
 
 	protected function setupTransportExpectation($request, $will)

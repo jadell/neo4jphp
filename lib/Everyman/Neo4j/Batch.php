@@ -31,7 +31,7 @@ class Batch
 	 * @param string $value
 	 * @return integer
 	 */
-	public function addTo(Index $index, PropertyContainer $entity, $key, $value)
+	public function addToIndex(Index $index, PropertyContainer $entity, $key, $value)
 	{
 		return $this->addOperation(new Batch\AddTo($this, $index, $entity, $key, $value, $this->nextId()));
 	}
@@ -80,6 +80,20 @@ class Batch
 	public function getOperations()
 	{
 		return $this->operations;
+	}
+
+	/**
+	 * Remove the given entity from the given index with the given key/value
+	 *
+	 * @param Index $index
+	 * @param PropertyContainer $entity
+	 * @param string $key
+	 * @param string $value
+	 * @return integer
+	 */
+	public function removeFromIndex(Index $index, PropertyContainer $entity, $key=null, $value=null)
+	{
+		return $this->addOperation(new Batch\RemoveFrom($this, $index, $entity, $key, $value, $this->nextId()));
 	}
 
 	/**

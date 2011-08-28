@@ -103,7 +103,7 @@ class BatchTest extends \PHPUnit_Framework_TestCase
 		$this->assertEquals(0, $this->batch->delete($nodeA));
 	}
 
-	public function testAddTo_Index_ReturnsIntegerOperationIndex()
+	public function testAddToIndex_Index_ReturnsIntegerOperationIndex()
 	{
 		$nodeA = new Node($this->client);
 		$nodeA->setId(123);
@@ -112,18 +112,48 @@ class BatchTest extends \PHPUnit_Framework_TestCase
 
 		$index = new Index($this->client, Index::TypeNode, 'indexname');
 
-		$this->assertEquals(0, $this->batch->addTo($index, $nodeA, 'somekey', 'somevalue'));
-		$this->assertEquals(1, $this->batch->addTo($index, $nodeB, 'otherkey', 'othervalue'));
-		$this->assertEquals(2, $this->batch->addTo($index, $nodeB, 'diffkey', 'diffvalue'));
+		$this->assertEquals(0, $this->batch->addToIndex($index, $nodeA, 'somekey', 'somevalue'));
+		$this->assertEquals(1, $this->batch->addToIndex($index, $nodeB, 'otherkey', 'othervalue'));
+		$this->assertEquals(2, $this->batch->addToIndex($index, $nodeB, 'diffkey', 'diffvalue'));
 	}
 
-	public function testAddTo_SameEntitySameKeyValueMoreThanOnce_ReturnsIntegerOperationIndex()
+	public function testAddToIndex_SameEntitySameKeyValueMoreThanOnce_ReturnsIntegerOperationIndex()
 	{
 		$nodeA = new Node($this->client);
 		$index = new Index($this->client, Index::TypeNode, 'indexname');
 			
-		$this->assertEquals(0, $this->batch->addTo($index, $nodeA, 'somekey', 'somevalue'));
-		$this->assertEquals(0, $this->batch->addTo($index, $nodeA, 'somekey', 'somevalue'));
+		$this->assertEquals(0, $this->batch->addToIndex($index, $nodeA, 'somekey', 'somevalue'));
+		$this->assertEquals(0, $this->batch->addToIndex($index, $nodeA, 'somekey', 'somevalue'));
+	}
+
+	public function testRemoveFromIndex_Index_ReturnsIntegerOperationIndex()
+	{
+		$nodeA = new Node($this->client);
+		$nodeA->setId(123);
+		$nodeB = new Node($this->client);
+		$nodeB->setId(456);
+
+		$index = new Index($this->client, Index::TypeNode, 'indexname');
+
+		$this->assertEquals(0, $this->batch->removeFromIndex($index, $nodeA, 'somekey', 'somevalue'));
+		$this->assertEquals(1, $this->batch->removeFromIndex($index, $nodeA, 'otherkey'));
+		$this->assertEquals(2, $this->batch->removeFromIndex($index, $nodeA));
+		$this->assertEquals(3, $this->batch->removeFromIndex($index, $nodeB, 'diffkey', 'diffvalue'));
+	}
+
+	public function testRemoveFromIndex_SameEntitySameKeyValueMoreThanOnce_ReturnsIntegerOperationIndex()
+	{
+		$nodeA = new Node($this->client);
+		$index = new Index($this->client, Index::TypeNode, 'indexname');
+			
+		$this->assertEquals(0, $this->batch->removeFromIndex($index, $nodeA, 'somekey', 'somevalue'));
+		$this->assertEquals(0, $this->batch->removeFromIndex($index, $nodeA, 'somekey', 'somevalue'));
+			
+		$this->assertEquals(1, $this->batch->removeFromIndex($index, $nodeA, 'otherkey'));
+		$this->assertEquals(1, $this->batch->removeFromIndex($index, $nodeA, 'otherkey'));
+			
+		$this->assertEquals(2, $this->batch->removeFromIndex($index, $nodeA));
+		$this->assertEquals(2, $this->batch->removeFromIndex($index, $nodeA));
 	}
 
 	public function testGetOperations_MixedOperations_ReturnsOperations()
