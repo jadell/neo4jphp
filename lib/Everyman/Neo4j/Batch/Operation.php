@@ -40,6 +40,16 @@ abstract class Operation
 	abstract public function getCommand();
 
 	/**
+	 * Return the associated entity
+	 *
+	 * @return PropertyContainer
+	 */
+	public function getEntity()
+	{
+		return $this->entity;
+	}
+
+	/**
 	 * Get the operation id
 	 *
 	 * @return integer
