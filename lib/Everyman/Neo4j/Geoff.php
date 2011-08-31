@@ -21,15 +21,22 @@ class Geoff
 	}
 
 	/**
-	 * Load a GEOFF string
+	 * Load a GEOFF string or file
 	 *
-	 * @param string $geoffString
+	 * @param mixed $handle
 	 * @param Batch $batch
 	 * @return Batch
 	 */
-	public function loadString($geoffString, Batch $batch=null)
+	public function load($handle, Batch $batch=null)
 	{
-		$handle = fopen('data:text/plain,'.urlencode($geoffString), 'r');
+		if (is_string($handle)) {
+			if (file_exists($handle)) {
+				$handle = fopen($handle, 'r');
+			} else {
+				$handle = fopen('data:text/plain,'.urlencode($handle), 'r');
+			}
+		}
+
 		$importer = new Geoff\Importer($this->client);
 		return $importer->load($handle, $batch);
 	}

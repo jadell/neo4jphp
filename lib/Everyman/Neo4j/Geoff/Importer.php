@@ -36,6 +36,10 @@ class Importer
 	 */
 	public function load($handle, Batch $batch=null)
 	{
+		if (get_resource_type($handle) != 'stream') {
+			throw new Exception("Not a stream resource");
+		}
+
 		if (!$batch) {
 			$batch = new Batch($this->client);
 		}

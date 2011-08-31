@@ -17,7 +17,7 @@ class GeoffTest extends \PHPUnit_Framework_TestCase
 	{
 		$geoffString = "\n \n\t\n   	\n	\n";
 
-		$batch = $this->geoff->loadString($geoffString);
+		$batch = $this->geoff->load($geoffString);
 		self::assertEquals(0, count($batch->getOperations()));
 	}
 
@@ -27,7 +27,7 @@ class GeoffTest extends \PHPUnit_Framework_TestCase
 					 . "	#so is this\n"
 					 . "# this too   	\n";
 
-		$batch = $this->geoff->loadString($geoffString);
+		$batch = $this->geoff->load($geoffString);
 		self::assertEquals(0, count($batch->getOperations()));
 	}
 
@@ -37,7 +37,7 @@ class GeoffTest extends \PHPUnit_Framework_TestCase
 					 . '(Phil)	{"name": "Philip", "title": "Duke of Edinburgh", "birth.date": "1921-06-21"}'.PHP_EOL
 					 . '(Chaz)';
 
-		$batch = $this->geoff->loadString($geoffString);
+		$batch = $this->geoff->load($geoffString);
 		$ops = $batch->getOperations();
 		self::assertEquals(3, count($ops));
 
@@ -67,7 +67,7 @@ class GeoffTest extends \PHPUnit_Framework_TestCase
 					 . '(Liz)	{"name": "Elizabeth", "title": "Queen of the Commonwealth Realms", "birth.date": "1926-04-21"}'.PHP_EOL;
 
 		$this->setExpectedException('Everyman\Neo4j\Exception');
-		$batch = $this->geoff->loadString($geoffString);
+		$batch = $this->geoff->load($geoffString);
 	}
 
 	public function testLoad_RelationshipEndpointsDefined_ReturnsBatch()
@@ -78,7 +78,7 @@ class GeoffTest extends \PHPUnit_Framework_TestCase
 					 . '(Liz)-[:MARRIED]->(Phil)    {"marriage.place": "Westminster Abbey", "marriage.date": "1947-11-20"}'.PHP_EOL
 					 . '(Phil)-[:FATHER_OF]->(Chaz)';
 		
-		$batch = $this->geoff->loadString($geoffString);
+		$batch = $this->geoff->load($geoffString);
 		$ops = $batch->getOperations();
 		self::assertEquals(5, count($ops));
 
@@ -108,7 +108,7 @@ class GeoffTest extends \PHPUnit_Framework_TestCase
 					 . '(Phil)-[:FATHER_OF]->(Chaz)';
 		
 		$this->setExpectedException('Everyman\Neo4j\Exception');
-		$batch = $this->geoff->loadString($geoffString);
+		$batch = $this->geoff->load($geoffString);
 	}
 
 	public function testLoad_RelationshipUndefinedEnd_ThrowsException()
@@ -117,7 +117,7 @@ class GeoffTest extends \PHPUnit_Framework_TestCase
 					 . '(Liz)-[:MARRIED]->(Phil)    {"marriage.place": "Westminster Abbey", "marriage.date": "1947-11-20"}';
 		
 		$this->setExpectedException('Everyman\Neo4j\Exception');
-		$batch = $this->geoff->loadString($geoffString);
+		$batch = $this->geoff->load($geoffString);
 	}
 
 	public function testLoad_IndexLines_ReturnsBatch()
@@ -127,7 +127,7 @@ class GeoffTest extends \PHPUnit_Framework_TestCase
 					 . '{People}->(Liz)     {"name": "Elizabeth"}'.PHP_EOL
 					 . '{People}->(Phil)    {"name": "Philip", "title":"Duke"}';
 
-		$batch = $this->geoff->loadString($geoffString);
+		$batch = $this->geoff->load($geoffString);
 		$ops = $batch->getOperations();
 		self::assertEquals(5, count($ops));
 
@@ -168,7 +168,7 @@ class GeoffTest extends \PHPUnit_Framework_TestCase
 					 . '{People}->(Phil)    {"name": "Philip", "title":"Duke"}';
 
 		$this->setExpectedException('Everyman\Neo4j\Exception');
-		$batch = $this->geoff->loadString($geoffString);
+		$batch = $this->geoff->load($geoffString);
 	}
 
 	public function testLoad_InvalidLine_ThrowsException()
@@ -178,7 +178,26 @@ class GeoffTest extends \PHPUnit_Framework_TestCase
 					 . '{People}->(Liz)    {"name": "Elizabeth"}';
 
 		$this->setExpectedException('Everyman\Neo4j\Exception');
-		$batch = $this->geoff->loadString($geoffString);
+		$batch = $this->geoff->load($geoffString);
+	}
+
+	public function testLoad_UseTheSameBatch_ReturnsBatch()
+	{
+		$geoffString = '(Liz)	{"name": "Elizabeth", "title": "Queen of the Commonwealth Realms", "birth.date": "1926-04-21"}'.PHP_EOL
+					 . '(Phil)	{"name": "Philip", "title": "Duke of Edinburgh", "birth.date": "1921-06-21"}'.PHP_EOL
+					 . '(Chaz)';
+
+		$initBatch = new Batch($this->client);
+
+		$batch = $this->geoff->load($geoffString, $initBatch);
+		self::assertSame($initBatch, $batch);
+		$ops = $batch->getOperations();
+		self::assertEquals(3, count($ops));
+
+		$batch2 = $this->geoff->load($geoffString, $batch);
+		self::assertSame($batch, $batch2);
+		$ops = $batch->getOperations();
+		self::assertEquals(6, count($ops));
 	}
 }
 
