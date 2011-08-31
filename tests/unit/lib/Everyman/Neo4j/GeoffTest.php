@@ -119,5 +119,66 @@ class GeoffTest extends \PHPUnit_Framework_TestCase
 		$this->setExpectedException('Everyman\Neo4j\Exception');
 		$batch = $this->geoff->loadString($geoffString);
 	}
+
+	public function testLoad_IndexLines_ReturnsBatch()
+	{
+		$geoffString = '(Liz)	{"name": "Elizabeth", "title": "Queen of the Commonwealth Realms", "birth.date": "1926-04-21"}'.PHP_EOL
+					 . '(Phil)	{"name": "Philip", "title": "Duke of Edinburgh", "birth.date": "1921-06-21"}'.PHP_EOL
+					 . '{People}->(Liz)     {"name": "Elizabeth"}'.PHP_EOL
+					 . '{People}->(Phil)    {"name": "Philip", "title":"Duke"}';
+
+		$batch = $this->geoff->loadString($geoffString);
+		$ops = $batch->getOperations();
+		self::assertEquals(5, count($ops));
+
+		$op = $ops[2];
+		self::assertInstanceOf('Everyman\Neo4j\Batch\AddTo', $op);
+		self::assertInstanceOf('Everyman\Neo4j\Node', $op->getEntity());
+		self::assertEquals('Elizabeth', $op->getEntity()->getProperty('name'));
+		self::assertInstanceOf('Everyman\Neo4j\Index', $op->getIndex());
+		self::assertEquals('People', $op->getIndex()->getName());
+		self::assertEquals(Index::TypeNode, $op->getIndex()->getType());
+		self::assertEquals('name', $op->getKey());
+		self::assertEquals('Elizabeth', $op->getValue());
+
+		$op = $ops[3];
+		self::assertInstanceOf('Everyman\Neo4j\Batch\AddTo', $op);
+		self::assertInstanceOf('Everyman\Neo4j\Node', $op->getEntity());
+		self::assertEquals('Philip', $op->getEntity()->getProperty('name'));
+		self::assertInstanceOf('Everyman\Neo4j\Index', $op->getIndex());
+		self::assertEquals('People', $op->getIndex()->getName());
+		self::assertEquals('name', $op->getKey());
+		self::assertEquals('Philip', $op->getValue());
+
+		$op = $ops[4];
+		self::assertInstanceOf('Everyman\Neo4j\Batch\AddTo', $op);
+		self::assertInstanceOf('Everyman\Neo4j\Node', $op->getEntity());
+		self::assertEquals('Philip', $op->getEntity()->getProperty('name'));
+		self::assertInstanceOf('Everyman\Neo4j\Index', $op->getIndex());
+		self::assertEquals('People', $op->getIndex()->getName());
+		self::assertEquals('title', $op->getKey());
+		self::assertEquals('Duke', $op->getValue());
+
+		self::assertSame($ops[3]->getEntity(), $ops[4]->getEntity());
+	}
+
+	public function testLoad_IndexLinesInvalidNode_ThrowsException()
+	{
+		$geoffString = '(Liz)	{"name": "Elizabeth", "title": "Queen of the Commonwealth Realms", "birth.date": "1926-04-21"}'.PHP_EOL
+					 . '{People}->(Phil)    {"name": "Philip", "title":"Duke"}';
+
+		$this->setExpectedException('Everyman\Neo4j\Exception');
+		$batch = $this->geoff->loadString($geoffString);
+	}
+
+	public function testLoad_InvalidLine_ThrowsException()
+	{
+		$geoffString = '(Liz)	{"name": "Elizabeth", "title": "Queen of the Commonwealth Realms", "birth.date": "1926-04-21"}'.PHP_EOL
+					 . 'this line is total gibberish'.PHP_EOL
+					 . '{People}->(Liz)    {"name": "Elizabeth"}';
+
+		$this->setExpectedException('Everyman\Neo4j\Exception');
+		$batch = $this->geoff->loadString($geoffString);
+	}
 }
 

@@ -4,6 +4,7 @@ namespace Everyman\Neo4j;
 /**
  * Implementation of GEOFF - Graph Export Object File Format
  * From http://py2neo.org/geoff
+ * Available at http://github.com/nigelsmall/py2neo
  */
 class Geoff
 {

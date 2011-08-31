@@ -61,6 +61,7 @@ class Importer
 	protected function loadLine($line, Batch $batch, $lineNum, &$nodes)
 	{
 		$descriptorPattern = "/^(\((\w+)\)(-\[:(\w+)\]->\((\w+)\))?)(\s+(.*))?/";
+		$indexPattern = "/^(\{(\w+)\}->\((\w+)\))(\s+(.*))?/";
 
 		$line = trim($line);
 		if (!$line || $line[0]  == '#') {
@@ -84,6 +85,7 @@ class Importer
 				->setStartNode($nodes[$startNodeId])
 				->setEndNode($nodes[$endNodeId]);
 			$batch->save($rel);
+			return;
 
 		} else if ($descriptorMatch) {
 			$nodeId = $matches[2];
@@ -95,6 +97,27 @@ class Importer
 			$node->setProperties($properties ?: array());
 			$nodes[$nodeId] = $node;
 			$batch->save($node);
+			return;
 		}
+
+		$matches = array();
+		$indexMatch = preg_match($indexPattern, $line, $matches);
+		if ($indexMatch) {
+			$name = $matches[2];
+			$nodeId = $matches[3];
+			if (!isset($nodes[$nodeId])) {
+				throw new Exception("Invalid node reference on line {$lineNum}: $line");
+			}
+			$properties = !empty($matches[5]) ? json_decode($matches[5]) : false;
+			if ($properties) {
+				$index = new Index($this->client, Index::TypeNode, $name);
+				foreach ($properties as $key => $value) {
+					$batch->addToIndex($index, $nodes[$nodeId], $key, $value);
+				}
+			}
+			return;
+		}
+
+		throw new Exception("Cannot parse line {$lineNum}: $line");
 	}
 }

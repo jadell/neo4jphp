@@ -49,6 +49,36 @@ class AddTo extends Operation
 	}
 	
 	/**
+	 * Get the index
+	 *
+	 * @return Index
+	 */
+	public function getIndex()
+	{
+		return $this->index;
+	}
+	
+	/**
+	 * Get the key being indexed
+	 *
+	 * @return string
+	 */
+	public function getKey()
+	{
+		return $this->key;
+	}
+	
+	/**
+	 * Get the value being indexed
+	 *
+	 * @return mixed
+	 */
+	public function getValue()
+	{
+		return $this->value;
+	}
+
+	/**
 	 * Based on this operations parameters, generate a consistent id
 	 *
 	 * @return mixed
