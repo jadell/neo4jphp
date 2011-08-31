@@ -69,12 +69,28 @@ class Importer
 
 		$matches = array();
 		$descriptorMatch = preg_match($descriptorPattern, $line, $matches);
-		if ($descriptorMatch) {
-			$nodeId = $matches[2];
-			if (isset($nodes[$nodeId])) {
+
+		if ($descriptorMatch && !empty($matches[3])) {
+			$startNodeId = $matches[2];
+			$type = $matches[4];
+			$endNodeId = $matches[5];
+			if (!isset($nodes[$startNodeId]) || !isset($nodes[$endNodeId])) {
 				throw new Exception("Invalid node reference on line {$lineNum}: $line");
 			}
-			$properties = json_decode($matches[7]);
+			$properties = !empty($matches[7]) ? json_decode($matches[7]) : false;
+			$rel = new Relationship($this->client);
+			$rel->setProperties($properties ?: array())
+				->setType($type)
+				->setStartNode($nodes[$startNodeId])
+				->setEndNode($nodes[$endNodeId]);
+			$batch->save($rel);
+
+		} else if ($descriptorMatch) {
+			$nodeId = $matches[2];
+			if (isset($nodes[$nodeId])) {
+				throw new Exception("Duplicate node on line {$lineNum}: $line");
+			}
+			$properties = !empty($matches[7]) ? json_decode($matches[7]) : false;
 			$node = new Node($this->client);
 			$node->setProperties($properties ?: array());
 			$nodes[$nodeId] = $node;
