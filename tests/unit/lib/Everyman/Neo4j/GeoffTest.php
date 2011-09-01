@@ -13,6 +13,14 @@ class GeoffTest extends \PHPUnit_Framework_TestCase
 
 	}
 
+	public function testLoad_NotAStreamOrString_ThrowsException()
+	{
+		$geoffString = 123;
+
+		$this->setExpectedException('Everyman\Neo4j\Exception');
+		$batch = $this->geoff->load($geoffString);
+	}
+
 	public function testLoad_IgnoreEmptyLines_ReturnsBatch()
 	{
 		$geoffString = "\n \n\t\n   	\n	\n";
@@ -198,6 +206,92 @@ class GeoffTest extends \PHPUnit_Framework_TestCase
 		self::assertSame($batch, $batch2);
 		$ops = $batch->getOperations();
 		self::assertEquals(6, count($ops));
+	}
+
+	public function testDump_PathsGiven_NoFileDescriptor_ReturnsString()
+	{
+		$nodeA = new Node($this->client);
+		$nodeA->setId(123)->setProperties(array('foo' => 'bar','baz' => 'qux'));
+		
+		$nodeB = new Node($this->client);
+		$nodeB->setId(456)->setProperties(array('somekey' => 'somevalue'));
+		
+		$nodeC = new Node($this->client);
+		$nodeC->setId(789);
+
+		$relA = new Relationship($this->client);
+		$relA->setId(987)->setType('TEST')
+			->setStartNode($nodeA)->setEndNode($nodeB)
+			->setProperties(array('anotherkey' => 'anothervalue'));
+
+		$relB = new Relationship($this->client);
+		$relB->setId(654)->setType('TSET')
+			->setStartNode($nodeB)->setEndNode($nodeC);
+
+		$path = new Path();
+		$path->appendNode($nodeA);
+		$path->appendNode($nodeB);
+		$path->appendNode($nodeC);
+		$path->appendRelationship($relA);
+		$path->appendRelationship($relB);
+
+		$expected =<<<GEOFF
+(123)	{"foo":"bar","baz":"qux"}
+(456)	{"somekey":"somevalue"}
+(789)
+(123)-[:TEST]->(456)	{"anotherkey":"anothervalue"}
+(456)-[:TSET]->(789)
+
+GEOFF;
+
+		$result = $this->geoff->dump($path);
+		self::assertEquals($expected, $result);
+	}
+
+	public function testDump_PathsGiven_FileDescriptor_ReturnsDescriptor()
+	{
+		$nodeA = new Node($this->client);
+		$nodeA->setId(123)->setProperties(array('foo' => 'bar','baz' => 'qux'));
+		$nodeB = new Node($this->client);
+		$nodeB->setId(456)->setProperties(array('somekey' => 'somevalue'));
+		$relA = new Relationship($this->client);
+		$relA->setId(987)->setType('TEST')
+			->setStartNode($nodeA)->setEndNode($nodeB)
+			->setProperties(array('anotherkey' => 'anothervalue'));
+		$path = new Path();
+		$path->appendNode($nodeA);
+		$path->appendNode($nodeB);
+		$path->appendRelationship($relA);
+
+		$expected =<<<GEOFF
+(123)	{"foo":"bar","baz":"qux"}
+(456)	{"somekey":"somevalue"}
+(123)-[:TEST]->(456)	{"anotherkey":"anothervalue"}
+
+GEOFF;
+
+		$handle = fopen('data:text/plain,', 'w+');
+		$resultHandle = $this->geoff->dump($path, $handle);
+		self::assertSame($handle, $resultHandle);
+		self::assertEquals($expected, stream_get_contents($resultHandle, -1, 0));
+	}
+
+	public function testDump_NotAStreamOrString_ThrowsException()
+	{
+		$handle = 123;
+		$path = new Path();
+
+		$this->setExpectedException('Everyman\Neo4j\Exception');
+		$batch = $this->geoff->dump($path, $handle);
+	}
+
+	public function testDump_NotAPath_ThrowsException()
+	{
+		$handle = "file";
+		$notPath = "blah";
+
+		$this->setExpectedException('Everyman\Neo4j\Exception');
+		$batch = $this->geoff->dump($notPath);
 	}
 }
 

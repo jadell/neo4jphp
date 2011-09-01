@@ -36,7 +36,7 @@ class Importer
 	 */
 	public function load($handle, Batch $batch=null)
 	{
-		if (get_resource_type($handle) != 'stream') {
+		if (!is_resource($handle) || get_resource_type($handle) != 'stream') {
 			throw new Exception("Not a stream resource");
 		}
 
