@@ -16,6 +16,8 @@ class Transport
 	protected $port = 7474;
 	protected $path = '/db/data';
 
+	protected $handle = null;
+
 	/**
 	 * Set the host and port of the endpoint
 	 *
@@ -109,13 +111,12 @@ class Transport
 				break;
 		}
 
-		$ch = curl_init();
+		$ch = $this->getHandle();
 		curl_setopt_array($ch, $options);
-		
+
 		$response = curl_exec($ch);
 		$code = curl_getinfo($ch, CURLINFO_HTTP_CODE);
 		$headerSize = curl_getinfo($ch, CURLINFO_HEADER_SIZE);
-		curl_close($ch);
 
 		$bodyString = substr($response, $headerSize);
 		$bodyData = json_decode($bodyString, true);
@@ -184,5 +185,18 @@ class Transport
 	public function delete($path)
 	{
 		return $this->makeRequest(self::DELETE, $path);
+	}
+
+	/**
+	 * Get the cURL handle
+	 *
+	 * @return resource cURL handle
+	 */
+	protected function getHandle()
+	{
+		if (!$this->handle) {
+			$this->handle = curl_init();
+		}
+		return $this->handle;
 	}
 }
