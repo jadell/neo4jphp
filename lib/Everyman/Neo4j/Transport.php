@@ -91,6 +91,9 @@ class Transport
 				'Accept: application/json',
 				'Content-type: application/json',
 			),
+			CURLOPT_CUSTOMREQUEST => self::GET,
+			CURLOPT_POST => false,
+			CURLOPT_POSTFIELDS => null,
 		);
 
 		switch ($method) {
@@ -99,8 +102,11 @@ class Transport
 				break;
 
 			case self::POST :
+				$dataString = $this->encodeData($data);
+				$options[CURLOPT_CUSTOMREQUEST] = self::POST;
 				$options[CURLOPT_POST] = true;
-				$options[CURLOPT_POSTFIELDS] = $this->encodeData($data);
+				$options[CURLOPT_POSTFIELDS] = $dataString;
+				$options[CURLOPT_HTTPHEADER][] = 'Content-Length: '.strlen($dataString);
 				break;
 
 			case self::PUT :
