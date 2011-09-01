@@ -5,6 +5,13 @@ Copyright (c) 2011
 
 PHP Wrapper for the Neo4j graph database REST interface
 
+Contributions
+-------------
+* Jacob Hansson <jacob@voltvoodoo.com> - Cypher query support
+* Nigel Small <nigel@nigelsmall.name> - GEOFF import/export
+  * [http://py2neo.org/](http://py2neo.org/)
+
+
 Install
 -------
 Copy or symlink the `lib/Everyman` directory into your `include_path` or autoloader path.
@@ -84,6 +91,18 @@ Examples
     $batch->addToIndex($nodeIndex, $nodeB, 'username', 'bob123');
     $batch->commit();
 
+### GEOFF import and export
+    // Import from a file handle, or a GEOFF string.
+    // The same batch can be used to import more than one file before committing
+    $geoff = new Geoff($client);
+    $handle = fopen('/path/to/import.geoff','r');
+    $batch = $geoff->load($handle);
+    $batch->commit();
+    
+    // Export to either a string or a file handle.
+    // Takes a single Path or an array of Paths
+    $handle = fopen('/path/to/export.geoff','w');
+    $geoff->dump($path, $handle);
 	
 API
 ---
@@ -405,6 +424,17 @@ Remove the given Node or Relationship from the index.  If given, $value must be 
     save(mixed $entity) : integer
 Save a Node or Relationship to the server.  If the Node or Relationship does not exist, it is created, otherwise, it is updated.  If the start or end nodes of the Relationship do not exist, they will be created.  Returns the operation id.
 
+### Geoff
+See [http://py2neo.org/geoff/](http://py2neo.org/geoff/) for more information
+
+    __construct(Client $client)
+Create a new GEOFF importer/exporter.
+
+    dump($paths, $handle=null) : string
+Dump either a single Path or an array of Paths.  If $handle is given and is a stream, the result string will be written to the stream.  Otherwise, the result string will be returned.
+
+    load($handle, Batch $batch=null) : Batch
+Import a GEOFF file or string.  $handle must be a valid stream resource or a string.  If $batch is provided, imported node, relationship and index operations will be appended to it.  Otherwise, a new batch representing the exported operations will be returned.
 
 
 To Do
