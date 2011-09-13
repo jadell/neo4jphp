@@ -211,6 +211,8 @@ class Traversal
 				'body' => $body,
 			);
 		}
+
+		return $this;
 	}
 
 	/**
@@ -238,6 +240,8 @@ class Traversal
 				'body' => $body,
 			);
 		}
+
+		return $this;
 	}
 
 	/**
