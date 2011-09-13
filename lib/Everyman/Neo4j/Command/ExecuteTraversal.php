@@ -63,11 +63,19 @@ class ExecuteTraversal extends Command
 
 		$prune = $this->traversal->getPruneEvaluator();
 		if ($prune) {
+			if ($prune['language'] == Traversal::Builtin) {
+				$prune['name'] = $prune['body'];
+				unset($prune['body']);
+			}
 			$data['prune_evaluator'] = $prune;
 		}
 
 		$filter = $this->traversal->getReturnFilter();
 		if ($filter) {
+			if ($filter['language'] == Traversal::Builtin) {
+				$filter['name'] = $filter['body'];
+				unset($filter['body']);
+			}
 			$data['return_filter'] = $filter;
 		}
 

@@ -20,6 +20,8 @@ class Traversal
 	const UniquenessNodePath = 'node_path';
 	const UniquenessRelationshipPath = 'relationship_path';
 
+	const Builtin = 'builtin';
+
 	const PruneNone = 'none';
 
 	const ReturnAll = 'all';
@@ -95,10 +97,8 @@ class Traversal
 
 	/**
 	 * Get the prune evaluator
-	 * Returns either a string representing a builtin evaluator
-	 * or an array('language'=>..., 'body'=>...)
 	 *
-	 * @return mixed
+	 * @return array ('language'=>..., 'body'=>...)
 	 */
 	public function getPruneEvaluator()
 	{
@@ -129,10 +129,8 @@ class Traversal
 
 	/**
 	 * Get the return filter
-	 * Returns either a string representing a builtin filter
-	 * or an array('language'=>..., 'body'=>...)
 	 *
-	 * @return mixed
+	 * @return array ('language'=>..., 'body'=>...)
 	 */
 	public function getReturnFilter()
 	{
@@ -202,7 +200,7 @@ class Traversal
 			$this->pruneEvaluator = null;
 		} else if ($language == self::PruneNone) {
 			$this->pruneEvaluator = array(
-				'language' => 'builtin',
+				'language' => self::Builtin,
 				'body' => $language,
 			);
 		} else {
@@ -231,7 +229,7 @@ class Traversal
 			$this->returnFilter = null;
 		} else if ($language == self::ReturnAll || $language == self::ReturnAllButStart) {
 			$this->returnFilter = array(
-				'language' => 'builtin',
+				'language' => self::Builtin,
 				'body' => $language,
 			);
 		} else {
