@@ -128,18 +128,31 @@ class GeoffTest extends \PHPUnit_Framework_TestCase
 		$batch = $this->geoff->load($geoffString);
 	}
 
+	public function testLoad_DuplicateRelationshipLines_ThrowsException()
+	{
+		$geoffString = '(Liz)	{"name": "Elizabeth", "title": "Queen of the Commonwealth Realms", "birth.date": "1926-04-21"}'.PHP_EOL
+					 . '(Phil)	{"name": "Philip", "title": "Duke of Edinburgh", "birth.date": "1921-06-21"}'.PHP_EOL
+					 . '(Liz)-[LizNPhil:MARRIED]->(Phil)'.PHP_EOL
+					 . '(Liz)-[LizNPhil:MARRIED]->(Phil)';
+
+		$this->setExpectedException('Everyman\Neo4j\Exception');
+		$batch = $this->geoff->load($geoffString);
+	}
+
 	public function testLoad_IndexLines_ReturnsBatch()
 	{
 		$geoffString = '(Liz)	{"name": "Elizabeth", "title": "Queen of the Commonwealth Realms", "birth.date": "1926-04-21"}'.PHP_EOL
 					 . '(Phil)	{"name": "Philip", "title": "Duke of Edinburgh", "birth.date": "1921-06-21"}'.PHP_EOL
+					 . '(Liz)-[LizNPhil:MARRIED]->(Phil)    {"marriage.place": "Westminster Abbey", "marriage.date": "1947-11-20"}'.PHP_EOL
 					 . '{People}->(Liz)     {"name": "Elizabeth"}'.PHP_EOL
-					 . '{People}->(Phil)    {"name": "Philip", "title":"Duke"}';
+					 . '{People}->(Phil)    {"name": "Philip", "title":"Duke"}'.PHP_EOL
+					 . '{Marriages}->[LizNPhil]    {"wife": "Elizabeth", "husband": "Philip"}';
 
 		$batch = $this->geoff->load($geoffString);
 		$ops = $batch->getOperations();
-		self::assertEquals(5, count($ops));
+		self::assertEquals(8, count($ops));
 
-		$op = $ops[2];
+		$op = $ops[3];
 		self::assertInstanceOf('Everyman\Neo4j\Batch\AddTo', $op);
 		self::assertInstanceOf('Everyman\Neo4j\Node', $op->getEntity());
 		self::assertEquals('Elizabeth', $op->getEntity()->getProperty('name'));
@@ -149,31 +162,72 @@ class GeoffTest extends \PHPUnit_Framework_TestCase
 		self::assertEquals('name', $op->getKey());
 		self::assertEquals('Elizabeth', $op->getValue());
 
-		$op = $ops[3];
-		self::assertInstanceOf('Everyman\Neo4j\Batch\AddTo', $op);
-		self::assertInstanceOf('Everyman\Neo4j\Node', $op->getEntity());
-		self::assertEquals('Philip', $op->getEntity()->getProperty('name'));
-		self::assertInstanceOf('Everyman\Neo4j\Index', $op->getIndex());
-		self::assertEquals('People', $op->getIndex()->getName());
-		self::assertEquals('name', $op->getKey());
-		self::assertEquals('Philip', $op->getValue());
-
 		$op = $ops[4];
 		self::assertInstanceOf('Everyman\Neo4j\Batch\AddTo', $op);
 		self::assertInstanceOf('Everyman\Neo4j\Node', $op->getEntity());
 		self::assertEquals('Philip', $op->getEntity()->getProperty('name'));
 		self::assertInstanceOf('Everyman\Neo4j\Index', $op->getIndex());
 		self::assertEquals('People', $op->getIndex()->getName());
+		self::assertEquals(Index::TypeNode, $op->getIndex()->getType());
+		self::assertEquals('name', $op->getKey());
+		self::assertEquals('Philip', $op->getValue());
+
+		$op = $ops[5];
+		self::assertInstanceOf('Everyman\Neo4j\Batch\AddTo', $op);
+		self::assertInstanceOf('Everyman\Neo4j\Node', $op->getEntity());
+		self::assertEquals('Philip', $op->getEntity()->getProperty('name'));
+		self::assertInstanceOf('Everyman\Neo4j\Index', $op->getIndex());
+		self::assertEquals('People', $op->getIndex()->getName());
+		self::assertEquals(Index::TypeNode, $op->getIndex()->getType());
 		self::assertEquals('title', $op->getKey());
 		self::assertEquals('Duke', $op->getValue());
 
-		self::assertSame($ops[3]->getEntity(), $ops[4]->getEntity());
+		self::assertSame($ops[4]->getEntity(), $ops[5]->getEntity());
+
+		$op = $ops[6];
+		self::assertInstanceOf('Everyman\Neo4j\Batch\AddTo', $op);
+		self::assertInstanceOf('Everyman\Neo4j\Relationship', $op->getEntity());
+		self::assertSame($ops[2]->getEntity(), $op->getEntity());
+		self::assertInstanceOf('Everyman\Neo4j\Index', $op->getIndex());
+		self::assertEquals('Marriages', $op->getIndex()->getName());
+		self::assertEquals(Index::TypeRelationship, $op->getIndex()->getType());
+		self::assertEquals('wife', $op->getKey());
+		self::assertEquals('Elizabeth', $op->getValue());
+
+		$op = $ops[7];
+		self::assertInstanceOf('Everyman\Neo4j\Batch\AddTo', $op);
+		self::assertInstanceOf('Everyman\Neo4j\Relationship', $op->getEntity());
+		self::assertSame($ops[2]->getEntity(), $op->getEntity());
+		self::assertInstanceOf('Everyman\Neo4j\Index', $op->getIndex());
+		self::assertEquals('Marriages', $op->getIndex()->getName());
+		self::assertEquals(Index::TypeRelationship, $op->getIndex()->getType());
+		self::assertEquals('husband', $op->getKey());
+		self::assertEquals('Philip', $op->getValue());
 	}
 
 	public function testLoad_IndexLinesInvalidNode_ThrowsException()
 	{
 		$geoffString = '(Liz)	{"name": "Elizabeth", "title": "Queen of the Commonwealth Realms", "birth.date": "1926-04-21"}'.PHP_EOL
 					 . '{People}->(Phil)    {"name": "Philip", "title":"Duke"}';
+
+		$this->setExpectedException('Everyman\Neo4j\Exception');
+		$batch = $this->geoff->load($geoffString);
+	}
+
+	public function testLoad_IndexLinesInvalidRelationship_ThrowsException()
+	{
+		$geoffString = '{Marriages}->[LizNPhil]    {"wife": "Elizabeth", "husband": "Philip"}';
+
+		$this->setExpectedException('Everyman\Neo4j\Exception');
+		$batch = $this->geoff->load($geoffString);
+	}
+
+	public function testLoad_IndexBracketMismatch_ThrowsException()
+	{
+		$geoffString = '(Liz)	{"name": "Elizabeth", "title": "Queen of the Commonwealth Realms", "birth.date": "1926-04-21"}'.PHP_EOL
+					 . '(Phil)	{"name": "Philip", "title": "Duke of Edinburgh", "birth.date": "1921-06-21"}'.PHP_EOL
+					 . '(Liz)-[LizNPhil:MARRIED]->(Phil)    {"marriage.place": "Westminster Abbey", "marriage.date": "1947-11-20"}'.PHP_EOL
+					 . '{Marriages}->[LizNPhil)    {"wife": "Elizabeth", "husband": "Philip"}';
 
 		$this->setExpectedException('Everyman\Neo4j\Exception');
 		$batch = $this->geoff->load($geoffString);
@@ -239,8 +293,8 @@ class GeoffTest extends \PHPUnit_Framework_TestCase
 (123)	{"foo":"bar","baz":"qux"}
 (456)	{"somekey":"somevalue"}
 (789)
-(123)-[:TEST]->(456)	{"anotherkey":"anothervalue"}
-(456)-[:TSET]->(789)
+(123)-[987:TEST]->(456)	{"anotherkey":"anothervalue"}
+(456)-[654:TSET]->(789)
 
 GEOFF;
 
@@ -266,7 +320,7 @@ GEOFF;
 		$expected =<<<GEOFF
 (123)	{"foo":"bar","baz":"qux"}
 (456)	{"somekey":"somevalue"}
-(123)-[:TEST]->(456)	{"anotherkey":"anothervalue"}
+(123)-[987:TEST]->(456)	{"anotherkey":"anothervalue"}
 
 GEOFF;
 

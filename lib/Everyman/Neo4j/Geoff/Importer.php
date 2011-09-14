@@ -46,8 +46,9 @@ class Importer
 
 		$i = 0;
 		$nodes = array();
+		$rels = array();
 		while (($line = fgets($handle)) !== false) {
-			$this->loadLine($line, $batch, $i, $nodes);
+			$this->loadLine($line, $batch, $i, $nodes, $rels);
 			$i++;
 		}
 
@@ -61,11 +62,27 @@ class Importer
 	 * @param Batch $batch
 	 * @param integer $lineNum
 	 * @param array $nodes
+	 * @param array $rels
 	 */
-	protected function loadLine($line, Batch $batch, $lineNum, &$nodes)
+	protected function loadLine($line, Batch $batch, $lineNum, &$nodes, &$rels)
 	{
-		$descriptorPattern = "/^(\((\w+)\)(-\[:(\w+)\]->\((\w+)\))?)(\s+(.*))?/";
-		$indexPattern = "/^(\{(\w+)\}->\((\w+)\))(\s+(.*))?/";
+		$descriptorPattern = "/^(
+			\((\w+)\)	            # node identifier or relationship start node
+			(                       # next two sub expressions signify a relationship line
+				-\[(\w*):(\w+)\]    # relationship identifier and type
+				->\((\w+)\)         # relationship end node
+		)?)(
+			\s+(.*)                 # properties
+		)?/x";
+
+		$indexPattern = "/^(
+			\{(\w+)\}               # index name
+			->(\(|\[)				# ( indicates node index, [ indicates relationship index
+				(\w+)               # node identifier to index
+			(\)|\])                 # must match opening ( or [
+		)(
+			\s+(.*)                 # keys:values to index
+		)?/x";
 
 		$line = trim($line);
 		if (!$line || $line[0]  == '#') {
@@ -77,17 +94,23 @@ class Importer
 
 		if ($descriptorMatch && !empty($matches[3])) {
 			$startNodeId = $matches[2];
-			$type = $matches[4];
-			$endNodeId = $matches[5];
+			$relId = $matches[4];
+			$type = $matches[5];
+			$endNodeId = $matches[6];
 			if (!isset($nodes[$startNodeId]) || !isset($nodes[$endNodeId])) {
 				throw new Exception("Invalid node reference on line {$lineNum}: $line");
+			} else if (!empty($relId) && isset($rels[$relId])) {
+				throw new Exception("Duplicate relationship on line {$lineNum}: $line");
 			}
-			$properties = !empty($matches[7]) ? json_decode($matches[7]) : false;
+			$properties = !empty($matches[8]) ? json_decode($matches[8]) : false;
 			$rel = new Relationship($this->client);
 			$rel->setProperties($properties ?: array())
 				->setType($type)
 				->setStartNode($nodes[$startNodeId])
 				->setEndNode($nodes[$endNodeId]);
+			if (!empty($relId)) {
+				$rels[$relId] = $rel;
+			}
 			$batch->save($rel);
 			return;
 
@@ -108,18 +131,34 @@ class Importer
 		$indexMatch = preg_match($indexPattern, $line, $matches);
 		if ($indexMatch) {
 			$name = $matches[2];
-			$nodeId = $matches[3];
-			if (!isset($nodes[$nodeId])) {
-				throw new Exception("Invalid node reference on line {$lineNum}: $line");
-			}
-			$properties = !empty($matches[5]) ? json_decode($matches[5]) : false;
+			$openBrace = $matches[3];
+			$closeBrace = $matches[5];
+			$entityId = $matches[4];
+			$properties = !empty($matches[7]) ? json_decode($matches[7]) : false;
 			if ($properties) {
-				$index = new Index($this->client, Index::TypeNode, $name);
-				foreach ($properties as $key => $value) {
-					$batch->addToIndex($index, $nodes[$nodeId], $key, $value);
+				$type = null;
+				if ($openBrace == '(' && $closeBrace == ')') {
+					if (!isset($nodes[$entityId])) {
+						throw new Exception("Invalid node reference on line {$lineNum}: $line");
+					}
+					$entity = $nodes[$entityId];
+					$type = Index::TypeNode;
+				} else  if ($openBrace == '[' && $closeBrace == ']') {
+					if (!isset($rels[$entityId])) {
+						throw new Exception("Invalid relationship reference on line {$lineNum}: $line");
+					}
+					$entity = $rels[$entityId];
+					$type = Index::TypeRelationship;
+				}
+
+				if ($type) {
+					$index = new Index($this->client, $type, $name);
+					foreach ($properties as $key => $value) {
+						$batch->addToIndex($index, $entity, $key, $value);
+					}
+					return;
 				}
 			}
-			return;
 		}
 
 		throw new Exception("Cannot parse line {$lineNum}: $line");

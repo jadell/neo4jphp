@@ -52,9 +52,11 @@ class Exporter
 
 		foreach ($rels as $id => $rel) {
 			$properties = $rel->getProperties();
-			$format = $properties ? "(%s)-[:%s]->(%s)\t%s\n" : "(%s)-[:%s]->(%s)\n";
+			$format = "(%s)-[%s:%s]->(%s)";
+			$format .= $properties ? "\t%s\n" : "\n";
 			fprintf($handle, $format,
 				$rel->getStartNode()->getId(),
+				$id,
 				$rel->getType(),
 				$rel->getEndNode()->getId(),
 				json_encode($properties));
