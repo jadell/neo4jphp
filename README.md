@@ -120,6 +120,9 @@ Create a new Neo4j client.
     getLastError() : integer
 Return any error code from the last operation.  Returns null if no error occurred.
 
+    getRelationshipTypes() : array
+Return an array of all the relationship types known to the server.  Each element of the returned array is a string.
+
     setCache(Cache $cache, integer $cacheTimeout)
 Set the caching mechanism to use.  $cacheTimeout is indicated in seconds.  There are three built-in cache wrappers that can be used: `Cache\Null` which does not cache anything (this is the default if no cache is set); and `Cache\Variable` which holds all cached values in memory for the length of the process or request; and `Cache\Memcached` which uses the PHP Memcached extension to persist values across requests and processes.  New cache back-ends can be created by extending the `Cache` interface.
 
@@ -145,9 +148,6 @@ Return the value of the named property.  Returns null if the named property is n
 
     getRelationships($types=array(), $dir=null) : array
 Return an array of Relationships that match the given criteria.  $dir must be one of `Relationship::DirectionAll`, `Relationship::DirectionIn`, `Relationship::DirectionOut`, or null.
-
-    getRelationshipTypes() : array
-Return an array of all the relationship types known to the server.  Each element of the returned array is a string.
 
     hasId() : boolean
 Returns true if the node is identified, false otherwise.
