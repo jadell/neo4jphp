@@ -146,6 +146,9 @@ Return the value of the named property.  Returns null if the named property is n
     getRelationships($types=array(), $dir=null) : array
 Return an array of Relationships that match the given criteria.  $dir must be one of `Relationship::DirectionAll`, `Relationship::DirectionIn`, `Relationship::DirectionOut`, or null.
 
+    getRelationshipTypes() : array
+Return an array of all the relationship types known to the server.  Each element of the returned array is a string.
+
     hasId() : boolean
 Returns true if the node is identified, false otherwise.
 

@@ -1349,4 +1349,27 @@ class ClientTest extends \PHPUnit_Framework_TestCase
 		$this->assertFalse($result);
 		$this->assertEquals(Client::ErrorBadRequest, $this->client->getLastError());
 	}
+
+	public function testGetRelationshipTypes_ServerReturnsErrorCode_ReturnsFalse()
+	{
+		$this->transport->expects($this->once())
+			->method('get')
+			->with('/relationship/types')
+			->will($this->returnValue(array('code'=>Client::ErrorBadRequest)));
+
+		$result = $this->client->getRelationshipTypes();
+		$this->assertFalse($result);
+		$this->assertEquals(Client::ErrorBadRequest, $this->client->getLastError());
+	}
+
+	public function testGetRelationshipTypes_ServerReturnsArray_ReturnsArray()
+	{
+		$this->transport->expects($this->once())
+			->method('get')
+			->with('/relationship/types')
+			->will($this->returnValue(array('code'=>200, 'data'=>array("foo","bar"))));
+
+		$result = $this->client->getRelationshipTypes();
+		$this->assertEquals(array("foo","bar"), $result);
+	}
 }

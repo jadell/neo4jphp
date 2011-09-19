@@ -6,6 +6,7 @@ namespace Everyman\Neo4j;
  */
 class Client
 {
+	const ErrorUnknown       = 500;
 	const ErrorBadRequest    = 400;
 	const ErrorNotFound      = 404;
 	const ErrorConflict      = 409;
@@ -297,6 +298,22 @@ class Client
 			return $rel;
 		}
 		return null;
+	}
+
+	/**
+	 * Get a list of all relationship types on the server
+	 *
+	 * @return array
+	 */
+	public function getRelationshipTypes()
+	{
+		$command = new Command\GetRelationshipTypes($this);
+		$result = $this->runCommand($command);
+		if ($result) {
+			return $command->getResult();
+		} else {
+			return false;
+		}
 	}
 
 	/**
