@@ -191,6 +191,23 @@ class Client
 	}
 
 	/**
+	 * Get all indexes of the given type
+	 *
+	 * @param string $type
+	 * @return mixed false on error, else an array of Index objects
+	 */
+	public function getIndexes($type)
+	{
+		$command = new Command\GetIndexes($this, $type);
+		$result = $this->runCommand($command);
+		if ($result) {
+			return $command->getResult();
+		} else {
+			return false;
+		}
+	}
+
+	/**
 	 * Get the last error generated
 	 *
 	 * @return integer

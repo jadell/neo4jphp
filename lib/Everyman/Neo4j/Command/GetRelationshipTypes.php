@@ -41,7 +41,7 @@ class GetRelationshipTypes extends Command
 	}
 
 	/**
-	 * Get the result array of paths
+	 * Get the result array of types
 	 *
 	 * @return array
 	 */

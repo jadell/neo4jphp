@@ -1372,4 +1372,78 @@ class ClientTest extends \PHPUnit_Framework_TestCase
 		$result = $this->client->getRelationshipTypes();
 		$this->assertEquals(array("foo","bar"), $result);
 	}
+
+	public function testGetIndexes_ServerReturnsErrorCode_ReturnsFalse()
+	{
+		$this->transport->expects($this->once())
+			->method('get')
+			->with('/index/node')
+			->will($this->returnValue(array('code'=>Client::ErrorBadRequest)));
+
+		$result = $this->client->getIndexes(Index::TypeNode);
+		$this->assertFalse($result);
+		$this->assertEquals(Client::ErrorBadRequest, $this->client->getLastError());
+	}
+
+	public function testGetIndexes_BadType_ThrowsException()
+	{
+		$this->setExpectedException('\Everyman\Neo4j\Exception');			
+		$this->client->getIndexes('foo');
+	}
+
+	public function testGetIndexes_NoIndexes_ReturnsEmptyArray()
+	{
+		$this->transport->expects($this->once())
+			->method('get')
+			->with('/index/node')
+			->will($this->returnValue(array('code'=>200, 'data'=>'')));
+
+		$results = $this->client->getIndexes(Index::TypeNode);
+		$this->assertInternalType('array', $results);
+		$this->assertEquals(0, count($results));
+	}
+
+	public function testGetIndexes_NodeType_ReturnsArray()
+	{
+		$this->transport->expects($this->once())
+			->method('get')
+			->with('/index/node')
+			->will($this->returnValue(array('code'=>200, 'data'=>array(
+			'favorites' => array('template' =>'http://0.0.0.0:7474/db/data/index/node/favorites/{key}/{value}'),
+			'users' => array('template' =>'http://0.0.0.0:7474/db/data/index/node/users/{key}/{value}'),
+		))));
+
+		$results = $this->client->getIndexes(Index::TypeNode);
+		$this->assertEquals(2, count($results));
+
+		$this->assertInstanceOf('Everyman\Neo4j\Index', $results[0]);
+		$this->assertEquals(Index::TypeNode, $results[0]->getType());
+		$this->assertEquals('favorites', $results[0]->getName());
+
+		$this->assertInstanceOf('Everyman\Neo4j\Index', $results[1]);
+		$this->assertEquals(Index::TypeNode, $results[1]->getType());
+		$this->assertEquals('users', $results[1]->getName());
+	}
+
+	public function testGetIndexes_RelationshipType_ReturnsArray()
+	{
+		$this->transport->expects($this->once())
+			->method('get')
+			->with('/index/relationship')
+			->will($this->returnValue(array('code'=>200, 'data'=>array(
+			'favorites' => array('template' =>'http://0.0.0.0:7474/db/data/index/relationship/favorites/{key}/{value}'),
+			'users' => array('template' =>'http://0.0.0.0:7474/db/data/index/relationship/users/{key}/{value}'),
+		))));
+
+		$results = $this->client->getIndexes(Index::TypeRelationship);
+		$this->assertEquals(2, count($results));
+
+		$this->assertInstanceOf('Everyman\Neo4j\Index', $results[0]);
+		$this->assertEquals(Index::TypeRelationship, $results[0]->getType());
+		$this->assertEquals('favorites', $results[0]->getName());
+
+		$this->assertInstanceOf('Everyman\Neo4j\Index', $results[1]);
+		$this->assertEquals(Index::TypeRelationship, $results[1]->getType());
+		$this->assertEquals('users', $results[1]->getName());
+	}
 }

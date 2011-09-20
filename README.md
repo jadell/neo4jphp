@@ -117,6 +117,9 @@ Create a new REST transport.
     __construct(Transport $transport)
 Create a new Neo4j client.
 
+    getIndexes() : array
+Return an array of all the indexes known to the server.  Each element of the returned array is an `Index` object.
+
     getLastError() : integer
 Return any error code from the last operation.  Returns null if no error occurred.
 
