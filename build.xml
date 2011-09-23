@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project name="Neo4jPHP" default="test">
+
+	<!-- Target: test -->
+	<target name="test">
+		<phpunit bootstrap="tests/bootstrap.php">
+			<formatter type="summary" usefile="false" />
+			<batchtest>
+				<fileset dir="tests">
+					<include name="**/*Test.php" />
+				</fileset>
+			</batchtest>
+		</phpunit>
+	</target>
+
+	<!-- Target: build -->
+	<target name="build">
+		<delete dir="./build" />
+		<mkdir dir="./build" />
+		<copy todir="./build">
+			<fileset dir=".">
+				<include name="stub.php" />
+				<include name="lib/" />
+			</fileset>
+		</copy>
+	</target>
+
+	<!-- Target: package -->
+	<target name="package" depends="build">
+		<delete file="./neo4jphp.phar" />
+		<pharpackage
+			destfile="./neo4jphp.phar"
+			basedir="./build"
+			compression="gzip"
+			stub="./build/stub.php"
+			signature="sha1">
+			<fileset dir="./build">
+				<include name="**/**" />
+			</fileset>
+			<metadata>
+				<element name="version" value="0.0.3b" />
+				<element name="authors">
+					<element name="Josh Adell">
+						<element name="email" value="josh.adell@gmail.com" />
+					</element>
+				</element>
+			</metadata>
+		</pharpackage>
+	</target>
+</project>
