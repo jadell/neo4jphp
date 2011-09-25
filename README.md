@@ -5,6 +5,9 @@ Copyright (c) 2011
 
 PHP Wrapper for the Neo4j graph database REST interface
 
+In-depth documentation on the wiki: http://github.com/jadell/Neo4jPHP/wiki
+
+
 Contributions
 -------------
 * Jacob Hansson <jacob@voltvoodoo.com> - Cypher query support
