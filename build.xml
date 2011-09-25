@@ -19,7 +19,7 @@
 		<mkdir dir="./build" />
 		<copy todir="./build">
 			<fileset dir=".">
-				<include name="stub.php" />
+				<include name="LICENSE" />
 				<include name="lib/" />
 			</fileset>
 		</copy>
@@ -32,7 +32,7 @@
 			destfile="./neo4jphp.phar"
 			basedir="./build"
 			compression="gzip"
-			stub="./build/stub.php"
+			stub="./stub.php"
 			signature="sha1">
 			<fileset dir="./build">
 				<include name="**/**" />
