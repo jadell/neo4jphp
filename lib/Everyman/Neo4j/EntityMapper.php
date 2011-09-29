@@ -1,10 +1,6 @@
 <?php
 namespace Everyman\Neo4j;
 
-use Everyman\Neo4j\Client,
-    Everyman\Neo4j\Node,
-    Everyman\Neo4j\Relationship;
-
 /**
  * Used to convert arbitrary arrays into Nodes and Relationships
  * where appropriate. 
@@ -23,8 +19,8 @@ class EntityMapper
 
 	/**
 	 * Given any object, see if it fulfills the contract
-	 * for being node or relationship data returned by the
-	 * server. If so, return a full Node or Relationship instance.
+	 * for being a path, node or relationship data returned by the
+	 * server. If so, return a full Path, Node or Relationship instance.
 	 * Else, return the value untainted.
 	 *
 	 * @param mixed $value
@@ -32,11 +28,15 @@ class EntityMapper
 	 */
 	public function getEntityFor($value)
 	{
-		if (is_array($value) && array_key_exists('self', $value)) {
-			if (array_key_exists('type', $value)) {
-				$value = $this->makeRelationship($value);
-			} else {
-				$value = $this->makeNode($value);
+		if (is_array($value)) {
+			if (array_key_exists('self', $value)) {
+				if (array_key_exists('type', $value)) {
+					$value = $this->makeRelationship($value);
+				} else {
+					$value = $this->makeNode($value);
+				}
+			} else if (array_key_exists('nodes', $value) && array_key_exists('relationships', $value)) {
+				$value = $this->populatePath(new Path($this->client), $value);
 			}
 		}
 		return $value;

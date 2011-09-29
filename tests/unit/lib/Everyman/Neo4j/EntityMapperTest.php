@@ -215,4 +215,34 @@ class EntityMapperTest extends \PHPUnit_Framework_TestCase
 		$this->assertEquals(0, $node->getId());
 		$this->assertEquals('Bob', $node->getProperty('name'));
 	}
+
+	public function testGetEntityFor_PathData_ReturnsPath()
+	{
+		$data = array(
+			"relationships" => array(
+				"http://localhost:7474/db/data/relationship/2",
+			),
+			"nodes" => array(
+				"http://localhost:7474/db/data/node/1",
+				"http://localhost:7474/db/data/node/3",
+			),
+		);
+
+		$path = $this->mapper->getEntityFor($data);
+		$this->assertInstanceOf('Everyman\Neo4j\Path', $path);
+		$this->assertEquals(1, $path->getStartNode()->getId());
+		$this->assertEquals(3, $path->getEndNode()->getId());
+
+		$rels = $path->getRelationships();
+		$this->assertEquals(1, count($rels));
+		$this->assertInstanceOf('Everyman\Neo4j\Relationship', $rels[0]);
+		$this->assertEquals(2, $rels[0]->getId());
+
+		$nodes = $path->getNodes();
+		$this->assertEquals(2, count($nodes));
+		$this->assertInstanceOf('Everyman\Neo4j\Node', $nodes[0]);
+		$this->assertEquals(1, $nodes[0]->getId());
+		$this->assertInstanceOf('Everyman\Neo4j\Node', $nodes[1]);
+		$this->assertEquals(3, $nodes[1]->getId());
+	}
 }
