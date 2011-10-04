@@ -53,7 +53,10 @@ class AddToIndex extends Command
 			if ($reserved) {
 				$opData = array_merge($opData, $reserved->getCommand()->getData());
 			}
-			$body = "{{$entityId}}";
+			$this->entity->setId(-1);
+			$body = $this->base->getData();
+			$this->entity->setId(null);
+			$body['uri'] = "{{$entityId}}";
 		} else {
 			$body = $this->base->getData();
 		}

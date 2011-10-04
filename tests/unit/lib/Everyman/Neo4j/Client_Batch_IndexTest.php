@@ -27,8 +27,13 @@ class Client_Batch_IndexTest extends \PHPUnit_Framework_TestCase
 		$index = new Index($this->client, Index::TypeNode, 'indexname');
 
 		$request = array(array('id' => 0, 'method' => 'POST',
-			'to' => '/index/node/indexname/somekey/somevalue',
-			'body' => $this->endpoint.'/node/123'));
+			'to' => '/index/node/indexname',
+			'body' => array(
+				'key'   => 'somekey',
+				'value' => 'somevalue',
+				'uri'   => $this->endpoint.'/node/123',
+			)
+		));
 		
 		$return = array('code' => 200, 'data' => array(array('id' => 0)));
 
@@ -39,7 +44,7 @@ class Client_Batch_IndexTest extends \PHPUnit_Framework_TestCase
 		$this->assertTrue($result);
 	}
 
-	public function testCommitBatch_AddToIndex_NodeDoeNotExist_Success_ReturnsTrue()
+	public function testCommitBatch_AddToIndex_NodeDoesNotExist_Success_ReturnsTrue()
 	{
 		$node = new Node($this->client);
 
@@ -48,8 +53,12 @@ class Client_Batch_IndexTest extends \PHPUnit_Framework_TestCase
 		$request = array(
 			array('id' => 1, 'method' => 'POST', 'to' => '/node', 'body' => null),
 			array('id' => 0, 'method' => 'POST',
-				'to' => '/index/node/indexname/somekey/somevalue',
-				'body' => '{1}'
+				'to' => '/index/node/indexname',
+				'body' => array(
+					'key'   => 'somekey',
+					'value' => 'somevalue',
+					'uri'   => '{1}',
+				)
 			));
 		
 		$return = array('code' => 200, 'data' => array(
@@ -73,8 +82,13 @@ class Client_Batch_IndexTest extends \PHPUnit_Framework_TestCase
 		$index = new Index($this->client, Index::TypeRelationship, 'indexname');
 
 		$request = array(array('id' => 0, 'method' => 'POST',
-			'to' => '/index/relationship/indexname/somekey/somevalue',
-			'body' => $this->endpoint.'/relationship/123'));
+			'to' => '/index/relationship/indexname',
+			'body' => array(
+				'key'   => 'somekey',
+				'value' => 'somevalue',
+				'uri'   => $this->endpoint.'/relationship/123',
+			)
+		));
 		
 		$return = array('code' => 200, 'data' => array(array('id' => 0)));
 
@@ -103,8 +117,12 @@ class Client_Batch_IndexTest extends \PHPUnit_Framework_TestCase
 				'body' => array('to' => '{3}', 'type' => 'TEST')
 			),
 			array('id' => 0, 'method' => 'POST',
-				'to' => '/index/relationship/indexname/somekey/somevalue',
-				'body' => '{1}'
+				'to' => '/index/relationship/indexname',
+				'body' => array(
+					'key'   => 'somekey',
+					'value' => 'somevalue',
+					'uri'   => '{1}',
+				)
 			)
 		);
 		

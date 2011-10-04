@@ -47,8 +47,20 @@ class AddToIndex extends Command
 			throw new Exception('No entity to index specified');
 		}
 
+		$data = array();
+
 		$type = trim((string)$this->index->getType());
-		return $this->getTransport()->getEndpoint().'/'.$type.'/'.$this->entity->getId();
+		$data['uri'] = $this->getTransport()->getEndpoint().'/'.$type.'/'.$this->entity->getId();
+
+
+		$key = trim((string)$this->key);
+		if (!$key) {
+			throw new Exception('No key specified to add to index');
+		}
+		$data['key'] = $key;
+		$data['value'] = $this->value;
+
+		return $data;
 	}
 
 	/**
@@ -81,17 +93,9 @@ class AddToIndex extends Command
 		if (!$name) {
 			throw new Exception('No name specified for index');
 		}
-
-		$key = trim((string)$this->key);
-		if (!$key) {
-			throw new Exception('No key specified to add to index');
-		}
-
 		$name = urlencode($name);
-		$key = urlencode($key);
-		$value = urlencode($this->value);
 
-		return '/index/'.$type.'/'.$name.'/'.$key.'/'.$value;
+		return '/index/'.$type.'/'.$name;
 	}
 
 	/**
