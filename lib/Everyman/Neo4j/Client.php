@@ -15,6 +15,7 @@ class Client
 	protected $entityMapper = null;
 	protected $cache = null;
 	protected $cacheTimeout = null;
+	protected $serverInfo = null;
 
 	protected $lastError = null;
 
@@ -331,6 +332,27 @@ class Client
 		} else {
 			return false;
 		}
+	}
+
+	/**
+	 * Retrieve information about the server
+	 *
+	 * @param boolean $force Don't use previous results
+	 * @return array
+	 */
+	public function getServerInfo($force=false)
+	{
+		if ($this->serverInfo === null || $force) {
+			$command = new Command\GetServerInfo($this);
+			$result = $this->runCommand($command);
+			if ($result) {
+				$this->serverInfo = $command->getResult();
+			} else {
+				$this->serverInfo = null;
+			}
+		}
+
+		return $this->serverInfo;
 	}
 
 	/**

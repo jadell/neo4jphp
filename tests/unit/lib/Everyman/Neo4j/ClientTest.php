@@ -845,4 +845,35 @@ class ClientTest extends \PHPUnit_Framework_TestCase
 		$result = $this->client->getRelationshipTypes();
 		$this->assertEquals(array("foo","bar"), $result);
 	}
+
+	public function testGetServerInfo_ServerReturnsArray_ReturnsArray()
+	{
+		$returnData = array(
+			"relationship_index" => "http://localhost:7474/db/data/index/relationship",
+			"node" => "http://localhost:7474/db/data/node",
+			"relationship_types" => "http://localhost:7474/db/data/relationship/types",
+			"batch" => "http://localhost:7474/db/data/batch",
+			"extensions_info" => "http://localhost:7474/db/data/ext",
+			"node_index" => "http://localhost:7474/db/data/index/node",
+			"reference_node" => "http://localhost:7474/db/data/node/2",
+			"extensions" => array(),
+			"neo4j_version" => "1.5.M01-793-gc100417-dirty",
+		);
+
+		$expectedData = $returnData;
+		$expectedData['version'] = array(
+			"full" => "1.5.M01-793-gc100417-dirty",
+			"major" => "1",
+			"minor" => "5",
+			"release" => "M01",
+		);
+
+		$this->transport->expects($this->once())
+			->method('get')
+			->with('/')
+			->will($this->returnValue(array('code'=>200, 'data'=>$returnData)));
+
+		$result = $this->client->getServerInfo();
+		$this->assertEquals($expectedData, $result);
+	}
 }
