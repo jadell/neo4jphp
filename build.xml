@@ -19,6 +19,7 @@
 		<mkdir dir="./build" />
 		<copy todir="./build">
 			<fileset dir=".">
+				<include name="README.md" />
 				<include name="LICENSE" />
 				<include name="lib/" />
 			</fileset>

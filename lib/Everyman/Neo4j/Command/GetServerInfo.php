@@ -82,7 +82,7 @@ class GetServerInfo extends Command
 			'major' => $parts[0],
 			'minor' => $parts[1],
 		);
-		list($versionInfo['release'], $ignore) = explode('-', $parts[2], 2);
+		$versionInfo['release'] = current(explode('-', $parts[2], 2));
 		return $versionInfo;
 	}
 }
