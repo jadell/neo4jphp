@@ -326,12 +326,7 @@ class Client
 	public function getRelationshipTypes()
 	{
 		$command = new Command\GetRelationshipTypes($this);
-		$result = $this->runCommand($command);
-		if ($result) {
-			return $command->getResult();
-		} else {
-			return false;
-		}
+		return $this->runCommand($command);
 	}
 
 	/**
@@ -344,14 +339,8 @@ class Client
 	{
 		if ($this->serverInfo === null || $force) {
 			$command = new Command\GetServerInfo($this);
-			$result = $this->runCommand($command);
-			if ($result) {
-				$this->serverInfo = $command->getResult();
-			} else {
-				$this->serverInfo = null;
-			}
+			$this->serverInfo = $this->runCommand($command);
 		}
-
 		return $this->serverInfo;
 	}
 
@@ -611,15 +600,8 @@ class Client
 	 */
 	protected function runCommand(Command $command)
 	{
-		$this->resetLastError();
-
 		$result = $command->execute();
-		if ($result) {
-			$this->setLastError($result);
-			return false;
-		} else {
-			return true;
-		}
+		return $result;
 	}
 
 	/**

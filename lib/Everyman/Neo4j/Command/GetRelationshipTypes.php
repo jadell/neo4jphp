@@ -8,8 +8,6 @@ use Everyman\Neo4j\Command,
  */
 class GetRelationshipTypes extends Command
 {
-	protected $types  = array();
-
 	/**
 	 * Return the data to pass
 	 *
@@ -41,16 +39,6 @@ class GetRelationshipTypes extends Command
 	}
 
 	/**
-	 * Get the result array of types
-	 *
-	 * @return array
-	 */
-	public function getResult()
-	{
-		return $this->types;
-	}
-
-	/**
 	 * Use the results
 	 *
 	 * @param integer $code
@@ -60,11 +48,10 @@ class GetRelationshipTypes extends Command
 	 */
 	protected function handleResult($code, $headers, $data)
 	{
-		if ((int)($code / 100) == 2) {
-			$this->types = $data;
-			return null;
+		if ((int)($code / 100) != 2) {
+			$this->throwException('Unable to retrieve relationship types', $code, $headers, $data);
 		}
-		return $code;
+		return $data;
 	}
 }
 

@@ -823,16 +823,15 @@ class ClientTest extends \PHPUnit_Framework_TestCase
 		$this->assertEquals(Client::ErrorBadRequest, $this->client->getLastError());
 	}
 
-	public function testGetRelationshipTypes_ServerReturnsErrorCode_ReturnsFalse()
+	public function testGetRelationshipTypes_ServerReturnsErrorCode_ThrowsException()
 	{
 		$this->transport->expects($this->once())
 			->method('get')
 			->with('/relationship/types')
 			->will($this->returnValue(array('code'=>Client::ErrorBadRequest)));
 
+		$this->setExpectedException('Everyman\Neo4j\Exception');
 		$result = $this->client->getRelationshipTypes();
-		$this->assertFalse($result);
-		$this->assertEquals(Client::ErrorBadRequest, $this->client->getLastError());
 	}
 
 	public function testGetRelationshipTypes_ServerReturnsArray_ReturnsArray()
@@ -875,5 +874,16 @@ class ClientTest extends \PHPUnit_Framework_TestCase
 
 		$result = $this->client->getServerInfo();
 		$this->assertEquals($expectedData, $result);
+	}
+
+	public function testGetServerInfo_UnsuccessfulResponse_ThrowsException()
+	{
+		$this->transport->expects($this->once())
+			->method('get')
+			->with('/')
+			->will($this->returnValue(array('code'=>400)));
+
+		$this->setExpectedException('Everyman\Neo4j\Exception');
+		$this->client->getServerInfo();
 	}
 }

@@ -88,5 +88,19 @@ abstract class Command
 	{
 		return $this->client->getTransport();
 	}
+
+	/**
+	 * Throw an exception from handling the results
+	 *
+	 * @param integer $code
+	 * @param array   $headers
+	 * @param array   $data
+	 * @throws Exception
+	 */
+	protected function throwException($message, $code, $headers, $data)
+	{
+		$message = "{$message} [{$code}]:\n" . print_r($headers, true) . print_r($data, true);
+		throw new Exception($message, $code);
+	}
 }
 

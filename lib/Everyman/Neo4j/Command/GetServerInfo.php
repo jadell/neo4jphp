@@ -8,8 +8,6 @@ use Everyman\Neo4j\Command,
  */
 class GetServerInfo extends Command
 {
-	protected $info  = array();
-
 	/**
 	 * Return the data to pass
 	 *
@@ -41,16 +39,6 @@ class GetServerInfo extends Command
 	}
 
 	/**
-	 * Get the result array of types
-	 *
-	 * @return array
-	 */
-	public function getResult()
-	{
-		return $this->info;
-	}
-
-	/**
 	 * Use the results
 	 *
 	 * @param integer $code
@@ -60,12 +48,11 @@ class GetServerInfo extends Command
 	 */
 	protected function handleResult($code, $headers, $data)
 	{
-		if ((int)($code / 100) == 2) {
-			$this->info = $data;
-			$this->info['version'] = $this->parseVersion($data['neo4j_version']);
-			return null;
+		if ((int)($code / 100) != 2) {
+			$this->throwException('Unable to retrieve server info', $code, $headers, $data);
 		}
-		return $code;
+		$data['version'] = $this->parseVersion($data['neo4j_version']);
+		return $data;
 	}
 
 	/**

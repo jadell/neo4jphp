@@ -124,6 +124,12 @@ class Transport
 		$code = curl_getinfo($ch, CURLINFO_HTTP_CODE);
 		$headerSize = curl_getinfo($ch, CURLINFO_HEADER_SIZE);
 
+		if (!$code) {
+			$code = 500;
+			$headerSize = 0;
+			$response = json_encode(array("error"=>curl_error($ch).' ['.curl_errno($ch).']'));
+		}
+
 		$bodyString = substr($response, $headerSize);
 		$bodyData = json_decode($bodyString, true);
 
