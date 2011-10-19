@@ -12,7 +12,6 @@ use Everyman\Neo4j\Command,
 class GetPaths extends Command
 {
 	protected $finder = null;
-	protected $paths  = array();
 
 	/**
 	 * Set the parameters to search
@@ -111,16 +110,6 @@ class GetPaths extends Command
 	}
 
 	/**
-	 * Get the result array of paths
-	 *
-	 * @return array
-	 */
-	public function getResult()
-	{
-		return $this->paths;
-	}
-
-	/**
 	 * Use the results
 	 *
 	 * @param integer $code
@@ -130,13 +119,15 @@ class GetPaths extends Command
 	 */
 	protected function handleResult($code, $headers, $data)
 	{
-		if ((int)($code / 100) == 2) {
-			foreach ($data as $pathData) {
-				$this->paths[] = $this->getEntityMapper()->populatePath(new Path($this->client), $pathData);
-			}
-			return null;
+		if ((int)($code / 100) != 2) {
+			$this->throwException('Unable to retrieve paths', $code, $headers, $data);
 		}
-		return $code;
+
+		$paths = array();
+		foreach ($data as $pathData) {
+			$paths[] = $this->getEntityMapper()->populatePath(new Path($this->client), $pathData);
+		}
+		return $paths;
 	}
 }
 

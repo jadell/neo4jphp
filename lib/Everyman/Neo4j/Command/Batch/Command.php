@@ -55,13 +55,14 @@ abstract class Command extends SingleCommand
 	 */
 	protected function handleResult($code, $headers, $data)
 	{
-		if ((int)($code / 100) == 2) {
-			foreach ($data as $result) {
-				$this->handleSingleResult($result);
-			}
-			return null;
+		if ((int)($code / 100) != 2) {
+			$this->throwException('Unable to commit batch', $code, $headers, $data);
 		}
-		return $code;
+
+		foreach ($data as $result) {
+			$this->handleSingleResult($result);
+		}
+		return true;
 	}
 }
 

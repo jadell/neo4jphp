@@ -20,11 +20,10 @@ class Client_GremlinTest extends \PHPUnit_Framework_TestCase
 		$this->transport->expects($this->once())
 			->method('post')
 			->with('/ext/GremlinPlugin/graphdb/execute_script', $props)
-			->will($this->returnValue(array('code'=>Client::ErrorBadRequest)));
+			->will($this->returnValue(array('code'=>400)));
 
-		$result = $this->client->executeGremlinQuery($query);
-		$this->assertFalse($result);
-		$this->assertEquals(Client::ErrorBadRequest, $this->client->getLastError());
+		$this->setExpectedException('\Everyman\Neo4j\Exception');
+		$this->client->executeGremlinQuery($query);
 	}
 
 	public function testGremlinQuery_DataAndColumnsReturned_ReturnsResultSet()

@@ -11,8 +11,6 @@ class ExecuteCypherQuery extends Command
 {
 	protected $query = null;
 
-	protected $results = null;
-
 	/**
 	 * Set the query to execute
 	 *
@@ -57,16 +55,6 @@ class ExecuteCypherQuery extends Command
 	}
 
 	/**
-	 * Get the result array of entities
-	 *
-	 * @return array
-	 */
-	public function getResult()
-	{
-		return $this->results;
-	}
-
-	/**
 	 * Use the results
 	 *
 	 * @param integer $code
@@ -76,11 +64,11 @@ class ExecuteCypherQuery extends Command
 	 */
 	protected function handleResult($code, $headers, $data)
 	{
-		if ((int)($code / 100) == 2) {
-			$this->results = new ResultSet($this->client, $data);
-			return null;
+		if ((int)($code / 100) != 2) {
+			$this->throwException('Unable to execute query', $code, $headers, $data);
 		}
-		return $code;
+
+		return new ResultSet($this->client, $data);
 	}
 }
 

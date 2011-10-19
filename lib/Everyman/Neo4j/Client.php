@@ -104,12 +104,7 @@ class Client
 	public function executeCypherQuery(Cypher\Query $query)
 	{
 		$command = new Command\ExecuteCypherQuery($this, $query);
-		$result = $this->runCommand($command);
-		if ($result) {
-			return $command->getResult();
-		} else {
-			return false;
-		}
+		return $this->runCommand($command);
 	}
 
 	/**
@@ -121,12 +116,7 @@ class Client
 	public function executeGremlinQuery(Gremlin\Query $query)
 	{
 		$command = new Command\ExecuteGremlinQuery($this, $query);
-		$result = $this->runCommand($command);
-		if ($result) {
-			return $command->getResult();
-		} else {
-			return false;
-		}
+		return $this->runCommand($command);
 	}
 
 	/**
@@ -263,12 +253,7 @@ class Client
 	public function getPaths(PathFinder $finder)
 	{
 		$command = new Command\GetPaths($this, $finder);
-		$result = $this->runCommand($command);
-		if ($result) {
-			return $command->getResult();
-		} else {
-			return false;
-		}
+		return $this->runCommand($command);
 	}
 	
 	/**
