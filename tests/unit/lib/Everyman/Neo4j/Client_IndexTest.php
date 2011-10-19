@@ -33,7 +33,7 @@ class Client_IndexTest extends \PHPUnit_Framework_TestCase
 	/**
 	 * @dataProvider dataProvider_SaveIndexScenarios
 	 */
-	public function testSaveIndex_ReturnsCorrectSuccessOrFailure($type, $name, $result, $success, $error)
+	public function testSaveIndex_ReturnsSuccess($type, $name, $result, $success, $error)
 	{
 		$index = new Index($this->client, $type, $name);
 
@@ -44,17 +44,30 @@ class Client_IndexTest extends \PHPUnit_Framework_TestCase
 			))
 			->will($this->returnValue($result));
 
-		$this->assertEquals($success, $this->client->saveIndex($index));
-		$this->assertEquals($error, $this->client->getLastError());
+		$this->assertTrue($this->client->saveIndex($index));
 	}
 
 	public function dataProvider_SaveIndexScenarios()
 	{
-		return array(// type, name, result, success, error
-			array(Index::TypeNode, 'somekey', array('code'=>201), true, null),
-			array(Index::TypeRelationship, 'somekey', array('code'=>201), true, null),
-			array(Index::TypeNode, 'somekey', array('code'=>400), false, Client::ErrorBadRequest),
+		return array(// type, name, result
+			array(Index::TypeNode, 'somekey', array('code'=>201)),
+			array(Index::TypeRelationship, 'somekey', array('code'=>201)),
 		);
+	}
+
+	public function testSaveIndex_ServerError_ThrowsException()
+	{
+		$index = new Index($this->client, Index::TypeNode, 'somekey');
+
+		$this->transport->expects($this->once())
+			->method('post')
+			->with('/index/node', array(
+				'name' => 'somekey',
+			))
+			->will($this->returnValue(array('code'=>400)));
+
+		$this->setExpectedException('\Everyman\Neo4j\Exception');			
+		$this->client->saveIndex($index);
 	}
 
 	public function testDeleteIndex_UnknownIndexType_ThrowsException()
@@ -74,7 +87,7 @@ class Client_IndexTest extends \PHPUnit_Framework_TestCase
 	/**
 	 * @dataProvider dataProvider_SaveIndexScenarios
 	 */
-	public function testDeleteIndex_ReturnsCorrectSuccessOrFailure($type, $name, $result, $success, $error)
+	public function testDeleteIndex_ReturnsSuccess($type, $name, $result)
 	{
 		$index = new Index($this->client, $type, $name);
 
@@ -83,8 +96,20 @@ class Client_IndexTest extends \PHPUnit_Framework_TestCase
 			->with('/index/'.$type.'/'.$name)
 			->will($this->returnValue($result));
 
-		$this->assertEquals($success, $this->client->deleteIndex($index));
-		$this->assertEquals($error, $this->client->getLastError());
+		$this->assertTrue($this->client->deleteIndex($index));
+	}
+
+	public function testDeleteIndex_ServerError_ThrowsException()
+	{
+		$index = new Index($this->client, Index::TypeNode, 'somekey');
+
+		$this->transport->expects($this->once())
+			->method('delete')
+			->with('/index/node/somekey')
+			->will($this->returnValue(array('code'=>400)));
+
+		$this->setExpectedException('\Everyman\Neo4j\Exception');			
+		$this->client->deleteIndex($index);
 	}
 
 	public function testDeleteIndex_UrlEntities_ReturnsCorrectSuccess()
@@ -127,10 +152,7 @@ class Client_IndexTest extends \PHPUnit_Framework_TestCase
 		$this->client->addToIndex($index, $node, 'somekey', 'somevalue');
 	}
 
-	/**
-	 * @dataProvider dataProvider_AddToIndexScenarios
-	 */
-	public function testAddToIndex_ReturnsCorrectSuccessOrFailure($result, $success, $error)
+	public function testAddToIndex_EntityAdded_ReturnsSuccess()
 	{
 		$index = new Index($this->client, Index::TypeNode, 'indexname');
 		$node = new Node($this->client);
@@ -145,20 +167,11 @@ class Client_IndexTest extends \PHPUnit_Framework_TestCase
 		$this->transport->expects($this->once())
 			->method('post')
 			->with('/index/node/indexname', $data)
-			->will($this->returnValue($result));
+			->will($this->returnValue(array('code'=>201)));
 
-		$this->assertEquals($success, $this->client->addToIndex($index, $node, 'somekey', 'somevalue'));
-		$this->assertEquals($error, $this->client->getLastError());
+		$this->assertTrue($this->client->addToIndex($index, $node, 'somekey', 'somevalue'));
 	}
 	
-	public function dataProvider_AddToIndexScenarios()
-	{
-		return array(// result, success, error
-			array(array('code'=>201), true, null),
-			array(array('code'=>400), false, Client::ErrorBadRequest),
-		);
-	}
-
 	public function testAddToIndex_UrlEntities_ReturnsCorrectSuccess()
 	{
 		$index = new Index($this->client, Index::TypeNode, 'index name');
@@ -178,6 +191,27 @@ class Client_IndexTest extends \PHPUnit_Framework_TestCase
 
 		$this->assertTrue($this->client->addToIndex($index, $node, 'some@key', 'some$value'));
 		$this->assertNull($this->client->getLastError());
+	}
+
+	public function testAddToIndex_ServerError_ThrowsException()
+	{
+		$index = new Index($this->client, Index::TypeNode, 'indexname');
+		$node = new Node($this->client);
+		$node->setId(123);
+
+		$data = array(
+			'key'   => 'somekey',
+			'value' => 'somevalue',
+			'uri'   => $this->endpoint.'/node/123',
+		);
+
+		$this->transport->expects($this->once())
+			->method('post')
+			->with('/index/node/indexname', $data)
+			->will($this->returnValue(array('code'=>400)));
+
+		$this->setExpectedException('\Everyman\Neo4j\Exception');			
+		$this->client->addToIndex($index, $node, 'somekey', 'somevalue');
 	}
 
 	public function testAddToIndex_BadIndexName_ThrowsException()
@@ -242,7 +276,7 @@ class Client_IndexTest extends \PHPUnit_Framework_TestCase
 	/**
 	 * @dataProvider dataProvider_RemoveFromIndexScenarios
 	 */
-	public function testRemoveFromIndex_ReturnsCorrectSuccessOrFailure($key, $value, $path, $result, $success, $error)
+	public function testRemoveFromIndex_ReturnsSuccess($key, $value, $path, $result)
 	{
 		$index = new Index($this->client, Index::TypeNode, 'indexname');
 		$node = new Node($this->client);
@@ -253,20 +287,33 @@ class Client_IndexTest extends \PHPUnit_Framework_TestCase
 			->with('/index/node/indexname'.$path.'/123')
 			->will($this->returnValue($result));
 
-		$this->assertEquals($success, $this->client->removeFromIndex($index, $node, $key, $value));
-		$this->assertEquals($error, $this->client->getLastError());
+		$this->assertTrue($this->client->removeFromIndex($index, $node, $key, $value));
 	}
 	
 	public function dataProvider_RemoveFromIndexScenarios()
 	{
-		return array(// key, value, path, result, success, error
-			array('somekey', 'somevalue', '/somekey/somevalue', array('code'=>201), true, null),
-			array('somekey', 'somevalue', '/somekey/somevalue', array('code'=>404), true, null),
-			array('somekey', null, '/somekey', array('code'=>201), true, null),
-			array(null, null, '', array('code'=>201), true, null),
-			array('somekey', 'somevalue', '/somekey/somevalue', array('code'=>400), false, Client::ErrorBadRequest),
-			array('some key@', 'som$e value', '/some+key%40/som%24e+value', array('code'=>201), true, null),
+		return array(// key, value, path, result
+			array('somekey', 'somevalue', '/somekey/somevalue', array('code'=>201)),
+			array('somekey', 'somevalue', '/somekey/somevalue', array('code'=>404)),
+			array('somekey', null, '/somekey', array('code'=>201)),
+			array(null, null, '', array('code'=>201)),
+			array('some key@', 'som$e value', '/some+key%40/som%24e+value', array('code'=>201)),
 		);
+	}
+
+	public function testRemoveFromIndex_ServerError_ThrowsException()
+	{
+		$index = new Index($this->client, Index::TypeNode, 'indexname');
+		$node = new Node($this->client);
+		$node->setId(123);
+
+		$this->transport->expects($this->once())
+			->method('delete')
+			->with('/index/node/indexname/somekey/somevalue/123')
+			->will($this->returnValue(array('code'=>400)));
+
+		$this->setExpectedException('\Everyman\Neo4j\Exception');			
+		$this->client->removeFromIndex($index, $node, 'somekey', 'somevalue');
 	}
 
 	public function testRemoveFromIndex_BadIndexName_ThrowsException()
@@ -342,7 +389,7 @@ class Client_IndexTest extends \PHPUnit_Framework_TestCase
 		$this->client->searchIndex($index, null, 'somevalue');
 	}
 
-	public function testSearchIndex_Error_ReturnsFalse()
+	public function testSearchIndex_Error_ThrowsException()
 	{
 		$index = new Index($this->client, Index::TypeNode, 'indexname');
 
@@ -351,9 +398,8 @@ class Client_IndexTest extends \PHPUnit_Framework_TestCase
 			->with('/index/node/indexname/somekey/somevalue')
 			->will($this->returnValue(array('code'=>400)));
 
-		$result = $this->client->searchIndex($index, 'somekey', 'somevalue');
-		$this->assertFalse($result);
-		$this->assertEquals(Client::ErrorBadRequest, $this->client->getLastError());
+		$this->setExpectedException('\Everyman\Neo4j\Exception');			
+		$this->client->searchIndex($index, 'somekey', 'somevalue');
 	}
 
 	public function testSearchIndex_NodesFound_ReturnsArray()
@@ -473,7 +519,7 @@ class Client_IndexTest extends \PHPUnit_Framework_TestCase
 	}
 
 
-	public function testQueryIndex_Error_ReturnsFalse()
+	public function testQueryIndex_Error_ThrowsException()
 	{
 		$index = new Index($this->client, Index::TypeNode, 'indexname');
 
@@ -482,9 +528,8 @@ class Client_IndexTest extends \PHPUnit_Framework_TestCase
 			->with('/index/node/indexname?query='.urlencode('somekey:somevalue*'))
 			->will($this->returnValue(array('code'=>400)));
 
-		$result = $this->client->queryIndex($index, 'somekey:somevalue*');
-		$this->assertFalse($result);
-		$this->assertEquals(Client::ErrorBadRequest, $this->client->getLastError());
+		$this->setExpectedException('\Everyman\Neo4j\Exception');
+		$this->client->queryIndex($index, 'somekey:somevalue*');
 	}
 
 
@@ -555,16 +600,15 @@ class Client_IndexTest extends \PHPUnit_Framework_TestCase
 		$this->assertEquals(456, $result[0]->getEndNode()->getId());
 	}
 		
-	public function testGetIndexes_ServerReturnsErrorCode_ReturnsFalse()
+	public function testGetIndexes_ServerError_ThrowsException()
 	{
 		$this->transport->expects($this->once())
 			->method('get')
 			->with('/index/node')
-			->will($this->returnValue(array('code'=>Client::ErrorBadRequest)));
+			->will($this->returnValue(array('code'=>400)));
 
-		$result = $this->client->getIndexes(Index::TypeNode);
-		$this->assertFalse($result);
-		$this->assertEquals(Client::ErrorBadRequest, $this->client->getLastError());
+		$this->setExpectedException('\Everyman\Neo4j\Exception');			
+		$results = $this->client->getIndexes(Index::TypeNode);
 	}
 
 	public function testGetIndexes_BadType_ThrowsException()

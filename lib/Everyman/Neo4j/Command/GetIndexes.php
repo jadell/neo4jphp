@@ -11,7 +11,6 @@ use Everyman\Neo4j\Command,
 class GetIndexes extends Command
 {
 	protected $type = null;
-	protected $indexes = array();
 
 	/**
 	 * Set the type of index to retrieve
@@ -61,16 +60,6 @@ class GetIndexes extends Command
 	}
 
 	/**
-	 * Get the result array of indexes
-	 *
-	 * @return array
-	 */
-	public function getResult()
-	{
-		return $this->indexes;
-	}
-
-	/**
 	 * Use the results
 	 *
 	 * @param integer $code
@@ -80,16 +69,18 @@ class GetIndexes extends Command
 	 */
 	protected function handleResult($code, $headers, $data)
 	{
-		if ((int)($code / 100) == 2) {
-			if (!$data) {
-				$data = array();
-			}
-			foreach ($data as $name => $indexData) {
-				$this->indexes[] = new Index($this->client, $this->type, $name);
-			}
-			return null;
+		if ((int)($code / 100) != 2) {
+			$this->throwException('Unable to retrieve indexes', $code, $headers, $data);
 		}
-		return $code;
+
+		if (!$data) {
+			$data = array();
+		}
+
+		$indexes = array();
+		foreach ($data as $name => $indexData) {
+			$indexes[] = new Index($this->client, $this->type, $name);
+		}
+		return $indexes;
 	}
 }
-

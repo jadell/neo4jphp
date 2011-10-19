@@ -190,12 +190,7 @@ class Client
 	public function getIndexes($type)
 	{
 		$command = new Command\GetIndexes($this, $type);
-		$result = $this->runCommand($command);
-		if ($result) {
-			return $command->getResult();
-		} else {
-			return false;
-		}
+		return $this->runCommand($command);
 	}
 
 	/**
@@ -397,12 +392,7 @@ class Client
 	public function queryIndex(Index $index, $query)
 	{
 		$command = new Command\QueryIndex($this, $index, $query);
-		$result = $this->runCommand($command);
-		if ($result) {
-			return $command->getResult();
-		} else {
-			return false;
-		}
+		return $this->runCommand($command);
 	}
 
 	/**
@@ -486,12 +476,7 @@ class Client
 	public function searchIndex(Index $index, $key, $value)
 	{
 		$command = new Command\SearchIndex($this, $index, $key, $value);
-		$result = $this->runCommand($command);
-		if ($result) {
-			return $command->getResult();
-		} else {
-			return false;
-		}
+		return $this->runCommand($command);
 	}
 
 	/**

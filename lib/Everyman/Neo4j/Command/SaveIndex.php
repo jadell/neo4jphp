@@ -76,10 +76,10 @@ class SaveIndex extends Command
 	 */
 	protected function handleResult($code, $headers, $data)
 	{
-		if ((int)($code / 100) == 2) {
-			return null;
+		if ((int)($code / 100) != 2) {
+			$this->throwException('Unable to save index', $code, $headers, $data);
 		}
-		return $code;
+		return true;
 	}
 }
 

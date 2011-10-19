@@ -16,8 +16,6 @@ class SearchIndex extends Command
 	protected $key = null;
 	protected $value = null;
 
-	protected $results = array();
-
 	/**
 	 * Set the index to drive the command
 	 *
@@ -84,16 +82,6 @@ class SearchIndex extends Command
 	}
 
 	/**
-	 * Get the result array of entities
-	 *
-	 * @return array
-	 */
-	public function getResult()
-	{
-		return $this->results;
-	}
-
-	/**
 	 * Use the results
 	 *
 	 * @param integer $code
@@ -103,14 +91,16 @@ class SearchIndex extends Command
 	 */
 	protected function handleResult($code, $headers, $data)
 	{
-		if ((int)($code / 100) == 2) {
-			$buildMethod = $this->index->getType() == Index::TypeNode ? 'makeNode' : 'makeRelationship';
-			foreach ($data as $entityData) {
-				$this->results[] = $this->getEntityMapper()->$buildMethod($entityData);
-			}
-			return null;
+		if ((int)($code / 100) != 2) {
+			$this->throwException('Unable to search index', $code, $headers, $data);
 		}
-		return $code;
+
+		$buildMethod = $this->index->getType() == Index::TypeNode ? 'makeNode' : 'makeRelationship';
+		$results = array();
+		foreach ($data as $entityData) {
+			$results[] = $this->getEntityMapper()->$buildMethod($entityData);
+		}
+		return $results;
 	}
 }
 
