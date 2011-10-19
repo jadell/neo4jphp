@@ -294,7 +294,7 @@ class Client_TraversalTest extends \PHPUnit_Framework_TestCase
 		$this->assertEquals('bar', $nodes[1]->getProperty('name'));
 	}
 
-	public function testTraversal_ServerReturnsErrorCode_ReturnsFalse()
+	public function testTraversal_ServerReturnsErrorCode_ThrowsException()
 	{
 		$traversal = new Traversal($this->client);
 		$node = new Node($this->client);
@@ -303,11 +303,10 @@ class Client_TraversalTest extends \PHPUnit_Framework_TestCase
 		$this->transport->expects($this->once())
 			->method('post')
 			->with('/node/1/traverse/node', array())
-			->will($this->returnValue(array("code"=>Client::ErrorBadRequest)));
+			->will($this->returnValue(array("code"=>400)));
 
+		$this->setExpectedException('Everyman\Neo4j\Exception');
 		$result = $this->client->executeTraversal($traversal, $node, Traversal::ReturnTypeNode);
-		$this->assertFalse($result);
-		$this->assertEquals(Client::ErrorBadRequest, $this->client->getLastError());
 	}
 
 	public function testPagedTraversal_TraversalGiven_ReturnsResultSets()
@@ -373,5 +372,26 @@ class Client_TraversalTest extends \PHPUnit_Framework_TestCase
 
 		$result = $this->client->executePagedTraversal($pager);
 		$this->assertEquals(0, count($result));
+	}
+
+	public function testPagedTraversal_ServerReturnsError_ThrowsException()
+	{
+		$traversal = new Traversal($this->client);
+		$traversal->setOrder(Traversal::OrderDepthFirst);
+
+		$node = new Node($this->client);
+		$node->setId(1);
+
+		$pager = new Pager($traversal, $node, Traversal::ReturnTypeNode);
+		$pager->setPageSize(1)
+			->setLeaseTime(30);
+
+		$this->transport->expects($this->once())
+			->method('post')
+			->with('/node/1/paged/traverse/node?pageSize=1&leaseTime=30',array("order" => "depth_first"))
+			->will($this->returnValue(array("code"=>400)));
+
+		$this->setExpectedException('Everyman\Neo4j\Exception');
+		$result = $this->client->executePagedTraversal($pager);
 	}
 }

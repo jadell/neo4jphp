@@ -85,7 +85,6 @@ class ExecutePagedTraversal extends ExecuteTraversal
 			$this->pager->setId($traversalId);
 		}
 
-		$this->results = array();
 		// No results found or end of result set indicated by 404
 		if ($code == 404) {
 			return null;

@@ -64,7 +64,7 @@ abstract class Command
 		$resultCode = isset($result['code']) ? $result['code'] : Client::ErrorBadRequest;
 		$resultHeaders = isset($result['headers']) ? $result['headers'] : array();
 		$resultData = isset($result['data']) ? $result['data'] : array();
-		$parseResult = $this->handleResult($resultCode,$resultHeaders,$resultData);
+		$parseResult = $this->handleResult($resultCode, $resultHeaders, $resultData);
 
 		return $parseResult;
 	}

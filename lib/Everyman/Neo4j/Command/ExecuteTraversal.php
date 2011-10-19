@@ -14,7 +14,7 @@ class ExecuteTraversal extends Command
 	protected $node = null;
 	protected $returnType = null;
 
-	protected $results = array();
+	protected $results;
 
 	/**
 	 * Set the traversal to execute
@@ -114,16 +114,6 @@ class ExecuteTraversal extends Command
 	}
 
 	/**
-	 * Get the result array of entities
-	 *
-	 * @return array
-	 */
-	public function getResult()
-	{
-		return $this->results;
-	}
-
-	/**
 	 * Use the results
 	 *
 	 * @param integer $code
@@ -133,19 +123,21 @@ class ExecuteTraversal extends Command
 	 */
 	protected function handleResult($code, $headers, $data)
 	{
-		if ((int)($code / 100) == 2) {
-			if ($this->returnType == Traversal::ReturnTypeNode) {
-				$this->handleNodes($data);
-			} else if ($this->returnType == Traversal::ReturnTypeRelationship) {
-				$this->handleRelationships($data);
-			} else if ($this->returnType == Traversal::ReturnTypePath) {
-				$this->handlePaths($data);
-			} else if ($this->returnType == Traversal::ReturnTypeFullPath) {
-				$this->handlePaths($data, true);
-			}
-			return null;
+		if ((int)($code / 100) != 2) {
+			$this->throwException('Unable to execute traversal', $code, $headers, $data);
 		}
-		return $code;
+
+		$this->results = array();
+		if ($this->returnType == Traversal::ReturnTypeNode) {
+			$this->handleNodes($data);
+		} else if ($this->returnType == Traversal::ReturnTypeRelationship) {
+			$this->handleRelationships($data);
+		} else if ($this->returnType == Traversal::ReturnTypePath) {
+			$this->handlePaths($data);
+		} else if ($this->returnType == Traversal::ReturnTypeFullPath) {
+			$this->handlePaths($data, true);
+		}
+		return $this->results;
 	}
 
 	/**

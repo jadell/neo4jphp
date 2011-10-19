@@ -138,12 +138,7 @@ class Client
 	public function executePagedTraversal(Pager $pager)
 	{
 		$command = new Command\ExecutePagedTraversal($this, $pager);
-		$result = $this->runCommand($command);
-		if ($result) {
-			return $command->getResult();
-		} else {
-			return false;
-		}
+		return $this->runCommand($command);
 	}
 
 	/**
@@ -157,12 +152,7 @@ class Client
 	public function executeTraversal(Traversal $traversal, Node $startNode, $returnType)
 	{
 		$command = new Command\ExecuteTraversal($this, $traversal, $startNode, $returnType);
-		$result = $this->runCommand($command);
-		if ($result) {
-			return $command->getResult();
-		} else {
-			return false;
-		}
+		return $this->runCommand($command);
 	}
 
 	/**
