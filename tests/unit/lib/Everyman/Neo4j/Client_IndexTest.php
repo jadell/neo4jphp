@@ -33,7 +33,7 @@ class Client_IndexTest extends \PHPUnit_Framework_TestCase
 	/**
 	 * @dataProvider dataProvider_SaveIndexScenarios
 	 */
-	public function testSaveIndex_ReturnsSuccess($type, $name, $result, $success, $error)
+	public function testSaveIndex_ReturnsSuccess($type, $name, $result)
 	{
 		$index = new Index($this->client, $type, $name);
 
