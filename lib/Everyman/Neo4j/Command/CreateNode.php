@@ -63,12 +63,13 @@ class CreateNode extends Command
 	 */
 	protected function handleResult($code, $headers, $data)
 	{
-		if ((int)($code / 100) == 2) {
-			$nodeId = $this->getEntityMapper()->getIdFromUri($headers['Location']);
-			$this->node->setId($nodeId);
-			return null;
+		if ((int)($code / 100) != 2) {
+			$this->throwException('Unable to create node', $code, $headers, $data);
 		}
-		return $code;
+
+		$nodeId = $this->getEntityMapper()->getIdFromUri($headers['Location']);
+		$this->node->setId($nodeId);
+		return true;
 	}
 }
 

@@ -68,9 +68,12 @@ class UpdateNode extends Command
 	protected function handleResult($code, $headers, $data)
 	{
 		if ((int)($code / 100) == 2) {
-			return null;
+			return true;
+		} else if ($code == 404) {
+			return false;
+		} else {
+			$this->throwException('Unable to update node', $code, $headers, $data);
 		}
-		return $code;
 	}
 }
 

@@ -16,10 +16,7 @@ class ClientTest extends \PHPUnit_Framework_TestCase
 		$this->client = new Client($this->transport);
 	}
 
-	/**
-	 * @dataProvider dataProvider_DeleteNodeScenarios
-	 */
-	public function testDeleteNode_TransportResult_ReturnsCorrectSuccessOrFailure($result, $success, $error)
+	public function testDeleteNode_NodeDeleted_ReturnsTrue()
 	{
 		$node = new Node($this->client);
 		$node->setId(123);
@@ -27,19 +24,36 @@ class ClientTest extends \PHPUnit_Framework_TestCase
 		$this->transport->expects($this->once())
 			->method('delete')
 			->with('/node/123')
-			->will($this->returnValue($result));
+			->will($this->returnValue(array('code'=>204)));
 
-		$this->assertEquals($success, $this->client->deleteNode($node));
-		$this->assertEquals($error, $this->client->getLastError());
+		$this->assertTrue($this->client->deleteNode($node));
 	}
 
-	public function dataProvider_DeleteNodeScenarios()
+	public function testDeleteNode_NodeNotFound_ReturnsFalse()
 	{
-		return array(// result, success, error
-			array(array('code'=>204), true, null),
-			array(array('code'=>404), false, Client::ErrorNotFound),
-			array(array('code'=>409), false, Client::ErrorConflict),
-		);
+		$node = new Node($this->client);
+		$node->setId(123);
+		
+		$this->transport->expects($this->once())
+			->method('delete')
+			->with('/node/123')
+			->will($this->returnValue(array('code'=>404)));
+
+		$this->assertFalse($this->client->deleteNode($node));
+	}
+
+	public function testDeleteNode_TransportError_ThrowsException()
+	{
+		$node = new Node($this->client);
+		$node->setId(123);
+		
+		$this->transport->expects($this->once())
+			->method('delete')
+			->with('/node/123')
+			->will($this->returnValue(array('code'=>409)));
+
+		$this->setExpectedException('Everyman\Neo4j\Exception');
+		$this->client->deleteNode($node);
 	}
 
 	public function testDeleteNode_NodeHasNoId_ThrowsException()
@@ -59,10 +73,7 @@ class ClientTest extends \PHPUnit_Framework_TestCase
 		$command->execute();
 	}
 
-	/**
-	 * @dataProvider dataProvider_UpdateNodeScenarios
-	 */
-	public function testSaveNode_Update_ReturnsCorrectSuccessOrFailure($result, $success, $error)
+	public function testSaveNode_UpdateNodeFound_ReturnsTrue()
 	{
 		$properties = array(
 			'foo' => 'bar',
@@ -70,32 +81,62 @@ class ClientTest extends \PHPUnit_Framework_TestCase
 		);
 
 		$node = new Node($this->client);
-		$node->setId(123)
+		$node->useLazyLoad(false)
+			->setId(123)
 			->setProperties($properties);
 		
 		$this->transport->expects($this->once())
 			->method('put')
 			->with('/node/123/properties', $properties)
-			->will($this->returnValue($result));
+			->will($this->returnValue(array('code'=>204)));
 
-		$this->assertEquals($success, $this->client->saveNode($node));
-		$this->assertEquals($error, $this->client->getLastError());
+		$this->assertTrue($this->client->saveNode($node));
 		$this->assertEquals(123, $node->getId());
 	}
 
-	public function dataProvider_UpdateNodeScenarios()
+	public function testSaveNode_UpdateNodeNotFound_ReturnsFalse()
 	{
-		return array(// result, success, error
-			array(array('code'=>204), true, null),
-			array(array('code'=>404), false, Client::ErrorNotFound),
-			array(array('code'=>400), false, Client::ErrorBadRequest),
+		$properties = array(
+			'foo' => 'bar',
+			'baz' => 'qux',
 		);
+
+		$node = new Node($this->client);
+		$node->useLazyLoad(false)
+			->setId(123)
+			->setProperties($properties);
+		
+		$this->transport->expects($this->once())
+			->method('put')
+			->with('/node/123/properties', $properties)
+			->will($this->returnValue(array('code'=>404)));
+
+		$this->assertFalse($this->client->saveNode($node));
+		$this->assertEquals(123, $node->getId());
 	}
 
-	/**
-	 * @dataProvider dataProvider_CreateNodeScenarios
-	 */
-	public function testSaveNode_Create_ReturnsCorrectSuccessOrFailure($result, $success, $error, $id)
+	public function testSaveNode_Update_TransportError_ThrowsException()
+	{
+		$properties = array(
+			'foo' => 'bar',
+			'baz' => 'qux',
+		);
+
+		$node = new Node($this->client);
+		$node->useLazyLoad(false)
+			->setId(123)
+			->setProperties($properties);
+		
+		$this->transport->expects($this->once())
+			->method('put')
+			->with('/node/123/properties', $properties)
+			->will($this->returnValue(array('code'=>400)));
+
+		$this->setExpectedException('Everyman\Neo4j\Exception');
+		$this->client->saveNode($node);
+	}
+
+	public function testSaveNode_Create_ReturnsTrue()
 	{
 		$properties = array(
 			'foo' => 'bar',
@@ -108,19 +149,32 @@ class ClientTest extends \PHPUnit_Framework_TestCase
 		$this->transport->expects($this->once())
 			->method('post')
 			->with('/node', $properties)
-			->will($this->returnValue($result));
+			->will($this->returnValue(array(
+				'code'=>201,
+				'headers'=>array('Location'=>'http://foo.com:1234/db/data/node/123')
+			)));
 
-		$this->assertEquals($success, $this->client->saveNode($node));
-		$this->assertEquals($error, $this->client->getLastError());
-		$this->assertEquals($id, $node->getId());
+		$this->assertTrue($this->client->saveNode($node));
+		$this->assertEquals(123, $node->getId());
 	}
 
-	public function dataProvider_CreateNodeScenarios()
+	public function testSaveNode_Create_TransportError_ThrowsException()
 	{
-		return array(// result, success, error, id
-			array(array('code'=>201, 'headers'=>array('Location'=>'http://foo.com:1234/db/data/node/123')), true, null, 123),
-			array(array('code'=>400), false, Client::ErrorBadRequest, null),
+		$properties = array(
+			'foo' => 'bar',
+			'baz' => 'qux',
 		);
+
+		$node = new Node($this->client);
+		$node->setProperties($properties);
+		
+		$this->transport->expects($this->once())
+			->method('post')
+			->with('/node', $properties)
+			->will($this->returnValue(array('code'=>400)));
+
+		$this->setExpectedException('Everyman\Neo4j\Exception');
+		$this->client->saveNode($node);
 	}
 
 	public function testSaveNode_CreateNoProperties_ReturnsSuccess()
@@ -136,6 +190,19 @@ class ClientTest extends \PHPUnit_Framework_TestCase
 		$this->assertEquals(123, $node->getId());
 	}
 
+	public function testGetNode_TransportError_ThrowsException()
+	{
+		$nodeId = 123;
+		
+		$this->transport->expects($this->once())
+			->method('get')
+			->with('/node/'.$nodeId.'/properties')
+			->will($this->returnValue(array('code'=>400)));
+
+		$this->setExpectedException('Everyman\Neo4j\Exception');
+		$this->client->getNode($nodeId);
+	}
+
 	public function testGetNode_NotFound_ReturnsNull()
 	{
 		$nodeId = 123;
@@ -143,10 +210,9 @@ class ClientTest extends \PHPUnit_Framework_TestCase
 		$this->transport->expects($this->once())
 			->method('get')
 			->with('/node/'.$nodeId.'/properties')
-			->will($this->returnValue(array('code'=>'404')));
+			->will($this->returnValue(array('code'=>404)));
 
 		$this->assertNull($this->client->getNode($nodeId));
-		$this->assertEquals(Client::ErrorNotFound, $this->client->getLastError());
 	}
 
 	public function testGetNode_Force_ReturnsNode()
@@ -159,7 +225,6 @@ class ClientTest extends \PHPUnit_Framework_TestCase
 		$node = $this->client->getNode($nodeId, true);
 		$this->assertInstanceOf('Everyman\Neo4j\Node', $node);
 		$this->assertEquals($nodeId, $node->getId());
-		$this->assertNull($this->client->getLastError());
 	}
 
 	public function testGetNode_Found_ReturnsNode()
@@ -173,14 +238,13 @@ class ClientTest extends \PHPUnit_Framework_TestCase
 		$this->transport->expects($this->once())
 			->method('get')
 			->with('/node/'.$nodeId.'/properties')
-			->will($this->returnValue(array('code'=>'200','data'=>$properties)));
+			->will($this->returnValue(array('code'=>200,'data'=>$properties)));
 
 		$node = $this->client->getNode($nodeId);
 		$this->assertNotNull($node);
 		$this->assertInstanceOf('Everyman\Neo4j\Node', $node);
 		$this->assertEquals($nodeId, $node->getId());
 		$this->assertEquals($properties, $node->getProperties());
-		$this->assertNull($this->client->getLastError());
 	}
 
 	public function testLoadNode_NodeHasNoId_ThrowsException()

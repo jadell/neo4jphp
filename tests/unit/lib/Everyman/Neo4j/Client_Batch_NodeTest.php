@@ -37,7 +37,8 @@ class Client_Batch_NodeTest extends \PHPUnit_Framework_TestCase
 	public function testCommitBatch_UpdateNode_Success_ReturnsTrue()
 	{
 		$node = new Node($this->client);
-		$node->setId(123)
+		$node->useLazyLoad(false)
+			->setId(123)
 			->setProperties(array('foo' => 'bar','baz' => 'qux'));
 
 		$request = array(array('id' => 0, 'method' => 'PUT', 'to' => '/node/123/properties',

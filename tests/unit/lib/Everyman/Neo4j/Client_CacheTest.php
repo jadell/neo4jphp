@@ -160,8 +160,12 @@ class Client_CacheTest extends \PHPUnit_Framework_TestCase
 			->will($this->returnValue(array('code'=>'400')));
 
 		$this->cache->set("node-{$nodeId}", $node);
-		$this->client->deleteNode($node);
-		$this->assertSame($node, $this->cache->get("node-{$nodeId}"));
+		try {
+			$this->client->deleteNode($node);
+			$this->fail();
+		} catch (Exception $e) {
+			$this->assertSame($node, $this->cache->get("node-{$nodeId}"));
+		}
 	}
 
 	public function testDeleteRelationship_Success_RelationshipNotInCache()
@@ -200,7 +204,8 @@ class Client_CacheTest extends \PHPUnit_Framework_TestCase
 	{
 		$nodeId = 123;
 		$node = new Node($this->client);
-		$node->setId($nodeId);
+		$node->useLazyLoad(false)
+			->setId($nodeId);
 
 		$this->transport->expects($this->once())
 			->method('put')
@@ -215,22 +220,28 @@ class Client_CacheTest extends \PHPUnit_Framework_TestCase
 	{
 		$nodeId = 123;
 		$node = new Node($this->client);
-		$node->setId($nodeId);
+		$node->useLazyLoad(false)
+			->setId($nodeId);
 
 		$this->transport->expects($this->once())
 			->method('put')
 			->with('/node/123/properties', array())
 			->will($this->returnValue(array('code'=>400)));
 
-		$this->client->saveNode($node);
-		$this->assertFalse($this->cache->get("node-{$nodeId}"));
+		try {
+			$this->client->saveNode($node);
+			$this->fail();
+		} catch (Exception $e) {
+			$this->assertFalse($this->cache->get("node-{$nodeId}"));
+		}
 	}
 
 	public function testSaveRelationship_Success_RelationshipInCache()
 	{
 		$relId = 123;
 		$rel = new Relationship($this->client);
-		$rel->setId($relId);
+		$rel->useLazyLoad(false)
+			->setId($relId);
 		
 		$this->transport->expects($this->once())
 			->method('put')
@@ -245,7 +256,8 @@ class Client_CacheTest extends \PHPUnit_Framework_TestCase
 	{
 		$relId = 123;
 		$rel = new Relationship($this->client);
-		$rel->setId($relId);
+		$rel->useLazyLoad(false)
+			->setId($relId);
 		
 		$this->transport->expects($this->once())
 			->method('put')

@@ -74,9 +74,7 @@ class Client
 	public function deleteNode(Node $node)
 	{
 		$result = $this->runCommand(new Command\DeleteNode($this, $node));
-		if ($result) {
-			$this->deleteCachedNode($node);
-		}
+		$this->deleteCachedNode($node);
 		return $result;
 	}
 
@@ -422,10 +420,7 @@ class Client
 			$result = $this->runCommand(new Command\CreateNode($this, $node));
 		}
 
-		if ($result) {
-			$this->setCachedNode($node);
-		}
-
+		$this->setCachedNode($node);
 		return $result;
 	}
 
