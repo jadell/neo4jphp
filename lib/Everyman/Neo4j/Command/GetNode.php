@@ -54,7 +54,7 @@ class GetNode extends Command
 		if (!$this->node->hasId()) {
 			throw new Exception('No node id specified');
 		}
-		return '/node/'.$this->node->getId().'/properties';
+		return '/node/'.$this->node->getId();
 	}
 
 	/**
@@ -68,7 +68,7 @@ class GetNode extends Command
 	protected function handleResult($code, $headers, $data)
 	{
 		if ((int)($code / 100) == 2) {
-			$this->node = $this->getEntityMapper()->populateNode($this->node, array('data'=>$data));
+			$this->node = $this->getEntityMapper()->populateNode($this->node, $data);
 			return true;
 		} else if ($code == 404) {
 			return false;

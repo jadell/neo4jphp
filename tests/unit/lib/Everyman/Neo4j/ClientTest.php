@@ -196,7 +196,7 @@ class ClientTest extends \PHPUnit_Framework_TestCase
 		
 		$this->transport->expects($this->once())
 			->method('get')
-			->with('/node/'.$nodeId.'/properties')
+			->with('/node/'.$nodeId)
 			->will($this->returnValue(array('code'=>400)));
 
 		$this->setExpectedException('Everyman\Neo4j\Exception');
@@ -209,7 +209,7 @@ class ClientTest extends \PHPUnit_Framework_TestCase
 		
 		$this->transport->expects($this->once())
 			->method('get')
-			->with('/node/'.$nodeId.'/properties')
+			->with('/node/'.$nodeId)
 			->will($this->returnValue(array('code'=>404)));
 
 		$this->assertNull($this->client->getNode($nodeId));
@@ -237,8 +237,8 @@ class ClientTest extends \PHPUnit_Framework_TestCase
 		
 		$this->transport->expects($this->once())
 			->method('get')
-			->with('/node/'.$nodeId.'/properties')
-			->will($this->returnValue(array('code'=>200,'data'=>$properties)));
+			->with('/node/'.$nodeId)
+			->will($this->returnValue(array('code'=>200,'data'=>array('data'=>$properties))));
 
 		$node = $this->client->getNode($nodeId);
 		$this->assertNotNull($node);

@@ -22,13 +22,13 @@ class Client_CacheTest extends \PHPUnit_Framework_TestCase
 		$node = new Node($this->client);
 		$node->setId($nodeId);
 
-		$data = array(
-			'name' => 'FOO',
-		);
+		$data = array('data' => array(
+				'name' => 'FOO',
+		));
 
 		$this->transport->expects($this->once())
 			->method('get')
-			->with('/node/'.$nodeId.'/properties')
+			->with('/node/'.$nodeId)
 			->will($this->returnValue(array('code'=>'200','data'=>$data)));
 
 		$this->client->loadNode($node);
@@ -48,7 +48,7 @@ class Client_CacheTest extends \PHPUnit_Framework_TestCase
 
 		$this->transport->expects($this->once())
 			->method('get')
-			->with('/node/'.$nodeId.'/properties')
+			->with('/node/'.$nodeId)
 			->will($this->returnValue(array('code'=>'404')));
 
 		$this->client->loadNode($node);
@@ -104,8 +104,8 @@ class Client_CacheTest extends \PHPUnit_Framework_TestCase
 		$nodeId = 123;
 		$this->transport->expects($this->once())
 			->method('get')
-			->with('/node/'.$nodeId.'/properties')
-			->will($this->returnValue(array('code'=>'200','data'=>array())));
+			->with('/node/'.$nodeId)
+			->will($this->returnValue(array('code'=>'200','data'=>array('data'=>array()))));
 
 		$node = $this->client->getNode($nodeId);
 		$subseq = $this->client->getNode($nodeId);
