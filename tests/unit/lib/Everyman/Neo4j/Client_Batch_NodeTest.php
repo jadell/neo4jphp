@@ -15,6 +15,18 @@ class Client_Batch_NodeTest extends \PHPUnit_Framework_TestCase
 		$this->batch = new Batch($this->client);
 	}
 
+	public function testCommitBatch_TransportError_ThrowsException()
+	{
+		$node = new Node($this->client);
+		$request = array(array('id' => 0, 'method' => 'POST', 'to' => '/node', 'body' => null));
+		
+		$this->batch->save($node);
+		$this->setupTransportExpectation($request, $this->returnValue(array('code' => 400)));
+
+		$this->setExpectedException('\Everyman\Neo4j\Exception');
+		$this->client->commitBatch($this->batch);
+	}
+
 	public function testCommitBatch_CreateNode_Success_ReturnsTrue()
 	{
 		$node = new Node($this->client);
