@@ -193,11 +193,16 @@ class Client_CacheTest extends \PHPUnit_Framework_TestCase
 		$this->transport->expects($this->once())
 			->method('delete')
 			->with('/relationship/'.$relId)
-			->will($this->returnValue(array('code'=>'400')));
+			->will($this->returnValue(array('code'=>400)));
 
 		$this->cache->set("relationship-{$relId}", $rel);
-		$this->client->deleteRelationship($rel);
-		$this->assertSame($rel, $this->cache->get("relationship-{$relId}"));
+
+		try {
+			$this->client->deleteRelationship($rel);
+			$this->fail();
+		} catch (Exception $e) {
+			$this->assertSame($rel, $this->cache->get("relationship-{$relId}"));
+		}
 	}
 
 	public function testSaveNode_Success_NodeInCache()
@@ -264,7 +269,11 @@ class Client_CacheTest extends \PHPUnit_Framework_TestCase
 			->with('/relationship/123/properties', array())
 			->will($this->returnValue(array('code'=>400)));
 
-		$this->client->saveRelationship($rel);
-		$this->assertFalse($this->cache->get("relationship-{$relId}"));
+		try {
+			$this->client->saveRelationship($rel);
+			$this->fail();
+		} catch (Exception $e) {
+			$this->assertFalse($this->cache->get("relationship-{$relId}"));
+		}
 	}
 }

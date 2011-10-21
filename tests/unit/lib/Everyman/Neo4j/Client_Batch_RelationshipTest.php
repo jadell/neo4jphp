@@ -182,7 +182,8 @@ class Client_Batch_RelationshipTest extends \PHPUnit_Framework_TestCase
 	public function testCommitBatch_UpdateRelationship_Success_ReturnsTrue()
 	{
 		$rel = new Relationship($this->client);
-		$rel->setId(123)
+		$rel->useLazyLoad(false)
+			->setId(123)
 			->setProperties(array('foo' => 'bar','baz' => 'qux'));
 
 		$request = array(array('id' => 0, 'method' => 'PUT', 'to' => '/relationship/123/properties',

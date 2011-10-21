@@ -88,12 +88,13 @@ class CreateRelationship extends Command
 	 */
 	protected function handleResult($code, $headers, $data)
 	{
-		if ((int)($code / 100) == 2) {
-			$relId = $this->getEntityMapper()->getIdFromUri($headers['Location']);
-			$this->rel->setId($relId);
-			return null;
+		if ((int)($code / 100) != 2) {
+			$this->throwException('Unable to create relationship', $code, $headers, $data);
 		}
-		return $code;
+
+		$relId = $this->getEntityMapper()->getIdFromUri($headers['Location']);
+		$this->rel->setId($relId);
+		return true;
 	}
 }
 

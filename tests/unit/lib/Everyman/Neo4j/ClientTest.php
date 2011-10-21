@@ -255,6 +255,19 @@ class ClientTest extends \PHPUnit_Framework_TestCase
 		$this->client->loadNode($node);
 	}
 
+	public function testGetRelationship_TransportError_ThrowsException()
+	{
+		$relId = 123;
+		
+		$this->transport->expects($this->once())
+			->method('get')
+			->with('/relationship/'.$relId)
+			->will($this->returnValue(array('code'=>400)));
+
+		$this->setExpectedException('Everyman\Neo4j\Exception');
+		$this->client->getRelationship($relId);
+	}
+
 	public function testGetRelationship_NotFound_ReturnsNull()
 	{
 		$relId = 123;
@@ -265,7 +278,6 @@ class ClientTest extends \PHPUnit_Framework_TestCase
 			->will($this->returnValue(array('code'=>'404')));
 
 		$this->assertNull($this->client->getRelationship($relId));
-		$this->assertEquals(Client::ErrorNotFound, $this->client->getLastError());
 	}
 
 	public function testGetRelationship_Force_ReturnsRelationship()
@@ -326,10 +338,7 @@ class ClientTest extends \PHPUnit_Framework_TestCase
 		$this->client->loadRelationship($rel);
 	}
 
-	/**
-	 * @dataProvider dataProvider_DeleteRelationshipScenarios
-	 */
-	public function testDeleteRelationship_TransportResult_ReturnsCorrectSuccessOrFailure($result, $success, $error)
+	public function testDeleteRelationship_Found_ReturnsTrue()
 	{
 		$rel = new Relationship($this->client);
 		$rel->setId(123);
@@ -337,18 +346,36 @@ class ClientTest extends \PHPUnit_Framework_TestCase
 		$this->transport->expects($this->once())
 			->method('delete')
 			->with('/relationship/123')
-			->will($this->returnValue($result));
+			->will($this->returnValue(array('code'=>204)));
 
-		$this->assertEquals($success, $this->client->deleteRelationship($rel));
-		$this->assertEquals($error, $this->client->getLastError());
+		$this->assertTrue($this->client->deleteRelationship($rel));
 	}
 
-	public function dataProvider_DeleteRelationshipScenarios()
+	public function testDeleteRelationship_NotFound_ReturnsFalse()
 	{
-		return array(// result, success, error
-			array(array('code'=>204), true, null),
-			array(array('code'=>404), false, Client::ErrorNotFound),
-		);
+		$rel = new Relationship($this->client);
+		$rel->setId(123);
+		
+		$this->transport->expects($this->once())
+			->method('delete')
+			->with('/relationship/123')
+			->will($this->returnValue(array('code'=>404)));
+
+		$this->assertFalse($this->client->deleteRelationship($rel));
+	}
+
+	public function testDeleteRelationship_TransportError_ThrowsException()
+	{
+		$rel = new Relationship($this->client);
+		$rel->setId(123);
+		
+		$this->transport->expects($this->once())
+			->method('delete')
+			->with('/relationship/123')
+			->will($this->returnValue(array('code'=>400)));
+
+		$this->setExpectedException('Everyman\Neo4j\Exception');
+		$this->client->deleteRelationship($rel);
 	}
 
 	public function testDeleteRelationship_RelationshipHasNoId_ThrowsException()
@@ -394,10 +421,7 @@ class ClientTest extends \PHPUnit_Framework_TestCase
 		$this->client->saveRelationship($rel);
 	}
 
-	/**
-	 * @dataProvider dataProvider_CreateRelationshipScenarios
-	 */
-	public function testSaveRelationship_Create_ReturnsCorrectSuccessOrFailure($result, $success, $error, $id)
+	public function testSaveRelationship_Create_ReturnsTrue()
 	{
 		$data = array(
 			'data' => array(
@@ -422,26 +446,13 @@ class ClientTest extends \PHPUnit_Framework_TestCase
 		$this->transport->expects($this->once())
 			->method('post')
 			->with('/node/123/relationships', $data)
-			->will($this->returnValue($result));
+			->will($this->returnValue(array('code'=>201, 'headers'=>array('Location'=>'http://foo.com:1234/db/data/relationship/890'))));
 
-		$this->assertEquals($success, $this->client->saveRelationship($rel));
-		$this->assertEquals($error, $this->client->getLastError());
-		$this->assertEquals($id, $rel->getId());
+		$this->assertTrue($this->client->saveRelationship($rel));
+		$this->assertEquals(890, $rel->getId());
 	}
 
-	public function dataProvider_CreateRelationshipScenarios()
-	{
-		return array(// result, success, error, id
-			array(array('code'=>201, 'headers'=>array('Location'=>'http://foo.com:1234/db/data/relationship/890')), true, null, 890),
-			array(array('code'=>400), false, Client::ErrorBadRequest, null),
-			array(array('code'=>404), false, Client::ErrorNotFound, null),
-		);
-	}
-
-	/**
-	 * @dataProvider dataProvider_CreateRelationshipScenarios
-	 */
-	public function testSaveRelationship_CreateNoData_ReturnsCorrectSuccesOrFailure($result, $success, $error, $id)
+	public function testSaveRelationship_CreateNoData_ReturnsTrue()
 	{
 		$data = array(
 			'to' => $this->endpoint.'/node/456',
@@ -462,11 +473,41 @@ class ClientTest extends \PHPUnit_Framework_TestCase
 		$this->transport->expects($this->once())
 			->method('post')
 			->with('/node/123/relationships', $data)
-			->will($this->returnValue($result));
+			->will($this->returnValue(array('code'=>201, 'headers'=>array('Location'=>'http://foo.com:1234/db/data/relationship/890'))));
 
-		$this->assertEquals($success, $this->client->saveRelationship($rel));
-		$this->assertEquals($error, $this->client->getLastError());
-		$this->assertEquals($id, $rel->getId());
+		$this->assertTrue($this->client->saveRelationship($rel));
+		$this->assertEquals(890, $rel->getId());
+	}
+
+	public function testSaveRelationship_CreateTransportError_ThrowsException()
+	{
+		$data = array(
+			'data' => array(
+				'foo' => 'bar',
+				'baz' => 'qux',
+			),
+			'to' => $this->endpoint.'/node/456',
+			'type' => 'FOOTYPE',
+		);
+
+		$start = new Node($this->client);
+		$start->setId(123);
+		$end = new Node($this->client);
+		$end->setId(456);
+
+		$rel = new Relationship($this->client);
+		$rel->setType('FOOTYPE')
+			->setStartNode($start)
+			->setEndNode($end)
+			->setProperties($data['data']);
+
+		$this->transport->expects($this->once())
+			->method('post')
+			->with('/node/123/relationships', $data)
+			->will($this->returnValue(array('code'=>400)));
+
+		$this->setExpectedException('Everyman\Neo4j\Exception');
+		$this->client->saveRelationship($rel);
 	}
 
 	public function testSaveRelationship_Update_RelationshipHasNoId_ThrowsException()
@@ -478,10 +519,7 @@ class ClientTest extends \PHPUnit_Framework_TestCase
 		$command->execute();
 	}
 
-	/**
-	 * @dataProvider dataProvider_UpdateRelationshipScenarios
-	 */
-	public function testSaveRelationship_Update_ReturnsCorrectSuccessOrFailure($result, $success, $error)
+	public function testSaveRelationship_UpdateFound_ReturnsTrue()
 	{
 		$properties = array(
 			'foo' => 'bar',
@@ -489,26 +527,57 @@ class ClientTest extends \PHPUnit_Framework_TestCase
 		);
 
 		$rel = new Relationship($this->client);
-		$rel->setId(123)
+		$rel->useLazyLoad(false)
+			->setId(123)
 			->setProperties($properties);
 		
 		$this->transport->expects($this->once())
 			->method('put')
 			->with('/relationship/123/properties', $properties)
-			->will($this->returnValue($result));
+			->will($this->returnValue(array('code'=>204)));
 
-		$this->assertEquals($success, $this->client->saveRelationship($rel));
-		$this->assertEquals($error, $this->client->getLastError());
-		$this->assertEquals(123, $rel->getId());
+		$this->assertTrue($this->client->saveRelationship($rel));
 	}
 
-	public function dataProvider_UpdateRelationshipScenarios()
+	public function testSaveRelationship_UpdateNotFound_ReturnsFalse()
 	{
-		return array(// result, success, error
-			array(array('code'=>204), true, null),
-			array(array('code'=>404), false, Client::ErrorNotFound),
-			array(array('code'=>400), false, Client::ErrorBadRequest),
+		$properties = array(
+			'foo' => 'bar',
+			'baz' => 'qux',
 		);
+
+		$rel = new Relationship($this->client);
+		$rel->useLazyLoad(false)
+			->setId(123)
+			->setProperties($properties);
+		
+		$this->transport->expects($this->once())
+			->method('put')
+			->with('/relationship/123/properties', $properties)
+			->will($this->returnValue(array('code'=>404)));
+
+		$this->assertFalse($this->client->saveRelationship($rel));
+	}
+
+	public function testSaveRelationship_UpdateTransportError_ThrowsException()
+	{
+		$properties = array(
+			'foo' => 'bar',
+			'baz' => 'qux',
+		);
+
+		$rel = new Relationship($this->client);
+		$rel->useLazyLoad(false)
+			->setId(123)
+			->setProperties($properties);
+		
+		$this->transport->expects($this->once())
+			->method('put')
+			->with('/relationship/123/properties', $properties)
+			->will($this->returnValue(array('code'=>400)));
+
+		$this->setExpectedException('Everyman\Neo4j\Exception');
+		$this->assertFalse($this->client->saveRelationship($rel));
 	}
 
 	public function testGetNodeRelationships_NodeNotPersisted_ThrowsException()
@@ -532,7 +601,6 @@ class ClientTest extends \PHPUnit_Framework_TestCase
 			->will($this->returnValue(array('code'=>404)));
 
 		$this->assertFalse($this->client->getNodeRelationships($node, array(), null));
-		$this->assertEquals(Client::ErrorNotFound, $this->client->getLastError());
 	}
 
 	public function testGetNodeRelationships_NoRelationships_ReturnsEmptyArray()

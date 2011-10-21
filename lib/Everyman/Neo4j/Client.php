@@ -87,9 +87,7 @@ class Client
 	public function deleteRelationship(Relationship $relationship)
 	{
 		$result = $this->runCommand(new Command\DeleteRelationship($this, $relationship));
-		if ($result) {
-			$this->deleteCachedRelationship($relationship);
-		}
+		$this->deleteCachedRelationship($relationship);
 		return $result;
 	}
 
@@ -234,12 +232,7 @@ class Client
 	public function getNodeRelationships(Node $node, $types=array(), $dir=null)
 	{
 		$command = new Command\GetNodeRelationships($this, $node, $types, $dir);
-		$result = $this->runCommand($command);
-		if ($result) {
-			return $command->getResult();
-		} else {
-			return false;
-		}
+		return $this->runCommand($command);
 	}
 
 	/**
@@ -438,10 +431,7 @@ class Client
 			$result = $this->runCommand(new Command\CreateRelationship($this, $rel));
 		}
 
-		if ($result) {
-			$this->setCachedRelationship($rel);
-		}
-
+		$this->setCachedRelationship($rel);
 		return $result;
 	}
 

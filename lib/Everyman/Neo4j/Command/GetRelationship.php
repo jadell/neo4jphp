@@ -70,9 +70,12 @@ class GetRelationship extends Command
 	{
 		if ((int)($code / 100) == 2) {
 			$this->rel = $this->getEntityMapper()->populateRelationship($this->rel, $data);
-			return null;
+			return true;
+		} else if ($code == 404) {
+			return false;
+		} else {
+			$this->throwException('Unable to retrieve relationship', $code, $headers, $data);
 		}
-		return $code;
 	}
 }
 

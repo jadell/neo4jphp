@@ -14,7 +14,6 @@ class GetNodeRelationships extends Command
 	protected $node  = null;
 	protected $types = null;
 	protected $dir   = null;
-	protected $rels  = array();
 
 	/**
 	 * Set the parameters to search
@@ -82,16 +81,6 @@ class GetNodeRelationships extends Command
 	}
 
 	/**
-	 * Get the result array of relationships
-	 *
-	 * @return array
-	 */
-	public function getResult()
-	{
-		return $this->rels;
-	}
-
-	/**
 	 * Use the results
 	 *
 	 * @param integer $code
@@ -102,13 +91,16 @@ class GetNodeRelationships extends Command
 	protected function handleResult($code, $headers, $data)
 	{
 		if ((int)($code / 100) == 2) {
+			$rels = array();
 			foreach ($data as $relData) {
-				$this->rels[] = $this->getEntityMapper()->makeRelationship($relData);
+				$rels[] = $this->getEntityMapper()->makeRelationship($relData);
 			}
-
-			return null;
+			return $rels;
+		} else if ($code == 404) {
+			return false;
+		} else {
+			$this->throwException('Unable to retrieve node relationships', $code, $headers, $data);
 		}
-		return $code;
 	}
 }
 
