@@ -17,8 +17,6 @@ class Client
 	protected $cacheTimeout = null;
 	protected $serverInfo = null;
 
-	protected $lastError = null;
-
 	/**
 	 * Initialize the client
 	 *
@@ -177,16 +175,6 @@ class Client
 	{
 		$command = new Command\GetIndexes($this, $type);
 		return $this->runCommand($command);
-	}
-
-	/**
-	 * Get the last error generated
-	 *
-	 * @return integer
-	 */
-	public function getLastError()
-	{
-		return $this->lastError;
 	}
 
 	/**
@@ -530,14 +518,6 @@ class Client
 	}
 
 	/**
-	 * Reset the last error
-	 */
-	protected function resetLastError()
-	{
-		$this->lastError = null;
-	}
-
-	/**
 	 * Run a command that will talk to the transport
 	 *
 	 * @param Command $command
@@ -567,15 +547,5 @@ class Client
 	protected function setCachedRelationship(Relationship $rel)
 	{
 		$this->getCache()->set('relationship-'.$rel->getId(), $rel, $this->cacheTimeout);
-	}
-
-	/**
-	 * Set an error condition
-	 *
-	 * @param integer $error
-	 */
-	protected function setLastError($error)
-	{
-		$this->lastError = $error;
 	}
 }

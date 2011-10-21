@@ -290,7 +290,6 @@ class ClientTest extends \PHPUnit_Framework_TestCase
 		$rel = $this->client->getRelationship($relId, true);
 		$this->assertInstanceOf('Everyman\Neo4j\Relationship', $rel);
 		$this->assertEquals($relId, $rel->getId());
-		$this->assertNull($this->client->getLastError());
 	}
 
 	public function testGetRelationship_Found_ReturnsRelationship()
@@ -317,7 +316,6 @@ class ClientTest extends \PHPUnit_Framework_TestCase
 		$this->assertEquals($relId, $rel->getId());
 		$this->assertEquals($data['data'], $rel->getProperties());
 		$this->assertEquals($data['type'], $rel->getType());
-		$this->assertNull($this->client->getLastError());
 
 		$start = $rel->getStartNode();
 		$this->assertNotNull($start);
@@ -616,7 +614,6 @@ class ClientTest extends \PHPUnit_Framework_TestCase
 			->will($this->returnValue(array('code'=>200,'data'=>array())));
 
 		$this->assertEquals(array(), $this->client->getNodeRelationships($node, $types, $dir));
-		$this->assertNull($this->client->getLastError());
 	}
 
 	public function testGetNodeRelationships_Relationships_ReturnsArray()
@@ -650,7 +647,6 @@ class ClientTest extends \PHPUnit_Framework_TestCase
 
 		$result = $this->client->getNodeRelationships($node, $types, $dir);
 		$this->assertEquals(2, count($result));
-		$this->assertNull($this->client->getLastError());
 
 		$this->assertInstanceOf('Everyman\Neo4j\Relationship', $result[0]);
 		$this->assertEquals(56, $result[0]->getId());

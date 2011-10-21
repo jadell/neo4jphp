@@ -122,7 +122,6 @@ class Client_IndexTest extends \PHPUnit_Framework_TestCase
 			->will($this->returnValue(array('code'=>200)));
 
 		$this->assertTrue($this->client->deleteIndex($index));
-		$this->assertNull($this->client->getLastError());
 	}
 
 	public function testAddToIndex_UnknownIndexType_ThrowsException()
@@ -190,7 +189,6 @@ class Client_IndexTest extends \PHPUnit_Framework_TestCase
 			->will($this->returnValue(array('code'=>200)));
 
 		$this->assertTrue($this->client->addToIndex($index, $node, 'some@key', 'some$value'));
-		$this->assertNull($this->client->getLastError());
 	}
 
 	public function testAddToIndex_ServerError_ThrowsException()
@@ -424,7 +422,6 @@ class Client_IndexTest extends \PHPUnit_Framework_TestCase
 
 		$result = $this->client->searchIndex($index, 'somekey', 'somevalue');
 		$this->assertEquals(2, count($result));
-		$this->assertNull($this->client->getLastError());
 
 		$this->assertInstanceOf('Everyman\Neo4j\Node', $result[0]);
 		$this->assertEquals(123, $result[0]->getId());
@@ -456,7 +453,6 @@ class Client_IndexTest extends \PHPUnit_Framework_TestCase
 
 		$result = $this->client->searchIndex($index, 'somekey', 'somevalue');
 		$this->assertEquals(1, count($result));
-		$this->assertNull($this->client->getLastError());
 
 		$this->assertInstanceOf('Everyman\Neo4j\Relationship', $result[0]);
 		$this->assertEquals(789, $result[0]->getId());
@@ -489,7 +485,6 @@ class Client_IndexTest extends \PHPUnit_Framework_TestCase
 
 		$result = $this->client->searchIndex($index, 'some@key', 'some$value');
 		$this->assertEquals(1, count($result));
-		$this->assertNull($this->client->getLastError());
 	}
 
 	public function testQueryIndex_BadType_ThrowsException()
@@ -555,7 +550,6 @@ class Client_IndexTest extends \PHPUnit_Framework_TestCase
 
 		$result = $this->client->queryIndex($index, 'somekey:somevalue*');
 		$this->assertEquals(2, count($result));
-		$this->assertNull($this->client->getLastError());
 
 		$this->assertInstanceOf('Everyman\Neo4j\Node', $result[0]);
 		$this->assertEquals(123, $result[0]->getId());
@@ -588,7 +582,6 @@ class Client_IndexTest extends \PHPUnit_Framework_TestCase
 
 		$result = $this->client->queryIndex($index, 'somekey:somevalue*');
 		$this->assertEquals(1, count($result));
-		$this->assertNull($this->client->getLastError());
 
 		$this->assertInstanceOf('Everyman\Neo4j\Relationship', $result[0]);
 		$this->assertEquals(789, $result[0]->getId());
