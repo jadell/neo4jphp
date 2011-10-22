@@ -118,7 +118,7 @@ class Client_IndexTest extends \PHPUnit_Framework_TestCase
 
 		$this->transport->expects($this->once())
 			->method('delete')
-			->with('/index/node/ind%40ex+na%24me')
+			->with('/index/node/ind%40ex%20na%24me')
 			->will($this->returnValue(array('code'=>200)));
 
 		$this->assertTrue($this->client->deleteIndex($index));
@@ -185,7 +185,7 @@ class Client_IndexTest extends \PHPUnit_Framework_TestCase
 
 		$this->transport->expects($this->once())
 			->method('post')
-			->with('/index/node/index+name', $data)
+			->with('/index/node/index%20name', $data)
 			->will($this->returnValue(array('code'=>200)));
 
 		$this->assertTrue($this->client->addToIndex($index, $node, 'some@key', 'some$value'));
@@ -295,7 +295,7 @@ class Client_IndexTest extends \PHPUnit_Framework_TestCase
 			array('somekey', 'somevalue', '/somekey/somevalue', array('code'=>404)),
 			array('somekey', null, '/somekey', array('code'=>201)),
 			array(null, null, '', array('code'=>201)),
-			array('some key@', 'som$e value', '/some+key%40/som%24e+value', array('code'=>201)),
+			array('some key@', 'som$e value', '/some%20key%40/som%24e%20value', array('code'=>201)),
 		);
 	}
 
@@ -520,7 +520,7 @@ class Client_IndexTest extends \PHPUnit_Framework_TestCase
 
 		$this->transport->expects($this->once())
 			->method('get')
-			->with('/index/node/indexname?query='.urlencode('somekey:somevalue*'))
+			->with('/index/node/indexname?query='.rawurlencode('somekey:somevalue*'))
 			->will($this->returnValue(array('code'=>400)));
 
 		$this->setExpectedException('\Everyman\Neo4j\Exception');
@@ -545,7 +545,7 @@ class Client_IndexTest extends \PHPUnit_Framework_TestCase
 
 		$this->transport->expects($this->once())
 			->method('get')
-			->with('/index/node/indexname?query='.urlencode('somekey:somevalue*'))
+			->with('/index/node/indexname?query='.rawurlencode('somekey:somevalue*'))
 			->will($this->returnValue(array('code'=>200,'data'=>$return)));
 
 		$result = $this->client->queryIndex($index, 'somekey:somevalue*');
@@ -577,7 +577,7 @@ class Client_IndexTest extends \PHPUnit_Framework_TestCase
 
 		$this->transport->expects($this->once())
 			->method('get')
-			->with('/index/relationship/indexname?query='.urlencode('somekey:somevalue*'))
+			->with('/index/relationship/indexname?query='.rawurlencode('somekey:somevalue*'))
 			->will($this->returnValue(array('code'=>200,'data'=>$return)));
 
 		$result = $this->client->queryIndex($index, 'somekey:somevalue*');

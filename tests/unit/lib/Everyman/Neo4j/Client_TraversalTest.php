@@ -371,7 +371,7 @@ class Client_TraversalTest extends \PHPUnit_Framework_TestCase
 		$this->assertEquals('bar', $result[0]->getProperty('name'));
 
 		$result = $this->client->executePagedTraversal($pager);
-		$this->assertEquals(0, count($result));
+		$this->assertNull($result);
 	}
 
 	public function testPagedTraversal_ServerReturnsError_ThrowsException()

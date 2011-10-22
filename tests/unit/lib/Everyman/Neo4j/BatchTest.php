@@ -21,6 +21,7 @@ class BatchTest extends \PHPUnit_Framework_TestCase
 	{
 		$this->client->expects($this->once())
 			->method('commitBatch')
+			->with($this->batch)
 			->will($this->returnValue(true));
 
 		$this->assertTrue($this->batch->commit());
@@ -30,6 +31,7 @@ class BatchTest extends \PHPUnit_Framework_TestCase
 	{
 		$this->client->expects($this->once())
 			->method('commitBatch')
+			->with($this->batch)
 			->will($this->returnValue(false));
 
 		$this->assertFalse($this->batch->commit());

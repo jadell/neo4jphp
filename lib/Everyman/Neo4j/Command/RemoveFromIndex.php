@@ -85,15 +85,15 @@ class RemoveFromIndex extends Command
 			throw new Exception('No name specified for index');
 		}
 
-		$name = urlencode($name);
+		$name = rawurlencode($name);
 		$key = trim((string)$this->key);
 		$value = trim((string)$this->value);
 
 		$uri = '/index/'.$type.'/'.$name.'/';
 		if ($key) {
-			$uri .= urlencode($key).'/';
+			$uri .= rawurlencode($key).'/';
 			if ($value) {
-				$uri .= urlencode($value).'/';
+				$uri .= rawurlencode($value).'/';
 			}
 		}
 		$uri .= $this->entity->getId();

@@ -93,7 +93,7 @@ class AddToIndex extends Command
 		if (!$name) {
 			throw new Exception('No name specified for index');
 		}
-		$name = urlencode($name);
+		$name = rawurlencode($name);
 
 		return '/index/'.$type.'/'.$name;
 	}
