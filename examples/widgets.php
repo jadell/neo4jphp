@@ -110,7 +110,7 @@ if ($cmd == 'init') {
 
 	// Use the Cypher query language
 	if (!empty($argv[3]) && $argv[3] == 'cypher') {
-		$queryTemplate = "START part=(parts3,'name:{$partName}') ".
+		$queryTemplate = "START part=node:parts('name:{$partName}') ".
 			"MATCH (store)-[:SOLD]->()-[:CONTAINS]->(part) ".
 			// Use the count(*) to force distinct values until Cypher gets DISTINCT keyword support
 			"RETURN store, count(*)";
