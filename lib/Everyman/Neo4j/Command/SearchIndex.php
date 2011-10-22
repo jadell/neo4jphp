@@ -74,9 +74,9 @@ class SearchIndex extends Command
 			throw new Exception('No key specified to search index');
 		}
 
-		$name = urlencode($name);
-		$key = urlencode($key);
-		$value = urlencode($this->value);
+		$name = rawurlencode($name);
+		$key = rawurlencode($key);
+		$value = rawurlencode($this->value);
 
 		return '/index/'.$type.'/'.$name.'/'.$key.'/'.$value;
 	}

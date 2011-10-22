@@ -480,7 +480,7 @@ class Client_IndexTest extends \PHPUnit_Framework_TestCase
 
 		$this->transport->expects($this->once())
 			->method('get')
-			->with('/index/relationship/index+name/some%40key/some%24value')
+			->with('/index/relationship/index%20name/some%40key/some%24value')
 			->will($this->returnValue(array('code'=>200,'data'=>$return)));
 
 		$result = $this->client->searchIndex($index, 'some@key', 'some$value');
