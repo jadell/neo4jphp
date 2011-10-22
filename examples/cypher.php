@@ -84,7 +84,7 @@ if ($cmd == 'init') {
 		$movie = "The Matrix";
 	}
 	
-	$queryTemplate = "START actor=(actors,'name:*') ".
+	$queryTemplate = "START actor=node:actors('name:*') ".
 		"MATCH (actor) -[:IN]- (movie)".
 		"WHERE movie.title = ?".
 		"RETURN actor";
