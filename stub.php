@@ -10,15 +10,35 @@ spl_autoload_register(function ($className) {
 });
 
 if ('cli' === php_sapi_name() && basename(__FILE__) === basename($_SERVER['argv'][0])) {
-	if (empty($_SERVER['argv'][1])) {
-		$me = new Phar('neo4jphp.phar');
-		$meta = $me->getMetaData();
-		echo "Version {$meta['version']}\n\n";
+	$command = empty($_SERVER['argv'][1]) ? '-help' : $_SERVER['argv'][1];
+	$me = new Phar('neo4jphp.phar');
+	$meta = $me->getMetaData();
+
+	if ($command == '-help') {
+		echo <<<HELP
+Neo4jPHP version {$meta['version']}
+
+{$_SERVER['argv'][0]} [-help|-license|-readme|-version|<host>] <port>
+    -help            Display help text
+    -license         Display software license
+    -readme          Display README
+    -version         Display version information
+    <host> (<port>)  Test connection to Neo4j instance on host (port defaults to 7474)
+
+HELP;
+
+	} else if ($command == '-license') {
+		echo file_get_contents('phar://neo4jphp.phar/LICENSE')."\n\n";
+
+	} else if ($command == '-readme') {
 		echo file_get_contents('phar://neo4jphp.phar/README.md')."\n\n";
+
+	} else if ($command == '-version') {
+		echo "Neo4jPHP version {$meta['version']}\n\n";
+
 	} else {
-		$host = $_SERVER['argv'][1];
 		$port = empty($_SERVER['argv'][2]) ? 7474 : $_SERVER['argv'][2];
-		$client = new Everyman\Neo4j\Client(new Everyman\Neo4j\Transport($host, $port));
+		$client = new Everyman\Neo4j\Client(new Everyman\Neo4j\Transport($command, $port));
 		print_r($client->getServerInfo());
 	}
 

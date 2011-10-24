@@ -5,19 +5,25 @@ Copyright (c) 2011
 
 PHP Wrapper for the Neo4j graph database REST interface
 
-In-depth documentation on the wiki: http://github.com/jadell/Neo4jPHP/wiki
-
-
-Contributions
--------------
-* Jacob Hansson <jacob@voltvoodoo.com> - Cypher query support
-* Nigel Small <nigel@nigelsmall.name> - GEOFF import/export
-  * [http://py2neo.org/](http://py2neo.org/)
-
+In-depth documentation and examples can be found on the wiki: http://github.com/jadell/Neo4jPHP/wiki
 
 Install
 -------
-Copy or symlink the `lib/Everyman` directory into your `include_path` or autoloader path.
+1. Download latest PHAR from http://github.com/downloads/jadell/Neo4jPHP/neo4jphp.phar
+2. `include` or `require` neo4jphp.phar in your project
+
+Connection Test
+---------------
+From the command line, execute the following:
+
+    > php neo4jphp.phar localhost
+
+Change localhost to the host name of your Neo4j instance.  Port defaults to 7474, or can be specified as the second parameter after the host name.
+
+Execute the following to see more command line options:
+
+    > php neo4jphp.phar
+
 
 
 Examples
@@ -441,6 +447,13 @@ Dump either a single Path or an array of Paths.  If $handle is given and is a st
 
     load($handle, Batch $batch=null) : Batch
 Import a GEOFF file or string.  $handle must be a valid stream resource or a string.  If $batch is provided, imported node, relationship and index operations will be appended to it.  Otherwise, a new batch representing the exported operations will be returned.
+
+
+Contributions
+-------------
+* Jacob Hansson <jacob@voltvoodoo.com> - Cypher query support
+* Nigel Small <nigel@nigelsmall.name> - GEOFF import/export
+  * [http://py2neo.org/](http://py2neo.org/)
 
 
 To Do
