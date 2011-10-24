@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<docblox>
+	<files>
+		<directory>lib</directory>
+	</files>
+	<parser>
+		<target>docs</target>
+	</parser>
+	<transformer>
+		<target>docs</target>
+	</transformer>
+</docblox>
