@@ -61,7 +61,7 @@ abstract class Command
 		$data = $this->getData();
 		$result = $this->getTransport()->$method($path, $data);
 
-		$resultCode = isset($result['code']) ? $result['code'] : Client::ErrorBadRequest;
+		$resultCode = isset($result['code']) ? $result['code'] : Client::ErrorUnknown;
 		$resultHeaders = isset($result['headers']) ? $result['headers'] : array();
 		$resultData = isset($result['data']) ? $result['data'] : array();
 		$parseResult = $this->handleResult($resultCode, $resultHeaders, $resultData);

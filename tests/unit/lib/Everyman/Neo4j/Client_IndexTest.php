@@ -292,11 +292,25 @@ class Client_IndexTest extends \PHPUnit_Framework_TestCase
 	{
 		return array(// key, value, path, result
 			array('somekey', 'somevalue', '/somekey/somevalue', array('code'=>201)),
-			array('somekey', 'somevalue', '/somekey/somevalue', array('code'=>404)),
 			array('somekey', null, '/somekey', array('code'=>201)),
 			array(null, null, '', array('code'=>201)),
 			array('some key@', 'som$e value', '/some%20key%40/som%24e%20value', array('code'=>201)),
 		);
+	}
+
+	public function testRemoveFromIndex_NotFound_ThrowsException()
+	{
+		$index = new Index($this->client, Index::TypeNode, 'indexname');
+		$node = new Node($this->client);
+		$node->setId(123);
+
+		$this->transport->expects($this->once())
+			->method('delete')
+			->with('/index/node/indexname/somekey/somevalue/123')
+			->will($this->returnValue(array('code'=>404)));
+
+		$this->setExpectedException('\Everyman\Neo4j\Exception');			
+		$this->client->removeFromIndex($index, $node, 'somekey', 'somevalue');
 	}
 
 	public function testRemoveFromIndex_ServerError_ThrowsException()

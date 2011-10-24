@@ -29,7 +29,7 @@ class ClientTest extends \PHPUnit_Framework_TestCase
 		$this->assertTrue($this->client->deleteNode($node));
 	}
 
-	public function testDeleteNode_NodeNotFound_ReturnsFalse()
+	public function testDeleteNode_NodeNotFound_ThrowsException()
 	{
 		$node = new Node($this->client);
 		$node->setId(123);
@@ -39,7 +39,8 @@ class ClientTest extends \PHPUnit_Framework_TestCase
 			->with('/node/123')
 			->will($this->returnValue(array('code'=>404)));
 
-		$this->assertFalse($this->client->deleteNode($node));
+		$this->setExpectedException('Everyman\Neo4j\Exception');
+		$this->client->deleteNode($node);
 	}
 
 	public function testDeleteNode_TransportError_ThrowsException()
@@ -94,7 +95,7 @@ class ClientTest extends \PHPUnit_Framework_TestCase
 		$this->assertEquals(123, $node->getId());
 	}
 
-	public function testSaveNode_UpdateNodeNotFound_ReturnsFalse()
+	public function testSaveNode_UpdateNodeNotFound_ThrowsException()
 	{
 		$properties = array(
 			'foo' => 'bar',
@@ -111,8 +112,8 @@ class ClientTest extends \PHPUnit_Framework_TestCase
 			->with('/node/123/properties', $properties)
 			->will($this->returnValue(array('code'=>404)));
 
-		$this->assertFalse($this->client->saveNode($node));
-		$this->assertEquals(123, $node->getId());
+		$this->setExpectedException('Everyman\Neo4j\Exception');
+		$this->client->saveNode($node);
 	}
 
 	public function testSaveNode_Update_TransportError_ThrowsException()
@@ -247,6 +248,21 @@ class ClientTest extends \PHPUnit_Framework_TestCase
 		$this->assertEquals($properties, $node->getProperties());
 	}
 
+	public function testLoadNode_NodeNotFound_ThrowsException()
+	{
+		$nodeId = 123;
+		$node = new Node($this->client);
+		$node->setId($nodeId);
+		
+		$this->transport->expects($this->once())
+			->method('get')
+			->with('/node/'.$nodeId)
+			->will($this->returnValue(array('code'=>404)));
+
+		$this->setExpectedException('Everyman\Neo4j\Exception');
+		$this->client->loadNode($node);
+	}
+
 	public function testLoadNode_NodeHasNoId_ThrowsException()
 	{
 		$node = new Node($this->client);
@@ -328,6 +344,21 @@ class ClientTest extends \PHPUnit_Framework_TestCase
 		$this->assertEquals(890, $end->getId());
 	}
 
+	public function testLoadRelationship_RelationshipNotFound_ThrowsException()
+	{
+		$relId = 123;
+		$rel = new Relationship($this->client);
+		$rel->setId($relId);
+		
+		$this->transport->expects($this->once())
+			->method('get')
+			->with('/relationship/'.$relId)
+			->will($this->returnValue(array('code'=>404)));
+
+		$this->setExpectedException('Everyman\Neo4j\Exception');
+		$this->client->loadRelationship($rel);
+	}
+
 	public function testLoadRelationship_RelationshipHasNoId_ThrowsException()
 	{
 		$rel = new Relationship($this->client);
@@ -349,7 +380,7 @@ class ClientTest extends \PHPUnit_Framework_TestCase
 		$this->assertTrue($this->client->deleteRelationship($rel));
 	}
 
-	public function testDeleteRelationship_NotFound_ReturnsFalse()
+	public function testDeleteRelationship_NotFound_ThrowsException()
 	{
 		$rel = new Relationship($this->client);
 		$rel->setId(123);
@@ -359,7 +390,8 @@ class ClientTest extends \PHPUnit_Framework_TestCase
 			->with('/relationship/123')
 			->will($this->returnValue(array('code'=>404)));
 
-		$this->assertFalse($this->client->deleteRelationship($rel));
+		$this->setExpectedException('Everyman\Neo4j\Exception');
+		$this->client->deleteRelationship($rel);
 	}
 
 	public function testDeleteRelationship_TransportError_ThrowsException()
@@ -554,7 +586,8 @@ class ClientTest extends \PHPUnit_Framework_TestCase
 			->with('/relationship/123/properties', $properties)
 			->will($this->returnValue(array('code'=>404)));
 
-		$this->assertFalse($this->client->saveRelationship($rel));
+		$this->setExpectedException('Everyman\Neo4j\Exception');
+		$this->client->saveRelationship($rel);
 	}
 
 	public function testSaveRelationship_UpdateTransportError_ThrowsException()
@@ -575,7 +608,7 @@ class ClientTest extends \PHPUnit_Framework_TestCase
 			->will($this->returnValue(array('code'=>400)));
 
 		$this->setExpectedException('Everyman\Neo4j\Exception');
-		$this->assertFalse($this->client->saveRelationship($rel));
+		$this->client->saveRelationship($rel);
 	}
 
 	public function testGetNodeRelationships_NodeNotPersisted_ThrowsException()
@@ -588,7 +621,7 @@ class ClientTest extends \PHPUnit_Framework_TestCase
 		$this->client->getNodeRelationships($node, $type, $dir);
 	}
 
-	public function testGetNodeRelationships_NodeNotFound_ReturnsFalse()
+	public function testGetNodeRelationships_NodeNotFound_ThrowsException()
 	{
 		$node = new Node($this->client);
 		$node->setId(123);
@@ -598,7 +631,8 @@ class ClientTest extends \PHPUnit_Framework_TestCase
 			->with('/node/123/relationships/all')
 			->will($this->returnValue(array('code'=>404)));
 
-		$this->assertFalse($this->client->getNodeRelationships($node, array(), null));
+		$this->setExpectedException('Everyman\Neo4j\Exception');
+		$this->client->getNodeRelationships($node, array(), null);
 	}
 
 	public function testGetNodeRelationships_NoRelationships_ReturnsEmptyArray()
@@ -670,7 +704,7 @@ class ClientTest extends \PHPUnit_Framework_TestCase
 		$this->transport->expects($this->once())
 			->method('get')
 			->with('/relationship/types')
-			->will($this->returnValue(array('code'=>Client::ErrorBadRequest)));
+			->will($this->returnValue(array('code'=>400)));
 
 		$this->setExpectedException('Everyman\Neo4j\Exception');
 		$result = $this->client->getRelationshipTypes();

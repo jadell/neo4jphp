@@ -70,8 +70,6 @@ class GetNode extends Command
 		if ((int)($code / 100) == 2) {
 			$this->node = $this->getEntityMapper()->populateNode($this->node, $data);
 			return true;
-		} else if ($code == 404) {
-			return false;
 		} else {
 			$this->throwException('Unable to retrieve node', $code, $headers, $data);
 		}

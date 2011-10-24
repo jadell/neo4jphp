@@ -69,8 +69,6 @@ class DeleteRelationship extends Command
 	{
 		if ((int)($code / 100) == 2) {
 			return true;
-		} else if ($code == 404) {
-			return false;
 		} else {
 			$this->throwException('Unable to delete relationship', $code, $headers, $data);
 		}

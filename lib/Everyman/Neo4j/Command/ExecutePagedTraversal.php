@@ -85,8 +85,8 @@ class ExecutePagedTraversal extends ExecuteTraversal
 			$this->pager->setId($traversalId);
 		}
 
-		// No results found or end of result set indicated by 404
-		if ($code == 404) {
+		// No results found or end of result set indicated by not found
+		if ($code == Client::ErrorNotFound) {
 			return null;
 		}
 		return parent::handleResult($code, $headers, $data);

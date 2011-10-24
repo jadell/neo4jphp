@@ -69,8 +69,6 @@ class UpdateRelationship extends Command
 	{
 		if ((int)($code / 100) == 2) {
 			return true;
-		} else if ($code == 404) {
-			return false;
 		} else {
 			$this->throwException('Unable to update relationship', $code, $headers, $data);
 		}

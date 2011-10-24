@@ -202,11 +202,16 @@ class Client
 			return $node;
 		}
 
-		$result = $this->loadNode($node);
-		if ($result) {
-			return $node;
+		try {
+			$result = $this->loadNode($node);
+		} catch (Exception $e) {
+			if ($e->getCode() == self::ErrorNotFound) {
+				return null;
+			} else {
+				throw $e;
+			}
 		}
-		return null;
+		return $node;
 	}
 
 	/**
@@ -260,11 +265,17 @@ class Client
 			return $rel;
 		}
 
-		$result = $this->loadRelationship($rel);
-		if ($result) {
-			return $rel;
+
+		try {
+			$result = $this->loadRelationship($rel);
+		} catch (Exception $e) {
+			if ($e->getCode() == self::ErrorNotFound) {
+				return null;
+			} else {
+				throw $e;
+			}
 		}
-		return null;
+		return $rel;
 	}
 
 	/**

@@ -51,8 +51,12 @@ class Client_CacheTest extends \PHPUnit_Framework_TestCase
 			->with('/node/'.$nodeId)
 			->will($this->returnValue(array('code'=>'404')));
 
-		$this->client->loadNode($node);
-		$this->assertFalse($this->cache->get("node-{$nodeId}"));
+		try {
+			$this->client->loadNode($node);
+			$this->fail();
+		} catch (Exception $e) {
+			$this->assertFalse($this->cache->get("node-{$nodeId}"));
+		}
 	}
 
 	public function testLoadRelationship_Found_RelationshipInCache()
@@ -95,8 +99,13 @@ class Client_CacheTest extends \PHPUnit_Framework_TestCase
 			->with('/relationship/'.$relId)
 			->will($this->returnValue(array('code'=>'404','data'=>array())));
 
-		$this->client->loadRelationship($rel);
-		$this->assertFalse($this->cache->get("relationship-{$relId}"));
+
+		try {
+			$this->client->loadRelationship($rel);
+			$this->fail();
+		} catch (Exception $e) {
+			$this->assertFalse($this->cache->get("relationship-{$relId}"));
+		}
 	}
 
 	public function testGetNode_Found_SubsequentCallsReturnsFromCache()

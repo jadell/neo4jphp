@@ -111,7 +111,7 @@ class RemoveFromIndex extends Command
 	 */
 	protected function handleResult($code, $headers, $data)
 	{
-		if ((int)($code / 100) != 2 && $code != 404) {
+		if ((int)($code / 100) != 2) {
 			$this->throwException('Unable to remove entity from index', $code, $headers, $data);
 		}
 		return true;

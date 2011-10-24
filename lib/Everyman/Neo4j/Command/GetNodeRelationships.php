@@ -96,8 +96,6 @@ class GetNodeRelationships extends Command
 				$rels[] = $this->getEntityMapper()->makeRelationship($relData);
 			}
 			return $rels;
-		} else if ($code == 404) {
-			return false;
 		} else {
 			$this->throwException('Unable to retrieve node relationships', $code, $headers, $data);
 		}
