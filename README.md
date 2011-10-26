@@ -38,3 +38,16 @@ To Do
 -----
 * UTF-8 support?
 * Paginated Cypher/Gremlin results?
+
+
+Changes
+-------
+
+0.0.4-beta
+
+* Client::getServerInfo() retrieves server information and connection test
+* Add to index brought up to Neo4j server 1.5 specification
+* Return paths from Cypher queries
+* Properly encode URL entities
+* Connection and transport errors throw exceptions
+* Fix "unable to connect" bug from returning false positive
