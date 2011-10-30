@@ -1,13 +1,9 @@
 <?xml version="1.0"?>
 <project version="0.15.1" title="">
-  <file path="Everyman/Neo4j/Command.php" hash="08370478b260da8543f832842d25cc27" package="Default">
+  <file path="Everyman/Neo4j/Command.php" hash="c1d3f36fff20d255523e13e516b66161" package="Default">
     <parse_markers>
       <error line="1">No DocBlock was found for File Everyman/Neo4j/Command.php</error>
       <error line="9">No DocBlock was found for Property $client</error>
-      <notice line="100">Name of argument $message does not match with function Docblock</notice>
-      <notice line="100">Name of argument $code does not match with function Docblock</notice>
-      <notice line="100">Name of argument $headers does not match with function Docblock</notice>
-      <notice line="100">Argument $data is missing from the function Docblock</notice>
     </parse_markers>
     <class final="false" abstract="true" line="7" namespace="Everyman\Neo4j" package="Default">
       <name>Command</name>
@@ -139,12 +135,15 @@
           </tag>
         </docblock>
       </method>
-      <method final="false" abstract="false" static="false" visibility="protected" line="100" package="Default">
+      <method final="false" abstract="false" static="false" visibility="protected" line="101" package="Default">
         <name>throwException</name>
         <docblock>
           <description>Throw an exception from handling the results</description>
           <long-description>
 </long-description>
+          <tag line="92" name="param" description="" type="string" variable="$message">
+            <type by_reference="false">string</type>
+          </tag>
           <tag line="92" name="param" description="" type="integer" variable="$code">
             <type by_reference="false">integer</type>
           </tag>
@@ -158,22 +157,22 @@
             <type by_reference="false">\Everyman\Neo4j\Exception</type>
           </tag>
         </docblock>
-        <argument line="100">
+        <argument line="101">
           <name>$message</name>
           <default/>
           <type/>
         </argument>
-        <argument line="100">
+        <argument line="101">
           <name>$code</name>
           <default/>
           <type/>
         </argument>
-        <argument line="100">
+        <argument line="101">
           <name>$headers</name>
           <default/>
           <type/>
         </argument>
-        <argument line="100">
+        <argument line="101">
           <name>$data</name>
           <default/>
           <type/>
@@ -1414,11 +1413,10 @@ else, create and return a new batch</description>
       </method>
     </class>
   </file>
-  <file path="Everyman/Neo4j/EntityMapper.php" hash="5e990ceec6607f8b49c5faa5dd50d46b" package="Default">
+  <file path="Everyman/Neo4j/EntityMapper.php" hash="98e90e0279d916f0d4bb390175c51e97" package="Default">
     <parse_markers>
       <error line="1">No DocBlock was found for File Everyman/Neo4j/EntityMapper.php</error>
       <error line="10">No DocBlock was found for Property $client</error>
-      <notice line="15">Argument $client is missing from the function Docblock</notice>
     </parse_markers>
     <class final="false" abstract="false" line="8" namespace="Everyman\Neo4j" package="Default">
       <name>EntityMapper</name>
@@ -1434,20 +1432,23 @@ where appropriate.</description>
         <name>$client</name>
         <default>null</default>
       </property>
-      <method final="false" abstract="false" static="false" visibility="public" line="15" package="Default">
+      <method final="false" abstract="false" static="false" visibility="public" line="17" package="Default">
         <name>__construct</name>
         <docblock>
           <description>Set the client for retrieving related entities</description>
           <long-description>
 </long-description>
+          <tag line="12" name="param" description="" type="\Everyman\Neo4j\Client" variable="$client">
+            <type by_reference="false">\Everyman\Neo4j\Client</type>
+          </tag>
         </docblock>
-        <argument line="15">
+        <argument line="17">
           <name>$client</name>
           <default/>
           <type>Client</type>
         </argument>
       </method>
-      <method final="false" abstract="false" static="false" visibility="public" line="29" package="Default">
+      <method final="false" abstract="false" static="false" visibility="public" line="31" package="Default">
         <name>getEntityFor</name>
         <docblock>
           <description>Given any object, see if it fulfills the contract
@@ -1455,198 +1456,198 @@ for being a path, node or relationship data returned by the
 server. If so, return a full Path, Node or Relationship instance.</description>
           <long-description>&lt;p&gt;Else, return the value untainted.&lt;/p&gt;
 </long-description>
-          <tag line="20" name="param" description="" type="mixed" variable="$value">
+          <tag line="22" name="param" description="" type="mixed" variable="$value">
             <type by_reference="false">mixed</type>
           </tag>
-          <tag line="20" name="return" description="" type="mixed">
+          <tag line="22" name="return" description="" type="mixed">
             <type by_reference="false">mixed</type>
           </tag>
         </docblock>
-        <argument line="29">
+        <argument line="31">
           <name>$value</name>
           <default/>
           <type/>
         </argument>
       </method>
-      <method final="false" abstract="false" static="false" visibility="public" line="51" package="Default">
+      <method final="false" abstract="false" static="false" visibility="public" line="53" package="Default">
         <name>getIdFromUri</name>
         <docblock>
           <description>Get an id from a URI</description>
           <long-description>
 </long-description>
-          <tag line="45" name="param" description="" type="string" variable="$uri">
+          <tag line="47" name="param" description="" type="string" variable="$uri">
             <type by_reference="false">string</type>
           </tag>
-          <tag line="45" name="return" description="" type="mixed">
+          <tag line="47" name="return" description="" type="mixed">
             <type by_reference="false">mixed</type>
           </tag>
         </docblock>
-        <argument line="51">
+        <argument line="53">
           <name>$uri</name>
           <default/>
           <type/>
         </argument>
       </method>
-      <method final="false" abstract="false" static="false" visibility="public" line="63" package="Default">
+      <method final="false" abstract="false" static="false" visibility="public" line="65" package="Default">
         <name>makeNode</name>
         <docblock>
           <description>Generate and populate a node from the given data</description>
           <long-description>
 </long-description>
-          <tag line="57" name="param" description="" type="array" variable="$data">
+          <tag line="59" name="param" description="" type="array" variable="$data">
             <type by_reference="false">array</type>
           </tag>
-          <tag line="57" name="return" description="" type="\Everyman\Neo4j\Node">
+          <tag line="59" name="return" description="" type="\Everyman\Neo4j\Node">
             <type by_reference="false">\Everyman\Neo4j\Node</type>
           </tag>
         </docblock>
-        <argument line="63">
+        <argument line="65">
           <name>$data</name>
           <default/>
           <type/>
         </argument>
       </method>
-      <method final="false" abstract="false" static="false" visibility="public" line="75" package="Default">
+      <method final="false" abstract="false" static="false" visibility="public" line="77" package="Default">
         <name>makeRelationship</name>
         <docblock>
           <description>Generate and populate a relationship from the given data</description>
           <long-description>
 </long-description>
-          <tag line="69" name="param" description="" type="array" variable="$data">
+          <tag line="71" name="param" description="" type="array" variable="$data">
             <type by_reference="false">array</type>
           </tag>
-          <tag line="69" name="return" description="" type="\Everyman\Neo4j\Relationship">
+          <tag line="71" name="return" description="" type="\Everyman\Neo4j\Relationship">
             <type by_reference="false">\Everyman\Neo4j\Relationship</type>
           </tag>
         </docblock>
-        <argument line="75">
+        <argument line="77">
           <name>$data</name>
           <default/>
           <type/>
         </argument>
       </method>
-      <method final="false" abstract="false" static="false" visibility="public" line="88" package="Default">
+      <method final="false" abstract="false" static="false" visibility="public" line="90" package="Default">
         <name>populateNode</name>
         <docblock>
           <description>Fill a node with data</description>
           <long-description>
 </long-description>
-          <tag line="81" name="param" description="" type="\Everyman\Neo4j\Node" variable="$node">
+          <tag line="83" name="param" description="" type="\Everyman\Neo4j\Node" variable="$node">
             <type by_reference="false">\Everyman\Neo4j\Node</type>
           </tag>
-          <tag line="81" name="param" description="" type="array" variable="$data">
+          <tag line="83" name="param" description="" type="array" variable="$data">
             <type by_reference="false">array</type>
           </tag>
-          <tag line="81" name="return" description="" type="\Everyman\Neo4j\Node">
+          <tag line="83" name="return" description="" type="\Everyman\Neo4j\Node">
             <type by_reference="false">\Everyman\Neo4j\Node</type>
           </tag>
         </docblock>
-        <argument line="88">
+        <argument line="90">
           <name>$node</name>
           <default/>
           <type>Node</type>
         </argument>
-        <argument line="88">
+        <argument line="90">
           <name>$data</name>
           <default/>
           <type/>
         </argument>
       </method>
-      <method final="false" abstract="false" static="false" visibility="public" line="103" package="Default">
+      <method final="false" abstract="false" static="false" visibility="public" line="105" package="Default">
         <name>populatePath</name>
         <docblock>
           <description>Fill a path with data</description>
           <long-description>
 </long-description>
-          <tag line="95" name="param" description="" type="\Everyman\Neo4j\Path" variable="$path">
+          <tag line="97" name="param" description="" type="\Everyman\Neo4j\Path" variable="$path">
             <type by_reference="false">\Everyman\Neo4j\Path</type>
           </tag>
-          <tag line="95" name="param" description="" type="array" variable="$data">
+          <tag line="97" name="param" description="" type="array" variable="$data">
             <type by_reference="false">array</type>
           </tag>
-          <tag line="95" name="param" description="" type="boolean" variable="$full">
+          <tag line="97" name="param" description="" type="boolean" variable="$full">
             <type by_reference="false">boolean</type>
           </tag>
-          <tag line="95" name="return" description="" type="\Everyman\Neo4j\Path">
+          <tag line="97" name="return" description="" type="\Everyman\Neo4j\Path">
             <type by_reference="false">\Everyman\Neo4j\Path</type>
           </tag>
         </docblock>
-        <argument line="103">
+        <argument line="105">
           <name>$path</name>
           <default/>
           <type>Path</type>
         </argument>
-        <argument line="103">
+        <argument line="105">
           <name>$data</name>
           <default/>
           <type/>
         </argument>
-        <argument line="103">
+        <argument line="105">
           <name>$full</name>
           <default>false</default>
           <type/>
         </argument>
       </method>
-      <method final="false" abstract="false" static="false" visibility="public" line="133" package="Default">
+      <method final="false" abstract="false" static="false" visibility="public" line="135" package="Default">
         <name>populateRelationship</name>
         <docblock>
           <description>Fill a relationship with data</description>
           <long-description>
 </long-description>
-          <tag line="126" name="param" description="" type="\Everyman\Neo4j\Relationship" variable="$rel">
+          <tag line="128" name="param" description="" type="\Everyman\Neo4j\Relationship" variable="$rel">
             <type by_reference="false">\Everyman\Neo4j\Relationship</type>
           </tag>
-          <tag line="126" name="param" description="" type="array" variable="$data">
+          <tag line="128" name="param" description="" type="array" variable="$data">
             <type by_reference="false">array</type>
           </tag>
-          <tag line="126" name="return" description="" type="\Everyman\Neo4j\Relationship">
+          <tag line="128" name="return" description="" type="\Everyman\Neo4j\Relationship">
             <type by_reference="false">\Everyman\Neo4j\Relationship</type>
           </tag>
         </docblock>
-        <argument line="133">
+        <argument line="135">
           <name>$rel</name>
           <default/>
           <type>Relationship</type>
         </argument>
-        <argument line="133">
+        <argument line="135">
           <name>$data</name>
           <default/>
           <type/>
         </argument>
       </method>
-      <method final="false" abstract="false" static="false" visibility="protected" line="151" package="Default">
+      <method final="false" abstract="false" static="false" visibility="protected" line="153" package="Default">
         <name>getNodeFromUri</name>
         <docblock>
           <description>Retrieve a node by it's 'self' uri</description>
           <long-description>
 </long-description>
-          <tag line="145" name="param" description="" type="string" variable="$uri">
+          <tag line="147" name="param" description="" type="string" variable="$uri">
             <type by_reference="false">string</type>
           </tag>
-          <tag line="145" name="return" description="" type="\Everyman\Neo4j\Node">
+          <tag line="147" name="return" description="" type="\Everyman\Neo4j\Node">
             <type by_reference="false">\Everyman\Neo4j\Node</type>
           </tag>
         </docblock>
-        <argument line="151">
+        <argument line="153">
           <name>$uri</name>
           <default/>
           <type/>
         </argument>
       </method>
-      <method final="false" abstract="false" static="false" visibility="protected" line="163" package="Default">
+      <method final="false" abstract="false" static="false" visibility="protected" line="165" package="Default">
         <name>getRelationshipFromUri</name>
         <docblock>
           <description>Retrieve a relationship by it's 'self' uri</description>
           <long-description>
 </long-description>
-          <tag line="157" name="param" description="" type="string" variable="$uri">
+          <tag line="159" name="param" description="" type="string" variable="$uri">
             <type by_reference="false">string</type>
           </tag>
-          <tag line="157" name="return" description="" type="\Everyman\Neo4j\Relationship">
+          <tag line="159" name="return" description="" type="\Everyman\Neo4j\Relationship">
             <type by_reference="false">\Everyman\Neo4j\Relationship</type>
           </tag>
         </docblock>
-        <argument line="163">
+        <argument line="165">
           <name>$uri</name>
           <default/>
           <type/>
@@ -3976,146 +3977,37 @@ if we can get them.</description>
       </method>
     </class>
   </file>
-  <file path="Everyman/Neo4j/Command/ExecutePagedTraversal.php" hash="3af351aad2e9bd0fc24f850d4cdbc664" package="Default">
+  <file path="Everyman/Neo4j/Command/ExecutePagedTraversal.php" hash="d26c972da913807fc5887535b880a0e6" package="Default">
     <parse_markers>
       <error line="1">No DocBlock was found for File Everyman/Neo4j/Command/ExecutePagedTraversal.php</error>
-      <error line="7">No DocBlock was found for Class ExecutePagedTraversal</error>
-      <error line="9">No DocBlock was found for Property $pager</error>
+      <error line="12">No DocBlock was found for Property $pager</error>
     </parse_markers>
     <namespace-alias name="Client">Everyman\Neo4j\Client</namespace-alias>
     <namespace-alias name="Pager">Everyman\Neo4j\Pager</namespace-alias>
-    <class final="false" abstract="false" line="7" namespace="Everyman\Neo4j\Command" package="Default">
+    <class final="false" abstract="false" line="10" namespace="Everyman\Neo4j\Command" package="Default">
       <name>ExecutePagedTraversal</name>
       <extends>\Everyman\Neo4j\Command\ExecuteTraversal</extends>
       <full_name>\Everyman\Neo4j\Command\ExecutePagedTraversal</full_name>
-      <property final="false" static="false" visibility="protected" line="9" package="Default">
-        <name>$pager</name>
-        <default>null</default>
-      </property>
-      <method final="false" abstract="false" static="false" visibility="public" line="17" package="Default">
-        <name>__construct</name>
-        <docblock>
-          <description>Set the pager to execute</description>
-          <long-description>
+      <docblock>
+        <description>Perform a paged traversal and return the results</description>
+        <long-description>
 </long-description>
-          <tag line="11" name="param" description="" type="\Everyman\Neo4j\Client" variable="$client">
-            <type by_reference="false">\Everyman\Neo4j\Client</type>
-          </tag>
-          <tag line="11" name="param" description="" type="\Everyman\Neo4j\Pager" variable="$pager">
-            <type by_reference="false">\Everyman\Neo4j\Pager</type>
-          </tag>
-        </docblock>
-        <argument line="17">
-          <name>$client</name>
-          <default/>
-          <type>Client</type>
-        </argument>
-        <argument line="17">
-          <name>$pager</name>
-          <default/>
-          <type>Pager</type>
-        </argument>
-      </method>
-      <method final="false" abstract="false" static="false" visibility="protected" line="28" package="Default">
-        <name>getData</name>
-        <docblock>
-          <description>Return the data to pass</description>
-          <long-description>
-</long-description>
-          <tag line="23" name="return" description="" type="mixed">
-            <type by_reference="false">mixed</type>
-          </tag>
-        </docblock>
-      </method>
-      <method final="false" abstract="false" static="false" visibility="protected" line="38" package="Default">
-        <name>getMethod</name>
-        <docblock>
-          <description>Return the transport method to call</description>
-          <long-description>
-</long-description>
-          <tag line="33" name="return" description="" type="string">
-            <type by_reference="false">string</type>
-          </tag>
-        </docblock>
-      </method>
-      <method final="false" abstract="false" static="false" visibility="protected" line="48" package="Default">
-        <name>getPath</name>
-        <docblock>
-          <description>Return the path to use</description>
-          <long-description>
-</long-description>
-          <tag line="43" name="return" description="" type="string">
-            <type by_reference="false">string</type>
-          </tag>
-        </docblock>
-      </method>
-      <method final="false" abstract="false" static="false" visibility="protected" line="81" package="Default">
-        <name>handleResult</name>
-        <docblock>
-          <description>Use the results</description>
-          <long-description>
-</long-description>
-          <tag line="73" name="param" description="" type="integer" variable="$code">
-            <type by_reference="false">integer</type>
-          </tag>
-          <tag line="73" name="param" description="" type="array" variable="$headers">
-            <type by_reference="false">array</type>
-          </tag>
-          <tag line="73" name="param" description="" type="array" variable="$data">
-            <type by_reference="false">array</type>
-          </tag>
-          <tag line="73" name="return" description="on failure" type="integer">
-            <type by_reference="false">integer</type>
-          </tag>
-        </docblock>
-        <argument line="81">
-          <name>$code</name>
-          <default/>
-          <type/>
-        </argument>
-        <argument line="81">
-          <name>$headers</name>
-          <default/>
-          <type/>
-        </argument>
-        <argument line="81">
-          <name>$data</name>
-          <default/>
-          <type/>
-        </argument>
-      </method>
-    </class>
-  </file>
-  <file path="Everyman/Neo4j/Command/ExecuteCypherQuery.php" hash="dd72a909c1daeaa59f29e86f2d9906d6" package="Default">
-    <parse_markers>
-      <error line="1">No DocBlock was found for File Everyman/Neo4j/Command/ExecuteCypherQuery.php</error>
-      <error line="10">No DocBlock was found for Class ExecuteCypherQuery</error>
-      <error line="12">No DocBlock was found for Property $query</error>
-    </parse_markers>
-    <namespace-alias name="EntityMapper">Everyman\Neo4j\EntityMapper</namespace-alias>
-    <namespace-alias name="Command">Everyman\Neo4j\Command</namespace-alias>
-    <namespace-alias name="Client">Everyman\Neo4j\Client</namespace-alias>
-    <namespace-alias name="Query">Everyman\Neo4j\Cypher\Query</namespace-alias>
-    <namespace-alias name="ResultSet">Everyman\Neo4j\Query\ResultSet</namespace-alias>
-    <class final="false" abstract="false" line="10" namespace="Everyman\Neo4j\Command" package="Default">
-      <name>ExecuteCypherQuery</name>
-      <extends>\Everyman\Neo4j\Command</extends>
-      <full_name>\Everyman\Neo4j\Command\ExecuteCypherQuery</full_name>
+      </docblock>
       <property final="false" static="false" visibility="protected" line="12" package="Default">
-        <name>$query</name>
+        <name>$pager</name>
         <default>null</default>
       </property>
       <method final="false" abstract="false" static="false" visibility="public" line="20" package="Default">
         <name>__construct</name>
         <docblock>
-          <description>Set the query to execute</description>
+          <description>Set the pager to execute</description>
           <long-description>
 </long-description>
           <tag line="14" name="param" description="" type="\Everyman\Neo4j\Client" variable="$client">
             <type by_reference="false">\Everyman\Neo4j\Client</type>
           </tag>
-          <tag line="14" name="param" description="" type="\Everyman\Neo4j\Cypher\Query" variable="$query">
-            <type by_reference="false">\Everyman\Neo4j\Cypher\Query</type>
+          <tag line="14" name="param" description="" type="\Everyman\Neo4j\Pager" variable="$pager">
+            <type by_reference="false">\Everyman\Neo4j\Pager</type>
           </tag>
         </docblock>
         <argument line="20">
@@ -4124,9 +4016,9 @@ if we can get them.</description>
           <type>Client</type>
         </argument>
         <argument line="20">
-          <name>$query</name>
+          <name>$pager</name>
           <default/>
-          <type>Query</type>
+          <type>Pager</type>
         </argument>
       </method>
       <method final="false" abstract="false" static="false" visibility="protected" line="31" package="Default">
@@ -4140,58 +4032,175 @@ if we can get them.</description>
           </tag>
         </docblock>
       </method>
-      <method final="false" abstract="false" static="false" visibility="protected" line="42" package="Default">
+      <method final="false" abstract="false" static="false" visibility="protected" line="41" package="Default">
         <name>getMethod</name>
         <docblock>
           <description>Return the transport method to call</description>
           <long-description>
 </long-description>
-          <tag line="37" name="return" description="" type="string">
+          <tag line="36" name="return" description="" type="string">
             <type by_reference="false">string</type>
           </tag>
         </docblock>
       </method>
-      <method final="false" abstract="false" static="false" visibility="protected" line="52" package="Default">
+      <method final="false" abstract="false" static="false" visibility="protected" line="51" package="Default">
         <name>getPath</name>
         <docblock>
           <description>Return the path to use</description>
           <long-description>
 </long-description>
-          <tag line="47" name="return" description="" type="string">
+          <tag line="46" name="return" description="" type="string">
             <type by_reference="false">string</type>
           </tag>
         </docblock>
       </method>
-      <method final="false" abstract="false" static="false" visibility="protected" line="65" package="Default">
+      <method final="false" abstract="false" static="false" visibility="protected" line="84" package="Default">
         <name>handleResult</name>
         <docblock>
           <description>Use the results</description>
           <long-description>
 </long-description>
-          <tag line="57" name="param" description="" type="integer" variable="$code">
+          <tag line="76" name="param" description="" type="integer" variable="$code">
             <type by_reference="false">integer</type>
           </tag>
-          <tag line="57" name="param" description="" type="array" variable="$headers">
+          <tag line="76" name="param" description="" type="array" variable="$headers">
             <type by_reference="false">array</type>
           </tag>
-          <tag line="57" name="param" description="" type="array" variable="$data">
+          <tag line="76" name="param" description="" type="array" variable="$data">
             <type by_reference="false">array</type>
           </tag>
-          <tag line="57" name="return" description="on failure" type="integer">
+          <tag line="76" name="return" description="on failure" type="integer">
             <type by_reference="false">integer</type>
           </tag>
         </docblock>
-        <argument line="65">
+        <argument line="84">
           <name>$code</name>
           <default/>
           <type/>
         </argument>
-        <argument line="65">
+        <argument line="84">
           <name>$headers</name>
           <default/>
           <type/>
         </argument>
-        <argument line="65">
+        <argument line="84">
+          <name>$data</name>
+          <default/>
+          <type/>
+        </argument>
+      </method>
+    </class>
+  </file>
+  <file path="Everyman/Neo4j/Command/ExecuteCypherQuery.php" hash="04e74085ae87ca14c3bf576aed7aae49" package="Default">
+    <parse_markers>
+      <error line="1">No DocBlock was found for File Everyman/Neo4j/Command/ExecuteCypherQuery.php</error>
+      <error line="15">No DocBlock was found for Property $query</error>
+    </parse_markers>
+    <namespace-alias name="EntityMapper">Everyman\Neo4j\EntityMapper</namespace-alias>
+    <namespace-alias name="Command">Everyman\Neo4j\Command</namespace-alias>
+    <namespace-alias name="Client">Everyman\Neo4j\Client</namespace-alias>
+    <namespace-alias name="Query">Everyman\Neo4j\Cypher\Query</namespace-alias>
+    <namespace-alias name="ResultSet">Everyman\Neo4j\Query\ResultSet</namespace-alias>
+    <class final="false" abstract="false" line="13" namespace="Everyman\Neo4j\Command" package="Default">
+      <name>ExecuteCypherQuery</name>
+      <extends>\Everyman\Neo4j\Command</extends>
+      <full_name>\Everyman\Neo4j\Command\ExecuteCypherQuery</full_name>
+      <docblock>
+        <description>Perform a query using the Cypher query language and return the results</description>
+        <long-description>
+</long-description>
+      </docblock>
+      <property final="false" static="false" visibility="protected" line="15" package="Default">
+        <name>$query</name>
+        <default>null</default>
+      </property>
+      <method final="false" abstract="false" static="false" visibility="public" line="23" package="Default">
+        <name>__construct</name>
+        <docblock>
+          <description>Set the query to execute</description>
+          <long-description>
+</long-description>
+          <tag line="17" name="param" description="" type="\Everyman\Neo4j\Client" variable="$client">
+            <type by_reference="false">\Everyman\Neo4j\Client</type>
+          </tag>
+          <tag line="17" name="param" description="" type="\Everyman\Neo4j\Cypher\Query" variable="$query">
+            <type by_reference="false">\Everyman\Neo4j\Cypher\Query</type>
+          </tag>
+        </docblock>
+        <argument line="23">
+          <name>$client</name>
+          <default/>
+          <type>Client</type>
+        </argument>
+        <argument line="23">
+          <name>$query</name>
+          <default/>
+          <type>Query</type>
+        </argument>
+      </method>
+      <method final="false" abstract="false" static="false" visibility="protected" line="34" package="Default">
+        <name>getData</name>
+        <docblock>
+          <description>Return the data to pass</description>
+          <long-description>
+</long-description>
+          <tag line="29" name="return" description="" type="mixed">
+            <type by_reference="false">mixed</type>
+          </tag>
+        </docblock>
+      </method>
+      <method final="false" abstract="false" static="false" visibility="protected" line="45" package="Default">
+        <name>getMethod</name>
+        <docblock>
+          <description>Return the transport method to call</description>
+          <long-description>
+</long-description>
+          <tag line="40" name="return" description="" type="string">
+            <type by_reference="false">string</type>
+          </tag>
+        </docblock>
+      </method>
+      <method final="false" abstract="false" static="false" visibility="protected" line="55" package="Default">
+        <name>getPath</name>
+        <docblock>
+          <description>Return the path to use</description>
+          <long-description>
+</long-description>
+          <tag line="50" name="return" description="" type="string">
+            <type by_reference="false">string</type>
+          </tag>
+        </docblock>
+      </method>
+      <method final="false" abstract="false" static="false" visibility="protected" line="68" package="Default">
+        <name>handleResult</name>
+        <docblock>
+          <description>Use the results</description>
+          <long-description>
+</long-description>
+          <tag line="60" name="param" description="" type="integer" variable="$code">
+            <type by_reference="false">integer</type>
+          </tag>
+          <tag line="60" name="param" description="" type="array" variable="$headers">
+            <type by_reference="false">array</type>
+          </tag>
+          <tag line="60" name="param" description="" type="array" variable="$data">
+            <type by_reference="false">array</type>
+          </tag>
+          <tag line="60" name="return" description="on failure" type="integer">
+            <type by_reference="false">integer</type>
+          </tag>
+        </docblock>
+        <argument line="68">
+          <name>$code</name>
+          <default/>
+          <type/>
+        </argument>
+        <argument line="68">
+          <name>$headers</name>
+          <default/>
+          <type/>
+        </argument>
+        <argument line="68">
           <name>$data</name>
           <default/>
           <type/>
@@ -4504,132 +4513,136 @@ if we can get them.</description>
       </method>
     </class>
   </file>
-  <file path="Everyman/Neo4j/Command/ExecuteGremlinQuery.php" hash="2d5adfb476305e6d8da5051b1d90d985" package="Default">
+  <file path="Everyman/Neo4j/Command/ExecuteGremlinQuery.php" hash="c817fc42ac3da5ea963af30e9742a2a9" package="Default">
     <parse_markers>
       <error line="1">No DocBlock was found for File Everyman/Neo4j/Command/ExecuteGremlinQuery.php</error>
-      <error line="10">No DocBlock was found for Class ExecuteGremlinQuery</error>
-      <error line="12">No DocBlock was found for Property $query</error>
+      <error line="15">No DocBlock was found for Property $query</error>
     </parse_markers>
     <namespace-alias name="EntityMapper">Everyman\Neo4j\EntityMapper</namespace-alias>
     <namespace-alias name="Command">Everyman\Neo4j\Command</namespace-alias>
     <namespace-alias name="Client">Everyman\Neo4j\Client</namespace-alias>
     <namespace-alias name="Query">Everyman\Neo4j\Gremlin\Query</namespace-alias>
     <namespace-alias name="ResultSet">Everyman\Neo4j\Query\ResultSet</namespace-alias>
-    <class final="false" abstract="false" line="10" namespace="Everyman\Neo4j\Command" package="Default">
+    <class final="false" abstract="false" line="13" namespace="Everyman\Neo4j\Command" package="Default">
       <name>ExecuteGremlinQuery</name>
       <extends>\Everyman\Neo4j\Command</extends>
       <full_name>\Everyman\Neo4j\Command\ExecuteGremlinQuery</full_name>
-      <property final="false" static="false" visibility="protected" line="12" package="Default">
+      <docblock>
+        <description>Perform a query using the Gremlin DSL and return the results</description>
+        <long-description>
+</long-description>
+      </docblock>
+      <property final="false" static="false" visibility="protected" line="15" package="Default">
         <name>$query</name>
         <default>null</default>
       </property>
-      <method final="false" abstract="false" static="false" visibility="public" line="20" package="Default">
+      <method final="false" abstract="false" static="false" visibility="public" line="23" package="Default">
         <name>__construct</name>
         <docblock>
           <description>Set the query to execute</description>
           <long-description>
 </long-description>
-          <tag line="14" name="param" description="" type="\Everyman\Neo4j\Client" variable="$client">
+          <tag line="17" name="param" description="" type="\Everyman\Neo4j\Client" variable="$client">
             <type by_reference="false">\Everyman\Neo4j\Client</type>
           </tag>
-          <tag line="14" name="param" description="" type="\Everyman\Neo4j\Gremlin\Query" variable="$query">
+          <tag line="17" name="param" description="" type="\Everyman\Neo4j\Gremlin\Query" variable="$query">
             <type by_reference="false">\Everyman\Neo4j\Gremlin\Query</type>
           </tag>
         </docblock>
-        <argument line="20">
+        <argument line="23">
           <name>$client</name>
           <default/>
           <type>Client</type>
         </argument>
-        <argument line="20">
+        <argument line="23">
           <name>$query</name>
           <default/>
           <type>Query</type>
         </argument>
       </method>
-      <method final="false" abstract="false" static="false" visibility="protected" line="31" package="Default">
+      <method final="false" abstract="false" static="false" visibility="protected" line="34" package="Default">
         <name>getData</name>
         <docblock>
           <description>Return the data to pass</description>
           <long-description>
 </long-description>
-          <tag line="26" name="return" description="" type="mixed">
+          <tag line="29" name="return" description="" type="mixed">
             <type by_reference="false">mixed</type>
           </tag>
         </docblock>
       </method>
-      <method final="false" abstract="false" static="false" visibility="protected" line="42" package="Default">
+      <method final="false" abstract="false" static="false" visibility="protected" line="45" package="Default">
         <name>getMethod</name>
         <docblock>
           <description>Return the transport method to call</description>
           <long-description>
 </long-description>
-          <tag line="37" name="return" description="" type="string">
+          <tag line="40" name="return" description="" type="string">
             <type by_reference="false">string</type>
           </tag>
         </docblock>
       </method>
-      <method final="false" abstract="false" static="false" visibility="protected" line="52" package="Default">
+      <method final="false" abstract="false" static="false" visibility="protected" line="55" package="Default">
         <name>getPath</name>
         <docblock>
           <description>Return the path to use</description>
           <long-description>
 </long-description>
-          <tag line="47" name="return" description="" type="string">
+          <tag line="50" name="return" description="" type="string">
             <type by_reference="false">string</type>
           </tag>
         </docblock>
       </method>
-      <method final="false" abstract="false" static="false" visibility="protected" line="65" package="Default">
+      <method final="false" abstract="false" static="false" visibility="protected" line="68" package="Default">
         <name>handleResult</name>
         <docblock>
           <description>Use the results</description>
           <long-description>
 </long-description>
-          <tag line="57" name="param" description="" type="integer" variable="$code">
+          <tag line="60" name="param" description="" type="integer" variable="$code">
             <type by_reference="false">integer</type>
           </tag>
-          <tag line="57" name="param" description="" type="array" variable="$headers">
+          <tag line="60" name="param" description="" type="array" variable="$headers">
             <type by_reference="false">array</type>
           </tag>
-          <tag line="57" name="param" description="" type="array" variable="$data">
+          <tag line="60" name="param" description="" type="array" variable="$data">
             <type by_reference="false">array</type>
           </tag>
-          <tag line="57" name="return" description="on failure" type="integer">
+          <tag line="60" name="return" description="on failure" type="integer">
             <type by_reference="false">integer</type>
           </tag>
         </docblock>
-        <argument line="65">
+        <argument line="68">
           <name>$code</name>
           <default/>
           <type/>
         </argument>
-        <argument line="65">
+        <argument line="68">
           <name>$headers</name>
           <default/>
           <type/>
         </argument>
-        <argument line="65">
+        <argument line="68">
           <name>$data</name>
           <default/>
           <type/>
         </argument>
       </method>
-      <method final="false" abstract="false" static="false" visibility="protected" line="81" package="Default">
+      <method final="false" abstract="false" static="false" visibility="protected" line="84" package="Default">
         <name>normalizeData</name>
         <docblock>
           <description>Normalize the data so a proper ResultSet can be built
 Normalized data has 'data' and 'columns' keys for result set.</description>
           <long-description>
 </long-description>
-          <tag line="74" name="param" description="" type="array" variable="$data">
+          <tag line="77" name="param" description="" type="array" variable="$data">
             <type by_reference="false">array</type>
           </tag>
-          <tag line="74" name="return" description="" type="array">
+          <tag line="77" name="return" description="" type="array">
             <type by_reference="false">array</type>
           </tag>
         </docblock>
-        <argument line="81">
+        <argument line="84">
           <name>$data</name>
           <default/>
           <type/>
@@ -5176,14 +5189,13 @@ are removed.</description>
       </method>
     </class>
   </file>
-  <file path="Everyman/Neo4j/Command/ExecuteTraversal.php" hash="a304c3249e1b8c962eb14cb6b7b7bf91" package="Default">
+  <file path="Everyman/Neo4j/Command/ExecuteTraversal.php" hash="1cf0ce0bfedd372bfc7d81dfb2d4831e" package="Default">
     <parse_markers>
       <error line="1">No DocBlock was found for File Everyman/Neo4j/Command/ExecuteTraversal.php</error>
-      <error line="11">No DocBlock was found for Class ExecuteTraversal</error>
-      <error line="13">No DocBlock was found for Property $traversal</error>
-      <error line="14">No DocBlock was found for Property $node</error>
-      <error line="15">No DocBlock was found for Property $returnType</error>
-      <error line="17">No DocBlock was found for Property $results</error>
+      <error line="16">No DocBlock was found for Property $traversal</error>
+      <error line="17">No DocBlock was found for Property $node</error>
+      <error line="18">No DocBlock was found for Property $returnType</error>
+      <error line="20">No DocBlock was found for Property $results</error>
     </parse_markers>
     <namespace-alias name="Command">Everyman\Neo4j\Command</namespace-alias>
     <namespace-alias name="Exception">Everyman\Neo4j\Exception</namespace-alias>
@@ -5191,185 +5203,190 @@ are removed.</description>
     <namespace-alias name="Traversal">Everyman\Neo4j\Traversal</namespace-alias>
     <namespace-alias name="Path">Everyman\Neo4j\Path</namespace-alias>
     <namespace-alias name="Node">Everyman\Neo4j\Node</namespace-alias>
-    <class final="false" abstract="false" line="11" namespace="Everyman\Neo4j\Command" package="Default">
+    <class final="false" abstract="false" line="14" namespace="Everyman\Neo4j\Command" package="Default">
       <name>ExecuteTraversal</name>
       <extends>\Everyman\Neo4j\Command</extends>
       <full_name>\Everyman\Neo4j\Command\ExecuteTraversal</full_name>
-      <property final="false" static="false" visibility="protected" line="13" package="Default">
+      <docblock>
+        <description>Perform a traversal and return the results</description>
+        <long-description>
+</long-description>
+      </docblock>
+      <property final="false" static="false" visibility="protected" line="16" package="Default">
         <name>$traversal</name>
         <default>null</default>
       </property>
-      <property final="false" static="false" visibility="protected" line="14" package="Default">
+      <property final="false" static="false" visibility="protected" line="17" package="Default">
         <name>$node</name>
         <default>null</default>
       </property>
-      <property final="false" static="false" visibility="protected" line="15" package="Default">
+      <property final="false" static="false" visibility="protected" line="18" package="Default">
         <name>$returnType</name>
         <default>null</default>
       </property>
-      <property final="false" static="false" visibility="protected" line="17" package="Default">
+      <property final="false" static="false" visibility="protected" line="20" package="Default">
         <name>$results</name>
         <default/>
       </property>
-      <method final="false" abstract="false" static="false" visibility="public" line="27" package="Default">
+      <method final="false" abstract="false" static="false" visibility="public" line="30" package="Default">
         <name>__construct</name>
         <docblock>
           <description>Set the traversal to execute</description>
           <long-description>
 </long-description>
-          <tag line="19" name="param" description="" type="\Everyman\Neo4j\Client" variable="$client">
+          <tag line="22" name="param" description="" type="\Everyman\Neo4j\Client" variable="$client">
             <type by_reference="false">\Everyman\Neo4j\Client</type>
           </tag>
-          <tag line="19" name="param" description="" type="\Everyman\Neo4j\Traversal" variable="$traversal">
+          <tag line="22" name="param" description="" type="\Everyman\Neo4j\Traversal" variable="$traversal">
             <type by_reference="false">\Everyman\Neo4j\Traversal</type>
           </tag>
-          <tag line="19" name="param" description="" type="\Everyman\Neo4j\Node" variable="$node">
+          <tag line="22" name="param" description="" type="\Everyman\Neo4j\Node" variable="$node">
             <type by_reference="false">\Everyman\Neo4j\Node</type>
           </tag>
-          <tag line="19" name="param" description="" type="string" variable="$returnType">
+          <tag line="22" name="param" description="" type="string" variable="$returnType">
             <type by_reference="false">string</type>
           </tag>
         </docblock>
-        <argument line="27">
+        <argument line="30">
           <name>$client</name>
           <default/>
           <type>Client</type>
         </argument>
-        <argument line="27">
+        <argument line="30">
           <name>$traversal</name>
           <default/>
           <type>Traversal</type>
         </argument>
-        <argument line="27">
+        <argument line="30">
           <name>$node</name>
           <default/>
           <type>Node</type>
         </argument>
-        <argument line="27">
+        <argument line="30">
           <name>$returnType</name>
           <default/>
           <type/>
         </argument>
       </method>
-      <method final="false" abstract="false" static="false" visibility="protected" line="40" package="Default">
+      <method final="false" abstract="false" static="false" visibility="protected" line="43" package="Default">
         <name>getData</name>
         <docblock>
           <description>Return the data to pass</description>
           <long-description>
 </long-description>
-          <tag line="35" name="return" description="" type="mixed">
+          <tag line="38" name="return" description="" type="mixed">
             <type by_reference="false">mixed</type>
           </tag>
         </docblock>
       </method>
-      <method final="false" abstract="false" static="false" visibility="protected" line="90" package="Default">
+      <method final="false" abstract="false" static="false" visibility="protected" line="93" package="Default">
         <name>getMethod</name>
         <docblock>
           <description>Return the transport method to call</description>
           <long-description>
 </long-description>
-          <tag line="85" name="return" description="" type="string">
+          <tag line="88" name="return" description="" type="string">
             <type by_reference="false">string</type>
           </tag>
         </docblock>
       </method>
-      <method final="false" abstract="false" static="false" visibility="protected" line="100" package="Default">
+      <method final="false" abstract="false" static="false" visibility="protected" line="103" package="Default">
         <name>getPath</name>
         <docblock>
           <description>Return the path to use</description>
           <long-description>
 </long-description>
-          <tag line="95" name="return" description="" type="string">
+          <tag line="98" name="return" description="" type="string">
             <type by_reference="false">string</type>
           </tag>
         </docblock>
       </method>
-      <method final="false" abstract="false" static="false" visibility="protected" line="124" package="Default">
+      <method final="false" abstract="false" static="false" visibility="protected" line="127" package="Default">
         <name>handleResult</name>
         <docblock>
           <description>Use the results</description>
           <long-description>
 </long-description>
-          <tag line="116" name="param" description="" type="integer" variable="$code">
+          <tag line="119" name="param" description="" type="integer" variable="$code">
             <type by_reference="false">integer</type>
           </tag>
-          <tag line="116" name="param" description="" type="array" variable="$headers">
+          <tag line="119" name="param" description="" type="array" variable="$headers">
             <type by_reference="false">array</type>
           </tag>
-          <tag line="116" name="param" description="" type="array" variable="$data">
+          <tag line="119" name="param" description="" type="array" variable="$data">
             <type by_reference="false">array</type>
           </tag>
-          <tag line="116" name="return" description="on failure" type="integer">
+          <tag line="119" name="return" description="on failure" type="integer">
             <type by_reference="false">integer</type>
           </tag>
         </docblock>
-        <argument line="124">
+        <argument line="127">
           <name>$code</name>
           <default/>
           <type/>
         </argument>
-        <argument line="124">
+        <argument line="127">
           <name>$headers</name>
           <default/>
           <type/>
         </argument>
-        <argument line="124">
+        <argument line="127">
           <name>$data</name>
           <default/>
           <type/>
         </argument>
       </method>
-      <method final="false" abstract="false" static="false" visibility="protected" line="148" package="Default">
+      <method final="false" abstract="false" static="false" visibility="protected" line="151" package="Default">
         <name>handleNodes</name>
         <docblock>
           <description>Handle nodes</description>
           <long-description>
 </long-description>
-          <tag line="143" name="param" description="" type="array" variable="$data">
+          <tag line="146" name="param" description="" type="array" variable="$data">
             <type by_reference="false">array</type>
           </tag>
         </docblock>
-        <argument line="148">
+        <argument line="151">
           <name>$data</name>
           <default/>
           <type/>
         </argument>
       </method>
-      <method final="false" abstract="false" static="false" visibility="protected" line="160" package="Default">
+      <method final="false" abstract="false" static="false" visibility="protected" line="163" package="Default">
         <name>handleRelationships</name>
         <docblock>
           <description>Handle relationships</description>
           <long-description>
 </long-description>
-          <tag line="155" name="param" description="" type="array" variable="$data">
+          <tag line="158" name="param" description="" type="array" variable="$data">
             <type by_reference="false">array</type>
           </tag>
         </docblock>
-        <argument line="160">
+        <argument line="163">
           <name>$data</name>
           <default/>
           <type/>
         </argument>
       </method>
-      <method final="false" abstract="false" static="false" visibility="protected" line="173" package="Default">
+      <method final="false" abstract="false" static="false" visibility="protected" line="176" package="Default">
         <name>handlePaths</name>
         <docblock>
           <description>Handle paths</description>
           <long-description>
 </long-description>
-          <tag line="167" name="param" description="" type="array" variable="$data">
+          <tag line="170" name="param" description="" type="array" variable="$data">
             <type by_reference="false">array</type>
           </tag>
-          <tag line="167" name="param" description="" type="boolean" variable="$full">
+          <tag line="170" name="param" description="" type="boolean" variable="$full">
             <type by_reference="false">boolean</type>
           </tag>
         </docblock>
-        <argument line="173">
+        <argument line="176">
           <name>$data</name>
           <default/>
           <type/>
         </argument>
-        <argument line="173">
+        <argument line="176">
           <name>$full</name>
           <default>false</default>
           <type/>

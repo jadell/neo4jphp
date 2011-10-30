@@ -98,7 +98,7 @@
 <a xmlns:dbx="http://docblox-project.org/xsl/functions" name="top" class="anchor"></a><a name="classes" class="anchor"></a><a xmlns:dbx="http://docblox-project.org/xsl/functions" id="\Everyman\Neo4j\Command\ExecuteTraversal" class="anchor"></a><h2 xmlns:dbx="http://docblox-project.org/xsl/functions" class="class">\Everyman\Neo4j\Command\ExecuteTraversal<div class="to-top"><a href="#top">jump to top</a></div>
 </h2>
 <div xmlns:dbx="http://docblox-project.org/xsl/functions" class="class">
-<small class="package"><b>Package: </b>Default</small><p class="short-description">Abstract the parameters needed to make a request and parse the response</p>
+<small class="package"><b>Package: </b>Default</small><p class="short-description">Perform a traversal and return the results</p>
 <div class="long-description">
 </div>
 <dl class="class-info">
@@ -499,7 +499,7 @@
 </div>
 <a id="\Everyman\Neo4j\Command\ExecuteTraversal::throwException()" class="anchor"></a><div class="method protected inherited_from ">
 <a href="#" class="gripper"><img src="images/icons/arrow_right.png"><img src="images/icons/arrow_down.png" style="display: none;"></a><code><img src="images/icons/method.png" alt="method"><img src="images/icons/visibility_protected.png" style="margin-right: 5px" alt="protected"><span class="highlight">throwException</span><span class="nb-faded-text">(
-           $message, integer $code, array $headers, array $data
+          string $message, integer $code, array $headers, array $data
           )
         </span>
         :
@@ -519,7 +519,7 @@
 </tr></thead>
 <tr>
 <th>$message</th>
-<td></td>
+<td>string</td>
 <td><em></em></td>
 </tr>
 <tr>
