@@ -92,6 +92,7 @@ abstract class Command
 	/**
 	 * Throw an exception from handling the results
 	 *
+	 * @param string  $message
 	 * @param integer $code
 	 * @param array   $headers
 	 * @param array   $data

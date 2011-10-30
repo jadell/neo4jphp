@@ -4,6 +4,9 @@ namespace Everyman\Neo4j\Command;
 use Everyman\Neo4j\Client,
 	Everyman\Neo4j\Pager;
 
+/**
+ * Perform a paged traversal and return the results
+ */
 class ExecutePagedTraversal extends ExecuteTraversal
 {
 	protected $pager = null;

@@ -8,6 +8,9 @@ use Everyman\Neo4j\Command,
 	Everyman\Neo4j\Path,
 	Everyman\Neo4j\Node;
 
+/**
+ * Perform a traversal and return the results
+ */
 class ExecuteTraversal extends Command
 {
 	protected $traversal = null;

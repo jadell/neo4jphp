@@ -7,6 +7,9 @@ use Everyman\Neo4j\EntityMapper,
 	Everyman\Neo4j\Gremlin\Query,
 	Everyman\Neo4j\Query\ResultSet;
 
+/**
+ * Perform a query using the Gremlin DSL and return the results
+ */
 class ExecuteGremlinQuery extends Command
 {
 	protected $query = null;

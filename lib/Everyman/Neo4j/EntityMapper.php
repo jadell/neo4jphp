@@ -11,6 +11,8 @@ class EntityMapper
 
 	/**
 	 * Set the client for retrieving related entities
+	 *
+	 * @param Client $client
 	 */
 	public function __construct(Client $client)
 	{

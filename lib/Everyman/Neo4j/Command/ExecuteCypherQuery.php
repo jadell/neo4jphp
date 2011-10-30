@@ -7,6 +7,9 @@ use Everyman\Neo4j\EntityMapper,
 	Everyman\Neo4j\Cypher\Query,
 	Everyman\Neo4j\Query\ResultSet;
 
+/**
+ * Perform a query using the Cypher query language and return the results
+ */
 class ExecuteCypherQuery extends Command
 {
 	protected $query = null;
