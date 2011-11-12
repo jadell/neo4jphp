@@ -69,6 +69,7 @@ class CreateNode extends Command
 
 		$nodeId = $this->getEntityMapper()->getIdFromUri($headers['Location']);
 		$this->node->setId($nodeId);
+		$this->getEntityCache()->setCachedEntity($this->node);
 		return true;
 	}
 }

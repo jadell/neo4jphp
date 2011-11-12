@@ -94,6 +94,7 @@ class CreateRelationship extends Command
 
 		$relId = $this->getEntityMapper()->getIdFromUri($headers['Location']);
 		$this->rel->setId($relId);
+		$this->getEntityCache()->setCachedEntity($this->rel);
 		return true;
 	}
 }

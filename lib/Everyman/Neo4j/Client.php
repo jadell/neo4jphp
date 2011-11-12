@@ -70,9 +70,7 @@ class Client
 	 */
 	public function deleteNode(Node $node)
 	{
-		$result = $this->runCommand(new Command\DeleteNode($this, $node));
-		$this->getEntityCache()->deleteCachedEntity($node);
-		return $result;
+		return $this->runCommand(new Command\DeleteNode($this, $node));
 	}
 
 	/**
@@ -83,9 +81,7 @@ class Client
 	 */
 	public function deleteRelationship(Relationship $relationship)
 	{
-		$result = $this->runCommand(new Command\DeleteRelationship($this, $relationship));
-		$this->getEntityCache()->deleteCachedEntity($relationship);
-		return $result;
+		return $this->runCommand(new Command\DeleteRelationship($this, $relationship));
 	}
 
 	/**
@@ -327,11 +323,7 @@ class Client
 			return true;
 		}
 
-		$result = $this->runCommand(new Command\GetNode($this, $node));
-		if ($result) {
-			$this->getEntityCache()->setCachedEntity($node);
-		}
-		return $result;
+		return $this->runCommand(new Command\GetNode($this, $node));
 	}
 
 	/**
@@ -348,11 +340,7 @@ class Client
 			return true;
 		}
 
-		$result = $this->runCommand(new Command\GetRelationship($this, $rel));
-		if ($result) {
-			$this->getEntityCache()->setCachedEntity($rel);
-		}
-		return $result;
+		return $this->runCommand(new Command\GetRelationship($this, $rel));
 	}
 
 	/**
@@ -406,13 +394,10 @@ class Client
 	public function saveNode(Node $node)
 	{
 		if ($node->hasId()) {
-			$result = $this->runCommand(new Command\UpdateNode($this, $node));
+			return $this->runCommand(new Command\UpdateNode($this, $node));
 		} else {
-			$result = $this->runCommand(new Command\CreateNode($this, $node));
+			return $this->runCommand(new Command\CreateNode($this, $node));
 		}
-
-		$this->getEntityCache()->setCachedEntity($node);
-		return $result;
 	}
 
 	/**
@@ -424,13 +409,10 @@ class Client
 	public function saveRelationship(Relationship $rel)
 	{
 		if ($rel->hasId()) {
-			$result = $this->runCommand(new Command\UpdateRelationship($this, $rel));
+			return $this->runCommand(new Command\UpdateRelationship($this, $rel));
 		} else {
-			$result = $this->runCommand(new Command\CreateRelationship($this, $rel));
+			return $this->runCommand(new Command\CreateRelationship($this, $rel));
 		}
-
-		$this->getEntityCache()->setCachedEntity($rel);
-		return $result;
 	}
 
 	/**
@@ -481,7 +463,7 @@ class Client
 	 * Run a command that will talk to the transport
 	 *
 	 * @param Command $command
-	 * @return boolean
+	 * @return mixed
 	 */
 	protected function runCommand(Command $command)
 	{

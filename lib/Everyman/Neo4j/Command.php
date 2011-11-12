@@ -70,6 +70,16 @@ abstract class Command
 	}
 
 	/**
+	 * Get the entity cache
+	 *
+	 * @return Cache\EntityCache
+	 */
+	protected function getEntityCache()
+	{
+		return $this->client->getEntityCache();
+	}
+
+	/**
 	 * Get the entity mapper
 	 *
 	 * @return EntityMapper

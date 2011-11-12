@@ -68,6 +68,7 @@ class DeleteNode extends Command
 	protected function handleResult($code, $headers, $data)
 	{
 		if ((int)($code / 100) == 2) {
+			$this->getEntityCache()->deleteCachedEntity($this->node);
 			return true;
 		} else {
 			$this->throwException('Unable to delete node', $code, $headers, $data);

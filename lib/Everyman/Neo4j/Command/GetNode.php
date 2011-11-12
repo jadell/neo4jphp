@@ -69,6 +69,7 @@ class GetNode extends Command
 	{
 		if ((int)($code / 100) == 2) {
 			$this->node = $this->getEntityMapper()->populateNode($this->node, $data);
+			$this->getEntityCache()->setCachedEntity($this->node);
 			return true;
 		} else {
 			$this->throwException('Unable to retrieve node', $code, $headers, $data);
