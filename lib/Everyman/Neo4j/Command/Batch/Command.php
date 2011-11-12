@@ -17,13 +17,6 @@ abstract class Command extends SingleCommand
 	{
 		parent::__construct($client);
 	}
-
-	/**
-	 * Handle a single result from the batch of results
-	 *
-	 * @param array $result
-	 */
-	abstract protected function handleSingleResult($result);
 	
 	/**
 	 * Return the transport method to call
@@ -63,6 +56,20 @@ abstract class Command extends SingleCommand
 			$this->handleSingleResult($result);
 		}
 		return true;
+	}
+
+	/**
+	 * Handle a single result from the batch of results
+	 *
+	 * @param array $result
+	 */
+	protected function handleSingleResult($result)
+	{
+		$headers = array();
+		if (isset($result['location'])) {
+			$headers['Location'] = $result['location'];
+		}
+		return $this->base->handleResult(200, $headers, $result);
 	}
 }
 

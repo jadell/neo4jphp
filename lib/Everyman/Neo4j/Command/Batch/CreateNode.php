@@ -41,16 +41,5 @@ class CreateNode extends Command
 		));
 		return $opData;
 	}
-
-	/**
-	 * Use the results
-	 *
-	 * @param array $result
-	 */
-	protected function handleSingleResult($result)
-	{
-		$headers = array('Location' => $result['location']);
-		return $this->base->handleResult(200, $headers, $result);
-	}
 }
 

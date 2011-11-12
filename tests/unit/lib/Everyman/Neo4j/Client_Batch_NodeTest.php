@@ -13,6 +13,8 @@ class Client_Batch_NodeTest extends \PHPUnit_Framework_TestCase
 		$this->client = new Client($this->transport);
 
 		$this->batch = new Batch($this->client);
+
+		$this->client->getEntityCache()->setCache(new Cache\Variable());
 	}
 
 	public function testCommitBatch_TransportError_ThrowsException()
@@ -44,6 +46,8 @@ class Client_Batch_NodeTest extends \PHPUnit_Framework_TestCase
 		
 		$this->assertTrue($result);
 		$this->assertEquals(123, $node->getId());
+
+		$this->assertSame($node, $this->client->getEntityCache()->getCachedEntity(123, 'node'));
 	}
 	
 	public function testCommitBatch_UpdateNode_Success_ReturnsTrue()
@@ -64,12 +68,15 @@ class Client_Batch_NodeTest extends \PHPUnit_Framework_TestCase
 		$result = $this->client->commitBatch($this->batch);
 		
 		$this->assertTrue($result);
+
+		$this->assertSame($node, $this->client->getEntityCache()->getCachedEntity(123, 'node'));
 	}
 	
 	public function testCommitBatch_DeleteNode_Success_ReturnsTrue()
 	{
 		$node = new Node($this->client);
 		$node->setId(123);
+		$this->client->getEntityCache()->setCachedEntity($node);
 
 		$request = array(array('id' => 0, 'method' => 'DELETE', 'to' => '/node/123'));
 		
@@ -81,6 +88,8 @@ class Client_Batch_NodeTest extends \PHPUnit_Framework_TestCase
 		$result = $this->client->commitBatch($this->batch);
 		
 		$this->assertTrue($result);
+
+		$this->assertFalse($this->client->getEntityCache()->getCachedEntity(123, 'node'));
 	}
 
 	protected function setupTransportExpectation($request, $will)

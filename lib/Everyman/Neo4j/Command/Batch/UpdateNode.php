@@ -41,12 +41,5 @@ class UpdateNode extends Command
 		));
 		return $opData;
 	}
-
-	/**
-	 * Use the results
-	 *
-	 * @param array $result
-	 */
-	protected function handleSingleResult($result){}
 }
 
