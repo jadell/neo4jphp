@@ -13,7 +13,7 @@ class Client_CacheTest extends \PHPUnit_Framework_TestCase
 		$this->cache = new Cache\Variable();
 
 		$this->client = new Client($this->transport);
-		$this->client->setCache($this->cache);
+		$this->client->getEntityCache()->setCache($this->cache);
 	}
 
 	public function testLoadNode_Found_NodeInCache()

@@ -13,8 +13,7 @@ class Client
 
 	protected $transport = null;
 	protected $entityMapper = null;
-	protected $cache = null;
-	protected $cacheTimeout = null;
+	protected $entityCache = null;
 	protected $serverInfo = null;
 
 	/**
@@ -72,7 +71,7 @@ class Client
 	public function deleteNode(Node $node)
 	{
 		$result = $this->runCommand(new Command\DeleteNode($this, $node));
-		$this->deleteCachedNode($node);
+		$this->getEntityCache()->deleteCachedEntity($node);
 		return $result;
 	}
 
@@ -85,7 +84,7 @@ class Client
 	public function deleteRelationship(Relationship $relationship)
 	{
 		$result = $this->runCommand(new Command\DeleteRelationship($this, $relationship));
-		$this->deleteCachedRelationship($relationship);
+		$this->getEntityCache()->deleteCachedEntity($relationship);
 		return $result;
 	}
 
@@ -142,14 +141,14 @@ class Client
 	/**
 	 * Get the cache
 	 *
-	 * @return Cache
+	 * @return Cache\EntityCache
 	 */
-	public function getCache()
+	public function getEntityCache()
 	{
-		if ($this->cache === null) {
-			$this->setCache(new Cache\Null(), $this->cacheTimeout);
+		if ($this->entityCache === null) {
+			$this->setEntityCache(new Cache\EntityCache($this));
 		}
-		return $this->cache;
+		return $this->entityCache;
 	}
 
 	/**
@@ -190,7 +189,7 @@ class Client
 	 */
 	public function getNode($id, $force=false)
 	{
-		$cached = $this->getCachedNode($id);
+		$cached = $this->getEntityCache()->getCachedEntity($id, 'node');
 		if ($cached) {
 			return $cached;
 		}
@@ -253,7 +252,7 @@ class Client
 	 */
 	public function getRelationship($id, $force=false)
 	{
-		$cached = $this->getCachedRelationship($id);
+		$cached = $this->getEntityCache()->getCachedEntity($id, 'relationship');
 		if ($cached) {
 			return $cached;
 		}
@@ -322,7 +321,7 @@ class Client
 	 */
 	public function loadNode(Node $node)
 	{
-		$cached = $this->getCachedNode($node->getId());
+		$cached = $this->getEntityCache()->getCachedEntity($node->getId(), 'node');
 		if ($cached) {
 			$node->setProperties($cached->getProperties());
 			return true;
@@ -330,7 +329,7 @@ class Client
 
 		$result = $this->runCommand(new Command\GetNode($this, $node));
 		if ($result) {
-			$this->setCachedNode($node);
+			$this->getEntityCache()->setCachedEntity($node);
 		}
 		return $result;
 	}
@@ -343,7 +342,7 @@ class Client
 	 */
 	public function loadRelationship(Relationship $rel)
 	{
-		$cached = $this->getCachedRelationship($rel->getId());
+		$cached = $this->getEntityCache()->getCachedEntity($rel->getId(), 'relationship');
 		if ($cached) {
 			$rel->setProperties($cached->getProperties());
 			return true;
@@ -351,7 +350,7 @@ class Client
 
 		$result = $this->runCommand(new Command\GetRelationship($this, $rel));
 		if ($result) {
-			$this->setCachedRelationship($rel);
+			$this->getEntityCache()->setCachedEntity($rel);
 		}
 		return $result;
 	}
@@ -412,7 +411,7 @@ class Client
 			$result = $this->runCommand(new Command\CreateNode($this, $node));
 		}
 
-		$this->setCachedNode($node);
+		$this->getEntityCache()->setCachedEntity($node);
 		return $result;
 	}
 
@@ -430,7 +429,7 @@ class Client
 			$result = $this->runCommand(new Command\CreateRelationship($this, $rel));
 		}
 
-		$this->setCachedRelationship($rel);
+		$this->getEntityCache()->setCachedEntity($rel);
 		return $result;
 	}
 
@@ -451,13 +450,11 @@ class Client
 	/**
 	 * Set the cache to use
 	 *
-	 * @param Cache $cache
-	 * @param integer $cacheTimeout
+	 * @param Cache\EntityCache $cache
 	 */
-	public function setCache(Cache $cache, $cacheTimeout=null)
+	public function setEntityCache(Cache\EntityCache $cache)
 	{
-		$this->cache = $cache;
-		$this->cacheTimeout = $cacheTimeout;
+		$this->entityCache = $cache;
 	}
 
 	/**
@@ -481,54 +478,6 @@ class Client
 	}
 
 	/**
-	 * Delete a node from the cache
-	 *
-	 * @param Node $node
-	 */
-	protected function deleteCachedNode(Node $node)
-	{
-		$this->getCache()->delete('node-'.$node->getId());
-	}
-
-	/**
-	 * Delete a relationship from the cache
-	 *
-	 * @param Relationship $rel
-	 */
-	protected function deleteCachedRelationship(Relationship $rel)
-	{
-		$this->getCache()->delete('relationship-'.$rel->getId());
-	}
-
-	/**
-	 * Get a node from the cache
-	 *
-	 * @param integer $id
-	 */
-	protected function getCachedNode($id)
-	{
-		$node = $this->getCache()->get("node-{$id}");
-		if ($node) {
-			$node->setClient($this);
-		}
-		return $node;
-	}
-
-	/**
-	 * Get a relationship from the cache
-	 *
-	 * @param integer $id
-	 */
-	protected function getCachedRelationship($id)
-	{
-		$rel = $this->getCache()->get("relationship-{$id}");
-		if ($rel) {
-			$rel->setClient($this);
-		}
-		return $rel;
-	}
-
-	/**
 	 * Run a command that will talk to the transport
 	 *
 	 * @param Command $command
@@ -538,25 +487,5 @@ class Client
 	{
 		$result = $command->execute();
 		return $result;
-	}
-
-	/**
-	 * Set a node in the cache
-	 *
-	 * @param Node $node
-	 */
-	protected function setCachedNode(Node $node)
-	{
-		$this->getCache()->set('node-'.$node->getId(), $node, $this->cacheTimeout);
-	}
-
-	/**
-	 * Set a relationship in the cache
-	 *
-	 * @param Relationship $rel
-	 */
-	protected function setCachedRelationship(Relationship $rel)
-	{
-		$this->getCache()->set('relationship-'.$rel->getId(), $rel, $this->cacheTimeout);
 	}
 }
