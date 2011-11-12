@@ -11,9 +11,6 @@ use Everyman\Neo4j\Client,
  */
 class RemoveFromIndex extends Command
 {
-	protected $opId = null;
-	protected $base = null;
-
 	/**
 	 * Set the operation to drive the command
 	 *
@@ -26,9 +23,7 @@ class RemoveFromIndex extends Command
 	 */
 	public function __construct(Client $client, Index $index, PropertyContainer $entity, $key=null, $value=null, $opId)
 	{
-		parent::__construct($client);
-		$this->base = new SingleRemoveFromIndex($client, $index, $entity, $key, $value);
-		$this->opId = $opId;
+		parent::__construct($client, new SingleRemoveFromIndex($client, $index, $entity, $key, $value), $opId);
 	}
 
 	/**

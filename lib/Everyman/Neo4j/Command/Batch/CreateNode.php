@@ -9,9 +9,6 @@ use Everyman\Neo4j\Client,
  */
 class CreateNode extends Command
 {
-	protected $opId = null;
-	protected $base = null;
-
 	/**
 	 * Set the operation to drive the command
 	 *
@@ -21,9 +18,7 @@ class CreateNode extends Command
 	 */
 	public function __construct(Client $client, Node $node, $opId)
 	{
-		parent::__construct($client);
-		$this->base = new SingleCreateNode($client, $node);
-		$this->opId = $opId;
+		parent::__construct($client, new SingleCreateNode($client, $node), $opId);
 	}
 
 	/**

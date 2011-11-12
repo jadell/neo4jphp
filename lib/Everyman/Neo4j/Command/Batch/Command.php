@@ -8,14 +8,21 @@ use Everyman\Neo4j\Command as SingleCommand,
  */
 abstract class Command extends SingleCommand
 {
+	protected $base = null;
+	protected $opId = null;
+
 	/**
 	 * Set the operation to drive the command
 	 *
 	 * @param Client $client
+	 * @param SingleCommand $base
+	 * @param integer $opId
 	 */
-	public function __construct(Client $client)
+	public function __construct(Client $client, SingleCommand $base, $opId)
 	{
 		parent::__construct($client);
+		$this->base = $base;
+		$this->opId = $opId;
 	}
 	
 	/**

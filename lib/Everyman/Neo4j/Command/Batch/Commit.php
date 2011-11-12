@@ -6,6 +6,7 @@ use Everyman\Neo4j\Client,
 /**
  * Commit a batch operation
  * @todo: Handle the case of empty body or body\data needing to be objects not arrays
+ * @todo: Is this really a batch command in itself, or something different?
  */
 class Commit extends Command
 {
@@ -19,7 +20,7 @@ class Commit extends Command
 	 */
 	public function __construct(Client $client, Batch $batch)
 	{
-		parent::__construct($client);
+		parent::__construct($client, $this, null);
 		$this->batch = $batch;
 	}
 	

@@ -9,9 +9,6 @@ use Everyman\Neo4j\Client,
  */
 class UpdateRelationship extends Command
 {
-	protected $opId = null;
-	protected $base = null;
-
 	/**
 	 * Set the operation to drive the command
 	 *
@@ -21,9 +18,7 @@ class UpdateRelationship extends Command
 	 */
 	public function __construct(Client $client, Relationship $rel, $opId)
 	{
-		parent::__construct($client);
-		$this->base = new SingleUpdateRelationship($client, $rel);
-		$this->opId = $opId;
+		parent::__construct($client, new SingleUpdateRelationship($client, $rel), $opId);
 	}
 
 	/**

@@ -11,8 +11,6 @@ use Everyman\Neo4j\Client,
  */
 class CreateRelationship extends Command
 {
-	protected $opId = null;
-	protected $base = null;
 	protected $batch = null;
 	protected $rel = null;
 
@@ -26,9 +24,7 @@ class CreateRelationship extends Command
 	 */
 	public function __construct(Client $client, Relationship $rel, $opId, Batch $batch)
 	{
-		parent::__construct($client);
-		$this->base = new SingleCreateRelationship($client, $rel);
-		$this->opId = $opId;
+		parent::__construct($client, new SingleCreateRelationship($client, $rel), $opId);
 		$this->batch = $batch;
 		$this->rel = $rel;
 	}

@@ -12,8 +12,6 @@ use Everyman\Neo4j\Client,
  */
 class AddToIndex extends Command
 {
-	protected $opId = null;
-	protected $base = null;
 	protected $batch = null;
 	protected $entity = null;
 
@@ -30,9 +28,7 @@ class AddToIndex extends Command
 	 */
 	public function __construct(Client $client, Index $index, PropertyContainer $entity, $key, $value, $opId, Batch $batch)
 	{
-		parent::__construct($client);
-		$this->base = new SingleAddToIndex($client, $index, $entity, $key, $value);
-		$this->opId = $opId;
+		parent::__construct($client, new SingleAddToIndex($client, $index, $entity, $key, $value), $opId);
 		$this->batch = $batch;
 		$this->entity = $entity;
 	}

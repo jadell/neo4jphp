@@ -9,9 +9,6 @@ use Everyman\Neo4j\Client,
  */
 class DeleteRelationship extends Command
 {
-	protected $opId = null;
-	protected $base = null;
-
 	/**
 	 * Set the operation to drive the command
 	 *
@@ -21,9 +18,7 @@ class DeleteRelationship extends Command
 	 */
 	public function __construct(Client $client, Relationship $rel, $opId)
 	{
-		parent::__construct($client);
-		$this->base = new SingleDeleteRelationship($client, $rel);
-		$this->opId = $opId;
+		parent::__construct($client, new SingleDeleteRelationship($client, $rel), $opId);
 	}
 
 	/**
