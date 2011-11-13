@@ -117,6 +117,18 @@
 </dl>
 <h3>Properties</h3>
 <div>
+<a id="\Everyman\Neo4j\Command\Batch\Command::$base" class="anchor"></a><div class="property protected">
+<a href="#" class="gripper"><img src="images/icons/arrow_right.png"><img src="images/icons/arrow_down.png" style="display: none;"></a><code><img src="images/icons/property.png" alt="Property"><img src="images/icons/visibility_protected.png" style="margin-right: 5px" alt="protected">
+                 <span class="highlight">$base</span>= 'null'
+                </code><div class="description"></div>
+<div class="code-tabs">
+<strong>Default value</strong><code>null</code><strong>Details</strong><dl class="property-info">
+<dt>Type</dt>
+<dd></dd>
+</dl>
+</div>
+<div class="clear"></div>
+</div>
 <a id="\Everyman\Neo4j\Command\Batch\Command::$client" class="anchor"></a><div class="property protected inherited_from ">
 <a href="#" class="gripper"><img src="images/icons/arrow_right.png"><img src="images/icons/arrow_down.png" style="display: none;"></a><code><img src="images/icons/property.png" alt="Property"><img src="images/icons/visibility_protected.png" style="margin-right: 5px" alt="protected">
                  <span class="highlight">$client</span>= ''
@@ -137,12 +149,24 @@
 </div>
 <div class="clear"></div>
 </div>
+<a id="\Everyman\Neo4j\Command\Batch\Command::$opId" class="anchor"></a><div class="property protected">
+<a href="#" class="gripper"><img src="images/icons/arrow_right.png"><img src="images/icons/arrow_down.png" style="display: none;"></a><code><img src="images/icons/property.png" alt="Property"><img src="images/icons/visibility_protected.png" style="margin-right: 5px" alt="protected">
+                 <span class="highlight">$opId</span>= 'null'
+                </code><div class="description"></div>
+<div class="code-tabs">
+<strong>Default value</strong><code>null</code><strong>Details</strong><dl class="property-info">
+<dt>Type</dt>
+<dd></dd>
+</dl>
+</div>
+<div class="clear"></div>
+</div>
 </div>
 <h3>Methods</h3>
 <div>
 <a id="\Everyman\Neo4j\Command\Batch\Command::__construct()" class="anchor"></a><div class="method public">
 <a href="#" class="gripper"><img src="images/icons/arrow_right.png"><img src="images/icons/arrow_down.png" style="display: none;"></a><code><img src="images/icons/method.png" alt="method"><img src="images/icons/visibility_public.png" style="margin-right: 5px" alt="public"><span class="highlight">__construct</span><span class="nb-faded-text">(
-          <a href="db_Everyman_Neo4j_Client.html#%5CEveryman%5CNeo4j%5CClient">\Everyman\Neo4j\Client</a> $client
+          <a href="db_Everyman_Neo4j_Client.html#%5CEveryman%5CNeo4j%5CClient">\Everyman\Neo4j\Client</a> $client, <a href="db_Everyman_Neo4j_Command.html#%5CEveryman%5CNeo4j%5CCommand">\Everyman\Neo4j\Command</a> $base, integer $opId
           )
         </span>
         :
@@ -159,6 +183,16 @@
 <tr>
 <th>$client</th>
 <td><a href="db_Everyman_Neo4j_Client.html#%5CEveryman%5CNeo4j%5CClient">\Everyman\Neo4j\Client</a></td>
+<td><em></em></td>
+</tr>
+<tr>
+<th>$base</th>
+<td><a href="db_Everyman_Neo4j_Command.html#%5CEveryman%5CNeo4j%5CCommand">\Everyman\Neo4j\Command</a></td>
+<td><em></em></td>
+</tr>
+<tr>
+<th>$opId</th>
+<td>integer</td>
 <td><em></em></td>
 </tr>
 </table>
@@ -213,6 +247,33 @@
 </tr></thead>
 <tr>
 <td>mixed</td>
+<td></td>
+</tr>
+</table>
+</div>
+<div class="clear"></div>
+</div>
+<a id="\Everyman\Neo4j\Command\Batch\Command::getEntityCache()" class="anchor"></a><div class="method protected inherited_from ">
+<a href="#" class="gripper"><img src="images/icons/arrow_right.png"><img src="images/icons/arrow_down.png" style="display: none;"></a><code><img src="images/icons/method.png" alt="method"><img src="images/icons/visibility_protected.png" style="margin-right: 5px" alt="protected"><span class="highlight">getEntityCache</span><span class="nb-faded-text">(
+          
+          )
+        </span>
+        :
+          \Cache\EntityCache</code><div class="description">
+<span class="attribute">inherited</span><p class="short_description">Get the entity cache</p>
+<small>Inherited from:
+                    <a href="db_Everyman_Neo4j_Command.html#%5CEveryman%5CNeo4j%5CCommand::getEntityCache()">\Everyman\Neo4j\Command::getEntityCache()</a></small>
+</div>
+<div class="code-tabs">
+<div class="long-description">
+</div>
+<strong>Returns</strong><table class="argument-info">
+<thead><tr>
+<th>Type</th>
+<th>Description</th>
+</tr></thead>
+<tr>
+<td>\Cache\EntityCache</td>
 <td></td>
 </tr>
 </table>
@@ -370,9 +431,7 @@
           )
         </span>
         :
-          void</code><div class="description">
-<span class="attribute">abstract</span><p class="short_description">Handle a single result from the batch of results</p>
-</div>
+          void</code><div class="description"><p class="short_description">Handle a single result from the batch of results</p></div>
 <div class="code-tabs">
 <div class="long-description">
 </div>
