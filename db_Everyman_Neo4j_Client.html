@@ -135,21 +135,9 @@
 </div>
 <h3>Properties</h3>
 <div>
-<a id="\Everyman\Neo4j\Client::$cache" class="anchor"></a><div class="property protected">
+<a id="\Everyman\Neo4j\Client::$entityCache" class="anchor"></a><div class="property protected">
 <a href="#" class="gripper"><img src="images/icons/arrow_right.png"><img src="images/icons/arrow_down.png" style="display: none;"></a><code><img src="images/icons/property.png" alt="Property"><img src="images/icons/visibility_protected.png" style="margin-right: 5px" alt="protected">
-                 <span class="highlight">$cache</span>= 'null'
-                </code><div class="description"></div>
-<div class="code-tabs">
-<strong>Default value</strong><code>null</code><strong>Details</strong><dl class="property-info">
-<dt>Type</dt>
-<dd></dd>
-</dl>
-</div>
-<div class="clear"></div>
-</div>
-<a id="\Everyman\Neo4j\Client::$cacheTimeout" class="anchor"></a><div class="property protected">
-<a href="#" class="gripper"><img src="images/icons/arrow_right.png"><img src="images/icons/arrow_down.png" style="display: none;"></a><code><img src="images/icons/property.png" alt="Property"><img src="images/icons/visibility_protected.png" style="margin-right: 5px" alt="protected">
-                 <span class="highlight">$cacheTimeout</span>= 'null'
+                 <span class="highlight">$entityCache</span>= 'null'
                 </code><div class="description"></div>
 <div class="code-tabs">
 <strong>Default value</strong><code>null</code><strong>Details</strong><dl class="property-info">
@@ -303,56 +291,6 @@
 <tr>
 <td>\Query\ResultSet</td>
 <td></td>
-</tr>
-</table>
-</div>
-<div class="clear"></div>
-</div>
-<a id="\Everyman\Neo4j\Client::deleteCachedNode()" class="anchor"></a><div class="method protected">
-<a href="#" class="gripper"><img src="images/icons/arrow_right.png"><img src="images/icons/arrow_down.png" style="display: none;"></a><code><img src="images/icons/method.png" alt="method"><img src="images/icons/visibility_protected.png" style="margin-right: 5px" alt="protected"><span class="highlight">deleteCachedNode</span><span class="nb-faded-text">(
-          <a href="db_Everyman_Neo4j_Node.html#%5CEveryman%5CNeo4j%5CNode">\Everyman\Neo4j\Node</a> $node
-          )
-        </span>
-        :
-          void</code><div class="description"><p class="short_description">Delete a node from the cache</p></div>
-<div class="code-tabs">
-<div class="long-description">
-</div>
-<strong>Parameters</strong><table class="argument-info">
-<thead><tr>
-<th>Name</th>
-<th>Type</th>
-<th>Description</th>
-</tr></thead>
-<tr>
-<th>$node</th>
-<td><a href="db_Everyman_Neo4j_Node.html#%5CEveryman%5CNeo4j%5CNode">\Everyman\Neo4j\Node</a></td>
-<td><em></em></td>
-</tr>
-</table>
-</div>
-<div class="clear"></div>
-</div>
-<a id="\Everyman\Neo4j\Client::deleteCachedRelationship()" class="anchor"></a><div class="method protected">
-<a href="#" class="gripper"><img src="images/icons/arrow_right.png"><img src="images/icons/arrow_down.png" style="display: none;"></a><code><img src="images/icons/method.png" alt="method"><img src="images/icons/visibility_protected.png" style="margin-right: 5px" alt="protected"><span class="highlight">deleteCachedRelationship</span><span class="nb-faded-text">(
-          <a href="db_Everyman_Neo4j_Relationship.html#%5CEveryman%5CNeo4j%5CRelationship">\Everyman\Neo4j\Relationship</a> $rel
-          )
-        </span>
-        :
-          void</code><div class="description"><p class="short_description">Delete a relationship from the cache</p></div>
-<div class="code-tabs">
-<div class="long-description">
-</div>
-<strong>Parameters</strong><table class="argument-info">
-<thead><tr>
-<th>Name</th>
-<th>Type</th>
-<th>Description</th>
-</tr></thead>
-<tr>
-<th>$rel</th>
-<td><a href="db_Everyman_Neo4j_Relationship.html#%5CEveryman%5CNeo4j%5CRelationship">\Everyman\Neo4j\Relationship</a></td>
-<td><em></em></td>
 </tr>
 </table>
 </div>
@@ -613,13 +551,13 @@
 </div>
 <div class="clear"></div>
 </div>
-<a id="\Everyman\Neo4j\Client::getCache()" class="anchor"></a><div class="method public">
-<a href="#" class="gripper"><img src="images/icons/arrow_right.png"><img src="images/icons/arrow_down.png" style="display: none;"></a><code><img src="images/icons/method.png" alt="method"><img src="images/icons/visibility_public.png" style="margin-right: 5px" alt="public"><span class="highlight">getCache</span><span class="nb-faded-text">(
+<a id="\Everyman\Neo4j\Client::getEntityCache()" class="anchor"></a><div class="method public">
+<a href="#" class="gripper"><img src="images/icons/arrow_right.png"><img src="images/icons/arrow_down.png" style="display: none;"></a><code><img src="images/icons/method.png" alt="method"><img src="images/icons/visibility_public.png" style="margin-right: 5px" alt="public"><span class="highlight">getEntityCache</span><span class="nb-faded-text">(
           
           )
         </span>
         :
-          <a href="db_Everyman_Neo4j_Cache.html#%5CEveryman%5CNeo4j%5CCache">\Everyman\Neo4j\Cache</a></code><div class="description"><p class="short_description">Get the cache</p></div>
+          \Cache\EntityCache</code><div class="description"><p class="short_description">Get the cache</p></div>
 <div class="code-tabs">
 <div class="long-description">
 </div>
@@ -629,58 +567,8 @@
 <th>Description</th>
 </tr></thead>
 <tr>
-<td><a href="db_Everyman_Neo4j_Cache.html#%5CEveryman%5CNeo4j%5CCache">\Everyman\Neo4j\Cache</a></td>
+<td>\Cache\EntityCache</td>
 <td></td>
-</tr>
-</table>
-</div>
-<div class="clear"></div>
-</div>
-<a id="\Everyman\Neo4j\Client::getCachedNode()" class="anchor"></a><div class="method protected">
-<a href="#" class="gripper"><img src="images/icons/arrow_right.png"><img src="images/icons/arrow_down.png" style="display: none;"></a><code><img src="images/icons/method.png" alt="method"><img src="images/icons/visibility_protected.png" style="margin-right: 5px" alt="protected"><span class="highlight">getCachedNode</span><span class="nb-faded-text">(
-          integer $id
-          )
-        </span>
-        :
-          void</code><div class="description"><p class="short_description">Get a node from the cache</p></div>
-<div class="code-tabs">
-<div class="long-description">
-</div>
-<strong>Parameters</strong><table class="argument-info">
-<thead><tr>
-<th>Name</th>
-<th>Type</th>
-<th>Description</th>
-</tr></thead>
-<tr>
-<th>$id</th>
-<td>integer</td>
-<td><em></em></td>
-</tr>
-</table>
-</div>
-<div class="clear"></div>
-</div>
-<a id="\Everyman\Neo4j\Client::getCachedRelationship()" class="anchor"></a><div class="method protected">
-<a href="#" class="gripper"><img src="images/icons/arrow_right.png"><img src="images/icons/arrow_down.png" style="display: none;"></a><code><img src="images/icons/method.png" alt="method"><img src="images/icons/visibility_protected.png" style="margin-right: 5px" alt="protected"><span class="highlight">getCachedRelationship</span><span class="nb-faded-text">(
-          integer $id
-          )
-        </span>
-        :
-          void</code><div class="description"><p class="short_description">Get a relationship from the cache</p></div>
-<div class="code-tabs">
-<div class="long-description">
-</div>
-<strong>Parameters</strong><table class="argument-info">
-<thead><tr>
-<th>Name</th>
-<th>Type</th>
-<th>Description</th>
-</tr></thead>
-<tr>
-<th>$id</th>
-<td>integer</td>
-<td><em></em></td>
 </tr>
 </table>
 </div>
@@ -1176,7 +1064,7 @@ are removed.</p></div>
           )
         </span>
         :
-          boolean</code><div class="description"><p class="short_description">Run a command that will talk to the transport</p></div>
+          mixed</code><div class="description"><p class="short_description">Run a command that will talk to the transport</p></div>
 <div class="code-tabs">
 <div class="long-description">
 </div>
@@ -1198,7 +1086,7 @@ are removed.</p></div>
 <th>Description</th>
 </tr></thead>
 <tr>
-<td>boolean</td>
+<td>mixed</td>
 <td></td>
 </tr>
 </table>
@@ -1355,11 +1243,9 @@ are removed.</p></div>
 </div>
 <div class="clear"></div>
 </div>
-<a id="\Everyman\Neo4j\Client::setCache()" class="anchor"></a><div class="method public">
-<a href="#" class="gripper"><img src="images/icons/arrow_right.png"><img src="images/icons/arrow_down.png" style="display: none;"></a><code><img src="images/icons/method.png" alt="method"><img src="images/icons/visibility_public.png" style="margin-right: 5px" alt="public"><span class="highlight">setCache</span><span class="nb-faded-text">(
-          <a href="db_Everyman_Neo4j_Cache.html#%5CEveryman%5CNeo4j%5CCache">\Everyman\Neo4j\Cache</a> $cache, integer $cacheTimeout
-              =
-              null
+<a id="\Everyman\Neo4j\Client::setEntityCache()" class="anchor"></a><div class="method public">
+<a href="#" class="gripper"><img src="images/icons/arrow_right.png"><img src="images/icons/arrow_down.png" style="display: none;"></a><code><img src="images/icons/method.png" alt="method"><img src="images/icons/visibility_public.png" style="margin-right: 5px" alt="public"><span class="highlight">setEntityCache</span><span class="nb-faded-text">(
+          \Cache\EntityCache $cache
           )
         </span>
         :
@@ -1375,62 +1261,7 @@ are removed.</p></div>
 </tr></thead>
 <tr>
 <th>$cache</th>
-<td><a href="db_Everyman_Neo4j_Cache.html#%5CEveryman%5CNeo4j%5CCache">\Everyman\Neo4j\Cache</a></td>
-<td><em></em></td>
-</tr>
-<tr>
-<th>$cacheTimeout</th>
-<td>integer</td>
-<td><em></em></td>
-</tr>
-</table>
-</div>
-<div class="clear"></div>
-</div>
-<a id="\Everyman\Neo4j\Client::setCachedNode()" class="anchor"></a><div class="method protected">
-<a href="#" class="gripper"><img src="images/icons/arrow_right.png"><img src="images/icons/arrow_down.png" style="display: none;"></a><code><img src="images/icons/method.png" alt="method"><img src="images/icons/visibility_protected.png" style="margin-right: 5px" alt="protected"><span class="highlight">setCachedNode</span><span class="nb-faded-text">(
-          <a href="db_Everyman_Neo4j_Node.html#%5CEveryman%5CNeo4j%5CNode">\Everyman\Neo4j\Node</a> $node
-          )
-        </span>
-        :
-          void</code><div class="description"><p class="short_description">Set a node in the cache</p></div>
-<div class="code-tabs">
-<div class="long-description">
-</div>
-<strong>Parameters</strong><table class="argument-info">
-<thead><tr>
-<th>Name</th>
-<th>Type</th>
-<th>Description</th>
-</tr></thead>
-<tr>
-<th>$node</th>
-<td><a href="db_Everyman_Neo4j_Node.html#%5CEveryman%5CNeo4j%5CNode">\Everyman\Neo4j\Node</a></td>
-<td><em></em></td>
-</tr>
-</table>
-</div>
-<div class="clear"></div>
-</div>
-<a id="\Everyman\Neo4j\Client::setCachedRelationship()" class="anchor"></a><div class="method protected">
-<a href="#" class="gripper"><img src="images/icons/arrow_right.png"><img src="images/icons/arrow_down.png" style="display: none;"></a><code><img src="images/icons/method.png" alt="method"><img src="images/icons/visibility_protected.png" style="margin-right: 5px" alt="protected"><span class="highlight">setCachedRelationship</span><span class="nb-faded-text">(
-          <a href="db_Everyman_Neo4j_Relationship.html#%5CEveryman%5CNeo4j%5CRelationship">\Everyman\Neo4j\Relationship</a> $rel
-          )
-        </span>
-        :
-          void</code><div class="description"><p class="short_description">Set a relationship in the cache</p></div>
-<div class="code-tabs">
-<div class="long-description">
-</div>
-<strong>Parameters</strong><table class="argument-info">
-<thead><tr>
-<th>Name</th>
-<th>Type</th>
-<th>Description</th>
-</tr></thead>
-<tr>
-<th>$rel</th>
-<td><a href="db_Everyman_Neo4j_Relationship.html#%5CEveryman%5CNeo4j%5CRelationship">\Everyman\Neo4j\Relationship</a></td>
+<td>\Cache\EntityCache</td>
 <td><em></em></td>
 </tr>
 </table>
