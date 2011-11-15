@@ -15,6 +15,7 @@ class Client
 	protected $entityMapper = null;
 	protected $entityCache = null;
 	protected $serverInfo = null;
+	protected $openBatch = null;
 
 	/**
 	 * Initialize the client
@@ -37,6 +38,11 @@ class Client
 	 */
 	public function addToIndex(Index $index, PropertyContainer $entity, $key, $value)
 	{
+		if ($this->openBatch) {
+			$this->openBatch->addToIndex($index, $entity, $key, $value);
+			return true;
+		}
+
 		return $this->runCommand(new Command\AddToIndex($this, $index, $entity, $key, $value));
 	}
 
@@ -44,10 +50,21 @@ class Client
 	 * Commit a batch of operations
 	 *
 	 * @param Batch $batch
-	 * @return Query\ResultSet
+	 * @return boolean true on success
 	 */
-	public function commitBatch(Batch $batch)
+	public function commitBatch(Batch $batch=null)
 	{
+		if (!$batch) {
+			if (!$this->openBatch) {
+				throw new Exception('No open batch to commit.');
+			}
+			$batch = $this->openBatch;
+		}
+
+		if ($batch === $this->openBatch) {
+			$this->openBatch = null;
+		}
+
 		return $this->runCommand(new Command\Batch\Commit($this, $batch));
 	}
 
@@ -70,6 +87,11 @@ class Client
 	 */
 	public function deleteNode(Node $node)
 	{
+		if ($this->openBatch) {
+			$this->openBatch->delete($node);
+			return true;
+		}
+
 		return $this->runCommand(new Command\DeleteNode($this, $node));
 	}
 
@@ -81,6 +103,10 @@ class Client
 	 */
 	public function deleteRelationship(Relationship $relationship)
 	{
+		if ($this->openBatch) {
+			$this->openBatch->delete($relationship);
+			return true;
+		}
 		return $this->runCommand(new Command\DeleteRelationship($this, $relationship));
 	}
 
@@ -371,6 +397,11 @@ class Client
 	 */
 	public function removeFromIndex(Index $index, PropertyContainer $entity, $key=null, $value=null)
 	{
+		if ($this->openBatch) {
+			$this->openBatch->removeFromIndex($index, $entity, $key, $value);
+			return true;
+		}
+
 		return $this->runCommand(new Command\RemoveFromIndex($this, $index, $entity, $key, $value));
 	}
 
@@ -393,6 +424,11 @@ class Client
 	 */
 	public function saveNode(Node $node)
 	{
+		if ($this->openBatch) {
+			$this->openBatch->save($node);
+			return true;
+		}
+
 		if ($node->hasId()) {
 			return $this->runCommand(new Command\UpdateNode($this, $node));
 		} else {
@@ -408,6 +444,11 @@ class Client
 	 */
 	public function saveRelationship(Relationship $rel)
 	{
+		if ($this->openBatch) {
+			$this->openBatch->save($rel);
+			return true;
+		}
+
 		if ($rel->hasId()) {
 			return $this->runCommand(new Command\UpdateRelationship($this, $rel));
 		} else {
@@ -457,6 +498,21 @@ class Client
 	public function setTransport(Transport $transport)
 	{
 		$this->transport = $transport;
+	}
+
+	/**
+	 * Start an implicit batch
+	 *
+	 * Any data manipulation calls that occur between this call
+	 * and the subsequent Client::commitBatch() call will be
+	 * wrapped in a batch operation.
+	 *
+	 * @return Batch
+	 */
+	public function startBatch()
+	{
+		$this->openBatch = new Batch($this);
+		return $this->openBatch;
 	}
 
 	/**

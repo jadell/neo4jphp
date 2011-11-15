@@ -6,10 +6,14 @@ class Client_Batch_RelationshipTest extends \PHPUnit_Framework_TestCase
 	protected $transport = null;
 	protected $batch = null;
 	protected $client = null;
+	protected $endpoint = 'http://foo:1234/db/data';
 
 	public function setUp()
 	{
 		$this->transport = $this->getMock('Everyman\Neo4j\Transport');
+		$this->transport->expects($this->any())
+			->method('getEndpoint')
+			->will($this->returnValue($this->endpoint));
 		$this->client = new Client($this->transport);
 
 		$this->batch = new Batch($this->client);
@@ -31,7 +35,7 @@ class Client_Batch_RelationshipTest extends \PHPUnit_Framework_TestCase
 			->setProperties(array('foo' => 'bar','baz' => 'qux'));
 
 		$request = array(array('id' => 0, 'method' => 'POST', 'to' => '/node/123/relationships',
-			'body' => array('to' => '/node/456', 'type' => 'TEST',
+			'body' => array('to' => $this->endpoint.'/node/456', 'type' => 'TEST',
 				'data' => array('foo' => 'bar','baz' => 'qux'))));
 		
 		$return = array('code' => 200, 'data' => array(
@@ -61,7 +65,7 @@ class Client_Batch_RelationshipTest extends \PHPUnit_Framework_TestCase
 		$request = array(
 			array('id' => 1, 'method' => 'POST', 'to' => '/node', 'body' => null),
 			array('id' => 0, 'method' => 'POST', 'to' => '{1}/relationships',
-				'body' => array('to' => '/node/456', 'type' => 'TEST')),
+				'body' => array('to' => $this->endpoint.'/node/456', 'type' => 'TEST')),
 		);
 
 		$return = array('code' => 200, 'data' => array(
@@ -233,6 +237,77 @@ class Client_Batch_RelationshipTest extends \PHPUnit_Framework_TestCase
 		$this->assertTrue($result);
 
 		$this->assertFalse($this->client->getEntityCache()->getCachedEntity(123, 'relationship'));
+	}
+
+	public function testImplicitBatch_StartBatch_CloseBatch_ExpectedBatchRequest()
+	{
+		$startNode = new Node($this->client);
+		$endNode = new Node($this->client);
+		$endNode->setId(456)->useLazyLoad(false);
+		$rel = new Relationship($this->client);
+		$rel->setType('TEST')
+			->setStartNode($startNode)
+			->setEndNode($endNode);
+
+		$deleteNode = new Node($this->client);
+		$deleteNode->setId(987);
+
+		$deleteRel = new Relationship($this->client);
+		$deleteRel->setId(321);
+
+		$addIndexNode = new Node($this->client);
+		$addIndexNode->setId(654);
+		$removeIndexNode = new Node($this->client);
+		$removeIndexNode->setId(209);
+		$index = new Index($this->client, Index::TypeNode, 'indexname');
+
+		$request = array(
+			array('id' => 0, 'method' => 'POST', 'to' => '/node', 'body' => null),
+			array('id' => 1, 'method' => 'PUT', 'to' => '/node/456/properties', 'body' => array()),
+			array('id' => 2, 'method' => 'POST', 'to' => '{0}/relationships',
+				'body' => array(
+					'to' => $this->endpoint.'/node/456',
+					'type' => 'TEST'
+				)
+			),
+			array('id' => 3, 'method' => 'DELETE', 'to' => '/node/987'),
+			array('id' => 4, 'method' => 'DELETE', 'to' => '/relationship/321'),
+			array('id' => 5, 'method' => 'POST', 'to' => '/index/node/indexname',
+				'body' => array(
+					'key'   => 'addkey',
+					'value' => 'addvalue',
+					'uri'   => $this->endpoint.'/node/654',
+				)
+			),
+			array('id' => 6, 'method' => 'DELETE', 'to' => '/index/node/indexname/removekey/removevalue/209'),
+		);
+
+		$return = array('code' => 200, 'data' => array(
+			array('id' => 0, 'location' => 'http://foo:1234/db/data/node/123'),
+			array('id' => 1),
+			array('id' => 2, 'location' => 'http://foo:1234/db/data/relationship/789'),
+			array('id' => 3),
+			array('id' => 4),
+			array('id' => 5),
+			array('id' => 6),
+		));
+
+		$this->setupTransportExpectation($request, $this->returnValue($return));
+
+		$batch = $this->client->startBatch();
+		$this->assertInstanceOf('Everyman\Neo4j\Batch', $batch);
+
+		$startNode->save();
+		$endNode->save();
+		$rel->save();
+		$deleteNode->delete();
+		$deleteRel->delete();
+		$index->add($addIndexNode, 'addkey', 'addvalue');
+		$index->remove($removeIndexNode, 'removekey', 'removevalue');
+
+		$this->assertTrue($this->client->commitBatch());
+		$this->assertEquals(789, $rel->getId());
+		$this->assertEquals(123, $startNode->getId());
 	}
 
 	protected function setupTransportExpectation($request, $will)
