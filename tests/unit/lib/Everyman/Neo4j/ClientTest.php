@@ -762,4 +762,77 @@ class ClientTest extends \PHPUnit_Framework_TestCase
 		$this->setExpectedException('Everyman\Neo4j\Exception');
 		$this->client->getServerInfo();
 	}
+
+	public function testStartBatch_MultipleCallsWithoutCommit_ReturnsSameBatch()
+	{
+		$batch = $this->client->startBatch();
+		$this->assertInstanceOf('Everyman\Neo4j\Batch', $batch);
+
+		$batchAgain = $this->client->startBatch();
+		$this->assertSame($batch, $batchAgain);
+	}
+
+	public function testStartBatch_CommitAndStartAnother_ReturnsNewBatch()
+	{
+		$this->transport->expects($this->once())
+			->method('post')
+			->with('/batch')
+			->will($this->returnValue(array('code'=>200)));
+
+
+		$batch = $this->client->startBatch();
+		$this->assertInstanceOf('Everyman\Neo4j\Batch', $batch);
+		$this->client->commitBatch();
+
+		$batchAgain = $this->client->startBatch();
+		$this->assertInstanceOf('Everyman\Neo4j\Batch', $batchAgain);
+		$this->assertNotSame($batch, $batchAgain);
+	}
+
+	public function testStartBatch_CommitOpenedBatch_ReturnsNewBatch()
+	{
+		$this->transport->expects($this->once())
+			->method('post')
+			->with('/batch')
+			->will($this->returnValue(array('code'=>200)));
+
+
+		$batch = $this->client->startBatch();
+		$this->assertInstanceOf('Everyman\Neo4j\Batch', $batch);
+		$batch->commit();
+
+		$batchAgain = $this->client->startBatch();
+		$this->assertInstanceOf('Everyman\Neo4j\Batch', $batchAgain);
+		$this->assertNotSame($batch, $batchAgain);
+	}
+
+	public function testStartBatch_CommitOtherBatch_ReturnsSameBatch()
+	{
+		$this->transport->expects($this->once())
+			->method('post')
+			->with('/batch')
+			->will($this->returnValue(array('code'=>200)));
+
+		$openBatch = $this->client->startBatch();
+		$batch = new Batch($this->client);
+		$batch->commit();
+
+		$batchAgain = $this->client->startBatch();
+		$this->assertSame($openBatch, $batchAgain);
+	}
+
+	public function testStartBatch_EndBatch_ReturnsNewBatch()
+	{
+		$batch = $this->client->startBatch();
+		$this->client->endBatch();
+
+		$batchAgain = $this->client->startBatch();
+		$this->assertNotSame($batch, $batchAgain);
+	}
+
+	public function testCommitBatch_NoBatchGivenNoOpenBatch_ThrowsException()
+	{
+		$this->setExpectedException('Everyman\Neo4j\Exception');
+		$this->client->commitBatch();
+	}
 }

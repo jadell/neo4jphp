@@ -62,7 +62,7 @@ class Client
 		}
 
 		if ($batch === $this->openBatch) {
-			$this->openBatch = null;
+			$this->endBatch();
 		}
 
 		return $this->runCommand(new Command\Batch\Commit($this, $batch));
@@ -108,6 +108,20 @@ class Client
 			return true;
 		}
 		return $this->runCommand(new Command\DeleteRelationship($this, $relationship));
+	}
+
+	/**
+	 * Detach the current open batch.
+	 *
+	 * The batch can still be committed via the batch returned
+	 * by Client::startBatch()
+	 *
+	 * @return Client
+	 */
+	public function endBatch()
+	{
+		$this->openBatch = null;
+		return $this;
 	}
 
 	/**
@@ -511,7 +525,9 @@ class Client
 	 */
 	public function startBatch()
 	{
-		$this->openBatch = new Batch($this);
+		if (!$this->openBatch) {
+			$this->openBatch = new Batch($this);
+		}
 		return $this->openBatch;
 	}
 
