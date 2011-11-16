@@ -159,6 +159,18 @@
 </div>
 <div class="clear"></div>
 </div>
+<a id="\Everyman\Neo4j\Client::$openBatch" class="anchor"></a><div class="property protected">
+<a href="#" class="gripper"><img src="images/icons/arrow_right.png"><img src="images/icons/arrow_down.png" style="display: none;"></a><code><img src="images/icons/property.png" alt="Property"><img src="images/icons/visibility_protected.png" style="margin-right: 5px" alt="protected">
+                 <span class="highlight">$openBatch</span>= 'null'
+                </code><div class="description"></div>
+<div class="code-tabs">
+<strong>Default value</strong><code>null</code><strong>Details</strong><dl class="property-info">
+<dt>Type</dt>
+<dd></dd>
+</dl>
+</div>
+<div class="clear"></div>
+</div>
 <a id="\Everyman\Neo4j\Client::$serverInfo" class="anchor"></a><div class="property protected">
 <a href="#" class="gripper"><img src="images/icons/arrow_right.png"><img src="images/icons/arrow_down.png" style="display: none;"></a><code><img src="images/icons/property.png" alt="Property"><img src="images/icons/visibility_protected.png" style="margin-right: 5px" alt="protected">
                  <span class="highlight">$serverInfo</span>= 'null'
@@ -264,10 +276,12 @@
 <a id="\Everyman\Neo4j\Client::commitBatch()" class="anchor"></a><div class="method public">
 <a href="#" class="gripper"><img src="images/icons/arrow_right.png"><img src="images/icons/arrow_down.png" style="display: none;"></a><code><img src="images/icons/method.png" alt="method"><img src="images/icons/visibility_public.png" style="margin-right: 5px" alt="public"><span class="highlight">commitBatch</span><span class="nb-faded-text">(
           <a href="db_Everyman_Neo4j_Batch.html#%5CEveryman%5CNeo4j%5CBatch">\Everyman\Neo4j\Batch</a> $batch
+              =
+              null
           )
         </span>
         :
-          \Query\ResultSet</code><div class="description"><p class="short_description">Commit a batch of operations</p></div>
+          boolean</code><div class="description"><p class="short_description">Commit a batch of operations</p></div>
 <div class="code-tabs">
 <div class="long-description">
 </div>
@@ -289,8 +303,8 @@
 <th>Description</th>
 </tr></thead>
 <tr>
-<td>\Query\ResultSet</td>
-<td></td>
+<td>boolean</td>
+<td>true on success</td>
 </tr>
 </table>
 </div>
@@ -395,6 +409,30 @@
 </tr></thead>
 <tr>
 <td>boolean</td>
+<td></td>
+</tr>
+</table>
+</div>
+<div class="clear"></div>
+</div>
+<a id="\Everyman\Neo4j\Client::endBatch()" class="anchor"></a><div class="method public">
+<a href="#" class="gripper"><img src="images/icons/arrow_right.png"><img src="images/icons/arrow_down.png" style="display: none;"></a><code><img src="images/icons/method.png" alt="method"><img src="images/icons/visibility_public.png" style="margin-right: 5px" alt="public"><span class="highlight">endBatch</span><span class="nb-faded-text">(
+          
+          )
+        </span>
+        :
+          <a href="db_Everyman_Neo4j_Client.html#%5CEveryman%5CNeo4j%5CClient">\Everyman\Neo4j\Client</a></code><div class="description"><p class="short_description">Detach the current open batch.</p></div>
+<div class="code-tabs">
+<div class="long-description"><p>The batch can still be committed via the batch returned
+by Client::startBatch()</p>
+</div>
+<strong>Returns</strong><table class="argument-info">
+<thead><tr>
+<th>Type</th>
+<th>Description</th>
+</tr></thead>
+<tr>
+<td><a href="db_Everyman_Neo4j_Client.html#%5CEveryman%5CNeo4j%5CClient">\Everyman\Neo4j\Client</a></td>
 <td></td>
 </tr>
 </table>
@@ -1313,6 +1351,31 @@ are removed.</p></div>
 <th>$transport</th>
 <td><a href="db_Everyman_Neo4j_Transport.html#%5CEveryman%5CNeo4j%5CTransport">\Everyman\Neo4j\Transport</a></td>
 <td><em></em></td>
+</tr>
+</table>
+</div>
+<div class="clear"></div>
+</div>
+<a id="\Everyman\Neo4j\Client::startBatch()" class="anchor"></a><div class="method public">
+<a href="#" class="gripper"><img src="images/icons/arrow_right.png"><img src="images/icons/arrow_down.png" style="display: none;"></a><code><img src="images/icons/method.png" alt="method"><img src="images/icons/visibility_public.png" style="margin-right: 5px" alt="public"><span class="highlight">startBatch</span><span class="nb-faded-text">(
+          
+          )
+        </span>
+        :
+          <a href="db_Everyman_Neo4j_Batch.html#%5CEveryman%5CNeo4j%5CBatch">\Everyman\Neo4j\Batch</a></code><div class="description"><p class="short_description">Start an implicit batch</p></div>
+<div class="code-tabs">
+<div class="long-description"><p>Any data manipulation calls that occur between this call
+and the subsequent Client::commitBatch() call will be
+wrapped in a batch operation.</p>
+</div>
+<strong>Returns</strong><table class="argument-info">
+<thead><tr>
+<th>Type</th>
+<th>Description</th>
+</tr></thead>
+<tr>
+<td><a href="db_Everyman_Neo4j_Batch.html#%5CEveryman%5CNeo4j%5CBatch">\Everyman\Neo4j\Batch</a></td>
+<td></td>
 </tr>
 </table>
 </div>
