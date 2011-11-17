@@ -835,4 +835,18 @@ class ClientTest extends \PHPUnit_Framework_TestCase
 		$this->setExpectedException('Everyman\Neo4j\Exception');
 		$this->client->commitBatch();
 	}
+
+	public function testMakeNode_ReturnsNode()
+	{
+		$node = $this->client->makeNode();
+		$this->assertInstanceOf('Everyman\Neo4j\Node', $node);
+		$this->assertSame($this->client, $node->getClient());
+	}
+
+	public function testMakeRelationship_ReturnsRelationship()
+	{
+		$rel = $this->client->makeRelationship();
+		$this->assertInstanceOf('Everyman\Neo4j\Relationship', $rel);
+		$this->assertSame($this->client, $rel->getClient());
+	}
 }

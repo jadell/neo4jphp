@@ -103,7 +103,7 @@ class Importer
 				throw new Exception("Duplicate relationship on line {$lineNum}: $line");
 			}
 			$properties = !empty($matches[8]) ? json_decode($matches[8]) : false;
-			$rel = new Relationship($this->client);
+			$rel = $this->client->makeRelationship();
 			$rel->setProperties($properties ?: array())
 				->setType($type)
 				->setStartNode($nodes[$startNodeId])
@@ -120,7 +120,7 @@ class Importer
 				throw new Exception("Duplicate node on line {$lineNum}: $line");
 			}
 			$properties = !empty($matches[7]) ? json_decode($matches[7]) : false;
-			$node = new Node($this->client);
+			$node = $this->client->makeNode();
 			$node->setProperties($properties ?: array());
 			$nodes[$nodeId] = $node;
 			$batch->save($node);

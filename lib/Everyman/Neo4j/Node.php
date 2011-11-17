@@ -71,7 +71,7 @@ class Node extends PropertyContainer
 	 */
 	public function relateTo(Node $to, $type)
 	{
-		$rel = new Relationship($this->client);
+		$rel = $this->client->makeRelationship();
 		$rel->setStartNode($this);
 		$rel->setEndNode($to);
 		$rel->setType($type);

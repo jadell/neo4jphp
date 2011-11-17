@@ -230,7 +230,7 @@ class Client
 			return $cached;
 		}
 
-		$node = new Node($this);
+		$node = $this->makeNode();
 		$node->setId($id);
 
 		if ($force) {
@@ -293,7 +293,7 @@ class Client
 			return $cached;
 		}
 
-		$rel = new Relationship($this);
+		$rel = $this->makeRelationship();
 		$rel->setId($id);
 
 		if ($force) {
@@ -381,6 +381,28 @@ class Client
 		}
 
 		return $this->runCommand(new Command\GetRelationship($this, $rel));
+	}
+
+	/**
+	 * Create a new node object bound to this client
+	 *
+	 * @return Node
+	 */
+	public function makeNode()
+	{
+		$node = new Node($this);
+		return $node;
+	}
+
+	/**
+	 * Create a new relationship object bound to this client
+	 *
+	 * @return Relationship
+	 */
+	public function makeRelationship()
+	{
+		$rel = new Relationship($this);
+		return $rel;
 	}
 
 	/**

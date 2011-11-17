@@ -8,7 +8,7 @@ class GeoffTest extends \PHPUnit_Framework_TestCase
 
 	public function setUp()
 	{
-		$this->client = $this->getMock('Everyman\Neo4j\Client', array(), array(), '', false);
+		$this->client = $this->getMock('Everyman\Neo4j\Client', array('runCommand'), array(), '', false);
 		$this->geoff = new Geoff($this->client);
 
 	}
