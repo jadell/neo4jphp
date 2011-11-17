@@ -20,7 +20,7 @@ class RelationshipTest extends \PHPUnit_Framework_TestCase
 			->with($this->relationship)
 			->will($this->returnValue(true));
 
-		$this->assertTrue($this->relationship->save());
+		$this->assertSame($this->relationship, $this->relationship->save());
 	}
 
 	public function testDelete_DeletesSelfUsingClient()
@@ -30,7 +30,7 @@ class RelationshipTest extends \PHPUnit_Framework_TestCase
 			->with($this->relationship)
 			->will($this->returnValue(true));
 
-		$this->assertTrue($this->relationship->delete());
+		$this->assertSame($this->relationship, $this->relationship->delete());
 	}
 
 	public function testLoad_LoadsSelfUsingClient()
@@ -40,6 +40,6 @@ class RelationshipTest extends \PHPUnit_Framework_TestCase
 			->with($this->relationship)
 			->will($this->returnValue(true));
 
-		$this->assertTrue($this->relationship->load());
+		$this->assertSame($this->relationship, $this->relationship->load());
 	}
 }

@@ -25,7 +25,7 @@ class NodeTest extends \PHPUnit_Framework_TestCase
 			->with($this->node)
 			->will($this->returnValue(true));
 
-		$this->assertTrue($this->node->save());
+		$this->assertSame($this->node, $this->node->save());
 	}
 
 	public function testDelete_DeletesSelfUsingClient()
@@ -35,7 +35,7 @@ class NodeTest extends \PHPUnit_Framework_TestCase
 			->with($this->node)
 			->will($this->returnValue(true));
 
-		$this->assertTrue($this->node->delete());
+		$this->assertSame($this->node, $this->node->delete());
 	}
 
 	public function testLoad_LoadsSelfUsingClient()
@@ -45,7 +45,7 @@ class NodeTest extends \PHPUnit_Framework_TestCase
 			->with($this->node)
 			->will($this->returnValue(true));
 
-		$this->assertTrue($this->node->load());
+		$this->assertSame($this->node, $this->node->load());
 	}
 
 	public function testGetRelationships_ReturnsArrayOfRelationships()

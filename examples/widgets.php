@@ -75,21 +75,18 @@ if ($cmd == 'init') {
 	$s = array();
 
 	foreach ($parts as $part) {
-		$node = new Node($client);
-		$node->setProperty('name', $part)->save();
+		$node = $client->makeNode()->setProperty('name', $part)->save();
 		$partsIndex->add($node, 'name', $node->getProperty('name'));
 		$p[] = $node;
 	}
 
 	foreach ($stores as $store) {
-		$node = new Node($client);
-		$node->setProperty('name', $store)->save();
+		$node = $client->makeNode()->setProperty('name', $store)->save();
 		$s[] = $node;
 	}
 
 	foreach ($orders as $order) {
-		$node = new Node($client);
-		$node->save();
+		$node = $client->makeNode()->save();
 
 		$s[$order[0]]->relateTo($node, 'SOLD')->save();
 		foreach ($order[1] as $pi) {
@@ -110,7 +107,7 @@ if ($cmd == 'init') {
 
 	// Use the Cypher query language
 	if (!empty($argv[3]) && $argv[3] == 'cypher') {
-		$queryTemplate = "START part=node:parts('name:{$partName}') ".
+		$queryTemplate = "START part=node:parts3('name:{$partName}') ".
 			"MATCH (store)-[:SOLD]->()-[:CONTAINS]->(part) ".
 			// Use the count(*) to force distinct values until Cypher gets DISTINCT keyword support
 			"RETURN store, count(*)";

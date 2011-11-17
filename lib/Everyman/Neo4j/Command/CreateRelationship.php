@@ -84,7 +84,8 @@ class CreateRelationship extends Command
 	 * @param integer $code
 	 * @param array   $headers
 	 * @param array   $data
-	 * @return integer on failure
+	 * @return boolean true on success
+	 * @throws Exception on failure
 	 */
 	protected function handleResult($code, $headers, $data)
 	{

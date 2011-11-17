@@ -90,18 +90,22 @@ $turns = array(
 	'east' => array(
 		'north' => 'left',
 		'south' => 'right',
+		'west' => 'u-turn',
 	),
 	'west' => array(
 		'north' => 'right',
 		'south' => 'left',
+		'east' => 'u-turn',
 	),
 	'north' => array(
 		'east' => 'right',
 		'west' => 'left',
+		'south' => 'u-turn',
 	),
 	'south' => array(
 		'east' => 'left',
 		'west' => 'right',
+		'north' => 'u-turn',
 	),
 );
 
@@ -109,8 +113,7 @@ $turns = array(
 if ($cmd == 'init') {
 	echo "Initializing data.\n";
 	foreach ($inters as $inter => $temp) {
-		$node = new Node($client);
-		$node->setProperty('name', $inter)->save();
+		$node = $client->makeNode()->setProperty('name', $inter)->save();
 		$intersections->add($node, 'name', $node->getProperty('name'));
 		$inters[$inter] = $node;
 	}

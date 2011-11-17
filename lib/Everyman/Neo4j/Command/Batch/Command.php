@@ -51,7 +51,8 @@ abstract class Command extends SingleCommand
 	 * @param integer $code
 	 * @param array   $headers
 	 * @param array   $data
-	 * @return integer on failure
+	 * @return mixed
+	 * @throws Exception on failure
 	 */
 	protected function handleResult($code, $headers, $data)
 	{
@@ -69,6 +70,8 @@ abstract class Command extends SingleCommand
 	 * Handle a single result from the batch of results
 	 *
 	 * @param array $result
+	 * @return mixed
+	 * @throws Exception on failure
 	 */
 	protected function handleSingleResult($result)
 	{

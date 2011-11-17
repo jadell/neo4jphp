@@ -45,14 +45,16 @@ abstract class Command
 	 * @param integer $code
 	 * @param array   $headers
 	 * @param array   $data
-	 * @return integer on failure
+	 * @return mixed
+	 * @throws Exception on failure
 	 */
 	abstract protected function handleResult($code, $headers, $data);
 
 	/**
 	 * Run the command and return a value signalling the result
 	 *
-	 * @return integer on failure
+	 * @return mixed
+	 * @throws Exception on failure
 	 */
 	public function execute()
 	{

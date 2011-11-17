@@ -46,26 +46,19 @@ $actors = new Index($client, Index::TypeNode, 'actors');
 
 // Initialize the data
 if ($cmd == 'init') {
-	$keanu = new Node($client);
-	$keanu->setProperty('name', 'Keanu Reeves')->save();
-	$laurence = new Node($client);
-	$laurence->setProperty('name', 'Laurence Fishburne')->save();
-	$jennifer = new Node($client);
-	$jennifer->setProperty('name', 'Jennifer Connelly')->save();
-	$kevin = new Node($client);
-	$kevin->setProperty('name', 'Kevin Bacon')->save();
+	$keanu = $client->makeNode()->setProperty('name', 'Keanu Reeves')->save();
+	$laurence = $client->makeNode()->setProperty('name', 'Laurence Fishburne')->save();
+	$jennifer = $client->makeNode()->setProperty('name', 'Jennifer Connelly')->save();
+	$kevin = $client->makeNode()->setProperty('name', 'Kevin Bacon')->save();
 
 	$actors->add($keanu, 'name', $keanu->getProperty('name'));
 	$actors->add($laurence, 'name', $laurence->getProperty('name'));
 	$actors->add($jennifer, 'name', $jennifer->getProperty('name'));
 	$actors->add($kevin, 'name', $kevin->getProperty('name'));
 
-	$matrix = new Node($client);
-	$matrix->setProperty('title', 'The Matrix')->save();
-	$higherLearning = new Node($client);
-	$higherLearning->setProperty('title', 'Higher Learning')->save();
-	$mysticRiver = new Node($client);
-	$mysticRiver->setProperty('title', 'Mystic River')->save();
+	$matrix = $client->makeNode()->setProperty('title', 'The Matrix')->save();
+	$higherLearning = $client->makeNode()->setProperty('title', 'Higher Learning')->save();
+	$mysticRiver = $client->makeNode()->setProperty('title', 'Mystic River')->save();
 
 	$keanu->relateTo($matrix, 'IN')->save();
 	$laurence->relateTo($matrix, 'IN')->save();

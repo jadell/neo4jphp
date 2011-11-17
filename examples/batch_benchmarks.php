@@ -88,13 +88,11 @@ class CreateNode extends Benchmark
 	protected function batch($size)
 	{
 		$start = time();
-		$batch = new Batch($this->client);
+		$this->client->startBatch();
 		foreach(range(1, $size) as $id) {
-			$node = new Node($this->client);
-			$node->setProperty('stop_id', $id);
-			$batch->save($node);
+			$this->client->makeNode()->setProperty('stop_id', $id)->save();
 		}
-		$batch->commit();
+		$this->client->commitBatch();
 		$end = time();
 		return $end - $start;
 	}
@@ -103,9 +101,7 @@ class CreateNode extends Benchmark
 	{
 		$start = time();
 		foreach(range(1, $size) as $id) {
-			$node = new Node($this->client);
-			$node->setProperty('stop_id', $id);
-			$node->save();
+			$this->client->makeNode()->setProperty('stop_id', $id)->save();
 		}
 		$end = time();
 		return $end - $start;
@@ -118,35 +114,27 @@ class CreateRelationship extends Benchmark
 
 	protected function batch($size)
 	{
-		$nodeA = new Node($this->client);
-		$nodeA->save();
-		$nodeB = new Node($this->client);
-		$nodeB->save();
+		$nodeA = $this->client->makeNode()->save();
+		$nodeB = $this->client->makeNode()->save();
 
 		$start = time();
-		$batch = new Batch($this->client);
+		$this->client->startBatch();
 		foreach(range(1, $size) as $id) {
-			$rel = $nodeA->relateTo($nodeB, 'TEST');
-			$rel->setProperty('stop_id', $id);
-			$batch->save($rel);
+			$nodeA->relateTo($nodeB, 'TEST')->setProperty('stop_id', $id)->save();
 		}
-		$batch->commit();
+		$this->client->commitBatch();
 		$end = time();
 		return $end - $start;
 	}
 
 	protected function sequential($size)
 	{
-		$nodeA = new Node($this->client);
-		$nodeA->save();
-		$nodeB = new Node($this->client);
-		$nodeB->save();
+		$nodeA = $this->client->makeNode()->save();
+		$nodeB = $this->client->makeNode()->save();
 
 		$start = time();
 		foreach(range(1, $size) as $id) {
-			$rel = $nodeA->relateTo($nodeB, 'TEST');
-			$rel->setProperty('stop_id', $id);
-			$rel->save();
+			$nodeA->relateTo($nodeB, 'TEST')->setProperty('stop_id', $id)->save();
 		}
 		$end = time();
 		return $end - $start;
@@ -160,15 +148,13 @@ class CreateFullRelationship extends Benchmark
 	protected function batch($size)
 	{
 		$start = time();
-		$batch = new Batch($this->client);
+		$this->client->startBatch();
 		foreach(range(1, $size) as $id) {
-			$nodeA = new Node($this->client);
-			$nodeB = new Node($this->client);
-			$rel = $nodeA->relateTo($nodeB, 'TEST');
-			$rel->setProperty('stop_id', $id);
-			$batch->save($rel);
+			$nodeA = $this->client->makeNode()->save();
+			$nodeB = $this->client->makeNode()->save();
+			$nodeA->relateTo($nodeB, 'TEST')->setProperty('stop_id', $id)->save();
 		}
-		$batch->commit();
+		$this->client->commitBatch();
 		$end = time();
 		return $end - $start;
 	}
@@ -177,13 +163,9 @@ class CreateFullRelationship extends Benchmark
 	{
 		$start = time();
 		foreach(range(1, $size) as $id) {
-			$nodeA = new Node($this->client);
-			$nodeA->save();
-			$nodeB = new Node($this->client);
-			$nodeB->save();
-			$rel = $nodeA->relateTo($nodeB, 'TEST');
-			$rel->setProperty('stop_id', $id);
-			$rel->save();
+			$nodeA = $this->client->makeNode()->save();
+			$nodeB = $this->client->makeNode()->save();
+			$nodeA->relateTo($nodeB, 'TEST')->setProperty('stop_id', $id)->save();
 		}
 		$end = time();
 		return $end - $start;

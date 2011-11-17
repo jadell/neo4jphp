@@ -17,11 +17,13 @@ class Relationship extends PropertyContainer
 	/**
 	 * Delete this relationship
 	 *
-	 * @return boolean
+	 * @return PropertyContainer
+	 * @throws Exception on failure
 	 */
 	public function delete()
 	{
-		return $this->client->deleteRelationship($this);
+		$this->client->deleteRelationship($this);
+		return $this;
 	}
 
 	/**
@@ -60,21 +62,25 @@ class Relationship extends PropertyContainer
 	/**
 	 * Load this relationship
 	 *
-	 * @return boolean
+	 * @return PropertyContainer
+	 * @throws Exception on failure
 	 */
 	public function load()
 	{
-		return $this->client->loadRelationship($this);
+		$this->client->loadRelationship($this);
+		return $this;
 	}
 
 	/**
 	 * Save this node
 	 *
-	 * @return boolean
+	 * @return PropertyContainer
+	 * @throws Exception on failure
 	 */
 	public function save()
 	{
-		return $this->client->saveRelationship($this);
+		$this->client->saveRelationship($this);
+		return $this;
 	}
 
 	/**

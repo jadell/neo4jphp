@@ -9,11 +9,13 @@ class Node extends PropertyContainer
 	/**
 	 * Delete this node
 	 *
-	 * @return boolean
+	 * @return PropertyContainer
+	 * @throws Exception on failure
 	 */
 	public function delete()
 	{
-		return $this->client->deleteNode($this);
+		$this->client->deleteNode($this);
+		return $this;
 	}
 
 	/**
@@ -55,11 +57,13 @@ class Node extends PropertyContainer
 	/**
 	 * Load this node
 	 *
-	 * @return boolean
+	 * @return PropertyContainer
+	 * @throws Exception on failure
 	 */
 	public function load()
 	{
-		return $this->client->loadNode($this);
+		$this->client->loadNode($this);
+		return $this;
 	}
 
 	/**
@@ -82,10 +86,12 @@ class Node extends PropertyContainer
 	/**
 	 * Save this node
 	 *
-	 * @return boolean
+	 * @return PropertyContainer
+	 * @throws Exception on failure
 	 */
 	public function save()
 	{
-		return $this->client->saveNode($this);
+		$this->client->saveNode($this);
+		return $this;
 	}
 }

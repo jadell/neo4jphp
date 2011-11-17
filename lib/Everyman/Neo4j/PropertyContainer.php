@@ -25,21 +25,24 @@ abstract class PropertyContainer
 	/**
 	 * Delete this entity
 	 *
-	 * @return boolean
+	 * @return PropertyContainer
+	 * @throws Exception on failure
 	 */
 	abstract public function delete();
 
 	/**
 	 * Load this entity
 	 *
-	 * @return boolean
+	 * @return PropertyContainer
+	 * @throws Exception on failure
 	 */
 	abstract public function load();
 
 	/**
 	 * Save this entity
 	 *
-	 * @return boolean
+	 * @return PropertyContainer
+	 * @throws Exception on failure
 	 */
 	abstract public function save();
 
@@ -176,6 +179,7 @@ abstract class PropertyContainer
 
 	/**
 	 * Set up the properties array the first time we need it
+	 *
 	 * This includes loading the properties from the server
 	 * if we can get them.
 	 */
