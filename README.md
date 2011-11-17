@@ -43,6 +43,14 @@ To Do
 Changes
 -------
 
+0.0.5-beta
+
+* Open a batch on the client to apply to all subsequent data manipulation calls
+* Batch operations correctly set and update locally cached entities
+* Method chaining on node and relationship save, load and delete
+* Instantiate new nodes and relationships from the client
+* Change to cache initialization; new EntityCache object
+
 0.0.4-beta
 
 * Client::getServerInfo() retrieves server information and connection test
