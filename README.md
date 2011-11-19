@@ -5,13 +5,13 @@ Copyright (c) 2011
 
 PHP Wrapper for the Neo4j graph database REST interface
 
-In-depth documentation and examples: http://github.com/jadell/Neo4jPHP/wiki
+In-depth documentation and examples: http://github.com/jadell/neo4jphp/wiki
 
-API documentation: http://jadell.github.com/Neo4jPHP
+API documentation: http://jadell.github.com/neo4jphp
 
 Install
 -------
-1. Download latest PHAR from http://github.com/downloads/jadell/Neo4jPHP/neo4jphp.phar
+1. Download latest PHAR from http://github.com/downloads/jadell/neo4jphp/neo4jphp.phar
 2. `include` or `require` neo4jphp.phar in your project
 
 Connection Test
