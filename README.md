@@ -34,12 +34,6 @@ Contributions
   * [http://py2neo.org/](http://py2neo.org/)
 
 
-To Do
------
-* UTF-8 support?
-* Paginated Cypher/Gremlin results?
-
-
 Changes
 -------
 
