@@ -16,6 +16,27 @@ class ClientTest extends \PHPUnit_Framework_TestCase
 		$this->client = new Client($this->transport);
 	}
 
+	public function testConstruct_TransportGiven_SetsTransport()
+	{
+		$this->assertSame($this->transport, $this->client->getTransport());
+	}
+
+	public function testConstruct_NoTransportGiven_SetsCreateTransport()
+	{
+		$client = new Client();
+		$transport = $client->getTransport();
+		$this->assertInstanceOf('Everyman\Neo4j\Transport', $transport);
+		$this->assertEquals('http://localhost:7474/db/data', $transport->getEndpoint());
+	}
+
+	public function testConstruct_HostAndPortGiven_SetsCreateTransport()
+	{
+		$client = new Client('somehost', 7575);
+		$transport = $client->getTransport();
+		$this->assertInstanceOf('Everyman\Neo4j\Transport', $transport);
+		$this->assertEquals('http://somehost:7575/db/data', $transport->getEndpoint());
+	}
+
 	public function testDeleteNode_NodeDeleted_ReturnsTrue()
 	{
 		$node = new Node($this->client);

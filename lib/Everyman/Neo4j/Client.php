@@ -20,10 +20,17 @@ class Client
 	/**
 	 * Initialize the client
 	 *
-	 * @param Transport $transport
+	 * @param mixed $transport Transport object or string hostname
+	 * @param integer $port Ignored unless $transport is a hostname
 	 */
-	public function __construct(Transport $transport)
+	public function __construct($transport=null, $port=7474)
 	{
+		if ($transport === null) {
+			$transport = new Transport();
+		} elseif (is_string($transport)) {
+			$transport = new Transport($transport, $port);
+		}
+
 		$this->setTransport($transport);
 	}
 
