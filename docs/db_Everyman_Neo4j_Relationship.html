@@ -1,0 +1,961 @@
+<html xmlns="http://www.w3.org/1999/xhtml"><head><title>DocBlox Documentation</title><meta http-equiv="Content-Type" content="text/html; charset=utf-8"></meta><link rel="stylesheet" href="css/jquery-ui.css" type="text/css"></link><link rel="stylesheet" href="css/docblox/jquery-ui-1.8.16.custom.css" type="text/css"></link><link rel="stylesheet" href="css/jquery.treeview.css" type="text/css"></link><link rel="stylesheet" href="css/theme.css" type="text/css"></link><script type="text/javascript" src="js/jquery-1.4.2.min.js"></script><script type="text/javascript" src="js/jquery-ui-1.8.2.custom.min.js"></script><script type="text/javascript" src="js/jquery.cookie.js"></script><script type="text/javascript" src="js/jquery.treeview.js"></script><script type="text/javascript">
+            $(document).ready(function() {
+                $(".filetree").treeview({
+                    collapsed: true,
+                    persist: "cookie"
+                });
+
+                $("#accordion").accordion({
+                    collapsible: true,
+                    autoHeight:  false,
+                    fillSpace:   true
+                });
+
+                $(".tabs").tabs();
+            });
+        </script></head><body><div xmlns="" id="content">
+<script xmlns:dbx="http://docblox-project.org/xsl/functions">
+
+      function filterElements()
+      {
+        inherited = !$('#show-inherited').hasClass('deselected');
+        public    = !$('#show-public').hasClass('deselected');
+        protected = !$('#show-protected').hasClass('deselected');
+        private   = !$('#show-private').hasClass('deselected');
+
+        $('div.public').each(function(index, val) {
+            $(val).toggle(public && !($(val).hasClass('inherited_from') && !inherited));
+        });
+        $('div.protected').each(function(index, val) {
+            $(val).toggle(protected && !($(val).hasClass('inherited_from') && !inherited));
+        });
+        $('div.private').each(function(index, val) {
+            $(val).toggle(private && !($(val).hasClass('inherited_from') && !inherited));
+        });
+      }
+
+      $(document).ready(function() {
+        $('a.gripper').click(function() {
+            $(this).nextAll('div.code-tabs').slideToggle();
+            $(this).children('img').toggle();
+            return false;
+        });
+
+        $('div.method code span.highlight,div.function code span.highlight,div.constant code span.highlight,div.property code span.highlight').css('cursor', 'pointer');
+
+        $('div.method code span.highlight,div.function code span.highlight,div.constant code span.highlight,div.property code span.highlight').click(function() {
+            $(this).parent().nextAll('div.code-tabs').slideToggle();
+            $(this).parent().prevAll('a.gripper').children('img').toggle();
+            return false;
+        });
+
+        $('div.code-tabs').hide();
+        $('a.gripper').show();
+        $('div.code-tabs:empty').prevAll('a.gripper').html('');
+
+        $('#show-public, #show-protected, #show-private, #show-inherited')
+            .css('cursor', 'pointer')
+            .click(function(){
+                $(this).toggleClass('deselected');
+                if ($(this).hasClass('deselected')) {
+                  $(this).fadeTo('fast', '0.4');
+                } else {
+                  $(this).fadeTo('fast', '1.0');
+                }
+                filterElements();
+                return false;
+            });
+        $('#show-protected, #show-private').click();
+
+        // add the sliding behaviour to the file navigation and show it
+        // it is initially hidden for non-JS users.
+        $("#file-nav-box").show().hover(function() {
+            $("#file-nav-container").slideDown(400);
+        }, function() {
+            $("#file-nav-container").slideUp(400);
+        });
+      });
+
+      
+    </script><h1 xmlns:dbx="http://docblox-project.org/xsl/functions" class="file">Everyman/Neo4j/Relationship.php</h1>
+<div xmlns:dbx="http://docblox-project.org/xsl/functions" id="file-nav-box">
+<div id="file-nav-options">
+              Show:
+              <img src="images/icons/visibility_public.png" id="show-public"><img src="images/icons/visibility_protected.png" id="show-protected"><img src="images/icons/visibility_private.png" id="show-private"><span class="attribute" id="show-inherited">inherited</span>
+</div>
+<div id="file-nav-container">
+<ul id="file-nav"><li>
+<a href="#classes"><img src="images/icons/class.png" height="14">
+                          Classes
+                      </a><ul><li><a href="#%5CEveryman%5CNeo4j%5CRelationship">\Everyman\Neo4j\Relationship</a></li></ul>
+</li></ul>
+<div style="clear: left;"></div>
+</div>
+<div id="file-nav-tab">
+              Table of Contents
+          </div>
+</div>
+<a xmlns:dbx="http://docblox-project.org/xsl/functions" name="top" class="anchor"></a><a name="classes" class="anchor"></a><a xmlns:dbx="http://docblox-project.org/xsl/functions" id="\Everyman\Neo4j\Relationship" class="anchor"></a><h2 xmlns:dbx="http://docblox-project.org/xsl/functions" class="class">\Everyman\Neo4j\Relationship<div class="to-top"><a href="#top">jump to top</a></div>
+</h2>
+<div xmlns:dbx="http://docblox-project.org/xsl/functions" class="class">
+<small class="package"><b>Package: </b>Default</small><p class="short-description">Represents a relationship between two nodes</p>
+<div class="long-description">
+</div>
+<dl class="class-info">
+<dt>Parent(s)</dt>
+<dd><a href="db_Everyman_Neo4j_PropertyContainer.html#%5CEveryman%5CNeo4j%5CPropertyContainer">\Everyman\Neo4j\PropertyContainer</a></dd>
+</dl>
+<h3>Constants</h3>
+<div>
+<a id="\Everyman\Neo4j\Relationship::DirectionAll" class="anchor"></a><div class="constant publicC">
+<a href="#" class="gripper"><img src="images/icons/arrow_right.png"><img src="images/icons/arrow_down.png" style="display: none;"></a><code><img src="images/icons/constant.png" alt="Constant"> 
+                <span class="highlight">DirectionAll</span>
+                = 'all'</code><div class="description"></div>
+<div class="code-tabs"><dl class="constant-info"></dl></div>
+<div class="clear"></div>
+</div>
+<a id="\Everyman\Neo4j\Relationship::DirectionIn" class="anchor"></a><div class="constant publicC">
+<a href="#" class="gripper"><img src="images/icons/arrow_right.png"><img src="images/icons/arrow_down.png" style="display: none;"></a><code><img src="images/icons/constant.png" alt="Constant"> 
+                <span class="highlight">DirectionIn</span>
+                = 'in'</code><div class="description"></div>
+<div class="code-tabs"><dl class="constant-info"></dl></div>
+<div class="clear"></div>
+</div>
+<a id="\Everyman\Neo4j\Relationship::DirectionOut" class="anchor"></a><div class="constant publicC">
+<a href="#" class="gripper"><img src="images/icons/arrow_right.png"><img src="images/icons/arrow_down.png" style="display: none;"></a><code><img src="images/icons/constant.png" alt="Constant"> 
+                <span class="highlight">DirectionOut</span>
+                = 'out'</code><div class="description"></div>
+<div class="code-tabs"><dl class="constant-info"></dl></div>
+<div class="clear"></div>
+</div>
+</div>
+<h3>Properties</h3>
+<div>
+<a id="\Everyman\Neo4j\Relationship::$client" class="anchor"></a><div class="property protected inherited_from ">
+<a href="#" class="gripper"><img src="images/icons/arrow_right.png"><img src="images/icons/arrow_down.png" style="display: none;"></a><code><img src="images/icons/property.png" alt="Property"><img src="images/icons/visibility_protected.png" style="margin-right: 5px" alt="protected">
+                 <span class="highlight">$client</span>= 'null'
+                </code><div class="description">
+<span class="attribute">inherited</span><small>Inherited from:
+                        <a href="db_Everyman_Neo4j_PropertyContainer.html#%5CEveryman%5CNeo4j%5CPropertyContainer::%24client">\Everyman\Neo4j\PropertyContainer::$client</a></small>
+</div>
+<div class="code-tabs">
+<strong>Default value</strong><code>null</code><strong>Details</strong><dl class="property-info">
+<dt>Type</dt>
+<dd></dd>
+<dt>Inherited_from</dt>
+<dd>
+<a href="db_Everyman_Neo4j_PropertyContainer.html#%5CEveryman%5CNeo4j%5CPropertyContainer::%24client">\Everyman\Neo4j\PropertyContainer::$client</a>
+         
+    </dd>
+</dl>
+</div>
+<div class="clear"></div>
+</div>
+<a id="\Everyman\Neo4j\Relationship::$end" class="anchor"></a><div class="property protected">
+<a href="#" class="gripper"><img src="images/icons/arrow_right.png"><img src="images/icons/arrow_down.png" style="display: none;"></a><code><img src="images/icons/property.png" alt="Property"><img src="images/icons/visibility_protected.png" style="margin-right: 5px" alt="protected">
+                 <span class="highlight">$end</span>= 'null'
+                </code><div class="description"></div>
+<div class="code-tabs">
+<strong>Default value</strong><code>null</code><strong>Details</strong><dl class="property-info">
+<dt>Type</dt>
+<dd></dd>
+</dl>
+</div>
+<div class="clear"></div>
+</div>
+<a id="\Everyman\Neo4j\Relationship::$id" class="anchor"></a><div class="property protected inherited_from ">
+<a href="#" class="gripper"><img src="images/icons/arrow_right.png"><img src="images/icons/arrow_down.png" style="display: none;"></a><code><img src="images/icons/property.png" alt="Property"><img src="images/icons/visibility_protected.png" style="margin-right: 5px" alt="protected">
+                 <span class="highlight">$id</span>= 'null'
+                </code><div class="description">
+<span class="attribute">inherited</span><small>Inherited from:
+                        <a href="db_Everyman_Neo4j_PropertyContainer.html#%5CEveryman%5CNeo4j%5CPropertyContainer::%24id">\Everyman\Neo4j\PropertyContainer::$id</a></small>
+</div>
+<div class="code-tabs">
+<strong>Default value</strong><code>null</code><strong>Details</strong><dl class="property-info">
+<dt>Type</dt>
+<dd></dd>
+<dt>Inherited_from</dt>
+<dd>
+<a href="db_Everyman_Neo4j_PropertyContainer.html#%5CEveryman%5CNeo4j%5CPropertyContainer::%24id">\Everyman\Neo4j\PropertyContainer::$id</a>
+         
+    </dd>
+</dl>
+</div>
+<div class="clear"></div>
+</div>
+<a id="\Everyman\Neo4j\Relationship::$lazyLoad" class="anchor"></a><div class="property protected inherited_from ">
+<a href="#" class="gripper"><img src="images/icons/arrow_right.png"><img src="images/icons/arrow_down.png" style="display: none;"></a><code><img src="images/icons/property.png" alt="Property"><img src="images/icons/visibility_protected.png" style="margin-right: 5px" alt="protected">
+                 <span class="highlight">$lazyLoad</span>= 'true'
+                </code><div class="description">
+<span class="attribute">inherited</span><small>Inherited from:
+                        <a href="db_Everyman_Neo4j_PropertyContainer.html#%5CEveryman%5CNeo4j%5CPropertyContainer::%24lazyLoad">\Everyman\Neo4j\PropertyContainer::$lazyLoad</a></small>
+</div>
+<div class="code-tabs">
+<strong>Default value</strong><code>true</code><strong>Details</strong><dl class="property-info">
+<dt>Type</dt>
+<dd></dd>
+<dt>Inherited_from</dt>
+<dd>
+<a href="db_Everyman_Neo4j_PropertyContainer.html#%5CEveryman%5CNeo4j%5CPropertyContainer::%24lazyLoad">\Everyman\Neo4j\PropertyContainer::$lazyLoad</a>
+         
+    </dd>
+</dl>
+</div>
+<div class="clear"></div>
+</div>
+<a id="\Everyman\Neo4j\Relationship::$properties" class="anchor"></a><div class="property protected inherited_from ">
+<a href="#" class="gripper"><img src="images/icons/arrow_right.png"><img src="images/icons/arrow_down.png" style="display: none;"></a><code><img src="images/icons/property.png" alt="Property"><img src="images/icons/visibility_protected.png" style="margin-right: 5px" alt="protected">
+                 <span class="highlight">$properties</span>= 'null'
+                </code><div class="description">
+<span class="attribute">inherited</span><small>Inherited from:
+                        <a href="db_Everyman_Neo4j_PropertyContainer.html#%5CEveryman%5CNeo4j%5CPropertyContainer::%24properties">\Everyman\Neo4j\PropertyContainer::$properties</a></small>
+</div>
+<div class="code-tabs">
+<strong>Default value</strong><code>null</code><strong>Details</strong><dl class="property-info">
+<dt>Type</dt>
+<dd></dd>
+<dt>Inherited_from</dt>
+<dd>
+<a href="db_Everyman_Neo4j_PropertyContainer.html#%5CEveryman%5CNeo4j%5CPropertyContainer::%24properties">\Everyman\Neo4j\PropertyContainer::$properties</a>
+         
+    </dd>
+</dl>
+</div>
+<div class="clear"></div>
+</div>
+<a id="\Everyman\Neo4j\Relationship::$start" class="anchor"></a><div class="property protected">
+<a href="#" class="gripper"><img src="images/icons/arrow_right.png"><img src="images/icons/arrow_down.png" style="display: none;"></a><code><img src="images/icons/property.png" alt="Property"><img src="images/icons/visibility_protected.png" style="margin-right: 5px" alt="protected">
+                 <span class="highlight">$start</span>= 'null'
+                </code><div class="description"></div>
+<div class="code-tabs">
+<strong>Default value</strong><code>null</code><strong>Details</strong><dl class="property-info">
+<dt>Type</dt>
+<dd></dd>
+</dl>
+</div>
+<div class="clear"></div>
+</div>
+<a id="\Everyman\Neo4j\Relationship::$type" class="anchor"></a><div class="property protected">
+<a href="#" class="gripper"><img src="images/icons/arrow_right.png"><img src="images/icons/arrow_down.png" style="display: none;"></a><code><img src="images/icons/property.png" alt="Property"><img src="images/icons/visibility_protected.png" style="margin-right: 5px" alt="protected">
+                 <span class="highlight">$type</span>= 'null'
+                </code><div class="description"></div>
+<div class="code-tabs">
+<strong>Default value</strong><code>null</code><strong>Details</strong><dl class="property-info">
+<dt>Type</dt>
+<dd></dd>
+</dl>
+</div>
+<div class="clear"></div>
+</div>
+</div>
+<h3>Methods</h3>
+<div>
+<a id="\Everyman\Neo4j\Relationship::__construct()" class="anchor"></a><div class="method public inherited_from ">
+<a href="#" class="gripper"><img src="images/icons/arrow_right.png"><img src="images/icons/arrow_down.png" style="display: none;"></a><code><img src="images/icons/method.png" alt="method"><img src="images/icons/visibility_public.png" style="margin-right: 5px" alt="public"><span class="highlight">__construct</span><span class="nb-faded-text">(
+          <a href="db_Everyman_Neo4j_Client.html#%5CEveryman%5CNeo4j%5CClient">\Everyman\Neo4j\Client</a> $client
+          )
+        </span>
+        :
+          void</code><div class="description">
+<span class="attribute">inherited</span><p class="short_description">Build the container and set its client</p>
+<small>Inherited from:
+                    <a href="db_Everyman_Neo4j_PropertyContainer.html#%5CEveryman%5CNeo4j%5CPropertyContainer::__construct()">\Everyman\Neo4j\PropertyContainer::__construct()</a></small>
+</div>
+<div class="code-tabs">
+<div class="long-description">
+</div>
+<strong>Parameters</strong><table class="argument-info">
+<thead><tr>
+<th>Name</th>
+<th>Type</th>
+<th>Description</th>
+</tr></thead>
+<tr>
+<th>$client</th>
+<td><a href="db_Everyman_Neo4j_Client.html#%5CEveryman%5CNeo4j%5CClient">\Everyman\Neo4j\Client</a></td>
+<td><em></em></td>
+</tr>
+</table>
+</div>
+<div class="clear"></div>
+</div>
+<a id="\Everyman\Neo4j\Relationship::delete()" class="anchor"></a><div class="method public">
+<a href="#" class="gripper"><img src="images/icons/arrow_right.png"><img src="images/icons/arrow_down.png" style="display: none;"></a><code><img src="images/icons/method.png" alt="method"><img src="images/icons/visibility_public.png" style="margin-right: 5px" alt="public"><span class="highlight">delete</span><span class="nb-faded-text">(
+          
+          )
+        </span>
+        :
+          <a href="db_Everyman_Neo4j_PropertyContainer.html#%5CEveryman%5CNeo4j%5CPropertyContainer">\Everyman\Neo4j\PropertyContainer</a></code><div class="description"><p class="short_description">Delete this relationship</p></div>
+<div class="code-tabs">
+<div class="long-description">
+</div>
+<strong>Returns</strong><table class="argument-info">
+<thead><tr>
+<th>Type</th>
+<th>Description</th>
+</tr></thead>
+<tr>
+<td><a href="db_Everyman_Neo4j_PropertyContainer.html#%5CEveryman%5CNeo4j%5CPropertyContainer">\Everyman\Neo4j\PropertyContainer</a></td>
+<td></td>
+</tr>
+</table>
+<strong>Throws</strong><table class="argument-info">
+<thead><tr>
+<th>Exception</th>
+<th>Description</th>
+</tr></thead>
+<tr>
+<td><a href="db_Everyman_Neo4j_Exception.html#%5CEveryman%5CNeo4j%5CException">\Everyman\Neo4j\Exception</a></td>
+<td><em>on failure</em></td>
+</tr>
+</table>
+</div>
+<div class="clear"></div>
+</div>
+<a id="\Everyman\Neo4j\Relationship::getClient()" class="anchor"></a><div class="method public inherited_from ">
+<a href="#" class="gripper"><img src="images/icons/arrow_right.png"><img src="images/icons/arrow_down.png" style="display: none;"></a><code><img src="images/icons/method.png" alt="method"><img src="images/icons/visibility_public.png" style="margin-right: 5px" alt="public"><span class="highlight">getClient</span><span class="nb-faded-text">(
+          
+          )
+        </span>
+        :
+          <a href="db_Everyman_Neo4j_Client.html#%5CEveryman%5CNeo4j%5CClient">\Everyman\Neo4j\Client</a></code><div class="description">
+<span class="attribute">inherited</span><p class="short_description">Get the entity's client</p>
+<small>Inherited from:
+                    <a href="db_Everyman_Neo4j_PropertyContainer.html#%5CEveryman%5CNeo4j%5CPropertyContainer::getClient()">\Everyman\Neo4j\PropertyContainer::getClient()</a></small>
+</div>
+<div class="code-tabs">
+<div class="long-description">
+</div>
+<strong>Returns</strong><table class="argument-info">
+<thead><tr>
+<th>Type</th>
+<th>Description</th>
+</tr></thead>
+<tr>
+<td><a href="db_Everyman_Neo4j_Client.html#%5CEveryman%5CNeo4j%5CClient">\Everyman\Neo4j\Client</a></td>
+<td></td>
+</tr>
+</table>
+</div>
+<div class="clear"></div>
+</div>
+<a id="\Everyman\Neo4j\Relationship::getEndNode()" class="anchor"></a><div class="method public">
+<a href="#" class="gripper"><img src="images/icons/arrow_right.png"><img src="images/icons/arrow_down.png" style="display: none;"></a><code><img src="images/icons/method.png" alt="method"><img src="images/icons/visibility_public.png" style="margin-right: 5px" alt="public"><span class="highlight">getEndNode</span><span class="nb-faded-text">(
+          
+          )
+        </span>
+        :
+          <a href="db_Everyman_Neo4j_Node.html#%5CEveryman%5CNeo4j%5CNode">\Everyman\Neo4j\Node</a></code><div class="description"><p class="short_description">Get the end node</p></div>
+<div class="code-tabs">
+<div class="long-description">
+</div>
+<strong>Returns</strong><table class="argument-info">
+<thead><tr>
+<th>Type</th>
+<th>Description</th>
+</tr></thead>
+<tr>
+<td><a href="db_Everyman_Neo4j_Node.html#%5CEveryman%5CNeo4j%5CNode">\Everyman\Neo4j\Node</a></td>
+<td></td>
+</tr>
+</table>
+</div>
+<div class="clear"></div>
+</div>
+<a id="\Everyman\Neo4j\Relationship::getId()" class="anchor"></a><div class="method public inherited_from ">
+<a href="#" class="gripper"><img src="images/icons/arrow_right.png"><img src="images/icons/arrow_down.png" style="display: none;"></a><code><img src="images/icons/method.png" alt="method"><img src="images/icons/visibility_public.png" style="margin-right: 5px" alt="public"><span class="highlight">getId</span><span class="nb-faded-text">(
+          
+          )
+        </span>
+        :
+          integer</code><div class="description">
+<span class="attribute">inherited</span><p class="short_description">Get the entity's id</p>
+<small>Inherited from:
+                    <a href="db_Everyman_Neo4j_PropertyContainer.html#%5CEveryman%5CNeo4j%5CPropertyContainer::getId()">\Everyman\Neo4j\PropertyContainer::getId()</a></small>
+</div>
+<div class="code-tabs">
+<div class="long-description">
+</div>
+<strong>Returns</strong><table class="argument-info">
+<thead><tr>
+<th>Type</th>
+<th>Description</th>
+</tr></thead>
+<tr>
+<td>integer</td>
+<td></td>
+</tr>
+</table>
+</div>
+<div class="clear"></div>
+</div>
+<a id="\Everyman\Neo4j\Relationship::getProperties()" class="anchor"></a><div class="method public inherited_from ">
+<a href="#" class="gripper"><img src="images/icons/arrow_right.png"><img src="images/icons/arrow_down.png" style="display: none;"></a><code><img src="images/icons/method.png" alt="method"><img src="images/icons/visibility_public.png" style="margin-right: 5px" alt="public"><span class="highlight">getProperties</span><span class="nb-faded-text">(
+          
+          )
+        </span>
+        :
+          array</code><div class="description">
+<span class="attribute">inherited</span><p class="short_description">Return all properties</p>
+<small>Inherited from:
+                    <a href="db_Everyman_Neo4j_PropertyContainer.html#%5CEveryman%5CNeo4j%5CPropertyContainer::getProperties()">\Everyman\Neo4j\PropertyContainer::getProperties()</a></small>
+</div>
+<div class="code-tabs">
+<div class="long-description">
+</div>
+<strong>Returns</strong><table class="argument-info">
+<thead><tr>
+<th>Type</th>
+<th>Description</th>
+</tr></thead>
+<tr>
+<td>array</td>
+<td></td>
+</tr>
+</table>
+</div>
+<div class="clear"></div>
+</div>
+<a id="\Everyman\Neo4j\Relationship::getProperty()" class="anchor"></a><div class="method public inherited_from ">
+<a href="#" class="gripper"><img src="images/icons/arrow_right.png"><img src="images/icons/arrow_down.png" style="display: none;"></a><code><img src="images/icons/method.png" alt="method"><img src="images/icons/visibility_public.png" style="margin-right: 5px" alt="public"><span class="highlight">getProperty</span><span class="nb-faded-text">(
+          string $property
+          )
+        </span>
+        :
+          mixed</code><div class="description">
+<span class="attribute">inherited</span><p class="short_description">Return the named property</p>
+<small>Inherited from:
+                    <a href="db_Everyman_Neo4j_PropertyContainer.html#%5CEveryman%5CNeo4j%5CPropertyContainer::getProperty()">\Everyman\Neo4j\PropertyContainer::getProperty()</a></small>
+</div>
+<div class="code-tabs">
+<div class="long-description">
+</div>
+<strong>Parameters</strong><table class="argument-info">
+<thead><tr>
+<th>Name</th>
+<th>Type</th>
+<th>Description</th>
+</tr></thead>
+<tr>
+<th>$property</th>
+<td>string</td>
+<td><em></em></td>
+</tr>
+</table>
+<strong>Returns</strong><table class="argument-info">
+<thead><tr>
+<th>Type</th>
+<th>Description</th>
+</tr></thead>
+<tr>
+<td>mixed</td>
+<td></td>
+</tr>
+</table>
+</div>
+<div class="clear"></div>
+</div>
+<a id="\Everyman\Neo4j\Relationship::getStartNode()" class="anchor"></a><div class="method public">
+<a href="#" class="gripper"><img src="images/icons/arrow_right.png"><img src="images/icons/arrow_down.png" style="display: none;"></a><code><img src="images/icons/method.png" alt="method"><img src="images/icons/visibility_public.png" style="margin-right: 5px" alt="public"><span class="highlight">getStartNode</span><span class="nb-faded-text">(
+          
+          )
+        </span>
+        :
+          <a href="db_Everyman_Neo4j_Node.html#%5CEveryman%5CNeo4j%5CNode">\Everyman\Neo4j\Node</a></code><div class="description"><p class="short_description">Get the start node</p></div>
+<div class="code-tabs">
+<div class="long-description">
+</div>
+<strong>Returns</strong><table class="argument-info">
+<thead><tr>
+<th>Type</th>
+<th>Description</th>
+</tr></thead>
+<tr>
+<td><a href="db_Everyman_Neo4j_Node.html#%5CEveryman%5CNeo4j%5CNode">\Everyman\Neo4j\Node</a></td>
+<td></td>
+</tr>
+</table>
+</div>
+<div class="clear"></div>
+</div>
+<a id="\Everyman\Neo4j\Relationship::getType()" class="anchor"></a><div class="method public">
+<a href="#" class="gripper"><img src="images/icons/arrow_right.png"><img src="images/icons/arrow_down.png" style="display: none;"></a><code><img src="images/icons/method.png" alt="method"><img src="images/icons/visibility_public.png" style="margin-right: 5px" alt="public"><span class="highlight">getType</span><span class="nb-faded-text">(
+          
+          )
+        </span>
+        :
+          string</code><div class="description"><p class="short_description">Get the relationship type</p></div>
+<div class="code-tabs">
+<div class="long-description">
+</div>
+<strong>Returns</strong><table class="argument-info">
+<thead><tr>
+<th>Type</th>
+<th>Description</th>
+</tr></thead>
+<tr>
+<td>string</td>
+<td></td>
+</tr>
+</table>
+</div>
+<div class="clear"></div>
+</div>
+<a id="\Everyman\Neo4j\Relationship::hasId()" class="anchor"></a><div class="method public inherited_from ">
+<a href="#" class="gripper"><img src="images/icons/arrow_right.png"><img src="images/icons/arrow_down.png" style="display: none;"></a><code><img src="images/icons/method.png" alt="method"><img src="images/icons/visibility_public.png" style="margin-right: 5px" alt="public"><span class="highlight">hasId</span><span class="nb-faded-text">(
+          
+          )
+        </span>
+        :
+          boolean</code><div class="description">
+<span class="attribute">inherited</span><p class="short_description">Is this entity identified?</p>
+<small>Inherited from:
+                    <a href="db_Everyman_Neo4j_PropertyContainer.html#%5CEveryman%5CNeo4j%5CPropertyContainer::hasId()">\Everyman\Neo4j\PropertyContainer::hasId()</a></small>
+</div>
+<div class="code-tabs">
+<div class="long-description">
+</div>
+<strong>Returns</strong><table class="argument-info">
+<thead><tr>
+<th>Type</th>
+<th>Description</th>
+</tr></thead>
+<tr>
+<td>boolean</td>
+<td></td>
+</tr>
+</table>
+</div>
+<div class="clear"></div>
+</div>
+<a id="\Everyman\Neo4j\Relationship::load()" class="anchor"></a><div class="method public">
+<a href="#" class="gripper"><img src="images/icons/arrow_right.png"><img src="images/icons/arrow_down.png" style="display: none;"></a><code><img src="images/icons/method.png" alt="method"><img src="images/icons/visibility_public.png" style="margin-right: 5px" alt="public"><span class="highlight">load</span><span class="nb-faded-text">(
+          
+          )
+        </span>
+        :
+          <a href="db_Everyman_Neo4j_PropertyContainer.html#%5CEveryman%5CNeo4j%5CPropertyContainer">\Everyman\Neo4j\PropertyContainer</a></code><div class="description"><p class="short_description">Load this relationship</p></div>
+<div class="code-tabs">
+<div class="long-description">
+</div>
+<strong>Returns</strong><table class="argument-info">
+<thead><tr>
+<th>Type</th>
+<th>Description</th>
+</tr></thead>
+<tr>
+<td><a href="db_Everyman_Neo4j_PropertyContainer.html#%5CEveryman%5CNeo4j%5CPropertyContainer">\Everyman\Neo4j\PropertyContainer</a></td>
+<td></td>
+</tr>
+</table>
+<strong>Throws</strong><table class="argument-info">
+<thead><tr>
+<th>Exception</th>
+<th>Description</th>
+</tr></thead>
+<tr>
+<td><a href="db_Everyman_Neo4j_Exception.html#%5CEveryman%5CNeo4j%5CException">\Everyman\Neo4j\Exception</a></td>
+<td><em>on failure</em></td>
+</tr>
+</table>
+</div>
+<div class="clear"></div>
+</div>
+<a id="\Everyman\Neo4j\Relationship::loadProperties()" class="anchor"></a><div class="method protected inherited_from ">
+<a href="#" class="gripper"><img src="images/icons/arrow_right.png"><img src="images/icons/arrow_down.png" style="display: none;"></a><code><img src="images/icons/method.png" alt="method"><img src="images/icons/visibility_protected.png" style="margin-right: 5px" alt="protected"><span class="highlight">loadProperties</span><span class="nb-faded-text">(
+          
+          )
+        </span>
+        :
+          void</code><div class="description">
+<span class="attribute">inherited</span><p class="short_description">Set up the properties array the first time we need it</p>
+<small>Inherited from:
+                    <a href="db_Everyman_Neo4j_PropertyContainer.html#%5CEveryman%5CNeo4j%5CPropertyContainer::loadProperties()">\Everyman\Neo4j\PropertyContainer::loadProperties()</a></small>
+</div>
+<div class="code-tabs"><div class="long-description"><p>This includes loading the properties from the server
+if we can get them.</p>
+</div></div>
+<div class="clear"></div>
+</div>
+<a id="\Everyman\Neo4j\Relationship::removeProperty()" class="anchor"></a><div class="method public inherited_from ">
+<a href="#" class="gripper"><img src="images/icons/arrow_right.png"><img src="images/icons/arrow_down.png" style="display: none;"></a><code><img src="images/icons/method.png" alt="method"><img src="images/icons/visibility_public.png" style="margin-right: 5px" alt="public"><span class="highlight">removeProperty</span><span class="nb-faded-text">(
+          string $property
+          )
+        </span>
+        :
+          <a href="db_Everyman_Neo4j_PropertyContainer.html#%5CEveryman%5CNeo4j%5CPropertyContainer">\Everyman\Neo4j\PropertyContainer</a></code><div class="description">
+<span class="attribute">inherited</span><p class="short_description">Remove a property set on the entity</p>
+<small>Inherited from:
+                    <a href="db_Everyman_Neo4j_PropertyContainer.html#%5CEveryman%5CNeo4j%5CPropertyContainer::removeProperty()">\Everyman\Neo4j\PropertyContainer::removeProperty()</a></small>
+</div>
+<div class="code-tabs">
+<div class="long-description">
+</div>
+<strong>Parameters</strong><table class="argument-info">
+<thead><tr>
+<th>Name</th>
+<th>Type</th>
+<th>Description</th>
+</tr></thead>
+<tr>
+<th>$property</th>
+<td>string</td>
+<td><em></em></td>
+</tr>
+</table>
+<strong>Returns</strong><table class="argument-info">
+<thead><tr>
+<th>Type</th>
+<th>Description</th>
+</tr></thead>
+<tr>
+<td><a href="db_Everyman_Neo4j_PropertyContainer.html#%5CEveryman%5CNeo4j%5CPropertyContainer">\Everyman\Neo4j\PropertyContainer</a></td>
+<td></td>
+</tr>
+</table>
+</div>
+<div class="clear"></div>
+</div>
+<a id="\Everyman\Neo4j\Relationship::save()" class="anchor"></a><div class="method public">
+<a href="#" class="gripper"><img src="images/icons/arrow_right.png"><img src="images/icons/arrow_down.png" style="display: none;"></a><code><img src="images/icons/method.png" alt="method"><img src="images/icons/visibility_public.png" style="margin-right: 5px" alt="public"><span class="highlight">save</span><span class="nb-faded-text">(
+          
+          )
+        </span>
+        :
+          <a href="db_Everyman_Neo4j_PropertyContainer.html#%5CEveryman%5CNeo4j%5CPropertyContainer">\Everyman\Neo4j\PropertyContainer</a></code><div class="description"><p class="short_description">Save this node</p></div>
+<div class="code-tabs">
+<div class="long-description">
+</div>
+<strong>Returns</strong><table class="argument-info">
+<thead><tr>
+<th>Type</th>
+<th>Description</th>
+</tr></thead>
+<tr>
+<td><a href="db_Everyman_Neo4j_PropertyContainer.html#%5CEveryman%5CNeo4j%5CPropertyContainer">\Everyman\Neo4j\PropertyContainer</a></td>
+<td></td>
+</tr>
+</table>
+<strong>Throws</strong><table class="argument-info">
+<thead><tr>
+<th>Exception</th>
+<th>Description</th>
+</tr></thead>
+<tr>
+<td><a href="db_Everyman_Neo4j_Exception.html#%5CEveryman%5CNeo4j%5CException">\Everyman\Neo4j\Exception</a></td>
+<td><em>on failure</em></td>
+</tr>
+</table>
+</div>
+<div class="clear"></div>
+</div>
+<a id="\Everyman\Neo4j\Relationship::setClient()" class="anchor"></a><div class="method public inherited_from ">
+<a href="#" class="gripper"><img src="images/icons/arrow_right.png"><img src="images/icons/arrow_down.png" style="display: none;"></a><code><img src="images/icons/method.png" alt="method"><img src="images/icons/visibility_public.png" style="margin-right: 5px" alt="public"><span class="highlight">setClient</span><span class="nb-faded-text">(
+          <a href="db_Everyman_Neo4j_Client.html#%5CEveryman%5CNeo4j%5CClient">\Everyman\Neo4j\Client</a> $client
+          )
+        </span>
+        :
+          <a href="db_Everyman_Neo4j_PropertyContainer.html#%5CEveryman%5CNeo4j%5CPropertyContainer">\Everyman\Neo4j\PropertyContainer</a></code><div class="description">
+<span class="attribute">inherited</span><p class="short_description">Set the entity's client</p>
+<small>Inherited from:
+                    <a href="db_Everyman_Neo4j_PropertyContainer.html#%5CEveryman%5CNeo4j%5CPropertyContainer::setClient()">\Everyman\Neo4j\PropertyContainer::setClient()</a></small>
+</div>
+<div class="code-tabs">
+<div class="long-description">
+</div>
+<strong>Parameters</strong><table class="argument-info">
+<thead><tr>
+<th>Name</th>
+<th>Type</th>
+<th>Description</th>
+</tr></thead>
+<tr>
+<th>$client</th>
+<td><a href="db_Everyman_Neo4j_Client.html#%5CEveryman%5CNeo4j%5CClient">\Everyman\Neo4j\Client</a></td>
+<td><em></em></td>
+</tr>
+</table>
+<strong>Returns</strong><table class="argument-info">
+<thead><tr>
+<th>Type</th>
+<th>Description</th>
+</tr></thead>
+<tr>
+<td><a href="db_Everyman_Neo4j_PropertyContainer.html#%5CEveryman%5CNeo4j%5CPropertyContainer">\Everyman\Neo4j\PropertyContainer</a></td>
+<td></td>
+</tr>
+</table>
+</div>
+<div class="clear"></div>
+</div>
+<a id="\Everyman\Neo4j\Relationship::setEndNode()" class="anchor"></a><div class="method public">
+<a href="#" class="gripper"><img src="images/icons/arrow_right.png"><img src="images/icons/arrow_down.png" style="display: none;"></a><code><img src="images/icons/method.png" alt="method"><img src="images/icons/visibility_public.png" style="margin-right: 5px" alt="public"><span class="highlight">setEndNode</span><span class="nb-faded-text">(
+          <a href="db_Everyman_Neo4j_Node.html#%5CEveryman%5CNeo4j%5CNode">\Everyman\Neo4j\Node</a> $end
+          )
+        </span>
+        :
+          <a href="db_Everyman_Neo4j_Relationship.html#%5CEveryman%5CNeo4j%5CRelationship">\Everyman\Neo4j\Relationship</a></code><div class="description"><p class="short_description">Set the end node</p></div>
+<div class="code-tabs">
+<div class="long-description">
+</div>
+<strong>Parameters</strong><table class="argument-info">
+<thead><tr>
+<th>Name</th>
+<th>Type</th>
+<th>Description</th>
+</tr></thead>
+<tr>
+<th>$end</th>
+<td><a href="db_Everyman_Neo4j_Node.html#%5CEveryman%5CNeo4j%5CNode">\Everyman\Neo4j\Node</a></td>
+<td><em></em></td>
+</tr>
+</table>
+<strong>Returns</strong><table class="argument-info">
+<thead><tr>
+<th>Type</th>
+<th>Description</th>
+</tr></thead>
+<tr>
+<td><a href="db_Everyman_Neo4j_Relationship.html#%5CEveryman%5CNeo4j%5CRelationship">\Everyman\Neo4j\Relationship</a></td>
+<td></td>
+</tr>
+</table>
+</div>
+<div class="clear"></div>
+</div>
+<a id="\Everyman\Neo4j\Relationship::setId()" class="anchor"></a><div class="method public inherited_from ">
+<a href="#" class="gripper"><img src="images/icons/arrow_right.png"><img src="images/icons/arrow_down.png" style="display: none;"></a><code><img src="images/icons/method.png" alt="method"><img src="images/icons/visibility_public.png" style="margin-right: 5px" alt="public"><span class="highlight">setId</span><span class="nb-faded-text">(
+          integer $id
+          )
+        </span>
+        :
+          <a href="db_Everyman_Neo4j_PropertyContainer.html#%5CEveryman%5CNeo4j%5CPropertyContainer">\Everyman\Neo4j\PropertyContainer</a></code><div class="description">
+<span class="attribute">inherited</span><p class="short_description">Set the entity's id</p>
+<small>Inherited from:
+                    <a href="db_Everyman_Neo4j_PropertyContainer.html#%5CEveryman%5CNeo4j%5CPropertyContainer::setId()">\Everyman\Neo4j\PropertyContainer::setId()</a></small>
+</div>
+<div class="code-tabs">
+<div class="long-description">
+</div>
+<strong>Parameters</strong><table class="argument-info">
+<thead><tr>
+<th>Name</th>
+<th>Type</th>
+<th>Description</th>
+</tr></thead>
+<tr>
+<th>$id</th>
+<td>integer</td>
+<td><em></em></td>
+</tr>
+</table>
+<strong>Returns</strong><table class="argument-info">
+<thead><tr>
+<th>Type</th>
+<th>Description</th>
+</tr></thead>
+<tr>
+<td><a href="db_Everyman_Neo4j_PropertyContainer.html#%5CEveryman%5CNeo4j%5CPropertyContainer">\Everyman\Neo4j\PropertyContainer</a></td>
+<td></td>
+</tr>
+</table>
+</div>
+<div class="clear"></div>
+</div>
+<a id="\Everyman\Neo4j\Relationship::setProperties()" class="anchor"></a><div class="method public inherited_from ">
+<a href="#" class="gripper"><img src="images/icons/arrow_right.png"><img src="images/icons/arrow_down.png" style="display: none;"></a><code><img src="images/icons/method.png" alt="method"><img src="images/icons/visibility_public.png" style="margin-right: 5px" alt="public"><span class="highlight">setProperties</span><span class="nb-faded-text">(
+          array $properties
+          )
+        </span>
+        :
+          <a href="db_Everyman_Neo4j_PropertyContainer.html#%5CEveryman%5CNeo4j%5CPropertyContainer">\Everyman\Neo4j\PropertyContainer</a></code><div class="description">
+<span class="attribute">inherited</span><p class="short_description">Set multiple properties on the entity</p>
+<small>Inherited from:
+                    <a href="db_Everyman_Neo4j_PropertyContainer.html#%5CEveryman%5CNeo4j%5CPropertyContainer::setProperties()">\Everyman\Neo4j\PropertyContainer::setProperties()</a></small>
+</div>
+<div class="code-tabs">
+<div class="long-description">
+</div>
+<strong>Parameters</strong><table class="argument-info">
+<thead><tr>
+<th>Name</th>
+<th>Type</th>
+<th>Description</th>
+</tr></thead>
+<tr>
+<th>$properties</th>
+<td>array</td>
+<td><em></em></td>
+</tr>
+</table>
+<strong>Returns</strong><table class="argument-info">
+<thead><tr>
+<th>Type</th>
+<th>Description</th>
+</tr></thead>
+<tr>
+<td><a href="db_Everyman_Neo4j_PropertyContainer.html#%5CEveryman%5CNeo4j%5CPropertyContainer">\Everyman\Neo4j\PropertyContainer</a></td>
+<td></td>
+</tr>
+</table>
+</div>
+<div class="clear"></div>
+</div>
+<a id="\Everyman\Neo4j\Relationship::setProperty()" class="anchor"></a><div class="method public inherited_from ">
+<a href="#" class="gripper"><img src="images/icons/arrow_right.png"><img src="images/icons/arrow_down.png" style="display: none;"></a><code><img src="images/icons/method.png" alt="method"><img src="images/icons/visibility_public.png" style="margin-right: 5px" alt="public"><span class="highlight">setProperty</span><span class="nb-faded-text">(
+          string $property, mixed $value
+          )
+        </span>
+        :
+          <a href="db_Everyman_Neo4j_PropertyContainer.html#%5CEveryman%5CNeo4j%5CPropertyContainer">\Everyman\Neo4j\PropertyContainer</a></code><div class="description">
+<span class="attribute">inherited</span><p class="short_description">Set a property on the entity</p>
+<small>Inherited from:
+                    <a href="db_Everyman_Neo4j_PropertyContainer.html#%5CEveryman%5CNeo4j%5CPropertyContainer::setProperty()">\Everyman\Neo4j\PropertyContainer::setProperty()</a></small>
+</div>
+<div class="code-tabs">
+<div class="long-description">
+</div>
+<strong>Parameters</strong><table class="argument-info">
+<thead><tr>
+<th>Name</th>
+<th>Type</th>
+<th>Description</th>
+</tr></thead>
+<tr>
+<th>$property</th>
+<td>string</td>
+<td><em></em></td>
+</tr>
+<tr>
+<th>$value</th>
+<td>mixed</td>
+<td><em></em></td>
+</tr>
+</table>
+<strong>Returns</strong><table class="argument-info">
+<thead><tr>
+<th>Type</th>
+<th>Description</th>
+</tr></thead>
+<tr>
+<td><a href="db_Everyman_Neo4j_PropertyContainer.html#%5CEveryman%5CNeo4j%5CPropertyContainer">\Everyman\Neo4j\PropertyContainer</a></td>
+<td></td>
+</tr>
+</table>
+</div>
+<div class="clear"></div>
+</div>
+<a id="\Everyman\Neo4j\Relationship::setStartNode()" class="anchor"></a><div class="method public">
+<a href="#" class="gripper"><img src="images/icons/arrow_right.png"><img src="images/icons/arrow_down.png" style="display: none;"></a><code><img src="images/icons/method.png" alt="method"><img src="images/icons/visibility_public.png" style="margin-right: 5px" alt="public"><span class="highlight">setStartNode</span><span class="nb-faded-text">(
+          <a href="db_Everyman_Neo4j_Node.html#%5CEveryman%5CNeo4j%5CNode">\Everyman\Neo4j\Node</a> $start
+          )
+        </span>
+        :
+          <a href="db_Everyman_Neo4j_Relationship.html#%5CEveryman%5CNeo4j%5CRelationship">\Everyman\Neo4j\Relationship</a></code><div class="description"><p class="short_description">Set the start node</p></div>
+<div class="code-tabs">
+<div class="long-description">
+</div>
+<strong>Parameters</strong><table class="argument-info">
+<thead><tr>
+<th>Name</th>
+<th>Type</th>
+<th>Description</th>
+</tr></thead>
+<tr>
+<th>$start</th>
+<td><a href="db_Everyman_Neo4j_Node.html#%5CEveryman%5CNeo4j%5CNode">\Everyman\Neo4j\Node</a></td>
+<td><em></em></td>
+</tr>
+</table>
+<strong>Returns</strong><table class="argument-info">
+<thead><tr>
+<th>Type</th>
+<th>Description</th>
+</tr></thead>
+<tr>
+<td><a href="db_Everyman_Neo4j_Relationship.html#%5CEveryman%5CNeo4j%5CRelationship">\Everyman\Neo4j\Relationship</a></td>
+<td></td>
+</tr>
+</table>
+</div>
+<div class="clear"></div>
+</div>
+<a id="\Everyman\Neo4j\Relationship::setType()" class="anchor"></a><div class="method public">
+<a href="#" class="gripper"><img src="images/icons/arrow_right.png"><img src="images/icons/arrow_down.png" style="display: none;"></a><code><img src="images/icons/method.png" alt="method"><img src="images/icons/visibility_public.png" style="margin-right: 5px" alt="public"><span class="highlight">setType</span><span class="nb-faded-text">(
+          string $type
+          )
+        </span>
+        :
+          <a href="db_Everyman_Neo4j_Relationship.html#%5CEveryman%5CNeo4j%5CRelationship">\Everyman\Neo4j\Relationship</a></code><div class="description"><p class="short_description">Set the type</p></div>
+<div class="code-tabs">
+<div class="long-description">
+</div>
+<strong>Parameters</strong><table class="argument-info">
+<thead><tr>
+<th>Name</th>
+<th>Type</th>
+<th>Description</th>
+</tr></thead>
+<tr>
+<th>$type</th>
+<td>string</td>
+<td><em></em></td>
+</tr>
+</table>
+<strong>Returns</strong><table class="argument-info">
+<thead><tr>
+<th>Type</th>
+<th>Description</th>
+</tr></thead>
+<tr>
+<td><a href="db_Everyman_Neo4j_Relationship.html#%5CEveryman%5CNeo4j%5CRelationship">\Everyman\Neo4j\Relationship</a></td>
+<td></td>
+</tr>
+</table>
+</div>
+<div class="clear"></div>
+</div>
+<a id="\Everyman\Neo4j\Relationship::useLazyLoad()" class="anchor"></a><div class="method public inherited_from ">
+<a href="#" class="gripper"><img src="images/icons/arrow_right.png"><img src="images/icons/arrow_down.png" style="display: none;"></a><code><img src="images/icons/method.png" alt="method"><img src="images/icons/visibility_public.png" style="margin-right: 5px" alt="public"><span class="highlight">useLazyLoad</span><span class="nb-faded-text">(
+          boolean $lazyLoad
+          )
+        </span>
+        :
+          <a href="db_Everyman_Neo4j_PropertyContainer.html#%5CEveryman%5CNeo4j%5CPropertyContainer">\Everyman\Neo4j\PropertyContainer</a></code><div class="description">
+<span class="attribute">inherited</span><p class="short_description">Should this entity be lazy-loaded if necessary?</p>
+<small>Inherited from:
+                    <a href="db_Everyman_Neo4j_PropertyContainer.html#%5CEveryman%5CNeo4j%5CPropertyContainer::useLazyLoad()">\Everyman\Neo4j\PropertyContainer::useLazyLoad()</a></small>
+</div>
+<div class="code-tabs">
+<div class="long-description">
+</div>
+<strong>Parameters</strong><table class="argument-info">
+<thead><tr>
+<th>Name</th>
+<th>Type</th>
+<th>Description</th>
+</tr></thead>
+<tr>
+<th>$lazyLoad</th>
+<td>boolean</td>
+<td><em></em></td>
+</tr>
+</table>
+<strong>Returns</strong><table class="argument-info">
+<thead><tr>
+<th>Type</th>
+<th>Description</th>
+</tr></thead>
+<tr>
+<td><a href="db_Everyman_Neo4j_PropertyContainer.html#%5CEveryman%5CNeo4j%5CPropertyContainer">\Everyman\Neo4j\PropertyContainer</a></td>
+<td></td>
+</tr>
+</table>
+</div>
+<div class="clear"></div>
+</div>
+</div>
+</div>
+</div>
+<small xmlns="" class="footer">Documentation was generated by <a href="http://docblox-project.org">DocBlox 0.15.1</a>.
+    </small></body></html>
