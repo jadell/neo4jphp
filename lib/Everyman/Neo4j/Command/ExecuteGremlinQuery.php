@@ -83,6 +83,10 @@ class ExecuteGremlinQuery extends Command
 	 */
 	protected function normalizeData($data)
 	{
+		if (is_scalar($data)) {
+			$data = array($data);
+		}
+
 		if (!array_key_exists('columns', $data)) {
 			$columns = array(0);
 

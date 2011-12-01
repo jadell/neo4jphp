@@ -86,4 +86,19 @@ class Client_GremlinTest extends \PHPUnit_Framework_TestCase
 		$this->assertInstanceOf('Everyman\Neo4j\Node', $result[0][0]);
 		$this->assertEquals(2, $result[0][0]->getId());
 	}
+
+	public function testGremlinQuery_ScalarValueReturned_ReturnsResultSet()
+	{
+		$props = array('script' => 'i=g.foo();');
+		$query = new Gremlin\Query($this->client, $props['script']);
+
+		$this->transport->expects($this->once())
+			->method('post')
+			->with('/ext/GremlinPlugin/graphdb/execute_script', $props)
+			->will($this->returnValue(array('code'=>200,'data'=>"this is some scalar value")));
+
+		$result = $this->client->executeGremlinQuery($query);
+		$this->assertInstanceOf('Everyman\Neo4j\Query\ResultSet', $result);
+		$this->assertEquals("this is some scalar value", $result[0][0]);
+	}
 }
