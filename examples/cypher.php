@@ -79,9 +79,9 @@ if ($cmd == 'init') {
 	
 	$queryTemplate = "START actor=node:actors('name:*') ".
 		"MATCH (actor) -[:IN]- (movie)".
-		"WHERE movie.title = ?".
+		"WHERE movie.title = {title}".
 		"RETURN actor";
-	$query = new Cypher\Query($client, $queryTemplate, array($movie));
+	$query = new Cypher\Query($client, $queryTemplate, array('title'=>$movie));
 	$result = $query->getResultSet();
 	
 	echo "Found ".count($result)." actors:\n";

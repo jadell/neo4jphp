@@ -17,8 +17,6 @@ class Query implements Neo4j\Query
 	protected $template = null;
 	protected $vars = array();
 
-	protected $assembler = null;
-
 	protected $result = null;
 
 	/**
@@ -26,11 +24,7 @@ class Query implements Neo4j\Query
 	 *
 	 * @param Neo4j\Client $client
 	 * @param string $template A Cypher query string or template
-	 * @param object $vars Replacement variables. If you pass
-	 *        one or more of these, the $template parameter will be used as a 
-	 *        template. All occurrences of '?' in the template will be replaced
-	 *        with these variables, in order of occurrence.
-	 *        Template variable values must be string or numeric.
+	 * @param array $vars Replacement vars to inject into the query
 	 */
 	public function __construct(Neo4j\Client $client, $template, $vars=array())
 	{
@@ -46,8 +40,17 @@ class Query implements Neo4j\Query
 	 */
 	public function getQuery()
 	{
-		$query = $this->getQueryAssembler()->assembleQuery(array_merge(array($this->template), $this->vars));
-		return $query;
+		return $this->template;
+	}
+
+	/**
+	 * Get the template parameters
+	 *
+	 * @return array
+	 */
+	public function getParameters()
+	{
+		return $this->vars;
 	}
 
 	/**
@@ -62,18 +65,5 @@ class Query implements Neo4j\Query
 		}
 
 		return $this->result;
-	}
-
-	/**
-	 * Get the query assembler to use
-	 *
-	 * @return QueryAssembler
-	 */
-	protected function getQueryAssembler()
-	{
-		if ($this->assembler === null) {
-			$this->assembler = new QueryAssembler();
-		}
-		return $this->assembler;
 	}
 }

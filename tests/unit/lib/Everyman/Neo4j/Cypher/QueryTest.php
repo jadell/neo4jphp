@@ -12,26 +12,22 @@ class QueryTest extends \PHPUnit_Framework_TestCase
 	public function setUp()
 	{
 		$this->client = $this->getMock('Everyman\Neo4j\Client', array(), array(), '', false);
-		$this->template = 'START a=(?) RETURN a';
-		$this->vars = array(0);
+		$this->template = 'START a=({start}) RETURN a';
+		$this->vars = array('start' => 0);
 
 		$this->query = new Query($this->client, $this->template, $this->vars);
 	}
 
 	public function testGetQuery_ReturnsString()
 	{
-		$expected = 'START a=(0) RETURN a';
 		$result = $this->query->getQuery();
-		$this->assertEquals($result, $expected);
+		$this->assertEquals($result, $this->template);
 	}
 
-	public function testGetQuery_NoVars_ReturnsString()
+	public function testGetParameters_ReturnsArray()
 	{
-		$template = 'START a=(0) RETURN a';
-		$query = new Query($this->client, $template);
-
-		$result = $this->query->getQuery();
-		$this->assertEquals($result, $template);
+		$result = $this->query->getParameters();
+		$this->assertEquals($result, $this->vars);
 	}
 
 	public function testGetResultSet_OnlyExecutesOnce_ReturnsResultSet()

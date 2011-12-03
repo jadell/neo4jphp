@@ -33,8 +33,12 @@ class ExecuteCypherQuery extends Command
 	 */
 	protected function getData()
 	{
-		$queryString = $this->query->getQuery();
-		return array('query'=>$queryString);
+		$data = array('query' => $this->query->getQuery());
+		$params = $this->query->getParameters();
+		if ($params) {
+			$data['params'] = $params;
+		}
+		return $data;
 	}
 
 	/**

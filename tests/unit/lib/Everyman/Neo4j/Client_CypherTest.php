@@ -22,7 +22,8 @@ class Client_CypherTest extends \PHPUnit_Framework_TestCase
 	public function testCypherQuery($returnValue, $resultCount)
 	{
 		$props = array(
-			'query' => 'START a=(0) RETURN a'
+			'query' => 'START a=({start}) MATCH (a)->(b) WHERE b.name = {name} RETURN b',
+			'params' => array('start' => 1, 'name' => 'friend name'),
 		);
 
 		$this->transport->expects($this->once())
@@ -30,9 +31,10 @@ class Client_CypherTest extends \PHPUnit_Framework_TestCase
 			->with('/ext/CypherPlugin/graphdb/execute_query', $props)
 			->will($this->returnValue($returnValue));
 
-		$query = new Cypher\Query($this->client, 'START a=(?) RETURN a', array(0));
+		$query = new Cypher\Query($this->client, $props['query'], $props['params']);
 
 		$result = $this->client->executeCypherQuery($query);
+		$this->assertInstanceOf('\Everyman\Neo4j\Query\ResultSet', $result);
 		$this->assertEquals(count($result), $resultCount);
 	}
 	
@@ -64,7 +66,7 @@ class Client_CypherTest extends \PHPUnit_Framework_TestCase
 			->with('/ext/CypherPlugin/graphdb/execute_query', $props)
 			->will($this->returnValue(array('code'=>404)));
 
-		$query = new Cypher\Query($this->client, 'START a=(?) RETURN a', array(0));
+		$query = new Cypher\Query($this->client, $props['query']);
 
 		$this->setExpectedException('\Everyman\Neo4j\Exception');
 		$this->client->executeCypherQuery($query);
