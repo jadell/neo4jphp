@@ -53,6 +53,21 @@ class PropertyContainerTest extends \PHPUnit_Framework_TestCase
 		), $this->entity->getProperties());
 	}
 
+	public function testProperties_SetPropertyNullValue_ReturnsNullAndPropertyRemoved()
+	{
+		$this->entity->setProperties(array(
+			'somekey' => 'someval',
+			'yakey' => 'yaval',
+		));
+
+		$this->entity->setProperty('somekey', null);
+		$this->assertNull($this->entity->getProperty('somekey'));
+
+		$this->assertEquals(array(
+			'yakey' => 'yaval',
+		), $this->entity->getProperties());
+	}
+
 	public function testProperties_LazyLoad_OnlyLoadsTheFirstTime()
 	{
 		$this->entity->expects($this->once())

@@ -161,7 +161,11 @@ abstract class PropertyContainer
 	public function setProperty($property, $value)
 	{
 		$this->loadProperties();
-		$this->properties[$property] = $value;
+		if ($value === null) {
+			$this->removeProperty($property);
+		} else {
+			$this->properties[$property] = $value;
+		}
 		return $this;
 	}
 
