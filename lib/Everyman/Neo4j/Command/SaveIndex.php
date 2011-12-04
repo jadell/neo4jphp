@@ -35,10 +35,14 @@ class SaveIndex extends Command
 		if (!$name) {
 			throw new Exception('No name specified for index');
 		}
+		$data = array('name' => $name);
 
-		return array(
-			'name' => $name,
-		);
+		$config = $this->index->getConfig();
+		if ($config) {
+			$data['config'] = $config;
+		}
+
+		return $data;
 	}
 
 	/**

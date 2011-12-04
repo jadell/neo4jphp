@@ -33,15 +33,17 @@ class Client_IndexTest extends \PHPUnit_Framework_TestCase
 	/**
 	 * @dataProvider dataProvider_SaveIndexScenarios
 	 */
-	public function testSaveIndex_ReturnsSuccess($type, $name, $result)
+	public function testSaveIndex_ReturnsSuccess($type, $name, $config, $result)
 	{
-		$index = new Index($this->client, $type, $name);
+		$index = new Index($this->client, $type, $name, $config);
+		$data = array('name' => $name);
+		if ($config) {
+			$data['config'] = $config;
+		}
 
 		$this->transport->expects($this->once())
 			->method('post')
-			->with('/index/'.$type, array(
-				'name' => $name,
-			))
+			->with('/index/'.$type, $data)
 			->will($this->returnValue($result));
 
 		$this->assertTrue($this->client->saveIndex($index));
@@ -49,9 +51,10 @@ class Client_IndexTest extends \PHPUnit_Framework_TestCase
 
 	public function dataProvider_SaveIndexScenarios()
 	{
-		return array(// type, name, result
-			array(Index::TypeNode, 'somekey', array('code'=>201)),
-			array(Index::TypeRelationship, 'somekey', array('code'=>201)),
+		return array(// type, name, config, result
+			array(Index::TypeNode, 'somekey', array(), array('code'=>201)),
+			array(Index::TypeRelationship, 'somekey', array(), array('code'=>201)),
+			array(Index::TypeNode, 'somekey', array('type' => 'fulltext'), array('code'=>201)),
 		);
 	}
 
@@ -87,7 +90,7 @@ class Client_IndexTest extends \PHPUnit_Framework_TestCase
 	/**
 	 * @dataProvider dataProvider_SaveIndexScenarios
 	 */
-	public function testDeleteIndex_ReturnsSuccess($type, $name, $result)
+	public function testDeleteIndex_ReturnsSuccess($type, $name, $config, $result)
 	{
 		$index = new Index($this->client, $type, $name);
 

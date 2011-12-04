@@ -133,4 +133,31 @@ class IndexTest extends \PHPUnit_Framework_TestCase
 		$result = $this->index->queryOne('somekey:somevalue*');
 		$this->assertNull($result);
 	}
+
+	public function testNodeIndex_CreatesNodeIndex()
+	{
+		$index = new Index\NodeIndex($this->client, 'testindex', array('foo'=>'bar'));
+		$this->assertEquals(Index::TypeNode, $index->getType());
+		$this->assertEquals('testindex', $index->getName());
+		$this->assertEquals(array('foo'=>'bar'), $index->getConfig());
+	}
+
+	public function testNodeFulltextIndex_CreatesNodeFulltextIndex()
+	{
+		$index = new Index\NodeFulltextIndex($this->client, 'testindex');
+		$this->assertEquals(Index::TypeNode, $index->getType());
+		$this->assertEquals('testindex', $index->getName());
+		$this->assertEquals(array(
+			'type'=>'fulltext',
+			'provider'=>'lucene',
+		), $index->getConfig());
+	}
+
+	public function testRelationshipIndex_CreatesRelationshipIndex()
+	{
+		$index = new Index\RelationshipIndex($this->client, 'testindex', array('foo'=>'bar'));
+		$this->assertEquals(Index::TypeRelationship, $index->getType());
+		$this->assertEquals('testindex', $index->getName());
+		$this->assertEquals(array('foo'=>'bar'), $index->getConfig());
+	}
 }

@@ -12,6 +12,7 @@ class Index
 	protected $client = null;
 	protected $type = self::TypeNode;
 	protected $name = null;
+	protected $config = array();
 
 	/**
 	 * Initialize the index
@@ -19,12 +20,14 @@ class Index
 	 * @param Client $client
 	 * @param string $type
 	 * @param string $name
+	 * @param array  $config
 	 */
-	public function __construct(Client $client, $type, $name)
+	public function __construct(Client $client, $type, $name, $config=array())
 	{
 		$this->client = $client;
 		$this->type = $type;
 		$this->name = $name;
+		$this->config = $config;
 	}
 
 	/**
@@ -73,6 +76,19 @@ class Index
 	{
 		$entities = $this->client->searchIndex($this, $key, $value);
 		return $entities ? $entities[0] : null;
+	}
+
+	/**
+	 * Get the configuration options for this index
+	 *
+	 * Configuration options are only used during index creation,
+	 * see `save`
+	 *
+	 * @return array
+	 */
+	public function getConfig()
+	{
+		return $this->config;
 	}
 
 	/**
