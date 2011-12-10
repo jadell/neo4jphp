@@ -2,7 +2,7 @@
 <?php
 use Everyman\Neo4j\Transport,
 	Everyman\Neo4j\Client,
-	Everyman\Neo4j\Index,
+	Everyman\Neo4j\Index\NodeIndex,
 	Everyman\Neo4j\Path,
 	Everyman\Neo4j\PathFinder,
 	Everyman\Neo4j\Relationship,
@@ -52,7 +52,7 @@ HELP;
 
 $transport = new Transport();
 $client = new Client($transport);
-$intersections = new Index($client, Index::TypeNode, 'intersections1');
+$intersections = new NodeIndex($client, 'intersections1');
 
 $inters = array(
 	'A'=>null,

@@ -2,7 +2,7 @@
 <?php
 use Everyman\Neo4j\Transport,
 	Everyman\Neo4j\Client,
-	Everyman\Neo4j\Index,
+	Everyman\Neo4j\Index\NodeIndex,
 	Everyman\Neo4j\Path,
 	Everyman\Neo4j\PathFinder,
 	Everyman\Neo4j\Relationship,
@@ -53,7 +53,7 @@ HELP;
 
 $transport = new Transport();
 $client = new Client($transport);
-$partsIndex = new Index($client, Index::TypeNode, 'parts3');
+$partsIndex = new NodeIndex($client, 'parts3');
 
 $parts = array('widget','gadget','gizmo');
 $stores = array("Bob's Old Houseware","Mainstreet Hardware","Nutz N' Boltz", "Doodad Emporium");

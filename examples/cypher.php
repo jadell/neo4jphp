@@ -2,7 +2,7 @@
 <?php
 use Everyman\Neo4j\Transport,
 	Everyman\Neo4j\Client,
-	Everyman\Neo4j\Index,
+	Everyman\Neo4j\Index\NodeIndex,
 	Everyman\Neo4j\Relationship,
 	Everyman\Neo4j\Node,
 	Everyman\Neo4j\Cypher;
@@ -41,7 +41,7 @@ HELP;
 
 $transport = new Transport();
 $client = new Client($transport);
-$actors = new Index($client, Index::TypeNode, 'actors');
+$actors = new NodeIndex($client, 'actors');
 
 // Initialize the data
 if ($cmd == 'init') {
