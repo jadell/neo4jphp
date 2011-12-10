@@ -15,6 +15,7 @@ class Query implements Neo4j\Query
 {
 	protected $client = null;
 	protected $script = null;
+	protected $vars = array();
 
 	protected $result = null;
 
@@ -23,11 +24,13 @@ class Query implements Neo4j\Query
 	 *
 	 * @param Neo4j\Client $client
 	 * @param string $script A Gremlin query script
+	 * @param array $vars Replacement vars to inject into the query
 	 */
-	public function __construct(Neo4j\Client $client, $script)
+	public function __construct(Neo4j\Client $client, $script, $vars=array())
 	{
 		$this->client = $client;
 		$this->script = $script;
+		$this->vars = $vars;
 	}
 
 	/**
@@ -38,6 +41,16 @@ class Query implements Neo4j\Query
 	public function getQuery()
 	{
 		return $this->script;
+	}
+
+	/**
+	 * Get the template parameters
+	 *
+	 * @return array
+	 */
+	public function getParameters()
+	{
+		return $this->vars;
 	}
 
 	/**

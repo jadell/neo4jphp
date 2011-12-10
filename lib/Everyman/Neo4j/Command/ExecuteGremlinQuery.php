@@ -33,8 +33,12 @@ class ExecuteGremlinQuery extends Command
 	 */
 	protected function getData()
 	{
-		$queryString = $this->query->getQuery();
-		return array('script'=>$queryString);
+		$data = array('script' => $this->query->getQuery());
+		$params = $this->query->getParameters();
+		if ($params) {
+			$data['params'] = $params;
+		}
+		return $data;
 	}
 
 	/**

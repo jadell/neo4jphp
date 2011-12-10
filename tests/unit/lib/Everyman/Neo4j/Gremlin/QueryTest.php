@@ -7,19 +7,27 @@ class QueryTest extends \PHPUnit_Framework_TestCase
 	protected $query = null;
 
 	protected $queryString = null;
+	protected $params = null;
 
 	public function setUp()
 	{
 		$this->client = $this->getMock('Everyman\Neo4j\Client', array(), array(), '', false);
-		$this->queryString = 'i = g.v(1);i.outE.inV';
+		$this->queryString = 'i = g.v(start);i.outE.inV';
+		$this->params = array('start' => 123);
 
-		$this->query = new Query($this->client, $this->queryString);
+		$this->query = new Query($this->client, $this->queryString, $this->params);
 	}
 
 	public function testGetQuery_ReturnsString()
 	{
 		$result = $this->query->getQuery();
 		$this->assertEquals($result, $this->queryString);
+	}
+
+	public function testGetParameters_ReturnsArray()
+	{
+		$result = $this->query->getParameters();
+		$this->assertEquals($result, $this->params);
 	}
 
 	public function testGetResultSet_OnlyExecutesOnce_ReturnsResultSet()

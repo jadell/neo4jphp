@@ -69,8 +69,9 @@ if ($cmd == 'init') {
 
 // Find all actors in a movie
 } else if ($cmd == 'actors') {
-	$queryTemplate = "g.V.in('IN').uniqueObject.sort{it.name}.toList()";
-	$query = new Gremlin\Query($client, $queryTemplate);
+	$queryTemplate = "g.V.in(type).uniqueObject.sort{it.name}.toList()";
+	$params = array('type' => 'IN');
+	$query = new Gremlin\Query($client, $queryTemplate, $params);
 	$result = $query->getResultSet();
 	
 	foreach ($result as $row) {

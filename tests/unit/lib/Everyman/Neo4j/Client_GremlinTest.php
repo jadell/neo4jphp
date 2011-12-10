@@ -14,8 +14,11 @@ class Client_GremlinTest extends \PHPUnit_Framework_TestCase
 
 	public function testGremlinQuery_ServerReturnsErrorCode_ReturnsFalse()
 	{
-		$props = array('script' => 'i=g.foo();');
-		$query = new Gremlin\Query($this->client, $props['script']);
+		$props = array(
+			'script' => 'i=g.foo(start);',
+			'params' => array('start' => 123),
+		);
+		$query = new Gremlin\Query($this->client, $props['script'], $props['params']);
 
 		$this->transport->expects($this->once())
 			->method('post')
@@ -28,8 +31,11 @@ class Client_GremlinTest extends \PHPUnit_Framework_TestCase
 
 	public function testGremlinQuery_DataAndColumnsReturned_ReturnsResultSet()
 	{
-		$props = array('script' => 'i=g.foo();');
-		$query = new Gremlin\Query($this->client, $props['script']);
+		$props = array(
+			'script' => 'i=g.foo(start);',
+			'params' => array('start' => 123),
+		);
+		$query = new Gremlin\Query($this->client, $props['script'], $props['params']);
 
 		$this->transport->expects($this->once())
 			->method('post')
