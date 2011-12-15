@@ -37,6 +37,16 @@ Contributions
 Changes
 -------
 
+0.0.6-beta
+
+* Create full-text indexes; easier instantiation of common index types
+* Client can be initialized with a string and port instead of a Transport object
+* Setting a `null` property has the same effect as removing the property
+* Handle scalar values from Gremlin scripts properly
+* Cypher and Gremlin queries can take an array of named parameters
+* Cypher no longer uses positional parameters
+* Use server info to determine Cypher plugin endpoint
+
 0.0.5-beta
 
 * Open a batch on the client to apply to all subsequent data manipulation calls
