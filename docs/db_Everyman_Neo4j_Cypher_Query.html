@@ -110,18 +110,6 @@ http://docs.neo4j.org/chunked/snapshot/cypher-query-lang.html</p>
 </dl>
 <h3>Properties</h3>
 <div>
-<a id="\Everyman\Neo4j\Cypher\Query::$assembler" class="anchor"></a><div class="property protected">
-<a href="#" class="gripper"><img src="images/icons/arrow_right.png"><img src="images/icons/arrow_down.png" style="display: none;"></a><code><img src="images/icons/property.png" alt="Property"><img src="images/icons/visibility_protected.png" style="margin-right: 5px" alt="protected">
-                 <span class="highlight">$assembler</span>= 'null'
-                </code><div class="description"></div>
-<div class="code-tabs">
-<strong>Default value</strong><code>null</code><strong>Details</strong><dl class="property-info">
-<dt>Type</dt>
-<dd></dd>
-</dl>
-</div>
-<div class="clear"></div>
-</div>
 <a id="\Everyman\Neo4j\Cypher\Query::$client" class="anchor"></a><div class="property protected">
 <a href="#" class="gripper"><img src="images/icons/arrow_right.png"><img src="images/icons/arrow_down.png" style="display: none;"></a><code><img src="images/icons/property.png" alt="Property"><img src="images/icons/visibility_protected.png" style="margin-right: 5px" alt="protected">
                  <span class="highlight">$client</span>= 'null'
@@ -175,7 +163,7 @@ http://docs.neo4j.org/chunked/snapshot/cypher-query-lang.html</p>
 <div>
 <a id="\Everyman\Neo4j\Cypher\Query::__construct()" class="anchor"></a><div class="method public">
 <a href="#" class="gripper"><img src="images/icons/arrow_right.png"><img src="images/icons/arrow_down.png" style="display: none;"></a><code><img src="images/icons/method.png" alt="method"><img src="images/icons/visibility_public.png" style="margin-right: 5px" alt="public"><span class="highlight">__construct</span><span class="nb-faded-text">(
-          <a href="db_Everyman_Neo4j_Client.html#%5CEveryman%5CNeo4j%5CClient">\Everyman\Neo4j\Client</a> $client, string $template, object $vars
+          <a href="db_Everyman_Neo4j_Client.html#%5CEveryman%5CNeo4j%5CClient">\Everyman\Neo4j\Client</a> $client, string $template, array $vars
               =
               array()
           )
@@ -203,9 +191,31 @@ http://docs.neo4j.org/chunked/snapshot/cypher-query-lang.html</p>
 </tr>
 <tr>
 <th>$vars</th>
-<td>object</td>
-<td><em><p>Replacement variables. If you pass one or more of these, the $template parameter will be used as a template. All occurrences of '?' in the template will be replaced with these variables, in order of occurrence. Template variable values must be string or numeric.</p>
-</em></td>
+<td>array</td>
+<td><em><p>Replacement vars to inject into the query</p></em></td>
+</tr>
+</table>
+</div>
+<div class="clear"></div>
+</div>
+<a id="\Everyman\Neo4j\Cypher\Query::getParameters()" class="anchor"></a><div class="method public">
+<a href="#" class="gripper"><img src="images/icons/arrow_right.png"><img src="images/icons/arrow_down.png" style="display: none;"></a><code><img src="images/icons/method.png" alt="method"><img src="images/icons/visibility_public.png" style="margin-right: 5px" alt="public"><span class="highlight">getParameters</span><span class="nb-faded-text">(
+          
+          )
+        </span>
+        :
+          array</code><div class="description"><p class="short_description">Get the template parameters</p></div>
+<div class="code-tabs">
+<div class="long-description">
+</div>
+<strong>Returns</strong><table class="argument-info">
+<thead><tr>
+<th>Type</th>
+<th>Description</th>
+</tr></thead>
+<tr>
+<td>array</td>
+<td></td>
 </tr>
 </table>
 </div>
@@ -228,29 +238,6 @@ http://docs.neo4j.org/chunked/snapshot/cypher-query-lang.html</p>
 </tr></thead>
 <tr>
 <td>string</td>
-<td></td>
-</tr>
-</table>
-</div>
-<div class="clear"></div>
-</div>
-<a id="\Everyman\Neo4j\Cypher\Query::getQueryAssembler()" class="anchor"></a><div class="method protected">
-<a href="#" class="gripper"><img src="images/icons/arrow_right.png"><img src="images/icons/arrow_down.png" style="display: none;"></a><code><img src="images/icons/method.png" alt="method"><img src="images/icons/visibility_protected.png" style="margin-right: 5px" alt="protected"><span class="highlight">getQueryAssembler</span><span class="nb-faded-text">(
-          
-          )
-        </span>
-        :
-          <a href="db_Everyman_Neo4j_Cypher_QueryAssembler.html#%5CEveryman%5CNeo4j%5CCypher%5CQueryAssembler">\Everyman\Neo4j\Cypher\QueryAssembler</a></code><div class="description"><p class="short_description">Get the query assembler to use</p></div>
-<div class="code-tabs">
-<div class="long-description">
-</div>
-<strong>Returns</strong><table class="argument-info">
-<thead><tr>
-<th>Type</th>
-<th>Description</th>
-</tr></thead>
-<tr>
-<td><a href="db_Everyman_Neo4j_Cypher_QueryAssembler.html#%5CEveryman%5CNeo4j%5CCypher%5CQueryAssembler">\Everyman\Neo4j\Cypher\QueryAssembler</a></td>
 <td></td>
 </tr>
 </table>

@@ -200,7 +200,11 @@
 <div>
 <a id="\Everyman\Neo4j\Client::__construct()" class="anchor"></a><div class="method public">
 <a href="#" class="gripper"><img src="images/icons/arrow_right.png"><img src="images/icons/arrow_down.png" style="display: none;"></a><code><img src="images/icons/method.png" alt="method"><img src="images/icons/visibility_public.png" style="margin-right: 5px" alt="public"><span class="highlight">__construct</span><span class="nb-faded-text">(
-          <a href="db_Everyman_Neo4j_Transport.html#%5CEveryman%5CNeo4j%5CTransport">\Everyman\Neo4j\Transport</a> $transport
+          mixed $transport
+              =
+              null, integer $port
+              =
+              7474
           )
         </span>
         :
@@ -216,8 +220,14 @@
 </tr></thead>
 <tr>
 <th>$transport</th>
-<td><a href="db_Everyman_Neo4j_Transport.html#%5CEveryman%5CNeo4j%5CTransport">\Everyman\Neo4j\Transport</a></td>
-<td><em></em></td>
+<td>mixed</td>
+<td><em><p>Transport object or string hostname</p></em></td>
+</tr>
+<tr>
+<th>$port</th>
+<td>integer</td>
+<td><em><p>Ignored unless $transport is a hostname</p>
+</em></td>
 </tr>
 </table>
 </div>

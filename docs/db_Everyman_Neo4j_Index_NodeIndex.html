@@ -77,7 +77,7 @@
       });
 
       
-    </script><h1 xmlns:dbx="http://docblox-project.org/xsl/functions" class="file">Everyman/Neo4j/Index.php</h1>
+    </script><h1 xmlns:dbx="http://docblox-project.org/xsl/functions" class="file">Everyman/Neo4j/Index/NodeIndex.php</h1>
 <div xmlns:dbx="http://docblox-project.org/xsl/functions" id="file-nav-box">
 <div id="file-nav-options">
               Show:
@@ -87,7 +87,7 @@
 <ul id="file-nav"><li>
 <a href="#classes"><img src="images/icons/class.png" height="14">
                           Classes
-                      </a><ul><li><a href="#%5CEveryman%5CNeo4j%5CIndex">\Everyman\Neo4j\Index</a></li></ul>
+                      </a><ul><li><a href="#%5CEveryman%5CNeo4j%5CIndex%5CNodeIndex">\Everyman\Neo4j\Index\NodeIndex</a></li></ul>
 </li></ul>
 <div style="clear: left;"></div>
 </div>
@@ -95,80 +95,96 @@
               Table of Contents
           </div>
 </div>
-<a xmlns:dbx="http://docblox-project.org/xsl/functions" name="top" class="anchor"></a><a name="classes" class="anchor"></a><a xmlns:dbx="http://docblox-project.org/xsl/functions" id="\Everyman\Neo4j\Index" class="anchor"></a><h2 xmlns:dbx="http://docblox-project.org/xsl/functions" class="class">\Everyman\Neo4j\Index<div class="to-top"><a href="#top">jump to top</a></div>
+<a xmlns:dbx="http://docblox-project.org/xsl/functions" name="top" class="anchor"></a><a name="classes" class="anchor"></a><a xmlns:dbx="http://docblox-project.org/xsl/functions" id="\Everyman\Neo4j\Index\NodeIndex" class="anchor"></a><h2 xmlns:dbx="http://docblox-project.org/xsl/functions" class="class">\Everyman\Neo4j\Index\NodeIndex<div class="to-top"><a href="#top">jump to top</a></div>
 </h2>
 <div xmlns:dbx="http://docblox-project.org/xsl/functions" class="class">
-<small class="package"><b>Package: </b>Default</small><p class="short-description">Represents an index in the database</p>
+<small class="package"><b>Package: </b>Default</small><p class="short-description">Represents a node index in the database</p>
 <div class="long-description">
 </div>
 <dl class="class-info">
+<dt>Parent(s)</dt>
+<dd><a href="db_Everyman_Neo4j_Index.html#%5CEveryman%5CNeo4j%5CIndex">\Everyman\Neo4j\Index</a></dd>
 <dt>Children</dt>
-<dd><a href="db_Everyman_Neo4j_Index_RelationshipIndex.html#%5CEveryman%5CNeo4j%5CIndex%5CRelationshipIndex">\Everyman\Neo4j\Index\RelationshipIndex</a></dd>
-<dd><a href="db_Everyman_Neo4j_Index_NodeIndex.html#%5CEveryman%5CNeo4j%5CIndex%5CNodeIndex">\Everyman\Neo4j\Index\NodeIndex</a></dd>
+<dd><a href="db_Everyman_Neo4j_Index_NodeFulltextIndex.html#%5CEveryman%5CNeo4j%5CIndex%5CNodeFulltextIndex">\Everyman\Neo4j\Index\NodeFulltextIndex</a></dd>
 </dl>
-<h3>Constants</h3>
-<div>
-<a id="\Everyman\Neo4j\Index::TypeNode" class="anchor"></a><div class="constant publicC">
-<a href="#" class="gripper"><img src="images/icons/arrow_right.png"><img src="images/icons/arrow_down.png" style="display: none;"></a><code><img src="images/icons/constant.png" alt="Constant"> 
-                <span class="highlight">TypeNode</span>
-                = 'node'</code><div class="description"></div>
-<div class="code-tabs"><dl class="constant-info"></dl></div>
-<div class="clear"></div>
-</div>
-<a id="\Everyman\Neo4j\Index::TypeRelationship" class="anchor"></a><div class="constant publicC">
-<a href="#" class="gripper"><img src="images/icons/arrow_right.png"><img src="images/icons/arrow_down.png" style="display: none;"></a><code><img src="images/icons/constant.png" alt="Constant"> 
-                <span class="highlight">TypeRelationship</span>
-                = 'relationship'</code><div class="description"></div>
-<div class="code-tabs"><dl class="constant-info"></dl></div>
-<div class="clear"></div>
-</div>
-</div>
 <h3>Properties</h3>
 <div>
-<a id="\Everyman\Neo4j\Index::$client" class="anchor"></a><div class="property protected">
+<a id="\Everyman\Neo4j\Index\NodeIndex::$client" class="anchor"></a><div class="property protected inherited_from ">
 <a href="#" class="gripper"><img src="images/icons/arrow_right.png"><img src="images/icons/arrow_down.png" style="display: none;"></a><code><img src="images/icons/property.png" alt="Property"><img src="images/icons/visibility_protected.png" style="margin-right: 5px" alt="protected">
                  <span class="highlight">$client</span>= 'null'
-                </code><div class="description"></div>
+                </code><div class="description">
+<span class="attribute">inherited</span><small>Inherited from:
+                        <a href="db_Everyman_Neo4j_Index.html#%5CEveryman%5CNeo4j%5CIndex::%24client">\Everyman\Neo4j\Index::$client</a></small>
+</div>
 <div class="code-tabs">
 <strong>Default value</strong><code>null</code><strong>Details</strong><dl class="property-info">
 <dt>Type</dt>
 <dd></dd>
+<dt>Inherited_from</dt>
+<dd>
+<a href="db_Everyman_Neo4j_Index.html#%5CEveryman%5CNeo4j%5CIndex::%24client">\Everyman\Neo4j\Index::$client</a>
+         
+    </dd>
 </dl>
 </div>
 <div class="clear"></div>
 </div>
-<a id="\Everyman\Neo4j\Index::$config" class="anchor"></a><div class="property protected">
+<a id="\Everyman\Neo4j\Index\NodeIndex::$config" class="anchor"></a><div class="property protected inherited_from ">
 <a href="#" class="gripper"><img src="images/icons/arrow_right.png"><img src="images/icons/arrow_down.png" style="display: none;"></a><code><img src="images/icons/property.png" alt="Property"><img src="images/icons/visibility_protected.png" style="margin-right: 5px" alt="protected">
                  <span class="highlight">$config</span>= 'array()'
-                </code><div class="description"></div>
+                </code><div class="description">
+<span class="attribute">inherited</span><small>Inherited from:
+                        <a href="db_Everyman_Neo4j_Index.html#%5CEveryman%5CNeo4j%5CIndex::%24config">\Everyman\Neo4j\Index::$config</a></small>
+</div>
 <div class="code-tabs">
 <strong>Default value</strong><code>array()</code><strong>Details</strong><dl class="property-info">
 <dt>Type</dt>
 <dd></dd>
+<dt>Inherited_from</dt>
+<dd>
+<a href="db_Everyman_Neo4j_Index.html#%5CEveryman%5CNeo4j%5CIndex::%24config">\Everyman\Neo4j\Index::$config</a>
+         
+    </dd>
 </dl>
 </div>
 <div class="clear"></div>
 </div>
-<a id="\Everyman\Neo4j\Index::$name" class="anchor"></a><div class="property protected">
+<a id="\Everyman\Neo4j\Index\NodeIndex::$name" class="anchor"></a><div class="property protected inherited_from ">
 <a href="#" class="gripper"><img src="images/icons/arrow_right.png"><img src="images/icons/arrow_down.png" style="display: none;"></a><code><img src="images/icons/property.png" alt="Property"><img src="images/icons/visibility_protected.png" style="margin-right: 5px" alt="protected">
                  <span class="highlight">$name</span>= 'null'
-                </code><div class="description"></div>
+                </code><div class="description">
+<span class="attribute">inherited</span><small>Inherited from:
+                        <a href="db_Everyman_Neo4j_Index.html#%5CEveryman%5CNeo4j%5CIndex::%24name">\Everyman\Neo4j\Index::$name</a></small>
+</div>
 <div class="code-tabs">
 <strong>Default value</strong><code>null</code><strong>Details</strong><dl class="property-info">
 <dt>Type</dt>
 <dd></dd>
+<dt>Inherited_from</dt>
+<dd>
+<a href="db_Everyman_Neo4j_Index.html#%5CEveryman%5CNeo4j%5CIndex::%24name">\Everyman\Neo4j\Index::$name</a>
+         
+    </dd>
 </dl>
 </div>
 <div class="clear"></div>
 </div>
-<a id="\Everyman\Neo4j\Index::$type" class="anchor"></a><div class="property protected">
+<a id="\Everyman\Neo4j\Index\NodeIndex::$type" class="anchor"></a><div class="property protected inherited_from ">
 <a href="#" class="gripper"><img src="images/icons/arrow_right.png"><img src="images/icons/arrow_down.png" style="display: none;"></a><code><img src="images/icons/property.png" alt="Property"><img src="images/icons/visibility_protected.png" style="margin-right: 5px" alt="protected">
                  <span class="highlight">$type</span>= 'self::TypeNode'
-                </code><div class="description"></div>
+                </code><div class="description">
+<span class="attribute">inherited</span><small>Inherited from:
+                        <a href="db_Everyman_Neo4j_Index.html#%5CEveryman%5CNeo4j%5CIndex::%24type">\Everyman\Neo4j\Index::$type</a></small>
+</div>
 <div class="code-tabs">
 <strong>Default value</strong><code>self::TypeNode</code><strong>Details</strong><dl class="property-info">
 <dt>Type</dt>
 <dd></dd>
+<dt>Inherited_from</dt>
+<dd>
+<a href="db_Everyman_Neo4j_Index.html#%5CEveryman%5CNeo4j%5CIndex::%24type">\Everyman\Neo4j\Index::$type</a>
+         
+    </dd>
 </dl>
 </div>
 <div class="clear"></div>
@@ -176,9 +192,9 @@
 </div>
 <h3>Methods</h3>
 <div>
-<a id="\Everyman\Neo4j\Index::__construct()" class="anchor"></a><div class="method public">
+<a id="\Everyman\Neo4j\Index\NodeIndex::__construct()" class="anchor"></a><div class="method public">
 <a href="#" class="gripper"><img src="images/icons/arrow_right.png"><img src="images/icons/arrow_down.png" style="display: none;"></a><code><img src="images/icons/method.png" alt="method"><img src="images/icons/visibility_public.png" style="margin-right: 5px" alt="public"><span class="highlight">__construct</span><span class="nb-faded-text">(
-          <a href="db_Everyman_Neo4j_Client.html#%5CEveryman%5CNeo4j%5CClient">\Everyman\Neo4j\Client</a> $client, string $type, string $name, array $config
+          <a href="db_Everyman_Neo4j_Client.html#%5CEveryman%5CNeo4j%5CClient">\Everyman\Neo4j\Client</a> $client, string $name, array $config
               =
               array()
           )
@@ -200,11 +216,6 @@
 <td><em></em></td>
 </tr>
 <tr>
-<th>$type</th>
-<td>string</td>
-<td><em></em></td>
-</tr>
-<tr>
 <th>$name</th>
 <td>string</td>
 <td><em></em></td>
@@ -218,13 +229,17 @@
 </div>
 <div class="clear"></div>
 </div>
-<a id="\Everyman\Neo4j\Index::add()" class="anchor"></a><div class="method public">
+<a id="\Everyman\Neo4j\Index\NodeIndex::add()" class="anchor"></a><div class="method public inherited_from ">
 <a href="#" class="gripper"><img src="images/icons/arrow_right.png"><img src="images/icons/arrow_down.png" style="display: none;"></a><code><img src="images/icons/method.png" alt="method"><img src="images/icons/visibility_public.png" style="margin-right: 5px" alt="public"><span class="highlight">add</span><span class="nb-faded-text">(
           <a href="db_Everyman_Neo4j_PropertyContainer.html#%5CEveryman%5CNeo4j%5CPropertyContainer">\Everyman\Neo4j\PropertyContainer</a> $entity, string $key, string $value
           )
         </span>
         :
-          boolean</code><div class="description"><p class="short_description">Add an entity to the index</p></div>
+          boolean</code><div class="description">
+<span class="attribute">inherited</span><p class="short_description">Add an entity to the index</p>
+<small>Inherited from:
+                    <a href="db_Everyman_Neo4j_Index.html#%5CEveryman%5CNeo4j%5CIndex::add()">\Everyman\Neo4j\Index::add()</a></small>
+</div>
 <div class="code-tabs">
 <div class="long-description">
 </div>
@@ -263,13 +278,17 @@
 </div>
 <div class="clear"></div>
 </div>
-<a id="\Everyman\Neo4j\Index::delete()" class="anchor"></a><div class="method public">
+<a id="\Everyman\Neo4j\Index\NodeIndex::delete()" class="anchor"></a><div class="method public inherited_from ">
 <a href="#" class="gripper"><img src="images/icons/arrow_right.png"><img src="images/icons/arrow_down.png" style="display: none;"></a><code><img src="images/icons/method.png" alt="method"><img src="images/icons/visibility_public.png" style="margin-right: 5px" alt="public"><span class="highlight">delete</span><span class="nb-faded-text">(
           
           )
         </span>
         :
-          boolean</code><div class="description"><p class="short_description">Delete this index</p></div>
+          boolean</code><div class="description">
+<span class="attribute">inherited</span><p class="short_description">Delete this index</p>
+<small>Inherited from:
+                    <a href="db_Everyman_Neo4j_Index.html#%5CEveryman%5CNeo4j%5CIndex::delete()">\Everyman\Neo4j\Index::delete()</a></small>
+</div>
 <div class="code-tabs">
 <div class="long-description">
 </div>
@@ -286,13 +305,17 @@
 </div>
 <div class="clear"></div>
 </div>
-<a id="\Everyman\Neo4j\Index::find()" class="anchor"></a><div class="method public">
+<a id="\Everyman\Neo4j\Index\NodeIndex::find()" class="anchor"></a><div class="method public inherited_from ">
 <a href="#" class="gripper"><img src="images/icons/arrow_right.png"><img src="images/icons/arrow_down.png" style="display: none;"></a><code><img src="images/icons/method.png" alt="method"><img src="images/icons/visibility_public.png" style="margin-right: 5px" alt="public"><span class="highlight">find</span><span class="nb-faded-text">(
           string $key, string $value
           )
         </span>
         :
-          array</code><div class="description"><p class="short_description">Find entities</p></div>
+          array</code><div class="description">
+<span class="attribute">inherited</span><p class="short_description">Find entities</p>
+<small>Inherited from:
+                    <a href="db_Everyman_Neo4j_Index.html#%5CEveryman%5CNeo4j%5CIndex::find()">\Everyman\Neo4j\Index::find()</a></small>
+</div>
 <div class="code-tabs">
 <div class="long-description">
 </div>
@@ -326,13 +349,17 @@
 </div>
 <div class="clear"></div>
 </div>
-<a id="\Everyman\Neo4j\Index::findOne()" class="anchor"></a><div class="method public">
+<a id="\Everyman\Neo4j\Index\NodeIndex::findOne()" class="anchor"></a><div class="method public inherited_from ">
 <a href="#" class="gripper"><img src="images/icons/arrow_right.png"><img src="images/icons/arrow_down.png" style="display: none;"></a><code><img src="images/icons/method.png" alt="method"><img src="images/icons/visibility_public.png" style="margin-right: 5px" alt="public"><span class="highlight">findOne</span><span class="nb-faded-text">(
           string $key, string $value
           )
         </span>
         :
-          <a href="db_Everyman_Neo4j_PropertyContainer.html#%5CEveryman%5CNeo4j%5CPropertyContainer">\Everyman\Neo4j\PropertyContainer</a></code><div class="description"><p class="short_description">Find a single entity</p></div>
+          <a href="db_Everyman_Neo4j_PropertyContainer.html#%5CEveryman%5CNeo4j%5CPropertyContainer">\Everyman\Neo4j\PropertyContainer</a></code><div class="description">
+<span class="attribute">inherited</span><p class="short_description">Find a single entity</p>
+<small>Inherited from:
+                    <a href="db_Everyman_Neo4j_Index.html#%5CEveryman%5CNeo4j%5CIndex::findOne()">\Everyman\Neo4j\Index::findOne()</a></small>
+</div>
 <div class="code-tabs">
 <div class="long-description">
 </div>
@@ -366,13 +393,17 @@
 </div>
 <div class="clear"></div>
 </div>
-<a id="\Everyman\Neo4j\Index::getConfig()" class="anchor"></a><div class="method public">
+<a id="\Everyman\Neo4j\Index\NodeIndex::getConfig()" class="anchor"></a><div class="method public inherited_from ">
 <a href="#" class="gripper"><img src="images/icons/arrow_right.png"><img src="images/icons/arrow_down.png" style="display: none;"></a><code><img src="images/icons/method.png" alt="method"><img src="images/icons/visibility_public.png" style="margin-right: 5px" alt="public"><span class="highlight">getConfig</span><span class="nb-faded-text">(
           
           )
         </span>
         :
-          array</code><div class="description"><p class="short_description">Get the configuration options for this index</p></div>
+          array</code><div class="description">
+<span class="attribute">inherited</span><p class="short_description">Get the configuration options for this index</p>
+<small>Inherited from:
+                    <a href="db_Everyman_Neo4j_Index.html#%5CEveryman%5CNeo4j%5CIndex::getConfig()">\Everyman\Neo4j\Index::getConfig()</a></small>
+</div>
 <div class="code-tabs">
 <div class="long-description"><p>Configuration options are only used during index creation,
 see <code>save</code></p>
@@ -390,13 +421,17 @@ see <code>save</code></p>
 </div>
 <div class="clear"></div>
 </div>
-<a id="\Everyman\Neo4j\Index::getName()" class="anchor"></a><div class="method public">
+<a id="\Everyman\Neo4j\Index\NodeIndex::getName()" class="anchor"></a><div class="method public inherited_from ">
 <a href="#" class="gripper"><img src="images/icons/arrow_right.png"><img src="images/icons/arrow_down.png" style="display: none;"></a><code><img src="images/icons/method.png" alt="method"><img src="images/icons/visibility_public.png" style="margin-right: 5px" alt="public"><span class="highlight">getName</span><span class="nb-faded-text">(
           
           )
         </span>
         :
-          string</code><div class="description"><p class="short_description">Get the index name</p></div>
+          string</code><div class="description">
+<span class="attribute">inherited</span><p class="short_description">Get the index name</p>
+<small>Inherited from:
+                    <a href="db_Everyman_Neo4j_Index.html#%5CEveryman%5CNeo4j%5CIndex::getName()">\Everyman\Neo4j\Index::getName()</a></small>
+</div>
 <div class="code-tabs">
 <div class="long-description">
 </div>
@@ -413,13 +448,17 @@ see <code>save</code></p>
 </div>
 <div class="clear"></div>
 </div>
-<a id="\Everyman\Neo4j\Index::getType()" class="anchor"></a><div class="method public">
+<a id="\Everyman\Neo4j\Index\NodeIndex::getType()" class="anchor"></a><div class="method public inherited_from ">
 <a href="#" class="gripper"><img src="images/icons/arrow_right.png"><img src="images/icons/arrow_down.png" style="display: none;"></a><code><img src="images/icons/method.png" alt="method"><img src="images/icons/visibility_public.png" style="margin-right: 5px" alt="public"><span class="highlight">getType</span><span class="nb-faded-text">(
           
           )
         </span>
         :
-          string</code><div class="description"><p class="short_description">Get the index type</p></div>
+          string</code><div class="description">
+<span class="attribute">inherited</span><p class="short_description">Get the index type</p>
+<small>Inherited from:
+                    <a href="db_Everyman_Neo4j_Index.html#%5CEveryman%5CNeo4j%5CIndex::getType()">\Everyman\Neo4j\Index::getType()</a></small>
+</div>
 <div class="code-tabs">
 <div class="long-description">
 </div>
@@ -436,13 +475,17 @@ see <code>save</code></p>
 </div>
 <div class="clear"></div>
 </div>
-<a id="\Everyman\Neo4j\Index::query()" class="anchor"></a><div class="method public">
+<a id="\Everyman\Neo4j\Index\NodeIndex::query()" class="anchor"></a><div class="method public inherited_from ">
 <a href="#" class="gripper"><img src="images/icons/arrow_right.png"><img src="images/icons/arrow_down.png" style="display: none;"></a><code><img src="images/icons/method.png" alt="method"><img src="images/icons/visibility_public.png" style="margin-right: 5px" alt="public"><span class="highlight">query</span><span class="nb-faded-text">(
           string $query
           )
         </span>
         :
-          array</code><div class="description"><p class="short_description">Query index to find entities</p></div>
+          array</code><div class="description">
+<span class="attribute">inherited</span><p class="short_description">Query index to find entities</p>
+<small>Inherited from:
+                    <a href="db_Everyman_Neo4j_Index.html#%5CEveryman%5CNeo4j%5CIndex::query()">\Everyman\Neo4j\Index::query()</a></small>
+</div>
 <div class="code-tabs">
 <div class="long-description">
 </div>
@@ -471,13 +514,17 @@ see <code>save</code></p>
 </div>
 <div class="clear"></div>
 </div>
-<a id="\Everyman\Neo4j\Index::queryOne()" class="anchor"></a><div class="method public">
+<a id="\Everyman\Neo4j\Index\NodeIndex::queryOne()" class="anchor"></a><div class="method public inherited_from ">
 <a href="#" class="gripper"><img src="images/icons/arrow_right.png"><img src="images/icons/arrow_down.png" style="display: none;"></a><code><img src="images/icons/method.png" alt="method"><img src="images/icons/visibility_public.png" style="margin-right: 5px" alt="public"><span class="highlight">queryOne</span><span class="nb-faded-text">(
           string $query
           )
         </span>
         :
-          <a href="db_Everyman_Neo4j_PropertyContainer.html#%5CEveryman%5CNeo4j%5CPropertyContainer">\Everyman\Neo4j\PropertyContainer</a></code><div class="description"><p class="short_description">Query index to find a single entity</p></div>
+          <a href="db_Everyman_Neo4j_PropertyContainer.html#%5CEveryman%5CNeo4j%5CPropertyContainer">\Everyman\Neo4j\PropertyContainer</a></code><div class="description">
+<span class="attribute">inherited</span><p class="short_description">Query index to find a single entity</p>
+<small>Inherited from:
+                    <a href="db_Everyman_Neo4j_Index.html#%5CEveryman%5CNeo4j%5CIndex::queryOne()">\Everyman\Neo4j\Index::queryOne()</a></small>
+</div>
 <div class="code-tabs">
 <div class="long-description">
 </div>
@@ -506,7 +553,7 @@ see <code>save</code></p>
 </div>
 <div class="clear"></div>
 </div>
-<a id="\Everyman\Neo4j\Index::remove()" class="anchor"></a><div class="method public">
+<a id="\Everyman\Neo4j\Index\NodeIndex::remove()" class="anchor"></a><div class="method public inherited_from ">
 <a href="#" class="gripper"><img src="images/icons/arrow_right.png"><img src="images/icons/arrow_down.png" style="display: none;"></a><code><img src="images/icons/method.png" alt="method"><img src="images/icons/visibility_public.png" style="margin-right: 5px" alt="public"><span class="highlight">remove</span><span class="nb-faded-text">(
           <a href="db_Everyman_Neo4j_PropertyContainer.html#%5CEveryman%5CNeo4j%5CPropertyContainer">\Everyman\Neo4j\PropertyContainer</a> $entity, string $key
               =
@@ -516,9 +563,13 @@ see <code>save</code></p>
           )
         </span>
         :
-          boolean</code><div class="description"><p class="short_description">Remove an entity from the index
+          boolean</code><div class="description">
+<span class="attribute">inherited</span><p class="short_description">Remove an entity from the index
 If $value is not given, all reference of the entity for the key
-are removed.</p></div>
+are removed.</p>
+<small>Inherited from:
+                    <a href="db_Everyman_Neo4j_Index.html#%5CEveryman%5CNeo4j%5CIndex::remove()">\Everyman\Neo4j\Index::remove()</a></small>
+</div>
 <div class="code-tabs">
 <div class="long-description"><p>If $key is not given, all reference of the entity are removed.</p>
 </div>
@@ -557,13 +608,17 @@ are removed.</p></div>
 </div>
 <div class="clear"></div>
 </div>
-<a id="\Everyman\Neo4j\Index::save()" class="anchor"></a><div class="method public">
+<a id="\Everyman\Neo4j\Index\NodeIndex::save()" class="anchor"></a><div class="method public inherited_from ">
 <a href="#" class="gripper"><img src="images/icons/arrow_right.png"><img src="images/icons/arrow_down.png" style="display: none;"></a><code><img src="images/icons/method.png" alt="method"><img src="images/icons/visibility_public.png" style="margin-right: 5px" alt="public"><span class="highlight">save</span><span class="nb-faded-text">(
           
           )
         </span>
         :
-          boolean</code><div class="description"><p class="short_description">Save this index</p></div>
+          boolean</code><div class="description">
+<span class="attribute">inherited</span><p class="short_description">Save this index</p>
+<small>Inherited from:
+                    <a href="db_Everyman_Neo4j_Index.html#%5CEveryman%5CNeo4j%5CIndex::save()">\Everyman\Neo4j\Index::save()</a></small>
+</div>
 <div class="code-tabs">
 <div class="long-description">
 </div>
