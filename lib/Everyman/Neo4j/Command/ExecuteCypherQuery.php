@@ -1,7 +1,8 @@
 <?php
 namespace Everyman\Neo4j\Command;
 
-use Everyman\Neo4j\EntityMapper,
+use Everyman\Neo4j\Exception,
+    Everyman\Neo4j\EntityMapper,
     Everyman\Neo4j\Command,
 	Everyman\Neo4j\Client,
 	Everyman\Neo4j\Cypher\Query,
@@ -58,7 +59,16 @@ class ExecuteCypherQuery extends Command
 	 */
 	protected function getPath()
 	{
-		return '/ext/CypherPlugin/graphdb/execute_query';
+		$info = $this->client->getServerInfo();
+		if (isset($info['cypher'])) {
+			$url = $info['cypher'];
+		} else if (isset($info['extensions']['CypherPlugin']['execute_query'])) {
+			$url = $info['extensions']['CypherPlugin']['execute_query'];
+		} else {
+			throw new Exception('Cypher unavailable');
+		}
+
+		return str_replace($this->getTransport()->getEndpoint(), '', $url);
 	}
 
 	/**
