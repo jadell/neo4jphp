@@ -11,6 +11,8 @@ class Client
 	const ErrorNotFound      = 404;
 	const ErrorConflict      = 409;
 
+	const RefNodeId = 0;
+
 	protected $transport = null;
 	protected $entityMapper = null;
 	protected $entityCache = null;
@@ -282,6 +284,16 @@ class Client
 		return $this->runCommand($command);
 	}
 	
+	/**
+	 * Retrieve the reference node (id: 0) from the server
+	 *
+	 * @return Node
+	 */
+	public function getReferenceNode()
+	{
+		return $this->getNode(self::RefNodeId);
+	}
+
 	/**
 	 * Get the requested relationship
 	 * Using the $force option disables the check

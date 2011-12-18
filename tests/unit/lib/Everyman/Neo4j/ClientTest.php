@@ -870,4 +870,17 @@ class ClientTest extends \PHPUnit_Framework_TestCase
 		$this->assertInstanceOf('Everyman\Neo4j\Relationship', $rel);
 		$this->assertSame($this->client, $rel->getClient());
 	}
+
+	public function testGetReferenceNode_Found_ReturnsNode()
+	{
+		$this->transport->expects($this->once())
+			->method('get')
+			->with('/node/0')
+			->will($this->returnValue(array('code'=>200,'data'=>array('data'=>array()))));
+
+		$node = $this->client->getReferenceNode();
+		$this->assertNotNull($node);
+		$this->assertInstanceOf('Everyman\Neo4j\Node', $node);
+		$this->assertEquals(0, $node->getId());
+	}
 }
