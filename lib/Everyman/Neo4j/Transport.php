@@ -15,6 +15,8 @@ class Transport
 	protected $host = 'localhost';
 	protected $port = 7474;
 	protected $path = '/db/data';
+	protected $username = null;
+	protected $password = null;
 
 	protected $handle = null;
 
@@ -95,6 +97,11 @@ class Transport
 			CURLOPT_POST => false,
 			CURLOPT_POSTFIELDS => null,
 		);
+
+		if ($this->username && $this->password) {
+			$options[CURLOPT_HTTPAUTH] = CURLAUTH_BASIC;
+			$options[CURLOPT_USERPWD] = $this->username.':'.$this->password;
+		}
 
 		switch ($method) {
 			case self::DELETE :
@@ -197,6 +204,22 @@ class Transport
 	public function delete($path)
 	{
 		return $this->makeRequest(self::DELETE, $path);
+	}
+
+	/**
+	 * Set username and password to use with HTTP Basic Auth
+	 *
+	 * Returns this Trnasport object
+	 *
+	 * @param string $username
+	 * @param string $password
+	 * @return Transport
+	 */
+	public function setAuth($username=null, $password=null)
+	{
+		$this->username = $username;
+		$this->password = $password;
+		return $this;
 	}
 
 	/**
