@@ -200,6 +200,20 @@ class Transport
 	}
 
 	/**
+	 * Turn HTTPS on or off
+	 *
+	 * Returns this Trnasport object
+	 *
+	 * @param boolean $useHttps
+	 * @return Transport
+	 */
+	public function useHttps($useHttps=true)
+	{
+		$this->scheme = $useHttps ? 'https' : 'http';
+		return $this;
+	}
+
+	/**
 	 * Get the cURL handle
 	 *
 	 * @return resource cURL handle

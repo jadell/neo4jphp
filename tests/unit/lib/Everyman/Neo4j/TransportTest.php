@@ -26,6 +26,12 @@ class TransportTest extends \PHPUnit_Framework_TestCase
 		$this->assertEquals("http://{$this->host}:{$this->port}/db/data", $this->transport->getEndpoint());
 	}
 
+	public function testGetEndpoint_UseHttps_ReturnsCorrectEndpointUrl()
+	{
+		$this->transport->useHttps();
+		$this->assertEquals("https://{$this->host}:{$this->port}/db/data", $this->transport->getEndpoint());
+	}
+
 	public function testDelete_MakesRequestWithCorrectParams()
 	{
 		$expected = array('code'=>200,'headers'=>array('Location'=>'somewhere'),'data'=>array('key'=>'val'));
