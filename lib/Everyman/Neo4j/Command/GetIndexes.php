@@ -79,7 +79,7 @@ class GetIndexes extends Command
 
 		$indexes = array();
 		foreach ($data as $name => $indexData) {
-			$indexes[] = new Index($this->client, $this->type, $name);
+			$indexes[] = new Index($this->client, $this->type, $name, $indexData);
 		}
 		return $indexes;
 	}

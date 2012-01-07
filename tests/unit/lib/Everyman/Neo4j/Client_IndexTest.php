@@ -641,12 +641,24 @@ class Client_IndexTest extends \PHPUnit_Framework_TestCase
 
 	public function testGetIndexes_NodeType_ReturnsArray()
 	{
+		$favoritesConfig = array(
+			'template' =>'http://0.0.0.0:7474/db/data/index/node/favorites/{key}/{value}',
+			'provider' =>'lucene',
+			'type' =>'exact',
+		);
+
+		$usersConfig = array(
+			'template' =>'http://0.0.0.0:7474/db/data/index/node/users/{key}/{value}',
+			'provider' =>'lucene',
+			'type' =>'fulltext',
+		);
+
 		$this->transport->expects($this->once())
 			->method('get')
 			->with('/index/node')
 			->will($this->returnValue(array('code'=>200, 'data'=>array(
-			'favorites' => array('template' =>'http://0.0.0.0:7474/db/data/index/node/favorites/{key}/{value}'),
-			'users' => array('template' =>'http://0.0.0.0:7474/db/data/index/node/users/{key}/{value}'),
+			'favorites' => $favoritesConfig,
+			'users' => $usersConfig,
 		))));
 
 		$results = $this->client->getIndexes(Index::TypeNode);
@@ -655,10 +667,12 @@ class Client_IndexTest extends \PHPUnit_Framework_TestCase
 		$this->assertInstanceOf('Everyman\Neo4j\Index', $results[0]);
 		$this->assertEquals(Index::TypeNode, $results[0]->getType());
 		$this->assertEquals('favorites', $results[0]->getName());
+		$this->assertEquals($favoritesConfig, $results[0]->getConfig());
 
 		$this->assertInstanceOf('Everyman\Neo4j\Index', $results[1]);
 		$this->assertEquals(Index::TypeNode, $results[1]->getType());
 		$this->assertEquals('users', $results[1]->getName());
+		$this->assertEquals($usersConfig, $results[1]->getConfig());
 	}
 
 	public function testGetIndexes_RelationshipType_ReturnsArray()
