@@ -23,7 +23,7 @@ class MemcacheTest extends \PHPUnit_Framework_TestCase
 			->with('somekey', 'somevalue', 0, 12345)
 			->will($this->returnValue(true));
 
-		$this->assertTrue($this->cache->set('somekey', 'somevalue', 0, 12345));
+		$this->assertTrue($this->cache->set('somekey', 'somevalue', 12345));
 	}
 
 	public function testGet_PassesThroughToMemcache()
