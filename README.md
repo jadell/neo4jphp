@@ -12,7 +12,7 @@ API documentation: http://jadell.github.com/neo4jphp
 Install
 -------
 1. Download latest PHAR from http://github.com/downloads/jadell/neo4jphp/neo4jphp.phar
-2. `include` or `require` neo4jphp.phar in your project
+2. `require("phar://neo4jphp.phar");`
 
 Connection Test
 ---------------
