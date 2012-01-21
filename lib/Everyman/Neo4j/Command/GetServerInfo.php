@@ -69,7 +69,11 @@ class GetServerInfo extends Command
 			'major' => $parts[0],
 			'minor' => $parts[1],
 		);
-		$versionInfo['release'] = current(explode('-', $parts[2], 2));
+		if (empty($parts[2])) {
+			$versionInfo['release'] = 'GA';
+		} else {
+			$versionInfo['release'] = current(explode('-', $parts[2], 2));
+		}
 		return $versionInfo;
 	}
 }

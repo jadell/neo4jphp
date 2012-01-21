@@ -773,6 +773,31 @@ class ClientTest extends \PHPUnit_Framework_TestCase
 		$this->assertEquals($expectedData, $result);
 	}
 
+	public function testGetServerInfo_GeneralAvailabilityRelease_ReturnsArray()
+	{
+		$returnData = array(
+			"relationship_index" => "http://localhost:7474/db/data/index/relationship",
+			"node" => "http://localhost:7474/db/data/node",
+			"neo4j_version" => "1.5",
+		);
+
+		$expectedData = $returnData;
+		$expectedData['version'] = array(
+			"full" => "1.5",
+			"major" => "1",
+			"minor" => "5",
+			"release" => "GA",
+		);
+
+		$this->transport->expects($this->once())
+			->method('get')
+			->with('/')
+			->will($this->returnValue(array('code'=>200, 'data'=>$returnData)));
+
+		$result = $this->client->getServerInfo();
+		$this->assertEquals($expectedData, $result);
+	}
+
 	public function testGetServerInfo_UnsuccessfulResponse_ThrowsException()
 	{
 		$this->transport->expects($this->once())
