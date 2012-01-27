@@ -28,6 +28,10 @@ class Transport
 	 */
 	public function __construct($host='localhost', $port=7474)
 	{
+		if (!function_exists('curl_init')) {
+			throw new Exception('cUrl extension not enabled/installed');
+		}
+
 		$this->host = $host;
 		$this->port = $port;
 	}
