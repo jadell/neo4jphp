@@ -43,6 +43,22 @@ class Node extends PropertyContainer
 	}
 
 	/**
+	 * Get the first relationship of this node that matches the given criteria
+	 *
+	 * @param mixed  $types string or array of strings
+	 * @param string $dir
+	 * @return Relationship
+	 */
+	public function getFirstRelationship($types=array(), $dir=null)
+	{
+		$rels = $this->client->getNodeRelationships($this, $types, $dir);
+		if (count($rels) < 1) {
+			return null;
+		}
+		return $rels[0];
+	}
+
+	/**
 	 * Get relationships of this node
 	 *
 	 * @param mixed  $types string or array of strings
