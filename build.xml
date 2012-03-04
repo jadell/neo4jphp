@@ -32,7 +32,7 @@
 		<pharpackage
 			destfile="./neo4jphp.phar"
 			basedir="./build"
-			compression="gzip"
+			compression="none"
 			stub="./stub.php"
 			signature="sha1">
 			<fileset dir="./build">
