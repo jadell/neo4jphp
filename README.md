@@ -1,7 +1,7 @@
 Neo4jPHP
 ========
 Author: Josh Adell <josh.adell@gmail.com>  
-Copyright (c) 2011  
+Copyright (c) 2011-2012
 
 PHP Wrapper for the Neo4j graph database REST interface
 
@@ -36,6 +36,15 @@ Contributions
 
 Changes
 -------
+
+0.0.7-beta
+* Retrieve reference node in one operation
+* Find and return only the first matching relationship
+* Optionally use HTTPS and basic authentication
+* Keep index configuration when retrieved from server
+* Add Memcache caching plugin
+* Do not allow use if cUrl is not detected
+* PHAR is uncompressed by default
 
 0.0.6-beta
 
