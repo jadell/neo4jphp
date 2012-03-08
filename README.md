@@ -38,6 +38,7 @@ Changes
 -------
 
 0.0.7-beta
+
 * Retrieve reference node in one operation
 * Find and return only the first matching relationship
 * Optionally use HTTPS and basic authentication
