@@ -35,10 +35,13 @@ class Transport
 		$this->host = $host;
 		$this->port = $port;
 	}
-	
+
+	/**
+	 * Make sure the curl handle closes when we are done with the Transport
+	 */
 	public function __destruct()
 	{
-		if($this->handle) {
+		if ($this->handle) {
 			curl_close($this->handle);
 		}
 	}
