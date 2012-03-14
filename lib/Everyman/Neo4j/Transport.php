@@ -35,6 +35,13 @@ class Transport
 		$this->host = $host;
 		$this->port = $port;
 	}
+	
+	public function __destruct()
+	{
+		if($this->handle) {
+			curl_close($this->handle);
+		}
+	}
 
 	/**
 	 * Return the Neo4j REST endpoint
