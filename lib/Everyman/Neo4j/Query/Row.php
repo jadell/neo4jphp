@@ -50,7 +50,12 @@ class Row implements \Iterator, \Countable, \ArrayAccess
 		}
 
 		if (!isset($this->data[$offset])) {
-			$this->data[$offset] = $this->client->getEntityMapper()->getEntityFor($this->raw[$offset]);
+			$raw = $this->raw[$offset];
+			$data = $this->client->getEntityMapper()->getEntityFor($raw);
+			if (is_array($data)) {
+				$data = new Row($this->client, array_keys($raw), array_values($raw));
+			}
+			$this->data[$offset] = $data;
 		}
 
 		return $this->data[$offset];

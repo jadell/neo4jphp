@@ -113,4 +113,42 @@ class RowTest extends \PHPUnit_Framework_TestCase
 		
 		$this->assertTrue($row['user'] instanceof Relationship);
 	}
+
+	public function testValueArray_ReturnsAsANewRowObject()
+	{
+		$columns = array('a', 'b');
+		$data = array(
+			// 'a' is a node value
+			array(
+				'data' => array('name' => 'Alice'),
+				'self' => 'http://localhost/db/data/node/0'
+			),
+
+			// 'b' is a collection of node values
+			array(
+				array(
+					'data' => array('name' => 'Bob'),
+					'self' => 'http://localhost/db/data/node/1'
+				),
+				array(
+					'data' => array('name' => 'Cathy'),
+					'self' => 'http://localhost/db/data/node/2'
+				),
+				array(
+					'data' => array('name' => 'David'),
+					'self' => 'http://localhost/db/data/node/3'
+				),
+			),
+		);
+
+		$row = new Row($this->client, $columns, $data);
+		$this->assertInstanceOf('Everyman\Neo4j\Node', $row['a']);
+
+		$this->assertInstanceOf('Everyman\Neo4j\Query\Row', $row['b']);
+		foreach ($row['b'] as $innerValue) {
+			$this->assertInstanceOf('Everyman\Neo4j\Node', $innerValue);
+		}
+
+		$this->assertEquals($data[1][1]['data']['name'], $row['b'][1]->getProperty('name'));
+	}
 }
