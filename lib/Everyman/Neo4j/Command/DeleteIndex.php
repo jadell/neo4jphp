@@ -75,7 +75,7 @@ class DeleteIndex extends Command
 	 */
 	protected function handleResult($code, $headers, $data)
 	{
-		if ((int)($code / 100) != 2) {
+		if ((int)($code / 100) != 2 && (int)$code != 404) {
 			$this->throwException('Unable to delete index', $code, $headers, $data);
 		}
 		return true;

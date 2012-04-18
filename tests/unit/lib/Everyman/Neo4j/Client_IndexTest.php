@@ -127,6 +127,18 @@ class Client_IndexTest extends \PHPUnit_Framework_TestCase
 		$this->assertTrue($this->client->deleteIndex($index));
 	}
 
+	public function testDeleteIndex_NotFound_ReturnsSuccess()
+	{
+		$index = new Index($this->client, Index::TypeNode, 'indexname');
+
+		$this->transport->expects($this->once())
+			->method('delete')
+			->with('/index/node/indexname')
+			->will($this->returnValue(array('code'=>404)));
+
+		$this->assertTrue($this->client->deleteIndex($index));
+	}
+
 	public function testAddToIndex_UnknownIndexType_ThrowsException()
 	{
 		$index = new Index($this->client, 'FOO', 'indexname');
