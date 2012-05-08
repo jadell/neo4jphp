@@ -827,6 +827,7 @@ class ClientTest extends \PHPUnit_Framework_TestCase
 
 
 		$batch = $this->client->startBatch();
+		$batch->save(new Node($this->client));
 		$this->assertInstanceOf('Everyman\Neo4j\Batch', $batch);
 		$this->client->commitBatch();
 
@@ -844,6 +845,7 @@ class ClientTest extends \PHPUnit_Framework_TestCase
 
 
 		$batch = $this->client->startBatch();
+		$batch->save(new Node($this->client));
 		$this->assertInstanceOf('Everyman\Neo4j\Batch', $batch);
 		$batch->commit();
 
@@ -861,6 +863,7 @@ class ClientTest extends \PHPUnit_Framework_TestCase
 
 		$openBatch = $this->client->startBatch();
 		$batch = new Batch($this->client);
+		$batch->save(new Node($this->client));
 		$batch->commit();
 
 		$batchAgain = $this->client->startBatch();
@@ -880,6 +883,15 @@ class ClientTest extends \PHPUnit_Framework_TestCase
 	{
 		$this->setExpectedException('Everyman\Neo4j\Exception');
 		$this->client->commitBatch();
+	}
+
+	public function testCommitBatch_NoOperationsInBatch_ReturnsTrue()
+	{
+		$this->transport->expects($this->never())
+			->method('post');
+
+		$batch = new Batch($this->client);
+		$this->assertTrue($this->client->commitBatch($batch));
 	}
 
 	public function testMakeNode_ReturnsNode()

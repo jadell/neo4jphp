@@ -74,6 +74,10 @@ class Client
 			$this->endBatch();
 		}
 
+		if (count($batch->getOperations()) < 1) {
+			return true;
+		}
+
 		return $this->runCommand(new Command\Batch\Commit($this, $batch));
 	}
 
