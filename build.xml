@@ -39,7 +39,7 @@
 				<include name="**/**" />
 			</fileset>
 			<metadata>
-				<element name="version" value="0.0.7b" />
+				<element name="version" value="0.1.0" />
 				<element name="authors">
 					<element name="Josh Adell">
 						<element name="email" value="josh.adell@gmail.com" />

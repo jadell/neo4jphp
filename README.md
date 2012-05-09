@@ -37,6 +37,12 @@ Contributions
 Changes
 -------
 
+0.1.0
+
+* Cypher and Gremlin results handle nested arrays of nodes/relationships
+* Batch request with no operations succeeds
+* Delete index where index does not exist succeeds
+
 0.0.7-beta
 
 * Retrieve reference node in one operation
