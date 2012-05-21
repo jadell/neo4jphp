@@ -3,4 +3,7 @@ php:
   - 5.3
   - 5.4
 
+before_script:
+  - pecl install memcached
+
 script: cd ./tests && phpunit
