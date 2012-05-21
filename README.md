@@ -9,6 +9,8 @@ In-depth documentation and examples: http://github.com/jadell/neo4jphp/wiki
 
 API documentation: http://jadell.github.com/neo4jphp
 
+[![Build Status](https://secure.travis-ci.org/jadell/neo4jphp.png?branch=master)](http://travis-ci.org/jadell/neo4jphp)
+
 Install
 -------
 1. Download latest PHAR from http://github.com/downloads/jadell/neo4jphp/neo4jphp.phar
