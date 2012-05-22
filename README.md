@@ -13,11 +13,17 @@ API documentation: http://jadell.github.com/neo4jphp
 
 Install
 -------
-1. Download latest PHAR from http://github.com/downloads/jadell/neo4jphp/neo4jphp.phar
-2. `require("phar://neo4jphp.phar");`
 
-Connection Test
----------------
+### Using Composer
+1. From the command line `echo '{"require":{"everyman/neo4jphp":"*"}}' > composer.json && composer install`
+1. In your PHP script `require("vendor/autoload.php");`
+
+### Using pre-packaged PHAR
+1. Download latest PHAR from http://github.com/downloads/jadell/neo4jphp/neo4jphp.phar
+1. In your PHP script `require("phar://neo4jphp.phar");`
+
+Connection Test With PHAR
+-------------------------
 From the command line, execute the following:
 
     > php neo4jphp.phar localhost
