@@ -896,16 +896,28 @@ class ClientTest extends \PHPUnit_Framework_TestCase
 
 	public function testMakeNode_ReturnsNode()
 	{
-		$node = $this->client->makeNode();
+		$data = array(
+			'foo' => 'bar',
+			'baz' => 'qux',
+		);
+
+		$node = $this->client->makeNode($data);
 		$this->assertInstanceOf('Everyman\Neo4j\Node', $node);
 		$this->assertSame($this->client, $node->getClient());
+		$this->assertEquals($data, $node->getProperties());
 	}
 
 	public function testMakeRelationship_ReturnsRelationship()
 	{
-		$rel = $this->client->makeRelationship();
+		$data = array(
+			'foo' => 'bar',
+			'baz' => 'qux',
+		);
+
+		$rel = $this->client->makeRelationship($data);
 		$this->assertInstanceOf('Everyman\Neo4j\Relationship', $rel);
 		$this->assertSame($this->client, $rel->getClient());
+		$this->assertEquals($data, $rel->getProperties());
 	}
 
 	public function testGetReferenceNode_Found_ReturnsNode()

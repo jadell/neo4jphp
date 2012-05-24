@@ -139,7 +139,7 @@ class Client
 
 	/**
 	 * Execute the given Cypher query and return the result
-	 *        
+	 *
 	 * @param Cypher\Query $query A Cypher query, or a query template.
 	 * @return Query\ResultSet
 	 */
@@ -151,7 +151,7 @@ class Client
 
 	/**
 	 * Execute the given Gremlin query and return the result
-	 *        
+	 *
 	 * @param Gremlin\Query $query
 	 * @return Query\ResultSet
 	 */
@@ -163,7 +163,7 @@ class Client
 
 	/**
 	 * Execute a paged traversal and return the result
-	 *        
+	 *
 	 * @param Pager $pager
 	 * @return array
 	 */
@@ -175,7 +175,7 @@ class Client
 
 	/**
 	 * Execute the given traversal and return the result
-	 *        
+	 *
 	 * @param Traversal $traversal
 	 * @param Node $startNode
 	 * @param string $returnType
@@ -230,7 +230,7 @@ class Client
 	 * Using the $force option disables the check
 	 * of whether or not the node exists and will
 	 * return a Node with the given id even if it
-	 * does not. 
+	 * does not.
 	 *
 	 * @param integer $id
 	 * @param boolean $force
@@ -287,7 +287,7 @@ class Client
 		$command = new Command\GetPaths($this, $finder);
 		return $this->runCommand($command);
 	}
-	
+
 	/**
 	 * Retrieve the reference node (id: 0) from the server
 	 *
@@ -303,7 +303,7 @@ class Client
 	 * Using the $force option disables the check
 	 * of whether or not the relationship exists and will
 	 * return a Relationship with the given id even if it
-	 * does not. 
+	 * does not.
 	 *
 	 * @param integer $id
 	 * @param boolean $force
@@ -409,22 +409,26 @@ class Client
 	/**
 	 * Create a new node object bound to this client
 	 *
+	 * @param array $properties
 	 * @return Node
 	 */
-	public function makeNode()
+	public function makeNode($properties=array())
 	{
 		$node = new Node($this);
+		$node->setProperties($properties);
 		return $node;
 	}
 
 	/**
 	 * Create a new relationship object bound to this client
 	 *
+	 * @param array $properties
 	 * @return Relationship
 	 */
-	public function makeRelationship()
+	public function makeRelationship($properties=array())
 	{
 		$rel = new Relationship($this);
+		$rel->setProperties($properties);
 		return $rel;
 	}
 
