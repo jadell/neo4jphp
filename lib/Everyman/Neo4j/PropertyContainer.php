@@ -39,8 +39,7 @@ abstract class PropertyContainer
 	
 	public function __isset($key)
 	{
-		// There is no hasProperty() method to refer to.
-		isset($this->properties[$property]);
+		array_key_exists($key,$this->properties);
 	}
 
 	/**
