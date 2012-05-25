@@ -31,6 +31,11 @@ abstract class PropertyContainer
 	{
 		$this->setProperty($key,$value);
 	}
+	
+	public function __unset($key)
+	{
+		$this->removeProperty($key);
+	}
 
 	/**
 	 * Delete this entity
