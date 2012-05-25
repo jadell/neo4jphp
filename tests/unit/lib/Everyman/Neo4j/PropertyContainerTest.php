@@ -12,6 +12,24 @@ class PropertyContainerTest extends \PHPUnit_Framework_TestCase
 		$this->entity = $this->getMock('Everyman\Neo4j\PropertyContainer',
 			array('delete','save','load'), array($this->client));
 	}
+	
+	public function testProperties_MagicNotSet_ReturnsNull()
+	{
+		$this->assertNull($this->entity->notset);
+	}
+
+	public function testProperties_MagicSet_ReturnsValue()
+	{
+		$this->entity->somekey = 'someval';
+		$this->assertEquals('someval', $this->entity->getProperty('somekey'));
+	}
+
+	public function testProperties_MagicRemoved_ReturnsNull()
+	{
+		$this->entity->setProperty('somekey', 'someval');
+		unset($this->entity->somekey);
+		$this->assertNull($this->entity->getProperty('somekey'));
+	}
 
 	public function testProperties_PropertyNotSet_ReturnsNull()
 	{
