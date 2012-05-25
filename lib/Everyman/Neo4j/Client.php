@@ -18,6 +18,7 @@ class Client
 	protected $entityCache = null;
 	protected $serverInfo = null;
 	protected $openBatch = null;
+	protected $nodeClass = 'Node';
 
 	/**
 	 * Initialize the client
@@ -410,11 +411,14 @@ class Client
 	 * Create a new node object bound to this client
 	 *
 	 * @param array $properties
+	 * @param Node $nodeClass
 	 * @return Node
 	 */
-	public function makeNode($properties=array())
+	public function makeNode($properties=array(),Node $nodeClass = null)
 	{
-		$node = new Node($this);
+		if (($nodeClass==null) || !class_exists($nodeClass) || is_subclass_of($nodeClass,$this->nodeClass))
+			$nodeClass = $this->nodeClass;
+		$node = new $nodeClass($this);
 		$node->setProperties($properties);
 		return $node;
 	}
