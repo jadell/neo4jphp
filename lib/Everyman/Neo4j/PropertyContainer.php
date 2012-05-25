@@ -24,12 +24,12 @@ abstract class PropertyContainer
 	
 	public function __get($key)
 	{
-		return $this->properties[$key];
+		return $this->getProperty($key);
 	}
 	
 	public function __set($key,$value)
 	{
-		$this->properties[$key] = $value;
+		$this->setProperty($key,$value);
 	}
 
 	/**
