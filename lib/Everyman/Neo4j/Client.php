@@ -406,6 +406,17 @@ class Client
 
 		return $this->runCommand(new Command\GetRelationship($this, $rel));
 	}
+	
+	 /**
+	  * Set the Class of all returned Nodes
+	  *
+	  * @param String $nodeClass
+	  */
+	public function setNodeClass($nodeClass)
+	{
+		if (class_exists($nodeClass) && is_subclass_of($nodeClass,$this->nodeClass))
+			$this->nodeClass = $nodeClass;
+	}
 
 	/**
 	 * Create a new node object bound to this client
@@ -416,9 +427,10 @@ class Client
 	 */
 	public function makeNode($properties=array(),Node $nodeClass = null)
 	{
-		if (($nodeClass==null) || !class_exists($nodeClass) || is_subclass_of($nodeClass,$this->nodeClass))
-			$nodeClass = $this->nodeClass;
-		$node = new $nodeClass($this);
+		if (($nodeClass==null))
+			$this->setNodeClass($nodeClass);
+		$class = $this->nodeClass;
+		$node = new $class($this);
 		$node->setProperties($properties);
 		return $node;
 	}
