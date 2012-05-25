@@ -36,6 +36,12 @@ abstract class PropertyContainer
 	{
 		$this->removeProperty($key);
 	}
+	
+	public function __isset($key)
+	{
+		// There is no hasProperty() method to refer to.
+		isset($this->properties[$property]);
+	}
 
 	/**
 	 * Delete this entity
