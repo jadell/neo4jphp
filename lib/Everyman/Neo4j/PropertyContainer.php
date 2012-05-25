@@ -21,6 +21,26 @@ abstract class PropertyContainer
 	{
 		$this->setClient($client);
 	}
+	
+	public function __get($key)
+	{
+		return $this->getProperty($key);
+	}
+	
+	public function __set($key,$value)
+	{
+		$this->setProperty($key,$value);
+	}
+	
+	public function __unset($key)
+	{
+		$this->removeProperty($key);
+	}
+	
+	public function __isset($key)
+	{
+		array_key_exists($key,$this->properties);
+	}
 
 	/**
 	 * Delete this entity
