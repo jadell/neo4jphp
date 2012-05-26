@@ -7,16 +7,6 @@ namespace Everyman\Neo4j;
 class Node extends PropertyContainer
 {
 	/**
-	 * Gets called before loading elements
-	 */
-	public function preLoad();
-	
-	/**
-	 * Gets called after loading elements
-	 */
-	public function postLoad();
-	
-	/**
 	 * Delete this node
 	 *
 	 * @return PropertyContainer
@@ -88,9 +78,7 @@ class Node extends PropertyContainer
 	 */
 	public function load()
 	{
-		$this->preLoad();
 		$this->client->loadNode($this);
-		$this->postLoad();
 		return $this;
 	}
 
