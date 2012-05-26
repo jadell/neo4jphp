@@ -20,7 +20,6 @@ abstract class PropertyContainer
 	public function __construct(Client $client)
 	{
 		$this->setClient($client);
-		$this->init();
 	}
 
 	public function __get($key)
@@ -42,11 +41,6 @@ abstract class PropertyContainer
 	{
 		return array_key_exists($key, $this->properties);
 	}
-	
-	/**
-	 * Gets called after construction.
-	 */
-	public function init();
 
 	/**
 	 * Delete this entity
