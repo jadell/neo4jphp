@@ -19,6 +19,9 @@ class Client
 	protected $serverInfo = null;
 	protected $openBatch = null;
 
+	protected $nodeFactory = null;
+	protected $relFactory = null;
+
 	/**
 	 * Initialize the client
 	 *
@@ -414,9 +417,18 @@ class Client
 	 */
 	public function makeNode($properties=array())
 	{
-		$node = new Node($this);
-		$node->setProperties($properties);
-		return $node;
+		if (!$this->nodeFactory) {
+			$this->setNodeFactory(function (Client $client, $properties=array()) {
+				return new Node($client);
+			});
+		}
+
+		$nodeFactory = $this->nodeFactory;
+		$node = $nodeFactory($this);
+		if (!($node instanceof Node)) {
+			throw new Exception('Node factory did not return a Node object.');
+		}
+		return $node->setProperties($properties);
 	}
 
 	/**
@@ -427,9 +439,18 @@ class Client
 	 */
 	public function makeRelationship($properties=array())
 	{
-		$rel = new Relationship($this);
-		$rel->setProperties($properties);
-		return $rel;
+		if (!$this->relFactory) {
+			$this->setRelationshipFactory(function (Client $client, $properties=array()) {
+				return new Relationship($client);
+			});
+		}
+
+		$relFactory = $this->relFactory;
+		$rel = $relFactory($this);
+		if (!($rel instanceof Relationship)) {
+			throw new Exception('Relationship factory did not return a Relationship object.');
+		}
+		return $rel->setProperties($properties);
 	}
 
 	/**
@@ -551,6 +572,48 @@ class Client
 	public function setEntityMapper(EntityMapper $mapper)
 	{
 		$this->entityMapper = $mapper;
+	}
+
+	/**
+	 * Set the callback to use to create new Node objects
+	 *
+	 * Takes a callback of the signature callback(Client $client, $properties=array())
+	 * and returns a new Node object.
+	 * The properties can be used to determine what type of Node
+	 * should be returned, but are not set by the factory function.
+	 *
+	 * @param callable $factory
+	 * @return Client
+	 */
+	public function setNodeFactory($factory)
+	{
+		if (!is_callable($factory)) {
+			throw new Exception('Node factory must be callable.');
+		}
+
+		$this->nodeFactory = $factory;
+		return $this;
+	}
+
+	/**
+	 * Set the callback to use to create new Relationship objects
+	 *
+	 * Takes a callback of the signature callback(Client $client, $properties=array())
+	 * and returns a new Relationship object.
+	 * The properties can be used to determine what type of Relationship
+	 * should be returned, but are not set by the factory function.
+	 *
+	 * @param callable $factory
+	 * @return Client
+	 */
+	public function setRelationshipFactory($factory)
+	{
+		if (!is_callable($factory)) {
+			throw new Exception('Relationship factory must be callable.');
+		}
+
+		$this->relFactory = $factory;
+		return $this;
 	}
 
 	/**

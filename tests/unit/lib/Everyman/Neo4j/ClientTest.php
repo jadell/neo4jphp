@@ -932,4 +932,59 @@ class ClientTest extends \PHPUnit_Framework_TestCase
 		$this->assertInstanceOf('Everyman\Neo4j\Node', $node);
 		$this->assertEquals(0, $node->getId());
 	}
+
+	public function testNodeFactory_SetNodeFactory_ReturnsNodeFromFactory()
+	{
+		$this->client->setNodeFactory(function (Client $client) {
+			return new NodeFactoryTestClass_ClientTest($client);
+		});
+
+		$node = $this->client->makeNode();
+		$this->assertInstanceOf('Everyman\Neo4j\NodeFactoryTestClass_ClientTest', $node);
+	}
+
+	public function testNodeFactory_SetNodeFactory_NotCallable_ThrowsException()
+	{
+		$this->setExpectedException('Everyman\Neo4j\Exception');
+		$this->client->setNodeFactory('bar');
+	}
+
+	public function testNodeFactory_NodeFactoryReturnsNotNode_ThrowsException()
+	{
+		$this->client->setNodeFactory(function (Client $client) {
+			return new \stdClass();
+		});
+
+		$this->setExpectedException('Everyman\Neo4j\Exception');
+		$node = $this->client->makeNode();
+	}
+
+	public function testRelationshipFactory_SetRelationshipFactory_ReturnsRelationshipFromFactory()
+	{
+		$this->client->setRelationshipFactory(function (Client $client) {
+			return new RelFactoryTestClass_ClientTest($client);
+		});
+
+		$rel = $this->client->makeRelationship();
+		$this->assertInstanceOf('Everyman\Neo4j\RelFactoryTestClass_ClientTest', $rel);
+	}
+
+	public function testRelationshipFactory_SetRelationshipFactory_NotCallable_ThrowsException()
+	{
+		$this->setExpectedException('Everyman\Neo4j\Exception');
+		$this->client->setRelationshipFactory('bar');
+	}
+
+	public function testRelationshipFactory_RelationshipFactoryReturnsNotRelationship_ThrowsException()
+	{
+		$this->client->setRelationshipFactory(function (Client $client) {
+			return new \stdClass();
+		});
+
+		$this->setExpectedException('Everyman\Neo4j\Exception');
+		$rel = $this->client->makeRelationship();
+	}
 }
+
+class NodeFactoryTestClass_ClientTest extends Node {}
+class RelFactoryTestClass_ClientTest extends Relationship {}
