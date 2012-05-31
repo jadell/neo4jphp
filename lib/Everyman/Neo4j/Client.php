@@ -424,7 +424,7 @@ class Client
 		}
 
 		$nodeFactory = $this->nodeFactory;
-		$node = $nodeFactory($this);
+		$node = $nodeFactory($this, $properties);
 		if (!($node instanceof Node)) {
 			throw new Exception('Node factory did not return a Node object.');
 		}
@@ -446,7 +446,7 @@ class Client
 		}
 
 		$relFactory = $this->relFactory;
-		$rel = $relFactory($this);
+		$rel = $relFactory($this, $properties);
 		if (!($rel instanceof Relationship)) {
 			throw new Exception('Relationship factory did not return a Relationship object.');
 		}
