@@ -8,9 +8,10 @@ abstract class PropertyContainer
 {
 	protected $id = null;
 	protected $client = null;
-	protected $properties = null;
+	protected $properties = array();
 
 	protected $lazyLoad = true;
+	protected $loaded = false;
 
 	/**
 	 * Build the container and set its client
@@ -209,11 +210,9 @@ abstract class PropertyContainer
 	 */
 	protected function loadProperties()
 	{
-		if ($this->properties === null) {
-			$this->properties = array();
-			if ($this->hasId() && $this->lazyLoad) {
-				$this->load();
-			}
+		if ($this->hasId() && $this->lazyLoad && !$this->loaded) {
+			$this->loaded = true;
+			$this->load();
 		}
 	}
 }

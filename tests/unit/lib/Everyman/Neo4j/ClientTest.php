@@ -41,7 +41,7 @@ class ClientTest extends \PHPUnit_Framework_TestCase
 	{
 		$node = new Node($this->client);
 		$node->setId(123);
-		
+
 		$this->transport->expects($this->once())
 			->method('delete')
 			->with('/node/123')
@@ -54,7 +54,7 @@ class ClientTest extends \PHPUnit_Framework_TestCase
 	{
 		$node = new Node($this->client);
 		$node->setId(123);
-		
+
 		$this->transport->expects($this->once())
 			->method('delete')
 			->with('/node/123')
@@ -68,7 +68,7 @@ class ClientTest extends \PHPUnit_Framework_TestCase
 	{
 		$node = new Node($this->client);
 		$node->setId(123);
-		
+
 		$this->transport->expects($this->once())
 			->method('delete')
 			->with('/node/123')
@@ -106,7 +106,7 @@ class ClientTest extends \PHPUnit_Framework_TestCase
 		$node->useLazyLoad(false)
 			->setId(123)
 			->setProperties($properties);
-		
+
 		$this->transport->expects($this->once())
 			->method('put')
 			->with('/node/123/properties', $properties)
@@ -127,7 +127,7 @@ class ClientTest extends \PHPUnit_Framework_TestCase
 		$node->useLazyLoad(false)
 			->setId(123)
 			->setProperties($properties);
-		
+
 		$this->transport->expects($this->once())
 			->method('put')
 			->with('/node/123/properties', $properties)
@@ -148,7 +148,7 @@ class ClientTest extends \PHPUnit_Framework_TestCase
 		$node->useLazyLoad(false)
 			->setId(123)
 			->setProperties($properties);
-		
+
 		$this->transport->expects($this->once())
 			->method('put')
 			->with('/node/123/properties', $properties)
@@ -167,7 +167,7 @@ class ClientTest extends \PHPUnit_Framework_TestCase
 
 		$node = new Node($this->client);
 		$node->setProperties($properties);
-		
+
 		$this->transport->expects($this->once())
 			->method('post')
 			->with('/node', $properties)
@@ -189,7 +189,7 @@ class ClientTest extends \PHPUnit_Framework_TestCase
 
 		$node = new Node($this->client);
 		$node->setProperties($properties);
-		
+
 		$this->transport->expects($this->once())
 			->method('post')
 			->with('/node', $properties)
@@ -202,7 +202,7 @@ class ClientTest extends \PHPUnit_Framework_TestCase
 	public function testSaveNode_CreateNoProperties_ReturnsSuccess()
 	{
 		$node = new Node($this->client);
-		
+
 		$this->transport->expects($this->once())
 			->method('post')
 			->with('/node',null)
@@ -215,7 +215,7 @@ class ClientTest extends \PHPUnit_Framework_TestCase
 	public function testGetNode_TransportError_ThrowsException()
 	{
 		$nodeId = 123;
-		
+
 		$this->transport->expects($this->once())
 			->method('get')
 			->with('/node/'.$nodeId)
@@ -228,7 +228,7 @@ class ClientTest extends \PHPUnit_Framework_TestCase
 	public function testGetNode_NotFound_ReturnsNull()
 	{
 		$nodeId = 123;
-		
+
 		$this->transport->expects($this->once())
 			->method('get')
 			->with('/node/'.$nodeId)
@@ -240,7 +240,7 @@ class ClientTest extends \PHPUnit_Framework_TestCase
 	public function testGetNode_Force_ReturnsNode()
 	{
 		$nodeId = 123;
-		
+
 		$this->transport->expects($this->never())
 			->method('get');
 
@@ -256,7 +256,7 @@ class ClientTest extends \PHPUnit_Framework_TestCase
 			'foo' => 'bar',
 			'baz' => 'qux',
 		);
-		
+
 		$this->transport->expects($this->once())
 			->method('get')
 			->with('/node/'.$nodeId)
@@ -274,7 +274,7 @@ class ClientTest extends \PHPUnit_Framework_TestCase
 		$nodeId = 123;
 		$node = new Node($this->client);
 		$node->setId($nodeId);
-		
+
 		$this->transport->expects($this->once())
 			->method('get')
 			->with('/node/'.$nodeId)
@@ -295,7 +295,7 @@ class ClientTest extends \PHPUnit_Framework_TestCase
 	public function testGetRelationship_TransportError_ThrowsException()
 	{
 		$relId = 123;
-		
+
 		$this->transport->expects($this->once())
 			->method('get')
 			->with('/relationship/'.$relId)
@@ -308,7 +308,7 @@ class ClientTest extends \PHPUnit_Framework_TestCase
 	public function testGetRelationship_NotFound_ReturnsNull()
 	{
 		$relId = 123;
-		
+
 		$this->transport->expects($this->once())
 			->method('get')
 			->with('/relationship/'.$relId)
@@ -320,7 +320,7 @@ class ClientTest extends \PHPUnit_Framework_TestCase
 	public function testGetRelationship_Force_ReturnsRelationship()
 	{
 		$relId = 123;
-		
+
 		$this->transport->expects($this->never())
 			->method('get');
 
@@ -341,7 +341,7 @@ class ClientTest extends \PHPUnit_Framework_TestCase
 			'end'   => 'http://foo:1234/db/data/node/890',
 			'type'  => 'FOOTYPE',
 		);
-		
+
 		$this->transport->expects($this->once())
 			->method('get')
 			->with('/relationship/'.$relId)
@@ -365,12 +365,46 @@ class ClientTest extends \PHPUnit_Framework_TestCase
 		$this->assertEquals(890, $end->getId());
 	}
 
+	/**
+	 * Regression test for http://github.com/jadell/neo4jphp/issues/52
+	 */
+	public function testGetRelationship_Found_LazyLoadNodes()
+	{
+		$relId = 123;
+		$data = array(
+			'data' => array(
+				'foo' => 'bar',
+				'baz' => 'qux',
+			),
+			'start' => 'http://foo:1234/db/data/node/567',
+			'end'   => 'http://foo:1234/db/data/node/890',
+			'type'  => 'FOOTYPE',
+		);
+
+		$this->transport->expects($this->at(0))
+			->method('get')
+			->with('/relationship/'.$relId)
+			->will($this->returnValue(array('code'=>'200','data'=>$data)));
+		$this->transport->expects($this->at(1))
+			->method('get')
+			->with('/node/567')
+			->will($this->returnValue(array('code'=>'200','data'=>array('data' => array()))));
+		$this->transport->expects($this->at(2))
+			->method('get')
+			->with('/node/890')
+			->will($this->returnValue(array('code'=>'200','data'=>array('data' => array()))));
+
+		$rel = $this->client->getRelationship($relId);
+		$rel->getStartNode()->getProperties();
+		$rel->getEndNode()->getProperties();
+	}
+
 	public function testLoadRelationship_RelationshipNotFound_ThrowsException()
 	{
 		$relId = 123;
 		$rel = new Relationship($this->client);
 		$rel->setId($relId);
-		
+
 		$this->transport->expects($this->once())
 			->method('get')
 			->with('/relationship/'.$relId)
@@ -392,7 +426,7 @@ class ClientTest extends \PHPUnit_Framework_TestCase
 	{
 		$rel = new Relationship($this->client);
 		$rel->setId(123);
-		
+
 		$this->transport->expects($this->once())
 			->method('delete')
 			->with('/relationship/123')
@@ -405,7 +439,7 @@ class ClientTest extends \PHPUnit_Framework_TestCase
 	{
 		$rel = new Relationship($this->client);
 		$rel->setId(123);
-		
+
 		$this->transport->expects($this->once())
 			->method('delete')
 			->with('/relationship/123')
@@ -419,7 +453,7 @@ class ClientTest extends \PHPUnit_Framework_TestCase
 	{
 		$rel = new Relationship($this->client);
 		$rel->setId(123);
-		
+
 		$this->transport->expects($this->once())
 			->method('delete')
 			->with('/relationship/123')
@@ -452,7 +486,7 @@ class ClientTest extends \PHPUnit_Framework_TestCase
 
 		$rel = new Relationship($this->client);
 		$rel->setStartNode($start);
-		
+
 		$this->setExpectedException('Everyman\Neo4j\Exception');
 		$this->client->saveRelationship($rel);
 	}
@@ -467,7 +501,7 @@ class ClientTest extends \PHPUnit_Framework_TestCase
 		$rel = new Relationship($this->client);
 		$rel->setStartNode($start);
 		$rel->setEndNode($end);
-		
+
 		$this->setExpectedException('Everyman\Neo4j\Exception');
 		$this->client->saveRelationship($rel);
 	}
@@ -581,7 +615,7 @@ class ClientTest extends \PHPUnit_Framework_TestCase
 		$rel->useLazyLoad(false)
 			->setId(123)
 			->setProperties($properties);
-		
+
 		$this->transport->expects($this->once())
 			->method('put')
 			->with('/relationship/123/properties', $properties)
@@ -601,7 +635,7 @@ class ClientTest extends \PHPUnit_Framework_TestCase
 		$rel->useLazyLoad(false)
 			->setId(123)
 			->setProperties($properties);
-		
+
 		$this->transport->expects($this->once())
 			->method('put')
 			->with('/relationship/123/properties', $properties)
@@ -622,7 +656,7 @@ class ClientTest extends \PHPUnit_Framework_TestCase
 		$rel->useLazyLoad(false)
 			->setId(123)
 			->setProperties($properties);
-		
+
 		$this->transport->expects($this->once())
 			->method('put')
 			->with('/relationship/123/properties', $properties)
@@ -719,7 +753,7 @@ class ClientTest extends \PHPUnit_Framework_TestCase
 		$this->assertInstanceOf('Everyman\Neo4j\Node', $result[1]->getEndNode());
 		$this->assertEquals(123, $result[1]->getEndNode()->getId());
 	}
-	
+
 	public function testGetRelationshipTypes_ServerReturnsErrorCode_ThrowsException()
 	{
 		$this->transport->expects($this->once())
