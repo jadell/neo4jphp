@@ -14,7 +14,7 @@ class NodeTest extends \PHPUnit_Framework_TestCase
 			'loadNode',
 			'getNodeRelationships',
 			'runCommand',
-		), array(), '', false);
+		));
 		$this->node = new Node($this->client);
 	}
 

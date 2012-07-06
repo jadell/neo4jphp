@@ -37,6 +37,12 @@ class Client
 		}
 
 		$this->setTransport($transport);
+		$this->setNodeFactory(function (Client $client, $properties=array()) {
+			return new Node($client);
+		});
+		$this->setRelationshipFactory(function (Client $client, $properties=array()) {
+			return new Relationship($client);
+		});
 	}
 
 	/**
@@ -417,12 +423,6 @@ class Client
 	 */
 	public function makeNode($properties=array())
 	{
-		if (!$this->nodeFactory) {
-			$this->setNodeFactory(function (Client $client, $properties=array()) {
-				return new Node($client);
-			});
-		}
-
 		$nodeFactory = $this->nodeFactory;
 		$node = $nodeFactory($this, $properties);
 		if (!($node instanceof Node)) {
@@ -439,12 +439,6 @@ class Client
 	 */
 	public function makeRelationship($properties=array())
 	{
-		if (!$this->relFactory) {
-			$this->setRelationshipFactory(function (Client $client, $properties=array()) {
-				return new Relationship($client);
-			});
-		}
-
 		$relFactory = $this->relFactory;
 		$rel = $relFactory($this, $properties);
 		if (!($rel instanceof Relationship)) {
