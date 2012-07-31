@@ -1,0 +1,87 @@
+<?php
+namespace Everyman\Neo4j\Transport;
+use Everyman\Neo4j\Transport as BaseTransport;
+
+/**
+ * Class for communicating with an HTTP JSON endpoint over PHP streams
+ */
+class Stream extends BaseTransport
+{
+	/**
+	 * @inherit
+	 */
+	public function __construct($host='localhost', $port=7474)
+	{
+		$this->host = $host;
+		$this->port = $port;
+	}
+
+	public function __destruct()
+	{
+	}
+
+	/**
+	 * @inherit
+	 */
+	public function makeRequest($method, $path, $data=array())
+	{
+		$url = $this->getEndpoint().$path;
+
+		$context_options = array (
+			$this->scheme => array (
+				'method' => 'GET',
+				'ignore_errors' => true,
+				'header'=>
+					"Content-type: application/json\r\n"
+					. "Accept: application/json\r\n"
+			)
+		);
+
+		if ($this->username && $this->password) {
+			$context_options[$this->scheme]['header'] .= 'Authorization: Basic ' . base64_encode($this->username.':'.$this->password) . "\r\n";
+		}
+
+		switch ($method) {
+			case self::DELETE :
+				$context_options[$this->scheme]['method'] = self::DELETE;
+				break;
+
+			case self::POST :
+			case self::PUT :
+				$dataString = $this->encodeData($data);
+				$context_options[$this->scheme]['method'] = $method;
+				$context_options[$this->scheme]['content'] = $dataString;
+				$context_options[$this->scheme]['header'] .= 'Context-Length: ' . strlen($dataString) . "\r\n";
+				break;
+		}
+
+		$context = stream_context_create($context_options);
+		$response = file_get_contents($url, false, $context);
+		// $http_response_header is set by file_get_contents with the http:// wrapper
+
+		preg_match('/^HTTP\/1\.[0-1] (\d{3})/', $http_response_header[0], $parts);
+		$code = $parts[1];
+
+		if (!$code) {
+			$code = 500;
+			$response = json_encode(array("error"=>'error [' . $code . ']'));
+		}
+
+		$bodyData = json_decode($response, true);
+
+		$headers = array();
+		foreach ($http_response_header as $header) {
+			$parts = explode(':', $header, 2);
+
+			if (count($parts) == 2) {
+				$headers[$parts[0]] = $parts[1];
+			}
+		}
+
+		return array(
+			'code' => $code,
+			'headers' => $headers,
+			'data' => $bodyData,
+		);
+	}
+}
