@@ -1,7 +1,7 @@
 #!/usr/bin/env php
 <?php
 namespace Everyman\Neo4j;
-use Everyman\Neo4j\Transport,
+use Everyman\Neo4j\Transport\Curl as Transport,
 	Everyman\Neo4j\Client,
 	Everyman\Neo4j\Batch,
 	Everyman\Neo4j\Relationship,
