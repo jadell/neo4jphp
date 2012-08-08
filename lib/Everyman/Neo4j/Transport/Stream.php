@@ -10,19 +10,6 @@ class Stream extends BaseTransport
 	/**
 	 * @inherit
 	 */
-	public function __construct($host='localhost', $port=7474)
-	{
-		$this->host = $host;
-		$this->port = $port;
-	}
-
-	public function __destruct()
-	{
-	}
-
-	/**
-	 * @inherit
-	 */
 	public function makeRequest($method, $path, $data=array())
 	{
 		$url = $this->getEndpoint().$path;

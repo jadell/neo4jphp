@@ -30,10 +30,18 @@ class Client
 	 */
 	public function __construct($transport=null, $port=7474)
 	{
-		if ($transport === null) {
-			$transport = new Transport();
-		} elseif (is_string($transport)) {
-			$transport = new Transport($transport, $port);
+		try {
+			if ($transport === null) {
+				$transport = new Transport\Curl();
+			} elseif (is_string($transport)) {
+				$transport = new Transport\Curl($transport, $port);
+			}
+		} catch (Exception $e) {
+			if ($transport === null) {
+				$transport = new Transport\Stream();
+			} elseif (is_string($transport)) {
+				$transport = new Transport\Stream($transport, $port);
+			}
 		}
 
 		$this->setTransport($transport);
