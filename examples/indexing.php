@@ -10,7 +10,7 @@ spl_autoload_register(function ($sClass)
 	}
 });
 
-use Everyman\Neo4j\Transport,
+use Everyman\Neo4j\Transport\Curl as Transport,
     Everyman\Neo4j\Client,
     Everyman\Neo4j\Index\NodeIndex,
     Everyman\Neo4j\Index\RelationshipIndex,
