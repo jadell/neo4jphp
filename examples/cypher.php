@@ -1,24 +1,12 @@
 #!/usr/bin/env php
 <?php
-use Everyman\Neo4j\Transport\Curl as Transport,
-	Everyman\Neo4j\Client,
+use Everyman\Neo4j\Client,
 	Everyman\Neo4j\Index\NodeIndex,
 	Everyman\Neo4j\Relationship,
 	Everyman\Neo4j\Node,
 	Everyman\Neo4j\Cypher;
-error_reporting(-1);
-ini_set('display_errors', 1);
 
-function loaderTestAutoloader($sClass)
-{
-	$sLibPath = __DIR__.'/../lib/';
-	$sClassFile = str_replace('\\',DIRECTORY_SEPARATOR,$sClass).'.php';
-	$sClassPath = $sLibPath.$sClassFile;
-	if (file_exists($sClassPath)) {
-		require($sClassPath);
-	}
-}
-spl_autoload_register('loaderTestAutoloader');
+require_once 'example_bootstrap.php';
 
 $cmd = !empty($argv[1]) ? $argv[1] : null;
 
@@ -39,8 +27,7 @@ HELP;
 	exit(0);
 }
 
-$transport = new Transport();
-$client = new Client($transport);
+$client = new Client();
 $actors = new NodeIndex($client, 'actors');
 
 // Initialize the data

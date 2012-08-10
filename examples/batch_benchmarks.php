@@ -1,25 +1,14 @@
 #!/usr/bin/env php
 <?php
 namespace Everyman\Neo4j;
-use Everyman\Neo4j\Transport\Curl as Transport,
-	Everyman\Neo4j\Client,
+use Everyman\Neo4j\Client,
 	Everyman\Neo4j\Batch,
 	Everyman\Neo4j\Relationship,
 	Everyman\Neo4j\Node;
-error_reporting(-1);
-ini_set('display_errors', 1);
-spl_autoload_register(function ($sClass) {
-	$sLibPath = __DIR__.'/../lib/';
-	$sClassFile = str_replace('\\',DIRECTORY_SEPARATOR,$sClass).'.php';
-	$sClassPath = $sLibPath.$sClassFile;
-	if (file_exists($sClassPath)) {
-		require($sClassPath);
-	}
-});
 
+require_once 'example_bootstrap.php';
 
-$transport = new Transport();
-$client = new Client($transport);
+$client = new Client();
 
 $runs = 5;
 $series = array(

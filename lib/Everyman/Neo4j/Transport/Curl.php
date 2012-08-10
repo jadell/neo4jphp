@@ -13,11 +13,11 @@ class Curl extends \Everyman\Neo4j\Transport
 	 */
 	public function __construct($host='localhost', $port=7474)
 	{
-		parent::__construct($host, $port);
-
 		if (! function_exists('curl_init')) {
 			throw new Exception('cUrl extension not enabled/installed');
 		}
+
+		parent::__construct($host, $port);
 	}
 
 	/**

@@ -1,22 +1,13 @@
 #!/usr/bin/env php
 <?php
-spl_autoload_register(function ($sClass)
-{
-	$sLibPath = __DIR__.'/../lib/';
-	$sClassFile = str_replace('\\',DIRECTORY_SEPARATOR,$sClass).'.php';
-	$sClassPath = $sLibPath.$sClassFile;
-	if (file_exists($sClassPath)) {
-		require($sClassPath);
-	}
-});
-
-use Everyman\Neo4j\Transport\Curl as Transport,
-    Everyman\Neo4j\Client,
+use Everyman\Neo4j\Client,
     Everyman\Neo4j\Index\NodeIndex,
     Everyman\Neo4j\Index\RelationshipIndex,
     Everyman\Neo4j\Index\NodeFulltextIndex,
     Everyman\Neo4j\Node,
     Everyman\Neo4j\Batch;
+
+require_once 'example_bootstrap.php';
 
 $client = new Client();
 
