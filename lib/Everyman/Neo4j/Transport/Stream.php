@@ -1,6 +1,7 @@
 <?php
 namespace Everyman\Neo4j\Transport;
-use Everyman\Neo4j\Transport as BaseTransport;
+use Everyman\Neo4j\Transport as BaseTransport,
+    Everyman\Neo4j\Version;
 
 /**
  * Class for communicating with an HTTP JSON endpoint over PHP streams
@@ -21,6 +22,7 @@ class Stream extends BaseTransport
 				'header'=>
 					"Content-type: application/json\r\n"
 					. "Accept: application/json\r\n"
+					. "User-Agent: ".Version::userAgent()."\r\n"
 			)
 		);
 

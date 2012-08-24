@@ -1,10 +1,12 @@
 <?php
 namespace Everyman\Neo4j\Transport;
+use Everyman\Neo4j\Transport as BaseTransport,
+    Everyman\Neo4j\Version;
 
 /**
  * Class for communicating with an HTTP JSON endpoint
  */
-class Curl extends \Everyman\Neo4j\Transport
+class Curl extends BaseTransport
 {
 	protected $handle = null;
 
@@ -44,6 +46,7 @@ class Curl extends \Everyman\Neo4j\Transport
 			CURLOPT_HTTPHEADER => array(
 				'Accept: application/json',
 				'Content-type: application/json',
+				'User-Agent: '.Version::userAgent(),
 			),
 			CURLOPT_CUSTOMREQUEST => self::GET,
 			CURLOPT_POST => false,
