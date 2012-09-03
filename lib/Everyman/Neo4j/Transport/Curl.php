@@ -79,6 +79,11 @@ class Curl extends BaseTransport
 				break;
 		}
 
+		//add options for the ssl connection
+		if ($this->scheme == "https" && !empty($this->sslOptions)) {
+		    $options = array_replace($this->sslOptions, $options);
+		}
+
 		$ch = $this->getHandle();
 		curl_setopt_array($ch, $options);
 

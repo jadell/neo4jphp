@@ -17,6 +17,7 @@ abstract class Transport
 	protected $path = '/db/data';
 	protected $username = null;
 	protected $password = null;
+	protected $sslOptions = array();
 
 	protected $handle = null;
 
@@ -147,16 +148,22 @@ abstract class Transport
 	}
 
 	/**
-	 * Turn HTTPS on or off
+	 * Turn HTTPS on or off and adds ssl specific options
 	 *
 	 * Returns this Trnasport object
 	 *
 	 * @param boolean $useHttps
+	 * @param array $options
 	 * @return Transport
 	 */
-	public function useHttps($useHttps=true)
+	public function useHttps($useHttps=true, array $options=array())
 	{
 		$this->scheme = $useHttps ? 'https' : 'http';
+
+		//add ssl options
+		if ($this->scheme == "https" && !empty($options)) {
+		    $this->sslOptions = $options;
+		}
 		return $this;
 	}
 }

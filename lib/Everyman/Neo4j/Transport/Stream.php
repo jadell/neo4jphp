@@ -16,7 +16,7 @@ class Stream extends BaseTransport
 		$url = $this->getEndpoint().$path;
 
 		$context_options = array (
-			$this->scheme => array (
+			'http' => array (
 				'method' => 'GET',
 				'ignore_errors' => true,
 				'header'=>
@@ -38,10 +38,15 @@ class Stream extends BaseTransport
 			case self::POST :
 			case self::PUT :
 				$dataString = $this->encodeData($data);
-				$context_options[$this->scheme]['method'] = $method;
-				$context_options[$this->scheme]['content'] = $dataString;
-				$context_options[$this->scheme]['header'] .= 'Context-Length: ' . strlen($dataString) . "\r\n";
+				$context_options['http']['method'] = $method;
+				$context_options['http']['content'] = $dataString;
+				$context_options['http']['header'] .= 'Context-Length: ' . strlen($dataString) . "\r\n";
 				break;
+		}
+
+		//add options for the ssl connection
+		if ($this->scheme == 'https' && !empty($this->sslOptions)) {
+		    $context_options['ssl'] = $this->sslOptions;
 		}
 
 		$context = stream_context_create($context_options);
