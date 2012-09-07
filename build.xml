@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project name="Neo4jPHP" default="test">
+	<taskdef name="neo4jphpversion" classname="Neo4jPhpVersionTask" />
 
 	<!-- Target: test -->
 	<target name="test">
@@ -28,6 +29,7 @@
 
 	<!-- Target: package -->
 	<target name="package" depends="build">
+		<neo4jphpversion property="version" />
 		<delete file="./neo4jphp.phar" />
 		<pharpackage
 			destfile="./neo4jphp.phar"
@@ -39,7 +41,7 @@
 				<include name="**/**" />
 			</fileset>
 			<metadata>
-				<element name="version" value="0.1.0" />
+				<element name="version" value="${version}" />
 				<element name="authors">
 					<element name="Josh Adell">
 						<element name="email" value="josh.adell@gmail.com" />
