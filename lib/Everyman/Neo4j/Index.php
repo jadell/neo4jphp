@@ -36,11 +36,12 @@ class Index
 	 * @param PropertyContainer $entity
 	 * @param string $key
 	 * @param string $value
+	 * @param boolean $unique
 	 * @return boolean
 	 */
-	public function add($entity, $key, $value)
+	public function add($entity, $key, $value, $unique = false)
 	{
-		return $this->client->addToIndex($this, $entity, $key, $value);
+		return $this->client->addToIndex($this, $entity, $key, $value, $unique);
 	}
 
 	/**

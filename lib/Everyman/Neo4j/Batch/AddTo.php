@@ -15,6 +15,7 @@ class AddTo extends Operation
 	protected $index = null;
 	protected $key = null;
 	protected $value = null;
+	protected $unique = false;
 
 	/**
 	 * Build the operation
@@ -24,14 +25,15 @@ class AddTo extends Operation
 	 * @param PropertyContainer $entity
 	 * @param string $key
 	 * @param string $value
- * @param integer $opId
+	 * @param integer $opId
 	 */
-	public function __construct(Batch $batch, Index $index, PropertyContainer $entity, $key, $value, $opId)
+	public function __construct(Batch $batch, Index $index, PropertyContainer $entity, $key, $value, $opId, $unique = false)
 	{
 		parent::__construct($batch, 'addto', $entity, $opId);
 		$this->index = $index;
 		$this->key = $key;
 		$this->value = $value;
+		$this->unique = $unique;
 	}
 
 	/**
@@ -43,7 +45,7 @@ class AddTo extends Operation
 	{
 		if (!$this->command) {
 			$this->command = new Command\AddToIndex($this->batch->getClient(),
-				$this->index, $this->entity, $this->key, $this->value, $this->opId, $this->batch);
+				$this->index, $this->entity, $this->key, $this->value, $this->opId, $this->batch, $this->unique);
 		}
 		return $this->command;
 	}

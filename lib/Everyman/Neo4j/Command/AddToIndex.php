@@ -17,6 +17,7 @@ class AddToIndex extends Command
 	protected $entity = null;
 	protected $key = null;
 	protected $value = null;
+	protected $unique = false;
 
 	/**
 	 * Set the index to drive the command
@@ -27,13 +28,14 @@ class AddToIndex extends Command
 	 * @param string $key
 	 * @param string $value
 	 */
-	public function __construct(Client $client, Index $index, PropertyContainer $entity, $key, $value)
+	public function __construct(Client $client, Index $index, PropertyContainer $entity, $key, $value, $unique = false)
 	{
 		parent::__construct($client);
 		$this->index = $index;
 		$this->entity = $entity;
 		$this->key = $key;
 		$this->value = $value;
+		$this->unique = $unique;
 	}
 
 	/**
@@ -95,7 +97,13 @@ class AddToIndex extends Command
 		}
 		$name = rawurlencode($name);
 
-		return '/index/'.$type.'/'.$name;
+		$path = '/index/'.$type.'/'.$name;
+
+		if ($this->unique) {
+			$path .= '?unique';
+		}
+
+		return $path;
 	}
 
 	/**

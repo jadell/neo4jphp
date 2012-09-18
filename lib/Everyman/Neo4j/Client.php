@@ -60,16 +60,17 @@ class Client
 	 * @param PropertyContainer $entity
 	 * @param string $key
 	 * @param string $value
+	 * @param boolean $unique
 	 * @return boolean
 	 */
-	public function addToIndex(Index $index, PropertyContainer $entity, $key, $value)
+	public function addToIndex(Index $index, PropertyContainer $entity, $key, $value, $unique = false)
 	{
 		if ($this->openBatch) {
-			$this->openBatch->addToIndex($index, $entity, $key, $value);
+			$this->openBatch->addToIndex($index, $entity, $key, $value, $unique);
 			return true;
 		}
 
-		return $this->runCommand(new Command\AddToIndex($this, $index, $entity, $key, $value));
+		return $this->runCommand(new Command\AddToIndex($this, $index, $entity, $key, $value, $unique));
 	}
 
 	/**
