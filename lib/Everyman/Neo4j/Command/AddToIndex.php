@@ -119,6 +119,11 @@ class AddToIndex extends Command
 		if ((int)($code / 100) != 2) {
 			$this->throwException('Unable to add entity to index', $code, $headers, $data);
 		}
+
+		if ($this->unique && !isset($headers['Location'])) {
+			$this->throwException('Entity not added to index: not unique?', $code, $headers, $data);
+		}
+
 		return true;
 	}
 }
