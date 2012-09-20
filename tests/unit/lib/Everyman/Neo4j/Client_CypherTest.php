@@ -75,7 +75,44 @@ class Client_CypherTest extends \PHPUnit_Framework_TestCase
 		$this->assertInstanceOf('\Everyman\Neo4j\Query\ResultSet', $result);
 		$this->assertEquals(count($result), $resultCount);
 	}
-	
+
+	/**
+	 * Test for http://github.com/jadell/neo4jphp/issues/63
+	 * @dataProvider dataProvider_TestCypherQuery
+	 */
+	public function testCypherQuery_ProxyHost($returnValue, $resultCount)
+	{
+		$proxyEndpoint = 'http://proxy.me:1234/db/data';
+		$transport = $this->getMock('Everyman\Neo4j\Transport');
+		$transport->expects($this->any())
+			->method('getEndpoint')
+			->will($this->returnValue($proxyEndpoint));
+		$client = new Client($transport);
+
+		$props = array(
+			'query' => 'START a=({start}) MATCH (a)->(b) WHERE b.name = {name} RETURN b',
+			'params' => array('start' => 1, 'name' => 'friend name'),
+		);
+
+		$transport->expects($this->once())
+			->method('get')
+			->with('/')
+			->will($this->returnValue(array('code'=>200, 'data'=>array(
+				'neo4j_version' => '1.5.foo',
+				'cypher' => $this->endpoint.'/cypher',
+			))));
+		$transport->expects($this->once())
+			->method('post')
+			->with('/cypher', $props)
+			->will($this->returnValue($returnValue));
+
+		$query = new Cypher\Query($client, $props['query'], $props['params']);
+
+		$result = $client->executeCypherQuery($query);
+		$this->assertInstanceOf('\Everyman\Neo4j\Query\ResultSet', $result);
+		$this->assertEquals(count($result), $resultCount);
+	}
+
 	public function dataProvider_TestCypherQuery()
 	{
 		$return = array(
@@ -86,7 +123,7 @@ class Client_CypherTest extends \PHPUnit_Framework_TestCase
 				array('Brenda', 14)
 			)
 		);
-		
+
 		return array(
 			array(array('code'=>204,'data'=>null), 0),
 			array(array('code'=>200,'data'=>$return), 3),

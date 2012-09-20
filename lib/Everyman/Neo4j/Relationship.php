@@ -80,6 +80,7 @@ class Relationship extends PropertyContainer
 	public function save()
 	{
 		$this->client->saveRelationship($this);
+		$this->useLazyLoad(false);
 		return $this;
 	}
 

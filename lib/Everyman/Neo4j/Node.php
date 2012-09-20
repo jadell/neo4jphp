@@ -108,6 +108,7 @@ class Node extends PropertyContainer
 	public function save()
 	{
 		$this->client->saveNode($this);
+		$this->useLazyLoad(false);
 		return $this;
 	}
 }

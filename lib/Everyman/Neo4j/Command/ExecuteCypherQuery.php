@@ -68,7 +68,7 @@ class ExecuteCypherQuery extends Command
 			throw new Exception('Cypher unavailable');
 		}
 
-		return str_replace($this->getTransport()->getEndpoint(), '', $url);
+		return preg_replace('/^.+\/db\/data/', '', $url);
 	}
 
 	/**

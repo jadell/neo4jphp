@@ -15,12 +15,36 @@ class RelationshipTest extends \PHPUnit_Framework_TestCase
 
 	public function testSave_SavesSelfUsingClient()
 	{
+		$expected = $this->relationship;
+		$matched = false;
+
 		$this->client->expects($this->once())
 			->method('saveRelationship')
-			->with($this->relationship)
-			->will($this->returnValue(true));
+			// Have to do it this way because PHPUnit clones object parameters
+			->will($this->returnCallback(function (Relationship $actual) use ($expected, &$matched) {
+				$matched = $expected->getId() == $actual->getId();
+				return true;
+			}));
 
 		$this->assertSame($this->relationship, $this->relationship->save());
+		$this->assertTrue($matched);
+	}
+
+	/**
+	 * Test for https://github.com/jadell/neo4jphp/issues/58
+	 */
+	public function testSave_FollowedByPropertyGet_DoesNotLazyLoad()
+	{
+		$this->client->expects($this->once())
+			->method('saveRelationship')
+			->will($this->returnValue(true));
+
+		$this->client->expects($this->never())
+			->method('loadRelationship');
+
+		$this->relationship->setId(123);
+		$this->relationship->save();
+		$this->relationship->getProperty('foo');
 	}
 
 	public function testDelete_DeletesSelfUsingClient()
