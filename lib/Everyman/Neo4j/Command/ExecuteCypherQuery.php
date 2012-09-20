@@ -6,7 +6,8 @@ use Everyman\Neo4j\Exception,
     Everyman\Neo4j\Command,
 	Everyman\Neo4j\Client,
 	Everyman\Neo4j\Cypher\Query,
-	Everyman\Neo4j\Query\ResultSet;
+	Everyman\Neo4j\Query\ResultSet,
+    Everyman\Neo4j\DI;
 
 /**
  * Perform a query using the Cypher query language and return the results
@@ -68,7 +69,7 @@ class ExecuteCypherQuery extends Command
 			throw new Exception('Cypher unavailable');
 		}
 
-		return preg_replace('/^.+\/db\/data/', '', $url);
+		return preg_replace('/^.+' . preg_quote(DI::resolve("dbPath"), "/") .'/', '', $url);
 	}
 
 	/**

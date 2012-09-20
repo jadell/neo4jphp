@@ -969,7 +969,7 @@ class ClientTest extends \PHPUnit_Framework_TestCase
 
 	public function testNodeFactory_SetNodeFactory_ReturnsNodeFromFactory()
 	{
-		$this->client->setNodeFactory(function (Client $client, $properties=array()) {
+		DI::register("Node", function (Client $client, $properties=array()) {
 			return new NodeFactoryTestClass_ClientTest($client);
 		});
 
@@ -977,15 +977,9 @@ class ClientTest extends \PHPUnit_Framework_TestCase
 		$this->assertInstanceOf('Everyman\Neo4j\NodeFactoryTestClass_ClientTest', $node);
 	}
 
-	public function testNodeFactory_SetNodeFactory_NotCallable_ThrowsException()
-	{
-		$this->setExpectedException('Everyman\Neo4j\Exception');
-		$this->client->setNodeFactory('bar');
-	}
-
 	public function testNodeFactory_NodeFactoryReturnsNotNode_ThrowsException()
 	{
-		$this->client->setNodeFactory(function (Client $client, $properties=array()) {
+		DI::register("Node", function (Client $client, $properties=array()) {
 			return new \stdClass();
 		});
 
@@ -995,7 +989,7 @@ class ClientTest extends \PHPUnit_Framework_TestCase
 
 	public function testRelationshipFactory_SetRelationshipFactory_ReturnsRelationshipFromFactory()
 	{
-		$this->client->setRelationshipFactory(function (Client $client, $properties=array()) {
+		DI::register("Relationship", function (Client $client, $properties=array()) {
 			return new RelFactoryTestClass_ClientTest($client);
 		});
 
@@ -1003,20 +997,43 @@ class ClientTest extends \PHPUnit_Framework_TestCase
 		$this->assertInstanceOf('Everyman\Neo4j\RelFactoryTestClass_ClientTest', $rel);
 	}
 
-	public function testRelationshipFactory_SetRelationshipFactory_NotCallable_ThrowsException()
-	{
-		$this->setExpectedException('Everyman\Neo4j\Exception');
-		$this->client->setRelationshipFactory('bar');
-	}
-
 	public function testRelationshipFactory_RelationshipFactoryReturnsNotRelationship_ThrowsException()
 	{
-		$this->client->setRelationshipFactory(function (Client $client, $properties=array()) {
+		DI::register("Relationship", function (Client $client, $properties=array()) {
 			return new \stdClass();
 		});
 
 		$this->setExpectedException('Everyman\Neo4j\Exception');
 		$rel = $this->client->makeRelationship();
+	}
+
+	public function tearDown()
+	{
+	    DI::register(
+	    	"Node",
+    	    function (Client $client, $properties=array()) {
+    	        return new Node($client);
+    	    }
+	    );
+
+	    DI::register(
+	    	"Relationship",
+    	    function (Client $client, $properties=array()) {
+    	        return new Relationship($client);
+    	    }
+	    );
+
+	    DI::unregister("transport");
+	    DI::register(
+	    	"transport",
+    	    function($host='localhost', $port=7474) {
+    	        if (extension_loaded("curl")) {
+    	            return new \Everyman\Neo4j\Transport\Curl($host, $port);
+    	        }
+    	        return new \Everyman\Neo4j\Transport\Stream($host, $port);
+    	    },
+    	    true
+	    );
 	}
 }
 

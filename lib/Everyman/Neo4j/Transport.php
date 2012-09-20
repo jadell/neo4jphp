@@ -17,7 +17,6 @@ abstract class Transport
 	protected $path = '/db/data';
 	protected $username = null;
 	protected $password = null;
-	protected $sslOptions = array();
 
 	protected $handle = null;
 
@@ -31,6 +30,9 @@ abstract class Transport
 	{
 		$this->host = $host;
 		$this->port = $port;
+		if (DI::isRegistered("dbPath")) {
+		    $this->path = DI::resolve("dbPath");
+		}
 	}
 
 	/**
@@ -156,14 +158,9 @@ abstract class Transport
 	 * @param array $options
 	 * @return Transport
 	 */
-	public function useHttps($useHttps=true, array $options=array())
+	public function useHttps($useHttps=true)
 	{
 		$this->scheme = $useHttps ? 'https' : 'http';
-
-		//add ssl options
-		if ($this->scheme == "https" && !empty($options)) {
-		    $this->sslOptions = $options;
-		}
 		return $this;
 	}
 }

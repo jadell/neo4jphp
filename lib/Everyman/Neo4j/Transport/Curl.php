@@ -79,9 +79,13 @@ class Curl extends BaseTransport
 				break;
 		}
 
-		//add options for the ssl connection
-		if ($this->scheme == "https" && !empty($this->sslOptions)) {
-		    $options = array_replace($this->sslOptions, $options);
+		//additional curl options
+		if (\Everyman\Neo4j\DI::isRegistered("curlOptions")) {
+		    $additionalOptions = \Everyman\Neo4j\DI::resolve("curlOptions");
+		    if (is_array($additionalOptions)) {
+		        $options = array_replace($options, $additionalOptions);
+		    }
+		    unset($additionalOptions);
 		}
 
 		$ch = $this->getHandle();

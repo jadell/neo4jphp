@@ -45,8 +45,12 @@ class Stream extends BaseTransport
 		}
 
 		//add options for the ssl connection
-		if ($this->scheme == 'https' && !empty($this->sslOptions)) {
-		    $context_options['ssl'] = $this->sslOptions;
+		if (\Everyman\Neo4j\DI::isRegistered("httpStreamOptions")) {
+		    $streamOptions = \Everyman\Neo4j\DI::resolve("httpStreamOptions");
+		    if (is_array($streamOptions)) {
+		        $context_options = array_replace_recursive($context_options, $streamOptions);
+		    }
+		    unset($streamOptions);
 		}
 
 		$context = stream_context_create($context_options);
