@@ -9,6 +9,9 @@ class Index
 	const TypeNode = 'node';
 	const TypeRelationship = 'relationship';
 
+	const GetOrCreate = 'get_or_create';
+	const CreateOrFail = 'create_or_fail';
+
 	protected $client = null;
 	protected $type = self::TypeNode;
 	protected $name = null;

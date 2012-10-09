@@ -27,6 +27,7 @@ class AddToIndex extends Command
 	 * @param PropertyContainer $entity
 	 * @param string $key
 	 * @param string $value
+	 * @param int|bool $unique
 	 */
 	public function __construct(Client $client, Index $index, PropertyContainer $entity, $key, $value, $unique = false)
 	{
@@ -100,7 +101,17 @@ class AddToIndex extends Command
 		$path = '/index/'.$type.'/'.$name;
 
 		if ($this->unique) {
-			$path .= '?unique';
+			if ($this->client->isServerAtLeastVersion(1, 8)) {
+				if ($this->unique === Index::CreateOrFail) {
+					$path .= '?uniqueness='.Index::CreateOrFail;
+				}
+				else {
+					$path .= '?uniqueness='.Index::GetOrCreate;
+				}
+			}
+			else {
+				$path .= '?unique';
+			}
 		}
 
 		return $path;
