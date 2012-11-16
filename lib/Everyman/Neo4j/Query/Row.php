@@ -104,6 +104,6 @@ class Row implements \Iterator, \Countable, \ArrayAccess
 
 	public function valid()
 	{
-		return isset($this->raw[$this->position]);
+		return $this->position < count($this->raw);
 	}
 }
