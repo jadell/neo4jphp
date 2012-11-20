@@ -28,8 +28,18 @@ abstract class Transport
 	 */
 	public function __construct($host='localhost', $port=7474)
 	{
-		$this->host = $host;
-		$this->port = $port;
+		if (!is_array($host)) {
+			$host = array('host' => $host, 'port' => $port);
+		}
+
+		$this->host = isset($host['host']) ? $host['host'] : $this->host;
+		$this->port = isset($host['port']) ? $host['port'] : $this->port;
+		$this->path = isset($host['path']) ? $host['path'] : $this->path;
+		$this->useHttps(isset($host['ssl']) && $host['ssl']);
+		$this->setAuth(
+			isset($host['username']) ? $host['username'] : null,
+			isset($host['password']) ? $host['password'] : null
+		);
 	}
 
 	/**

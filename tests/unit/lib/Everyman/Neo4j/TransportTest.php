@@ -21,6 +21,18 @@ class TransportTest extends \PHPUnit_Framework_TestCase
 		$this->assertEquals('DELETE', Transport::DELETE);
 	}
 
+	public function testConstruct_Options_ReturnsCorrectEndpointUrl()
+	{
+		$options = array(
+			'host' => 'baz.org',
+			'port' => 9876,
+			'path' => '/some/other/path',
+			'ssl'  => true,
+		);
+		$transport = $this->getMock('Everyman\Neo4j\Transport', array('makeRequest'), array($options));
+		$this->assertEquals("https://baz.org:9876/some/other/path", $transport->getEndpoint());
+	}
+
 	public function testGetEndpoint_ReturnsCorrectEndpointUrl()
 	{
 		$this->assertEquals("http://{$this->host}:{$this->port}/db/data", $this->transport->getEndpoint());
