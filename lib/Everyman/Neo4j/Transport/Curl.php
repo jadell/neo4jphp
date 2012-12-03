@@ -64,19 +64,16 @@ class Curl extends BaseTransport
 				break;
 
 			case self::POST :
-				$dataString = $this->encodeData($data);
-				$options[CURLOPT_CUSTOMREQUEST] = self::POST;
-				$options[CURLOPT_POST] = true;
-				$options[CURLOPT_POSTFIELDS] = $dataString;
-				$options[CURLOPT_HTTPHEADER][] = 'Content-Length: '.strlen($dataString);
-				break;
+            case self::PUT :
+                $dataString = $this->encodeData($data);
+                $options[CURLOPT_CUSTOMREQUEST] = $method;
+                $options[CURLOPT_POSTFIELDS] = $dataString;
+                $options[CURLOPT_HTTPHEADER][] = 'Content-Length: '.strlen($dataString);
 
-			case self::PUT :
-				$dataString = $this->encodeData($data);
-				$options[CURLOPT_CUSTOMREQUEST] = self::PUT;
-				$options[CURLOPT_POSTFIELDS] = $dataString;
-				$options[CURLOPT_HTTPHEADER][] = 'Content-Length: '.strlen($dataString);
-				break;
+                if (self::POST == $method) {
+                    $options[CURLOPT_POST] = true;
+                }
+            break;
 		}
 
 		$ch = $this->getHandle();
