@@ -9,6 +9,9 @@ class Index
 	const TypeNode = 'node';
 	const TypeRelationship = 'relationship';
 
+	const GetOrCreate = 'get_or_create';
+	const CreateOrFail = 'create_or_fail';
+
 	protected $client = null;
 	protected $type = self::TypeNode;
 	protected $name = null;
@@ -41,6 +44,19 @@ class Index
 	public function add($entity, $key, $value)
 	{
 		return $this->client->addToIndex($this, $entity, $key, $value);
+	}
+
+	/**
+	 * Add an unique entity to the index
+	 *
+	 * @param PropertyContainer $entity
+	 * @param string $key
+	 * @param string $value
+	 * @return boolean
+	 */
+	public function addUnique($entity, $key, $value)
+	{
+		return $this->client->addToIndexUnique($this, $entity, $key, $value);
 	}
 
 	/**
