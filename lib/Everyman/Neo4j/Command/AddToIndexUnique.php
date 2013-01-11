@@ -57,7 +57,7 @@ class AddToIndexUnique extends AddToIndex
 
 		if ($this->type) {
 			if ($this->type === Index::GetOrCreate) {
-				$path .= '?uniquenesss=' . Index::GetOrCreate;
+				$path .= '?uniqueness=' . Index::GetOrCreate;
 			} else {
 				$path .= '?uniqueness=' . Index::CreateOrFail;
 			}
