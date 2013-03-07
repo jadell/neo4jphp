@@ -1,7 +1,7 @@
 <?php
 namespace Everyman\Neo4j\Transport;
 use Everyman\Neo4j\Transport as BaseTransport,
-    Everyman\Neo4j\Version;
+	Everyman\Neo4j\Version;
 
 /**
  * Class for communicating with an HTTP JSON endpoint
@@ -64,19 +64,16 @@ class Curl extends BaseTransport
 				break;
 
 			case self::POST :
-				$dataString = $this->encodeData($data);
-				$options[CURLOPT_CUSTOMREQUEST] = self::POST;
-				$options[CURLOPT_POST] = true;
-				$options[CURLOPT_POSTFIELDS] = $dataString;
-				$options[CURLOPT_HTTPHEADER][] = 'Content-Length: '.strlen($dataString);
-				break;
-
 			case self::PUT :
 				$dataString = $this->encodeData($data);
-				$options[CURLOPT_CUSTOMREQUEST] = self::PUT;
+				$options[CURLOPT_CUSTOMREQUEST] = $method;
 				$options[CURLOPT_POSTFIELDS] = $dataString;
 				$options[CURLOPT_HTTPHEADER][] = 'Content-Length: '.strlen($dataString);
-				break;
+
+				if (self::POST == $method) {
+					$options[CURLOPT_POST] = true;
+				}
+			break;
 		}
 
 		//additional curl options

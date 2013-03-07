@@ -36,7 +36,22 @@ class RowTest extends \PHPUnit_Framework_TestCase
 			$i++;
 		}
 	}
-	
+
+	public function testIterateWithNull()
+	{
+		$columns = array('name', 'undefined content', 'age');
+		$data = array('Brenda', NULL, 14);
+
+		$row = new Row($this->client, $columns, $data);
+		$i = 0;
+		foreach($row as $columnName => $fieldValue) {
+			$this->assertEquals($columns[$i], $columnName);
+			$this->assertEquals($data[$i], $fieldValue);
+			$i++;
+		}
+		$this->assertEquals(count($columns), $i, 'did not iterate over all data');
+	}
+
 	public function testArrayAccess()
 	{
 		$columns = array('name','age');
