@@ -42,6 +42,11 @@ abstract class PropertyContainer
 	{
 		return array_key_exists($key, $this->properties);
 	}
+	
+	public function __sleep()
+	{
+		return array('id', 'properties', 'lazyLoad', 'loaded');
+	}
 
 	/**
 	 * Delete this entity
