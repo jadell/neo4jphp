@@ -17,6 +17,7 @@ class AddToIndex extends Command
 	protected $entity = null;
 	protected $key = null;
 	protected $value = null;
+	protected $unique = false;
 
 	/**
 	 * Set the index to drive the command
@@ -26,14 +27,16 @@ class AddToIndex extends Command
 	 * @param PropertyContainer $entity
 	 * @param string $key
 	 * @param string $value
+	 * @param int|bool $unique
 	 */
-	public function __construct(Client $client, Index $index, PropertyContainer $entity, $key, $value)
+	public function __construct(Client $client, Index $index, PropertyContainer $entity, $key, $value, $unique = false)
 	{
 		parent::__construct($client);
 		$this->index = $index;
 		$this->entity = $entity;
 		$this->key = $key;
 		$this->value = $value;
+		$this->unique = $unique;
 	}
 
 	/**
@@ -95,7 +98,23 @@ class AddToIndex extends Command
 		}
 		$name = rawurlencode($name);
 
-		return '/index/'.$type.'/'.$name;
+		$path = '/index/'.$type.'/'.$name;
+
+		if ($this->unique) {
+			if ($this->client->isServerAtLeastVersion(1, 8)) {
+				if ($this->unique === Index::CreateOrFail) {
+					$path .= '?uniqueness='.Index::CreateOrFail;
+				}
+				else {
+					$path .= '?uniqueness='.Index::GetOrCreate;
+				}
+			}
+			else {
+				$path .= '?unique';
+			}
+		}
+
+		return $path;
 	}
 
 	/**
@@ -111,6 +130,11 @@ class AddToIndex extends Command
 		if ((int)($code / 100) != 2) {
 			$this->throwException('Unable to add entity to index', $code, $headers, $data);
 		}
+
+		if ($this->unique && !isset($headers['Location'])) {
+			$this->throwException('Entity not added to index: not unique?', $code, $headers, $data);
+		}
+
 		return true;
 	}
 }

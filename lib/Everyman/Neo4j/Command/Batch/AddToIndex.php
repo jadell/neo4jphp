@@ -25,10 +25,11 @@ class AddToIndex extends Command
 	 * @param string $value
 	 * @param integer $opId
 	 * @param Batch $batch
+	 * @param boolean $unique
 	 */
-	public function __construct(Client $client, Index $index, PropertyContainer $entity, $key, $value, $opId, Batch $batch)
+	public function __construct(Client $client, Index $index, PropertyContainer $entity, $key, $value, $opId, Batch $batch, $unique = false)
 	{
-		parent::__construct($client, new SingleAddToIndex($client, $index, $entity, $key, $value), $opId);
+		parent::__construct($client, new SingleAddToIndex($client, $index, $entity, $key, $value, $unique), $opId);
 		$this->batch = $batch;
 		$this->entity = $entity;
 	}

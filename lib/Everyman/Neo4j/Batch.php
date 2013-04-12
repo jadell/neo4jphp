@@ -29,11 +29,12 @@ class Batch
 	 * @param PropertyContainer $entity
 	 * @param string $key
 	 * @param string $value
+	 * @param boolean $unique
 	 * @return integer
 	 */
-	public function addToIndex(Index $index, PropertyContainer $entity, $key, $value)
+	public function addToIndex(Index $index, PropertyContainer $entity, $key, $value, $unique = false)
 	{
-		return $this->addOperation(new Batch\AddTo($this, $index, $entity, $key, $value, $this->nextId()));
+		return $this->addOperation(new Batch\AddTo($this, $index, $entity, $key, $value, $this->nextId(), $unique));
 	}
 
 	/**

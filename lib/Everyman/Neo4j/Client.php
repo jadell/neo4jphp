@@ -60,16 +60,17 @@ class Client
 	 * @param PropertyContainer $entity
 	 * @param string $key
 	 * @param string $value
+	 * @param boolean $unique
 	 * @return boolean
 	 */
-	public function addToIndex(Index $index, PropertyContainer $entity, $key, $value)
+	public function addToIndex(Index $index, PropertyContainer $entity, $key, $value, $unique = false)
 	{
 		if ($this->openBatch) {
-			$this->openBatch->addToIndex($index, $entity, $key, $value);
+			$this->openBatch->addToIndex($index, $entity, $key, $value, $unique);
 			return true;
 		}
 
-		return $this->runCommand(new Command\AddToIndex($this, $index, $entity, $key, $value));
+		return $this->runCommand(new Command\AddToIndex($this, $index, $entity, $key, $value, $unique));
 	}
 
 	/**
@@ -380,6 +381,50 @@ class Client
 	}
 
 	/**
+	 * Get the version number of the server. Returns the array format defined by Command\GetServerInfo::parseVersion
+	 *
+	 * @return array
+	 */
+	public function getServerVersion()
+	{
+		$serverInfo = $this->getServerInfo();
+		return $serverInfo['version'];
+	}
+
+	/**
+	 * Check if the server version meets or exceeds a specified version number
+	 *
+	 * Example:
+	 *    isServerAtLeastVersion(1, 2, 3)
+	 *    returns true if server is version 1.2.3 or newer
+	 *
+	 * @param int $major
+	 * @param int $minor
+	 * @param int $release
+	 * @return bool
+	 */
+	public function isServerAtLeastVersion($major, $minor = null, $release = null)
+	{
+		$version = $this->getServerVersion();
+
+		if ($version['major'] > $major) {
+			return true;
+		}
+		elseif ($version['major'] == $major) {
+			if ($minor === null || $version['minor'] > $minor) {
+				return true;
+			}
+			elseif ($version['minor'] == $minor) {
+				if ($release === null || $version['release'] >= $release) {
+					return true;
+				}
+			}
+		}
+
+		return false;
+	}
+
+	/**
 	 * Get the transport
 	 *
 	 * @return Transport
@@ -643,6 +688,19 @@ class Client
 			$this->openBatch = new Batch($this);
 		}
 		return $this->openBatch;
+	}
+
+	/**
+	 * Returns true if there is a batch operation currently open
+	 *
+	 * @return bool
+	 */
+	public function inBatch()
+	{
+		if ($this->openBatch) {
+			return true;
+		}
+		return false;
 	}
 
 	/**

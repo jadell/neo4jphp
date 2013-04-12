@@ -9,6 +9,9 @@ class Index
 	const TypeNode = 'node';
 	const TypeRelationship = 'relationship';
 
+	const GetOrCreate = 'get_or_create';
+	const CreateOrFail = 'create_or_fail';
+
 	protected $client = null;
 	protected $type = self::TypeNode;
 	protected $name = null;
@@ -36,11 +39,12 @@ class Index
 	 * @param PropertyContainer $entity
 	 * @param string $key
 	 * @param string $value
+	 * @param boolean $unique
 	 * @return boolean
 	 */
-	public function add($entity, $key, $value)
+	public function add($entity, $key, $value, $unique = false)
 	{
-		return $this->client->addToIndex($this, $entity, $key, $value);
+		return $this->client->addToIndex($this, $entity, $key, $value, $unique);
 	}
 
 	/**
