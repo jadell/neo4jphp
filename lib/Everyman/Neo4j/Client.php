@@ -629,6 +629,16 @@ class Client
 	}
 
 	/**
+	 * Returns whether the batch is started in Client
+	 *
+	 * @return boolean
+	 */
+	public function hasBatch()
+	{
+		return (bool)$this->openBatch;
+	}
+
+	/**
 	 * Start an implicit batch
 	 *
 	 * Any data manipulation calls that occur between this call
