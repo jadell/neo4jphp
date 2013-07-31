@@ -38,12 +38,11 @@ class Row implements \Iterator, \Countable, \ArrayAccess
 	{
 		if (!is_integer($offset)) {
 
-			$rawOffset = array_keys($this->columns, $offset);
-			if (empty($rawOffset)) {
+			$rawOffset = array_search($offset, $this->columns);
+
+			if ($rawOffset === false) {
 				return false;
 			}
-
-			$rawOffset = array_shift($rawOffset);
 
 			return isset($this->raw[$rawOffset]);
 		}
