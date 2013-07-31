@@ -37,7 +37,14 @@ class Row implements \Iterator, \Countable, \ArrayAccess
 	public function offsetExists($offset)
 	{
 		if (!is_integer($offset)) {
-			return in_array($offset, $this->columns);
+
+			$rawOffset = array_search($offset, $this->columns);
+
+			if ($rawOffset === false) {
+				return false;
+			}
+
+			return isset($this->raw[$rawOffset]);
 		}
 
 		return isset($this->raw[$offset]);

@@ -11,7 +11,7 @@ class ResultSetTest extends \PHPUnit_Framework_TestCase
 	{
 		$this->client = new Client($this->getMock('Everyman\Neo4j\Transport'));
 	}
-	
+
 	public function testCount()
 	{
 		$data = array(
@@ -26,7 +26,7 @@ class ResultSetTest extends \PHPUnit_Framework_TestCase
 		$result = new ResultSet($this->client, $data);
 		$this->assertEquals(3, count($result));
 	}
-	
+
 	public function testIterate()
 	{
 		$data = array(
@@ -45,7 +45,7 @@ class ResultSetTest extends \PHPUnit_Framework_TestCase
 			$this->assertTrue($row instanceof Row);
 		}
 	}
-	
+
 	public function testArrayAccess()
 	{
 		$data = array(
@@ -53,16 +53,22 @@ class ResultSetTest extends \PHPUnit_Framework_TestCase
 			'data' => array(
 				array('Bob', 12),
 				array('Lotta', 0),
-				array('Brenda', 14)
+				array('Brenda', 14),
+				array('Jimmy', null)
 			)
 		);
 
 		$result = new ResultSet($this->client, $data);
-		for($i=0,$l=3; $i<$l; $i++) {
+		for($i=0,$l=4; $i<$l; $i++) {
 			$this->assertEquals(true, isset($result[$i]));
 			$this->assertEquals($data['data'][$i][0], $result[$i][0]);
 		}
-		
+
+		//issue #83
+		$this->assertFalse(isset($result[3]['age']));
+		$this->assertTrue(is_null($result[3]['age']));
+		$this->assertEquals(null, $result[3]['age']);
+
 		$this->assertEquals(false, isset($result[4]));
 	}
 
