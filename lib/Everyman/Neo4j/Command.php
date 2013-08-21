@@ -113,7 +113,7 @@ abstract class Command
 	protected function throwException($message, $code, $headers, $data)
 	{
 		$message = "{$message} [{$code}]:\nHeaders: " . print_r($headers, true) . "Body: " . print_r($data, true);
-		throw new Exception($message, $code);
+		throw new Exception($message, $code, $headers, $data);
 	}
 }
 
