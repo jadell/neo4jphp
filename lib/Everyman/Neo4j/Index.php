@@ -33,6 +33,11 @@ class Index
 		$this->config = $config;
 	}
 
+    public function __toString()
+    {
+        return $this->getName();
+    }
+
 	/**
 	 * Add an entity to the index
 	 *
