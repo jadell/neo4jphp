@@ -112,7 +112,7 @@ abstract class Command
 	 */
 	protected function throwException($message, $code, $headers, $data)
 	{
-		$message = "{$message} [{$code}]:\nHeaders: " . print_r($headers, true) . "Body: " . print_r($data, true);
+		$message = "{$message} [{$code}]:\n\n<pre>" . strtoupper($this->getMethod()) . " {$this->getPath()}</pre>\n\nRequest body: <pre>" . print_r($this->getData(), true) . "</pre>\nResponse headers: <pre>" . print_r($headers, true) . "</pre>\nResponse body: <pre>" . print_r($data, true) . "</pre>";
 		throw new Exception($message, $code);
 	}
 }
