@@ -123,4 +123,71 @@ class PropertyContainerTest extends \PHPUnit_Framework_TestCase
 		$this->assertTrue($this->entity->hasId());
 		$this->assertEquals(0, $this->entity->getId());
 	}
+    
+    /**
+     *  ArrayAccess implementation test
+     */
+    public function testProperties_ArrayGet_ReturnsNull()
+    {
+        $this->assertNull($this->entity['notset']);
+    }
+    
+    public function testProperties_ArraySet_ReturnsValue()
+    {
+        $this->entity['key'] = 'value';
+        $this->assertEquals('value', $this->entity['key']);
+    }
+    
+    public function testProperties_ArrayIsset_ReturnsBoolean()
+    {
+        $this->assertFalse(isset($this->entity['key']));
+        
+        $this->entity['key'] = 'value';
+        $this->assertTrue(isset($this->entity['key']));
+    }
+    
+    public function testProperties_ArrayUnset_ReturnNull()
+    {
+        $this->entity['key'] = 'value';
+        $this->assertEquals('value', $this->entity['key']);
+        
+        unset($this->entity['key']);
+        $this->assertNull($this->entity['key']);
+    }
+    
+    /**
+     *  toArray implementation test
+     */
+    public function testToArray_ReturnsArray()
+    {
+        $this->entity['key'] = 'value';
+        $this->assertEquals(
+            array('key' => 'value'),
+            $this->entity->toArray()
+        );
+    }
+    
+    /**
+     *  toJson implementation test
+     */
+    public function testToJson_ReturnsJsonString()
+    {
+        $this->entity['key'] = 'value';
+        $this->assertEquals(
+            '{"key":"value"}',
+            $this->entity->toJson()
+        );
+    }
+    
+    /**
+     *  Type casting test
+     */
+    public function testTypeCasting_ToString_ReturnsJsonString()
+    {
+        $this->entity['key'] = 'value';
+        $this->assertEquals(
+            '{"key":"value"}',
+            (string) $this->entity
+        );
+    }
 }

@@ -122,4 +122,81 @@ class ResultSetTest extends \PHPUnit_Framework_TestCase
 		$this->setExpectedException('BadMethodCallException');
 		unset($result[0]);
 	}
+    
+    
+    /**
+     *  toArray implementation test
+     */
+    public function testToArray_ReturnsArray()
+    {
+		$data = array(
+			'columns' => array('name','age'),
+			'data' => array(
+				array('Bob', 12),
+				array('Lotta', 0),
+				array('Brenda', 14)
+			)
+		);
+
+		$result = new ResultSet($this->client, $data);
+        $this->assertEquals(
+            array(
+                array(
+                    'name' => 'Bob',
+                    'age'  => 12,
+                ),
+                array(
+                    'name' => 'Lotta',
+                    'age'  => 0,
+                ),
+                array(
+                    'name' => 'Brenda',
+                    'age'  => 14,
+                ),
+            ),
+            $result->toArray()
+        );
+    }
+    
+    /**
+     *  toJson implementation test
+     */
+    public function testToJson_ReturnsJsonString()
+    {
+		$data = array(
+			'columns' => array('name','age'),
+			'data' => array(
+				array('Bob', 12),
+				array('Lotta', 0),
+				array('Brenda', 14)
+			)
+		);
+
+		$result = new ResultSet($this->client, $data);
+        $this->assertEquals(
+            '[{"name":"Bob","age":12},{"name":"Lotta","age":0},{"name":"Brenda","age":14}]',
+            $result->toJson()
+        );
+    }
+    
+    /**
+     *  String type casting implementation test
+     */
+    public function testTypeCasting_ReturnsJsonString()
+    {
+		$data = array(
+			'columns' => array('name','age'),
+			'data' => array(
+				array('Bob', 12),
+				array('Lotta', 0),
+				array('Brenda', 14)
+			)
+		);
+
+		$result = new ResultSet($this->client, $data);
+        $this->assertEquals(
+            '[{"name":"Bob","age":12},{"name":"Lotta","age":0},{"name":"Brenda","age":14}]',
+            (string) $result
+        );
+    }
 }
