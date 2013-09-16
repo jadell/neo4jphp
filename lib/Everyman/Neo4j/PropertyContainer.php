@@ -1,10 +1,14 @@
 <?php
 namespace Everyman\Neo4j;
 
+use ArrayAccess;
+use Illuminate\Support\Contracts\ArrayableInterface;
+use Illuminate\Support\Contracts\JsonableInterface;
+
 /**
  * Represents an entity that is a collection of properties
  */
-abstract class PropertyContainer
+abstract class PropertyContainer implements ArrayAccess, ArrayableInterface, JsonableInterface
 {
 	protected $id = null;
 	protected $client = null;
@@ -220,4 +224,61 @@ abstract class PropertyContainer
 			$this->load();
 		}
 	}
+    
+    /**
+     *  ArrayAccess implementation
+     *  
+     *  As the name implies it's allow handling of the property
+     *  container using the array convention
+     */
+    public function offsetSet($offset, $value)
+    {
+        $this->setProperty($offset, $value);
+    }
+
+	public function offsetExists($offset)
+	{
+		return array_key_exists($offset, $this->properties);
+	}
+
+	public function offsetUnset($offset)
+	{
+		$this->removeProperty($offset);
+	}
+    
+    public function offsetGet($offset)
+    {
+        return $this->getProperty($offset);
+    }
+    
+    /**
+     *  toArray implementation
+     *  
+     *  Used to fetch the underlying array properties
+     *  Note: alias to the getProperties method
+     */
+    public function toArray()
+    {
+        return $this->getProperties();
+    }
+    
+    /**
+     *  toJson implementation
+     *  
+     *  Easy fetching the properties in the form of
+     *  JSON
+     */
+    public function toJson($options = 0)
+    {
+        return json_encode($this->getProperties(), $options);
+    }
+    
+    /**
+     *  Type casting the property container return the underlying
+     *  propeties as JSON
+     */
+    public function __toString()
+    {
+        return $this->toJson();
+    }
 }

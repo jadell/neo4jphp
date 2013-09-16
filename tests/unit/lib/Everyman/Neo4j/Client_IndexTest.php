@@ -450,15 +450,20 @@ class Client_IndexTest extends \PHPUnit_Framework_TestCase
 			->will($this->returnValue(array('code'=>200,'data'=>$return)));
 
 		$result = $this->client->searchIndex($index, 'somekey', 'somevalue');
+        $this->assertInstanceOf('Everyman\Neo4j\Query\ResultSet', $result);
 		$this->assertEquals(2, count($result));
+        
+        $row = $result->current();
+        $this->assertInstanceOf('Everyman\Neo4j\Query\Row', $row);
+		$this->assertInstanceOf('Everyman\Neo4j\Node', $row[0]);
+		$this->assertEquals(123, $row[0]->getId());
+		$this->assertEquals(array('foo'=>'bar'), $row[0]->getProperties());
 
-		$this->assertInstanceOf('Everyman\Neo4j\Node', $result[0]);
-		$this->assertEquals(123, $result[0]->getId());
-		$this->assertEquals(array('foo'=>'bar'), $result[0]->getProperties());
-
-		$this->assertInstanceOf('Everyman\Neo4j\Node', $result[1]);
-		$this->assertEquals(456, $result[1]->getId());
-		$this->assertEquals(array('baz'=>'qux'), $result[1]->getProperties());
+        $result->next();
+        $row = $result->current();
+		$this->assertInstanceOf('Everyman\Neo4j\Node', $row[0]);
+		$this->assertEquals(456, $row[0]->getId());
+		$this->assertEquals(array('baz'=>'qux'), $row[0]->getProperties());
 	}
 
 	public function testSearchIndex_RelationshipsFound_ReturnsArray()
@@ -481,16 +486,18 @@ class Client_IndexTest extends \PHPUnit_Framework_TestCase
 			->will($this->returnValue(array('code'=>200,'data'=>$return)));
 
 		$result = $this->client->searchIndex($index, 'somekey', 'somevalue');
+        $this->assertInstanceOf('Everyman\Neo4j\Query\ResultSet', $result);
 		$this->assertEquals(1, count($result));
 
-		$this->assertInstanceOf('Everyman\Neo4j\Relationship', $result[0]);
-		$this->assertEquals(789, $result[0]->getId());
-		$this->assertEquals(array('foo'=>'bar'), $result[0]->getProperties());
+        $row = $result->current();
+		$this->assertInstanceOf('Everyman\Neo4j\Relationship', $row[0]);
+		$this->assertEquals(789, $row[0]->getId());
+		$this->assertEquals(array('foo'=>'bar'), $row[0]->getProperties());
 
-		$this->assertInstanceOf('Everyman\Neo4j\Node', $result[0]->getStartNode());
-		$this->assertEquals(123, $result[0]->getStartNode()->getId());
-		$this->assertInstanceOf('Everyman\Neo4j\Node', $result[0]->getEndNode());
-		$this->assertEquals(456, $result[0]->getEndNode()->getId());
+		$this->assertInstanceOf('Everyman\Neo4j\Node', $row[0]->getStartNode());
+		$this->assertEquals(123, $row[0]->getStartNode()->getId());
+		$this->assertInstanceOf('Everyman\Neo4j\Node', $row[0]->getEndNode());
+		$this->assertEquals(456, $row[0]->getEndNode()->getId());
 	}
 
 	public function testSearchIndex_UrlEntities_ReturnsArray()
@@ -578,15 +585,19 @@ class Client_IndexTest extends \PHPUnit_Framework_TestCase
 			->will($this->returnValue(array('code'=>200,'data'=>$return)));
 
 		$result = $this->client->queryIndex($index, 'somekey:somevalue*');
+        $this->assertInstanceOf('Everyman\Neo4j\Query\ResultSet', $result);
 		$this->assertEquals(2, count($result));
 
-		$this->assertInstanceOf('Everyman\Neo4j\Node', $result[0]);
-		$this->assertEquals(123, $result[0]->getId());
-		$this->assertEquals(array('foo'=>'bar'), $result[0]->getProperties());
+        $row = $result->current();
+		$this->assertInstanceOf('Everyman\Neo4j\Node', $row[0]);
+		$this->assertEquals(123, $row[0]->getId());
+		$this->assertEquals(array('foo'=>'bar'), $row[0]->getProperties());
 
-		$this->assertInstanceOf('Everyman\Neo4j\Node', $result[1]);
-		$this->assertEquals(456, $result[1]->getId());
-		$this->assertEquals(array('baz'=>'qux'), $result[1]->getProperties());
+        $result->next();
+        $row = $result->current();
+		$this->assertInstanceOf('Everyman\Neo4j\Node', $row[0]);
+		$this->assertEquals(456, $row[0]->getId());
+		$this->assertEquals(array('baz'=>'qux'), $row[0]->getProperties());
 	}
 
 
@@ -610,16 +621,18 @@ class Client_IndexTest extends \PHPUnit_Framework_TestCase
 			->will($this->returnValue(array('code'=>200,'data'=>$return)));
 
 		$result = $this->client->queryIndex($index, 'somekey:somevalue*');
+        $this->assertInstanceOf('Everyman\Neo4j\Query\ResultSet', $result);
 		$this->assertEquals(1, count($result));
 
-		$this->assertInstanceOf('Everyman\Neo4j\Relationship', $result[0]);
-		$this->assertEquals(789, $result[0]->getId());
-		$this->assertEquals(array('foo'=>'bar'), $result[0]->getProperties());
+        $row = $result->current();
+		$this->assertInstanceOf('Everyman\Neo4j\Relationship', $row[0]);
+		$this->assertEquals(789, $row[0]->getId());
+		$this->assertEquals(array('foo'=>'bar'), $row[0]->getProperties());
 
-		$this->assertInstanceOf('Everyman\Neo4j\Node', $result[0]->getStartNode());
-		$this->assertEquals(123, $result[0]->getStartNode()->getId());
-		$this->assertInstanceOf('Everyman\Neo4j\Node', $result[0]->getEndNode());
-		$this->assertEquals(456, $result[0]->getEndNode()->getId());
+		$this->assertInstanceOf('Everyman\Neo4j\Node', $row[0]->getStartNode());
+		$this->assertEquals(123, $row[0]->getStartNode()->getId());
+		$this->assertInstanceOf('Everyman\Neo4j\Node', $row[0]->getEndNode());
+		$this->assertEquals(456, $row[0]->getEndNode()->getId());
 	}
 		
 	public function testGetIndexes_ServerError_ThrowsException()

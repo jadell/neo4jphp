@@ -2,6 +2,8 @@
 namespace Everyman\Neo4j\Query;
 
 use Everyman\Neo4j\Client;
+use Illuminate\Support\Contracts\ArrayableInterface;
+use Illuminate\Support\Contracts\JsonableInterface;
 
 /**
  * This is what you get when you execute a query. Looping
@@ -101,4 +103,36 @@ class ResultSet implements \Iterator, \Countable, \ArrayAccess
 	{
 		return isset($this->data[$this->position]);
 	}
+    
+    /**
+     *  toArray implementation
+     */
+    public function toArray()
+    {
+        return array_map(
+            function($data) {
+                return array_combine(
+                    $this->getColumns(),
+                    $data
+                );
+            },
+            $this->data
+        );
+    }
+    
+    /**
+     *  toJson implementation
+     */
+    public function toJson($options = 0)
+    {
+        return json_encode($this->toArray(), $options);
+    }
+    
+    /**
+     *  String type casting implementation
+     */
+    public function __toString()
+    {
+        return $this->toJson();
+    }
 }

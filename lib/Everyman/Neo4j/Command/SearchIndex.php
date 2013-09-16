@@ -5,7 +5,8 @@ use Everyman\Neo4j\Command,
 	Everyman\Neo4j\Exception,
 	Everyman\Neo4j\Relationship,
 	Everyman\Neo4j\Node,
-	Everyman\Neo4j\Index;
+	Everyman\Neo4j\Index,
+	Everyman\Neo4j\Query\ResultSet;
 
 /**
  * Search for entities in an index
@@ -95,12 +96,18 @@ class SearchIndex extends Command
 			$this->throwException('Unable to search index', $code, $headers, $data);
 		}
 
-		$buildMethod = $this->index->getType() == Index::TypeNode ? 'makeNode' : 'makeRelationship';
-		$results = array();
-		foreach ($data as $entityData) {
-			$results[] = $this->getEntityMapper()->$buildMethod($entityData);
-		}
-		return $results;
+		return new ResultSet(
+            $this->client,
+            array(
+                'columns' => array($this->index->getName()),
+                'data' => array_map(
+                    function($data) {
+                        return array($data);
+                    },
+                    $data
+                ),
+            )
+        );
 	}
 }
 
