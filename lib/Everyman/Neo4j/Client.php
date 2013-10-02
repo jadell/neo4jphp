@@ -294,6 +294,20 @@ class Client
 	}
 
 	/**
+	 * Get the nodes matching the given label
+	 *
+	 * If a property and value are given, only return
+	 * nodes where the given property equals the value
+	 *
+	 * @param string $propertyName
+	 * @param mixed  $propertyValue
+	 * @return Query\ResultSet
+	 */
+	public function getNodesForLabel(Label $label, $propertyName=null, $propertyValue=null)
+	{
+	}
+
+	/**
 	 * Get an array of paths matching the finder's criteria
 	 *
 	 * @param PathFinder $finder
