@@ -46,7 +46,7 @@ class Label
 	 *
 	 * @param string $propertyName
 	 * @param mixed  $propertyValue
-	 * @return ResultSet
+	 * @return Row
 	 * @throws Exception on failure
 	 */
 	public function getNodes($propertyName=null, $propertyValue=null)

@@ -301,10 +301,12 @@ class Client
 	 *
 	 * @param string $propertyName
 	 * @param mixed  $propertyValue
-	 * @return Query\ResultSet
+	 * @return Query\Row
 	 */
 	public function getNodesForLabel(Label $label, $propertyName=null, $propertyValue=null)
 	{
+		$command = new Command\GetNodesForLabel($this, $label, $propertyName, $propertyValue);
+		return $this->runCommand($command);
 	}
 
 	/**
