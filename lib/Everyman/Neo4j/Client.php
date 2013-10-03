@@ -94,6 +94,27 @@ class Client
 	}
 
 	/**
+	 * Add an unique entity to an index
+	 *
+	 * @param Index             $index
+	 * @param PropertyContainer $entity
+	 * @param string            $key
+	 * @param string            $value
+	 * @param null|int          $type Index::GetOrCreate or Index::GetOrFail
+	 *
+	 * @return boolean
+	 */
+	public function addToIndexUnique(Index $index, PropertyContainer $entity, $key, $value, $type = null)
+	{
+		if ($this->openBatch) {
+			$this->openBatch->addToIndexUnique($index, $entity, $key, $value, $type);
+			return true;
+		}
+
+		return $this->runCommand(new Command\AddToIndexUnique($this, $index, $entity, $key, $value, $type));
+	}
+
+	/**
 	 * Commit a batch of operations
 	 *
 	 * @param Batch $batch

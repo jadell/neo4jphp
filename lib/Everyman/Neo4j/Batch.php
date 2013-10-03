@@ -37,6 +37,22 @@ class Batch
 	}
 
 	/**
+	 * Add the given entity to the given index with the given key/value
+	 *
+	 * @param Index $index
+	 * @param PropertyContainer $entity
+	 * @param string $key
+	 * @param string $value
+	 * @param void@int $type
+	 *
+	 * @return integer
+	 */
+	public function addToIndexUnique(Index $index, PropertyContainer $entity, $key, $value, $type = null)
+	{
+		return $this->addOperation(new Batch\AddToUnique($this, $index, $entity, $key, $value, $type, $this->nextId()));
+	}
+
+	/**
 	 * Commit the batch to the server
 	 *
 	 * @return boolean
