@@ -65,13 +65,13 @@ class Client_LabelTest extends \PHPUnit_Framework_TestCase
 			->will($this->returnValue(array('code'=>200,'data'=>$returnData)));
 
 		$nodes = $this->client->getNodesForLabel($label);
-		$this->assertInstanceOf('Everyman\Neo4j\Query\Row', $nodes);
-		$this->assertEquals(2, count($nodes));
+		self::assertInstanceOf('Everyman\Neo4j\Query\Row', $nodes);
+		self::assertEquals(2, count($nodes));
 
-		$this->assertInstanceOf('Everyman\Neo4j\Node', $nodes[0]);
-		$this->assertInstanceOf('Everyman\Neo4j\Node', $nodes[1]);
-		$this->assertEquals(56,  $nodes[0]->getId());
-		$this->assertEquals(834, $nodes[1]->getId());
+		self::assertInstanceOf('Everyman\Neo4j\Node', $nodes[0]);
+		self::assertInstanceOf('Everyman\Neo4j\Node', $nodes[1]);
+		self::assertEquals(56,  $nodes[0]->getId());
+		self::assertEquals(834, $nodes[1]->getId());
 	}
 
 	public function testGetNodesForLabel_NodesExistForLabelAndProperty_ReturnsRow()
@@ -94,11 +94,11 @@ class Client_LabelTest extends \PHPUnit_Framework_TestCase
 			->will($this->returnValue(array('code'=>200,'data'=>$returnData)));
 
 		$nodes = $this->client->getNodesForLabel($label, $propertyName, $propertyValue);
-		$this->assertInstanceOf('Everyman\Neo4j\Query\Row', $nodes);
-		$this->assertEquals(1, count($nodes));
+		self::assertInstanceOf('Everyman\Neo4j\Query\Row', $nodes);
+		self::assertEquals(1, count($nodes));
 
-		$this->assertInstanceOf('Everyman\Neo4j\Node', $nodes[0]);
-		$this->assertEquals(56,  $nodes[0]->getId());
+		self::assertInstanceOf('Everyman\Neo4j\Node', $nodes[0]);
+		self::assertEquals(56,  $nodes[0]->getId());
 	}
 
 	public function testGetNodesForLabel_NoNodesExist_ReturnsEmptyRow()
@@ -114,8 +114,8 @@ class Client_LabelTest extends \PHPUnit_Framework_TestCase
 			->will($this->returnValue(array('code'=>200,'data'=>$returnData)));
 
 		$nodes = $this->client->getNodesForLabel($label);
-		$this->assertInstanceOf('Everyman\Neo4j\Query\Row', $nodes);
-		$this->assertEquals(0, count($nodes));
+		self::assertInstanceOf('Everyman\Neo4j\Query\Row', $nodes);
+		self::assertEquals(0, count($nodes));
 	}
 
 	public function testGetNodesForLabel_ProperlyUrlEncodesPath()
@@ -159,5 +159,26 @@ class Client_LabelTest extends \PHPUnit_Framework_TestCase
 
 		$this->setExpectedException('InvalidArgumentException');
 		$this->client->getNodesForLabel($label, null, 'val');
+	}
+
+	public function testListLabels_ReturnsArrayOfLabelsAttachedToNodesOnTheServer()
+	{
+		$labelAlreadyInstantiated = $this->client->getLabel('BAZQUX');
+
+		$returnData = array('FOOBAR', $labelAlreadyInstantiated->getName(), 'LOREMIPSUM');
+
+		$this->transport->expects($this->once())
+			->method('get')
+			->with("/labels")
+			->will($this->returnValue(array('code'=>200,'data'=>$returnData)));
+
+		$labels = $this->client->listlabels();
+		self::assertEquals(count($returnData), count($labels));
+		foreach ($labels as $i => $label) {
+			self::assertInstanceOf('Everyman\Neo4j\Label', $label);
+			self::assertEquals($returnData[$i], $label->getName());
+		}
+
+		self::assertSame($labelAlreadyInstantiated, $labels[1]);
 	}
 }

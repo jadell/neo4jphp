@@ -430,6 +430,17 @@ class Client
 	}
 
 	/**
+	 * List the labels already saved on the server
+	 *
+	 * @return array
+	 */
+	public function listLabels()
+	{
+		$command = new Command\ListLabels($this);
+		return $this->runCommand($command);
+	}
+
+	/**
 	 * Load the given node with data from the server
 	 *
 	 * @param Node $node
