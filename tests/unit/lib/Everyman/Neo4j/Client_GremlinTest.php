@@ -5,11 +5,21 @@ class Client_GremlinTest extends \PHPUnit_Framework_TestCase
 {
 	protected $transport = null;
 	protected $client = null;
+	protected $endpoint = 'http://foo:1234/db/data';
 
 	public function setUp()
 	{
 		$this->transport = $this->getMock('Everyman\Neo4j\Transport');
-		$this->client = new Client($this->transport);
+		$this->client = $this->getMock('Everyman\Neo4j\Client', array('getServerInfo'), array($this->transport));
+		$this->client->expects($this->any())
+			->method('getServerInfo')
+			->will($this->returnValue(array(
+				'extensions' => array(
+					'GremlinPlugin' => array(
+						'execute_script' => $this->endpoint.'/ext/GremlinPlugin/graphdb/execute_script',
+					)
+				)
+			)));
 	}
 
 	public function testGremlinQuery_ServerReturnsErrorCode_ReturnsFalse()
@@ -106,5 +116,22 @@ class Client_GremlinTest extends \PHPUnit_Framework_TestCase
 		$result = $this->client->executeGremlinQuery($query);
 		$this->assertInstanceOf('Everyman\Neo4j\Query\ResultSet', $result);
 		$this->assertEquals("this is some scalar value", $result[0][0]);
+	}
+
+	public function testGremlinQuery_GremlinNotAvailable_ThrowsException()
+	{
+		$this->client = $this->getMock('Everyman\Neo4j\Client', array('getServerInfo'), array($this->transport));
+		$this->client->expects($this->any())
+			->method('getServerInfo')
+			->will($this->returnValue(array('extensions' => array())));
+
+		$this->transport->expects($this->never())
+			->method('post');
+
+		$props = array('script' => 'i=g.foo();');
+		$query = new Gremlin\Query($this->client, $props['script']);
+
+		$this->setExpectedException('\Everyman\Neo4j\Exception');
+		$this->client->executeGremlinQuery($query);
 	}
 }

@@ -13,7 +13,9 @@ class Client
 
 	const RefNodeId = 0;
 
-	const CapabilityLabel = 'label';
+	const CapabilityCypher  = 'cypher';
+	const CapabilityGremlin = 'gremlin';
+	const CapabilityLabel   = 'label';
 
 	protected $transport = null;
 	protected $entityMapper = null;
@@ -448,11 +450,28 @@ class Client
 	public function hasCapability($capability)
 	{
 		$info = $this->getServerInfo();
-		if ($capability == self::CapabilityLabel) {
-			return $info['version']['major'] > 1;
-		}
 
-		return false;
+		switch ($capability) {
+			case self::CapabilityLabel :
+				return $info['version']['major'] > 1;
+
+			case self::CapabilityCypher :
+				if (isset($info['cypher'])) {
+					return $info['cypher'];
+				} else if (isset($info['extensions']['CypherPlugin']['execute_query'])) {
+					return $info['extensions']['CypherPlugin']['execute_query'];
+				}
+				return false;
+
+			case self::CapabilityGremlin :
+				if (isset($info['extensions']['GremlinPlugin']['execute_script'])) {
+					return $info['extensions']['GremlinPlugin']['execute_script'];
+				}
+				return false;
+
+			default:
+				return false;
+		}
 	}
 
 	/**
