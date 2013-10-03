@@ -128,6 +128,18 @@ class Node extends PropertyContainer
 	}
 
 	/**
+	 * Remove labels from this node
+	 *
+	 * @param array $labels
+	 * @return array of all the Labels on this node, after removing the given labels
+	 */
+	public function removeLabels($labels)
+	{
+		$this->labels = $this->client->removeLabels($this, $labels);
+		return $this->labels;
+	}
+
+	/**
 	 * Save this node
 	 *
 	 * @return PropertyContainer

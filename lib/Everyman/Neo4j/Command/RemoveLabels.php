@@ -7,12 +7,12 @@ use Everyman\Neo4j\Command\SetLabels,
 	Everyman\Neo4j\Label;
 
 /**
- * Add a set of labels to a node
+ * Remove a set of labels from a node
  */
-class AddLabels extends SetLabels
+class RemoveLabels extends SetLabels
 {
 	/**
-	 * Set the labels to add
+	 * Set the labels to remove
 	 *
 	 * @param Client $client
 	 * @param Node   $node
@@ -20,7 +20,7 @@ class AddLabels extends SetLabels
 	 */
 	public function __construct(Client $client, Node $node, $labels)
 	{
-		parent::__construct($client, $node, $labels, false);
+		parent::__construct($client, $node, $labels, true);
 	}
 }
 

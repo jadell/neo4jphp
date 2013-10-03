@@ -561,6 +561,20 @@ class Client
 	}
 
 	/**
+	 * Remove a set of labels from a node
+	 *
+	 * @param Node  $node
+	 * @param array $labels list of Label objects to remove
+	 * @return array of Label objects; the entire list of labels on the given node
+	 *   including the ones just added
+	 */
+	public function removeLabels(Node $node, $labels)
+	{
+		$command = new Command\RemoveLabels($this, $node, $labels);
+		return $this->runCommand($command);
+	}
+
+	/**
 	 * Save the given index
 	 *
 	 * @param Index $index
