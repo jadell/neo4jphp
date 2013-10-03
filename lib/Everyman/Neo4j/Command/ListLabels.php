@@ -2,7 +2,7 @@
 namespace Everyman\Neo4j\Command;
 use Everyman\Neo4j\Command,
 	Everyman\Neo4j\Client,
-	Everyman\Neo4j\Label;
+	Everyman\Neo4j\Node;
 
 /**
  * List all labels on the server
@@ -10,6 +10,20 @@ use Everyman\Neo4j\Command,
  */
 class ListLabels extends Command
 {
+	protected $node;
+
+	/**
+	 * Optionally provide a node to limit to
+	 *
+	 * @param Client $client
+	 * @param Node   $node
+	 */
+	public function __construct(Client $client, Node $node=null)
+	{
+		parent::__construct($client);
+		$this->node = $node;
+	}
+
 	/**
 	 * Return the data to pass
 	 *
@@ -38,6 +52,14 @@ class ListLabels extends Command
 	protected function getPath()
 	{
 		$path = "/labels";
+		if ($this->node) {
+			$id = $this->node->getId();
+			if (!$id) {
+				throw new \InvalidArgumentException("Node given with no id");
+			}
+
+			$path = "/node/{$id}{$path}";
+		}
 		return $path;
 	}
 

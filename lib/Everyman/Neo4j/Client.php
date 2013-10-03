@@ -432,11 +432,15 @@ class Client
 	/**
 	 * List the labels already saved on the server
 	 *
+	 * If a $node is given, only return labels for
+	 * that node.
+	 *
+	 * @param Node $node
 	 * @return array
 	 */
-	public function listLabels()
+	public function listLabels(Node $node=null)
 	{
-		$command = new Command\ListLabels($this);
+		$command = new Command\ListLabels($this, $node);
 		return $this->runCommand($command);
 	}
 

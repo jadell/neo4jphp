@@ -161,7 +161,7 @@ class Client_LabelTest extends \PHPUnit_Framework_TestCase
 		$this->client->getNodesForLabel($label, null, 'val');
 	}
 
-	public function testListLabels_ReturnsArrayOfLabelsAttachedToNodesOnTheServer()
+	public function testListLabels_NoNode_ReturnsArrayOfLabelsAttachedToNodesOnTheServer()
 	{
 		$labelAlreadyInstantiated = $this->client->getLabel('BAZQUX');
 
@@ -180,5 +180,37 @@ class Client_LabelTest extends \PHPUnit_Framework_TestCase
 		}
 
 		self::assertSame($labelAlreadyInstantiated, $labels[1]);
+	}
+
+	public function testListLabels_NodeSpecified_ReturnsArrayOfLabelsAttachedToNode()
+	{
+		$nodeId = 123;
+		$node = new Node($this->client);
+		$node->setId($nodeId);
+
+		$returnData = array('FOOBAR', 'BAZQUX');
+
+		$this->transport->expects($this->once())
+			->method('get')
+			->with("/node/{$nodeId}/labels")
+			->will($this->returnValue(array('code'=>200,'data'=>$returnData)));
+
+		$labels = $this->client->listlabels($node);
+		self::assertEquals(count($returnData), count($labels));
+		foreach ($labels as $i => $label) {
+			self::assertInstanceOf('Everyman\Neo4j\Label', $label);
+			self::assertEquals($returnData[$i], $label->getName());
+		}
+	}
+
+	public function testListLabels_NoNodeId_ThrowsException()
+	{
+		$node = new Node($this->client);
+
+		$this->transport->expects($this->never())
+			->method('get');
+
+		$this->setExpectedException('InvalidArgumentException');
+		$labels = $this->client->listlabels($node);
 	}
 }
