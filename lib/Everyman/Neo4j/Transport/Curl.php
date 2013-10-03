@@ -1,7 +1,8 @@
 <?php
 namespace Everyman\Neo4j\Transport;
 use Everyman\Neo4j\Transport as BaseTransport,
-	Everyman\Neo4j\Version;
+	Everyman\Neo4j\Version,
+	Everyman\Neo4j\Exception;
 
 /**
  * Class for communicating with an HTTP JSON endpoint
