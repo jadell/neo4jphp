@@ -71,6 +71,17 @@ class Node extends PropertyContainer
 	}
 
 	/**
+	 * List labels for this node
+	 *
+	 * @return array
+	 * @throws Exception on failure
+	 */
+	public function listLabels()
+	{
+		return $this->client->listLabels($this);
+	}
+
+	/**
 	 * Load this node
 	 *
 	 * @return PropertyContainer

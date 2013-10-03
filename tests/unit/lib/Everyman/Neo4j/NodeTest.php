@@ -11,6 +11,7 @@ class NodeTest extends \PHPUnit_Framework_TestCase
 		$this->client = $this->getMock('Everyman\Neo4j\Client', array(
 			'saveNode',
 			'deleteNode',
+			'listLabels',
 			'loadNode',
 			'getNodeRelationships',
 			'runCommand',
@@ -34,6 +35,20 @@ class NodeTest extends \PHPUnit_Framework_TestCase
 		$this->node->setId(123);
 		$this->assertSame($this->node, $this->node->save());
 		$this->assertTrue($matched);
+	}
+
+	public function testListLabels_DelegatesToClient()
+	{
+		$label = new Label($this->client, 'FOOBAR');
+
+		$this->client->expects($this->once())
+			->method('listLabels')
+			->with($this->node)
+			->will($this->returnValue(array($label)));
+
+		$labels = $this->node->listLabels();
+		$this->assertEquals(1, count($labels));
+		$this->assertSame($label, $labels[0]);
 	}
 
 	/**
