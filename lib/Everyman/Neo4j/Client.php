@@ -30,27 +30,18 @@ class Client
 	 */
 	public function __construct($transport=null, $port=7474)
 	{
+
 		try {
 			if ($transport === null) {
-				$transport = new Transport\Curl();
+				$transport = DI::resolve("transport");
 			} elseif (is_string($transport)) {
-				$transport = new Transport\Curl($transport, $port);
+				$transport = DI::resolve("transport", array($transport, $port));
 			}
 		} catch (Exception $e) {
-			if ($transport === null) {
-				$transport = new Transport\Stream();
-			} elseif (is_string($transport)) {
-				$transport = new Transport\Stream($transport, $port);
-			}
+			throw new Exception("Could not create transport object!");
 		}
 
 		$this->setTransport($transport);
-		$this->setNodeFactory(function (Client $client, $properties=array()) {
-			return new Node($client);
-		});
-		$this->setRelationshipFactory(function (Client $client, $properties=array()) {
-			return new Relationship($client);
-		});
 	}
 
 	/**
@@ -431,8 +422,8 @@ class Client
 	 */
 	public function makeNode($properties=array())
 	{
-		$nodeFactory = $this->nodeFactory;
-		$node = $nodeFactory($this, $properties);
+
+		$node = DI::resolve("Node", array($this, $properties));
 		if (!($node instanceof Node)) {
 			throw new Exception('Node factory did not return a Node object.');
 		}
@@ -447,8 +438,7 @@ class Client
 	 */
 	public function makeRelationship($properties=array())
 	{
-		$relFactory = $this->relFactory;
-		$rel = $relFactory($this, $properties);
+		$rel = DI::resolve("Relationship", array($this, $properties));
 		if (!($rel instanceof Relationship)) {
 			throw new Exception('Relationship factory did not return a Relationship object.');
 		}

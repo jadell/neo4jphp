@@ -6,7 +6,8 @@ use Everyman\Neo4j\Client,
     Everyman\Neo4j\PropertyContainer,
     Everyman\Neo4j\Node,
     Everyman\Neo4j\Relationship,
-    Everyman\Neo4j\Cache;
+    Everyman\Neo4j\Cache,
+    Everyman\Neo4j\DI;
 
 /**
  * Store and retrieve cached entities without hitting the server
@@ -52,7 +53,7 @@ class EntityCache
 			throw new Exception('Unknown entity type: '.$type);
 		}
 
-		$entity = $this->getCache()->get("{$type}-{$id}");
+		$entity = $this->getCache()->get("{$this->resolveCacheKey($type)}-{$id}");
 		if ($entity) {
 			$entity->setClient($this->client);
 		}
@@ -98,15 +99,31 @@ class EntityCache
 	 * Determine the cache key used to retrieve the given entity from the cache
 	 *
 	 * @param PropertyContainer $entity
-	 * @return string 
+	 * @return string
 	 */
 	protected function getEntityCacheKey(PropertyContainer $entity)
 	{
 		if ($entity instanceof Node) {
-			return 'node-'.$entity->getId();
+			return $this->resolveCacheKey('node') . '-'.$entity->getId();
 		} else if ($entity instanceof Relationship) {
-			return 'relationship-'.$entity->getId();
+			return $this->resolveCacheKey('relationship') . '-'.$entity->getId();
 		}
 		throw new Exception('Unknown entity type: '.get_class($entity));
+	}
+
+	/**
+	 * Resolves cache key by given type. Checks if there is registered
+	 * cache prefix for this type and returns it, otherwise it returns
+	 * the type itself as a key
+	 * @param string $type
+	 * @return string
+	 */
+	protected function resolveCacheKey($type)
+	{
+	    if (DI::isRegistered($type . "CachePrefix")) {
+	        return DI::resolve($type . "CachePrefix");
+	    }
+
+	    return $type;
 	}
 }

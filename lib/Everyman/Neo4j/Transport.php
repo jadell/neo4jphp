@@ -30,6 +30,9 @@ abstract class Transport
 	{
 		$this->host = $host;
 		$this->port = $port;
+		if (DI::isRegistered("dbPath")) {
+		    $this->path = DI::resolve("dbPath");
+		}
 	}
 
 	/**
@@ -147,11 +150,12 @@ abstract class Transport
 	}
 
 	/**
-	 * Turn HTTPS on or off
+	 * Turn HTTPS on or off and adds ssl specific options
 	 *
 	 * Returns this Trnasport object
 	 *
 	 * @param boolean $useHttps
+	 * @param array $options
 	 * @return Transport
 	 */
 	public function useHttps($useHttps=true)

@@ -76,6 +76,15 @@ class Curl extends BaseTransport
 			break;
 		}
 
+		//additional curl options
+		if (\Everyman\Neo4j\DI::isRegistered("curlOptions")) {
+		    $additionalOptions = \Everyman\Neo4j\DI::resolve("curlOptions");
+		    if (is_array($additionalOptions)) {
+		        $options = array_replace($options, $additionalOptions);
+		    }
+		    unset($additionalOptions);
+		}
+
 		$ch = $this->getHandle();
 		curl_setopt_array($ch, $options);
 
