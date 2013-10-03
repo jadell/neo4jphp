@@ -7,7 +7,6 @@ use Everyman\Neo4j\Command,
 
 /**
  * Find nodes with the given label
- * @todo: Detect availability of labels functionality
  */
 class GetNodesForLabel extends Command
 {
@@ -59,6 +58,10 @@ class GetNodesForLabel extends Command
 	 */
 	protected function getPath()
 	{
+		if (!$this->client->hasCapability(Client::CapabilityLabel)) {
+			throw new \RuntimeException('The connected Neo4j version does not have label capability');
+		}
+
 		$labelName = rawurlencode($this->label->getName());
 		$path = "/label/{$labelName}/nodes";
 		if ($this->propertyName || $this->propertyValue) {

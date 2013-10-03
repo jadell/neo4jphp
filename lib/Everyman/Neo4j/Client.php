@@ -13,6 +13,8 @@ class Client
 
 	const RefNodeId = 0;
 
+	const CapabilityLabel = 'label';
+
 	protected $transport = null;
 	protected $entityMapper = null;
 	protected $entityCache = null;
@@ -435,6 +437,22 @@ class Client
 	public function getTransport()
 	{
 		return $this->transport;
+	}
+
+	/**
+	 * Does the connected database have the requested capability?
+	 *
+	 * @param string $capability
+	 * @return mixed true or string if yes, false otherwise
+	 */
+	public function hasCapability($capability)
+	{
+		$info = $this->getServerInfo();
+		if ($capability == self::CapabilityLabel) {
+			return $info['version']['major'] > 1;
+		}
+
+		return false;
 	}
 
 	/**

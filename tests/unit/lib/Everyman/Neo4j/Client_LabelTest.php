@@ -13,7 +13,17 @@ class Client_LabelTest extends \PHPUnit_Framework_TestCase
 		$this->transport->expects($this->any())
 			->method('getEndpoint')
 			->will($this->returnValue($this->endpoint));
-		$this->client = new Client($this->transport);
+		$this->client = $this->getMock('Everyman\Neo4j\Client', array('getServerInfo'), array($this->transport));
+		$this->client->expects($this->any())
+			->method('getServerInfo')
+			->will($this->returnValue(array(
+				'cypher' => $this->endpoint.'/cypher',
+				'version' => array(
+					"full" => "2.0.0-M06",
+					"major" => "2",
+					"minor" => "0",
+				)
+			)));
 	}
 
 	public function testMakeLabel_ReturnsLabel()
@@ -161,6 +171,30 @@ class Client_LabelTest extends \PHPUnit_Framework_TestCase
 		$this->client->getNodesForLabel($label, null, 'val');
 	}
 
+	public function testGetNodesForLabel_NoLabelCapability_ThrowsException()
+	{
+		$this->client = $this->getMock('Everyman\Neo4j\Client', array('getServerInfo'), array($this->transport));
+		$this->client->expects($this->any())
+			->method('getServerInfo')
+			->will($this->returnValue(array(
+				'cypher' => $this->endpoint.'/cypher',
+				'version' => array(
+					"full" => "1.9.0",
+					"major" => "1",
+					"minor" => "9",
+				)
+			)));
+
+		$labelName = 'FOOBAR';
+		$label = new Label($this->client, $labelName);
+
+		$this->transport->expects($this->never())
+			->method('get');
+
+		$this->setExpectedException('RuntimeException', 'label capability');
+		$this->client->getNodesForLabel($label);
+	}
+
 	public function testGetLabels_NoNode_ReturnsArrayOfLabelsAttachedToNodesOnTheServer()
 	{
 		$labelAlreadyInstantiated = $this->client->makeLabel('BAZQUX');
@@ -214,6 +248,27 @@ class Client_LabelTest extends \PHPUnit_Framework_TestCase
 		$labels = $this->client->getLabels($node);
 	}
 
+	public function testGetLabels_NoLabelCapabiltiy_ThrowsException()
+	{
+		$this->client = $this->getMock('Everyman\Neo4j\Client', array('getServerInfo'), array($this->transport));
+		$this->client->expects($this->any())
+			->method('getServerInfo')
+			->will($this->returnValue(array(
+				'cypher' => $this->endpoint.'/cypher',
+				'version' => array(
+					"full" => "1.9.0",
+					"major" => "1",
+					"minor" => "9",
+				)
+			)));
+
+		$this->transport->expects($this->never())
+			->method('get');
+
+		$this->setExpectedException('RuntimeException', 'label capability');
+		$this->client->getLabels();
+	}
+
 	public function testAddLabels_SendsCorrectCypherQuery()
 	{
 		$nodeId = 123;
@@ -255,6 +310,34 @@ class Client_LabelTest extends \PHPUnit_Framework_TestCase
 			self::assertInstanceOf('Everyman\Neo4j\Label', $label);
 			self::assertEquals($expectedLabels[$i], $label->getName());
 		}
+	}
+
+	public function testAddLabels_NoLabelCapability_ThrowsException()
+	{
+		$nodeId = 123;
+		$node = new Node($this->client);
+		$node->setId($nodeId);
+
+		$labelAName = 'FOOBAR';
+		$labelA = $this->client->makeLabel($labelAName);
+
+		$this->client = $this->getMock('Everyman\Neo4j\Client', array('getServerInfo'), array($this->transport));
+		$this->client->expects($this->any())
+			->method('getServerInfo')
+			->will($this->returnValue(array(
+				'cypher' => $this->endpoint.'/cypher',
+				'version' => array(
+					"full" => "1.9.0",
+					"major" => "1",
+					"minor" => "9",
+				)
+			)));
+
+		$this->transport->expects($this->never())
+			->method('get');
+
+		$this->setExpectedException('RuntimeException');
+		$this->client->addLabels($node, array($labelA));
 	}
 
 	public function testAddLabels_NoNodeId_ThrowsException()
@@ -339,6 +422,34 @@ class Client_LabelTest extends \PHPUnit_Framework_TestCase
 			self::assertInstanceOf('Everyman\Neo4j\Label', $label);
 			self::assertEquals($expectedLabels[$i], $label->getName());
 		}
+	}
+
+	public function testRemoveLabels_NoLabelCapability_ThrowsException()
+	{
+		$nodeId = 123;
+		$node = new Node($this->client);
+		$node->setId($nodeId);
+
+		$labelAName = 'FOOBAR';
+		$labelA = $this->client->makeLabel($labelAName);
+
+		$this->client = $this->getMock('Everyman\Neo4j\Client', array('getServerInfo'), array($this->transport));
+		$this->client->expects($this->any())
+			->method('getServerInfo')
+			->will($this->returnValue(array(
+				'cypher' => $this->endpoint.'/cypher',
+				'version' => array(
+					"full" => "1.9.0",
+					"major" => "1",
+					"minor" => "9",
+				)
+			)));
+
+		$this->transport->expects($this->never())
+			->method('get');
+
+		$this->setExpectedException('RuntimeException');
+		$this->client->removeLabels($node, array($labelA));
 	}
 
 	public function testRemoveLabels_NoNodeId_ThrowsException()

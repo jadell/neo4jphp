@@ -10,7 +10,6 @@ use Everyman\Neo4j\Command\ExecuteCypherQuery,
 /**
  * Add or remove a set of labels on a node
  *
- * @todo: Detect availability of labels functionality
  * @todo: Don't extend ExecuteCypherQuery, extract and use a more generic Command interface
  *        that proxies to an ExecuteCypherQuery command
  */
@@ -26,6 +25,10 @@ class SetLabels extends ExecuteCypherQuery
 	 */
 	public function __construct(Client $client, Node $node, $labels, $remove=false)
 	{
+		if (!$client->hasCapability(Client::CapabilityLabel)) {
+			throw new \RuntimeException('The connected Neo4j version does not have label capability');
+		}
+
 		$nodeId = $node->getId();
 		if (!$nodeId) {
 			throw new \InvalidArgumentException("Cannot set labels on an unsaved node");

@@ -6,7 +6,6 @@ use Everyman\Neo4j\Command,
 
 /**
  * List all labels on the server
- * @todo: Detect availability of labels functionality
  */
 class GetLabels extends Command
 {
@@ -51,6 +50,10 @@ class GetLabels extends Command
 	 */
 	protected function getPath()
 	{
+		if (!$this->client->hasCapability(Client::CapabilityLabel)) {
+			throw new \RuntimeException('The connected Neo4j version does not have label capability');
+		}
+
 		$path = "/labels";
 		if ($this->node) {
 			$id = $this->node->getId();
