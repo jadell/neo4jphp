@@ -78,10 +78,10 @@ class Node extends PropertyContainer
 	 * @return array
 	 * @throws Exception on failure
 	 */
-	public function listLabels()
+	public function getLabels()
 	{
 		if (is_null($this->labels)) {
-			$this->labels = $this->client->listLabels($this);
+			$this->labels = $this->client->getLabels($this);
 		}
 		return $this->labels;
 	}

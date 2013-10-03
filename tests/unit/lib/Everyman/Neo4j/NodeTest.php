@@ -11,7 +11,7 @@ class NodeTest extends \PHPUnit_Framework_TestCase
 		$this->client = $this->getMock('Everyman\Neo4j\Client', array(
 			'saveNode',
 			'deleteNode',
-			'listLabels',
+			'getLabels',
 			'loadNode',
 			'getNodeRelationships',
 			'runCommand',
@@ -37,7 +37,7 @@ class NodeTest extends \PHPUnit_Framework_TestCase
 		$this->assertTrue($matched);
 	}
 
-	public function testListLabels_DelegatesToClient()
+	public function testGetLabels_DelegatesToClient()
 	{
 		$expected = $this->node;
 		$matched = false;
@@ -45,14 +45,14 @@ class NodeTest extends \PHPUnit_Framework_TestCase
 		$label = new Label($this->client, 'FOOBAR');
 
 		$this->client->expects($this->once())
-			->method('listLabels')
+			->method('getLabels')
 			// Have to do it this way because PHPUnit clones object parameters
 			->will($this->returnCallback(function (Node $actual) use ($expected, $label, &$matched) {
 				$matched = $expected->getId() == $actual->getId();
 				return array($label);
 			}));
 
-		$labels = $this->node->listLabels();
+		$labels = $this->node->getLabels();
 		$this->assertEquals(1, count($labels));
 		$this->assertSame($label, $labels[0]);
 	}
