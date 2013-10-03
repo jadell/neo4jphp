@@ -90,4 +90,47 @@ class Client_LabelTest extends \PHPUnit_Framework_TestCase
 		$this->assertInstanceOf('Everyman\Neo4j\Query\Row', $nodes);
 		$this->assertEquals(0, count($nodes));
 	}
+
+	public function testGetNodesForLabel_ProperlyUrlEncodesPath()
+	{
+		$labelName = 'FOO+Bar /Baz';
+		$propertyName = 'ba$! "z qux"';
+		$propertyValue = 'f @oo !B"/+%20ar ';
+		$label = new Label($this->client, $labelName);
+
+		$expectedLabel = rawurlencode($labelName);
+		$expectedName = rawurlencode($propertyName);
+		$expectedValue = rawurlencode('"'.$propertyValue.'"');
+
+		$this->transport->expects($this->once())
+			->method('get')
+			->with("/label/{$expectedLabel}/nodes?{$expectedName}={$expectedValue}")
+			->will($this->returnValue(array('code'=>200,'data'=>array())));
+
+		$this->client->getNodesForLabel($label, $propertyName, $propertyValue);
+	}
+
+	public function testGetNodesForLabel_PropertyNameWithoutValue_ThrowsException()
+	{
+		$labelName = 'FOOBAR';
+		$label = new Label($this->client, $labelName);
+
+		$this->transport->expects($this->never())
+			->method('get');
+
+		$this->setExpectedException('InvalidArgumentException');
+		$this->client->getNodesForLabel($label, 'prop', null);
+	}
+
+	public function testGetNodesForLabel_PropertyValueWithoutName_ThrowsException()
+	{
+		$labelName = 'FOOBAR';
+		$label = new Label($this->client, $labelName);
+
+		$this->transport->expects($this->never())
+			->method('get');
+
+		$this->setExpectedException('InvalidArgumentException');
+		$this->client->getNodesForLabel($label, null, 'val');
+	}
 }

@@ -58,12 +58,17 @@ class GetNodesForLabel extends Command
 	 */
 	protected function getPath()
 	{
-		$path = '/label/'.$this->label->getName().'/nodes';
+		$labelName = rawurlencode($this->label->getName());
+		$path = "/label/{$labelName}/nodes";
 		if ($this->propertyName || $this->propertyValue) {
-			$query = http_build_query(array(
-				$this->propertyName => "\"{$this->propertyValue}\"",
-			));
-			$path .= '?' . $query;
+			if (!$this->propertyName || !$this->propertyValue) {
+				throw new \InvalidArgumentException('Cannot specify a property name without a value, or vice versa');
+			}
+
+			$propertyName = rawurlencode($this->propertyName);
+			$propertyValue = rawurlencode('"'.$this->propertyValue.'"');
+
+			$path .= "?{$propertyName}={$propertyValue}";
 		}
 		return $path;
 	}
