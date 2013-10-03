@@ -80,10 +80,10 @@ class Variable implements Cache
 	 */
 	protected function calculateExpiration($expire)
 	{
-		if ($expire <= 2592000) {
-			$expire = time() + $expire;
-		} else if (!$expire) {
+		if (!$expire) {
 			$expire = PHP_INT_MAX;
+		} else if ($expire <= 2592000) {
+			$expire = time() + $expire;
 		}
 		return $expire;
 	}

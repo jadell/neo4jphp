@@ -16,6 +16,33 @@ class Client_LabelTest extends \PHPUnit_Framework_TestCase
 		$this->client = new Client($this->transport);
 	}
 
+	public function testGetLabel_ReturnsLabel()
+	{
+		$labelNameA = 'FOOBAR';
+		$labelNameB = 'BAZQUX';
+
+		$labelA = $this->client->getLabel($labelNameA);
+		$labelB = $this->client->getLabel($labelNameB);
+
+		self::assertInstanceOf('Everyman\Neo4j\Label', $labelA);
+		self::assertEquals($labelNameA, $labelA->getName());
+
+		self::assertInstanceOf('Everyman\Neo4j\Label', $labelB);
+		self::assertEquals($labelNameB, $labelB->getName());
+	}
+
+	public function testGetLabel_SameName_ReturnsSameLabelInstance()
+	{
+		$labelName = 'FOOBAR';
+
+		$labelA = $this->client->getLabel($labelName);
+		$labelB = $this->client->getLabel($labelName);
+
+		self::assertInstanceOf('Everyman\Neo4j\Label', $labelA);
+		self::assertInstanceOf('Everyman\Neo4j\Label', $labelB);
+		self::assertSame($labelA, $labelB);
+	}
+
 	public function testGetNodesForLabel_NodesExistForLabel_ReturnsRow()
 	{
 		$labelName = 'FOOBAR';

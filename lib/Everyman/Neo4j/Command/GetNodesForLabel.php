@@ -7,6 +7,7 @@ use Everyman\Neo4j\Command,
 
 /**
  * Find nodes with the given label
+ * @todo: Detect availability of labels functionality
  */
 class GetNodesForLabel extends Command
 {

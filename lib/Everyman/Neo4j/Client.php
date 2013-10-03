@@ -16,6 +16,7 @@ class Client
 	protected $transport = null;
 	protected $entityMapper = null;
 	protected $entityCache = null;
+	protected $labelCache = null;
 	protected $serverInfo = null;
 	protected $openBatch = null;
 
@@ -51,6 +52,8 @@ class Client
 		$this->setRelationshipFactory(function (Client $client, $properties=array()) {
 			return new Relationship($client);
 		});
+
+		$this->labelCache = new Cache\Variable();
 	}
 
 	/**
@@ -240,6 +243,27 @@ class Client
 	{
 		$command = new Command\GetIndexes($this, $type);
 		return $this->runCommand($command);
+	}
+
+	/**
+	 * Retrieve a Label object for the given name
+	 *
+	 * If the name has already been seen, the same
+	 * Label object wil be returned, i. e. only one
+	 * Label will exist per name.
+	 *
+	 * @param string $name
+	 * @return Label
+	 */
+	public function getLabel($name)
+	{
+		$label = $this->labelCache->get($name);
+		if (!$label) {
+			$label = new Label($this, $name);
+			$this->labelCache->set($name, $label);
+		}
+
+		return $label;
 	}
 
 	/**
