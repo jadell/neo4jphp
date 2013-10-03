@@ -39,12 +39,18 @@ class NodeTest extends \PHPUnit_Framework_TestCase
 
 	public function testListLabels_DelegatesToClient()
 	{
+		$expected = $this->node;
+		$matched = false;
+
 		$label = new Label($this->client, 'FOOBAR');
 
 		$this->client->expects($this->once())
 			->method('listLabels')
-			->with($this->node)
-			->will($this->returnValue(array($label)));
+			// Have to do it this way because PHPUnit clones object parameters
+			->will($this->returnCallback(function (Node $actual) use ($expected, $label, &$matched) {
+				$matched = $expected->getId() == $actual->getId();
+				return array($label);
+			}));
 
 		$labels = $this->node->listLabels();
 		$this->assertEquals(1, count($labels));

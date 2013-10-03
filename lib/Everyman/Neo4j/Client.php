@@ -246,24 +246,18 @@ class Client
 	}
 
 	/**
-	 * Retrieve a Label object for the given name
+	 * List the labels already saved on the server
 	 *
-	 * If the name has already been seen, the same
-	 * Label object wil be returned, i. e. only one
-	 * Label will exist per name.
+	 * If a $node is given, only return labels for
+	 * that node.
 	 *
-	 * @param string $name
-	 * @return Label
+	 * @param Node $node
+	 * @return array
 	 */
-	public function getLabel($name)
+	public function getLabels(Node $node=null)
 	{
-		$label = $this->labelCache->get($name);
-		if (!$label) {
-			$label = new Label($this, $name);
-			$this->labelCache->set($name, $label);
-		}
-
-		return $label;
+		$command = new Command\GetLabels($this, $node);
+		return $this->runCommand($command);
 	}
 
 	/**
@@ -430,21 +424,6 @@ class Client
 	}
 
 	/**
-	 * List the labels already saved on the server
-	 *
-	 * If a $node is given, only return labels for
-	 * that node.
-	 *
-	 * @param Node $node
-	 * @return array
-	 */
-	public function listLabels(Node $node=null)
-	{
-		$command = new Command\ListLabels($this, $node);
-		return $this->runCommand($command);
-	}
-
-	/**
 	 * Load the given node with data from the server
 	 *
 	 * @param Node $node
@@ -476,6 +455,27 @@ class Client
 		}
 
 		return $this->runCommand(new Command\GetRelationship($this, $rel));
+	}
+
+	/**
+	 * Retrieve a Label object for the given name
+	 *
+	 * If the name has already been seen, the same
+	 * Label object wil be returned, i. e. only one
+	 * Label will exist per name.
+	 *
+	 * @param string $name
+	 * @return Label
+	 */
+	public function makeLabel($name)
+	{
+		$label = $this->labelCache->get($name);
+		if (!$label) {
+			$label = new Label($this, $name);
+			$this->labelCache->set($name, $label);
+		}
+
+		return $label;
 	}
 
 	/**

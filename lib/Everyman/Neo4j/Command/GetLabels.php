@@ -8,7 +8,7 @@ use Everyman\Neo4j\Command,
  * List all labels on the server
  * @todo: Detect availability of labels functionality
  */
-class ListLabels extends Command
+class GetLabels extends Command
 {
 	protected $node;
 
@@ -78,7 +78,7 @@ class ListLabels extends Command
 			$this->throwException('Unable to labels', $code, $headers, $data);
 		}
 
-		$labels = array_map(array($this->client, 'getLabel'), $data);
+		$labels = array_map(array($this->client, 'makeLabel'), $data);
 
 		return $labels;
 	}

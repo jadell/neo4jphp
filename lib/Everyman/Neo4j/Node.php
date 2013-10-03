@@ -6,6 +6,8 @@ namespace Everyman\Neo4j;
  */
 class Node extends PropertyContainer
 {
+	protected $labels = null;
+
 	/**
 	 * Delete this node
 	 *
@@ -78,7 +80,10 @@ class Node extends PropertyContainer
 	 */
 	public function listLabels()
 	{
-		return $this->client->listLabels($this);
+		if (is_null($this->labels)) {
+			$this->labels = $this->client->listLabels($this);
+		}
+		return $this->labels;
 	}
 
 	/**
