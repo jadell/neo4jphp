@@ -57,6 +57,20 @@ class Client
 	}
 
 	/**
+	 * Add a set of labels to a node
+	 *
+	 * @param Node  $node
+	 * @param array $labels list of Label objects to add
+	 * @return array of Label objects; the entire list of labels on the given node
+	 *   including the ones just added
+	 */
+	public function addLabels(Node $node, $labels)
+	{
+		$command = new Command\AddLabels($this, $node, $labels);
+		return $this->runCommand($command);
+	}
+
+	/**
 	 * Add an entity to an index
 	 *
 	 * @param Index $index

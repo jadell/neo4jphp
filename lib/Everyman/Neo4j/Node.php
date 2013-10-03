@@ -9,6 +9,18 @@ class Node extends PropertyContainer
 	protected $labels = null;
 
 	/**
+	 * Add labels to this node
+	 *
+	 * @param array $labels
+	 * @return array of all the Labels on this node, including those just added
+	 */
+	public function addLabels($labels)
+	{
+		$this->labels = $this->client->addLabels($this, $labels);
+		return $this->labels;
+	}
+
+	/**
 	 * Delete this node
 	 *
 	 * @return PropertyContainer
