@@ -75,6 +75,19 @@ class Client
 	}
 
 	/**
+	 * Add statements to a transaction, and optionally commit the transaction
+	 *
+	 * @param Transaction $transaction
+	 * @param array $statements an array of Cypher\Query objects
+	 * @param boolean $commit should this transaction be committed on this request?
+	 * @return Query\ResultSet
+	 */
+	public function addStatementsToTransaction(Transaction $transaction, $statements=array(), $commit=false)
+	{
+		// Stub
+	}
+
+	/**
 	 * Add an entity to an index
 	 *
 	 * @param Index $index
@@ -573,6 +586,16 @@ class Client
 	{
 		$command = new Command\QueryIndex($this, $index, $query);
 		return $this->runCommand($command);
+	}
+
+	/**
+	 * Rollback the transaction
+	 *
+	 * @param Transaction $transaction
+	 */
+	public function rollbackTransaction(Transaction $transaction)
+	{
+		// Stub
 	}
 
 	/**
