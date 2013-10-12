@@ -1,6 +1,9 @@
 <?php
 namespace Everyman\Neo4j;
 
+use Everyman\Neo4j\Cypher\Query,
+    Everyman\Neo4j\Query\ResultSet;
+
 /**
  * A transaction context for multiple Cypher statements across multiple requests
  */
@@ -17,6 +20,20 @@ class Transaction
 	public function __construct(Client $client)
 	{
 		$this->client = $client;
+	}
+
+	/**
+	 * Add statements to this transaction
+	 *
+	 * @param array   $statements a list of Cypher Query objects to add to the transaction
+	 * @param boolean $commit should this transaction be committed with these statements?
+	 * @return ResultSet
+	 * @todo: If the transaction is no longer open, don't pass to client, and throw an exception
+	 */
+	public function addStatements($statements, $commit)
+	{
+		$result = $this->client->addStatementsToTransaction($this, $statements, $commit);
+		return $result;
 	}
 
 	/**

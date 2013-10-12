@@ -1,6 +1,9 @@
 <?php
 namespace Everyman\Neo4j;
 
+use Everyman\Neo4j\Cypher\Query,
+    Everyman\Neo4j\Query\ResultSet;
+
 class TransactionTest extends \PHPUnit_Framework_TestCase
 {
 	protected $client = null;
@@ -66,5 +69,24 @@ class TransactionTest extends \PHPUnit_Framework_TestCase
 
 		$result = $this->transaction->keepAlive();
 		self::assertSame($this->transaction, $result);
+	}
+
+	public function testAddStatements_DelegatesToClient()
+	{
+		$statements = array(
+			new Query($this->client, 'foo'),
+			new Query($this->client, 'bar'),
+		);
+		$commit = true;
+
+		$expected = new ResultSet($this->client, array());
+
+		$this->client->expects($this->once())
+			->method('addStatementsToTransaction')
+			->with($this->transaction, $statements, $commit)
+			->will($this->returnValue($expected));
+
+		$result = $this->transaction->addStatements($statements, $commit);
+		self::assertSame($expected, $result);
 	}
 }
