@@ -33,7 +33,7 @@ class Transaction
 	public function addStatements($statements, $commit=false)
 	{
 		$result = $this->performClientAction(function ($client, $transaction) use ($statements, $commit) {
-			return $client->addStatementsToTransaction($this, $statements, $commit);
+			return $client->addStatementsToTransaction($transaction, $statements, $commit);
 		}, $commit);
 		return $result;
 	}
@@ -46,7 +46,7 @@ class Transaction
 	public function commit()
 	{
 		$this->performClientAction(function ($client, $transaction) {
-			$client->addStatementsToTransaction($this, array(), true);
+			$client->addStatementsToTransaction($transaction, array(), true);
 		}, true);
 		return $this;
 	}
