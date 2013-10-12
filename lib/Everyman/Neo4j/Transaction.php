@@ -32,8 +32,8 @@ class Transaction
 	 */
 	public function addStatements($statements, $commit=false)
 	{
-		$result = $this->performClientAction(function ($transaction) use ($statements, $commit) {
-			return $this->client->addStatementsToTransaction($this, $statements, $commit);
+		$result = $this->performClientAction(function ($client, $transaction) use ($statements, $commit) {
+			return $client->addStatementsToTransaction($this, $statements, $commit);
 		}, $commit);
 		return $result;
 	}
@@ -45,8 +45,8 @@ class Transaction
 	 */
 	public function commit()
 	{
-		$this->performClientAction(function ($transaction) {
-			$this->client->addStatementsToTransaction($this, array(), true);
+		$this->performClientAction(function ($client, $transaction) {
+			$client->addStatementsToTransaction($this, array(), true);
 		}, true);
 		return $this;
 	}
@@ -78,8 +78,8 @@ class Transaction
 	 */
 	public function keepAlive()
 	{
-		$this->performClientAction(function ($transaction) {
-			$this->client->addStatementsToTransaction($transaction);
+		$this->performClientAction(function ($client, $transaction) {
+			$client->addStatementsToTransaction($transaction);
 		}, false);
 		return $this;
 	}
@@ -91,8 +91,8 @@ class Transaction
 	 */
 	public function rollback()
 	{
-		$this->performClientAction(function ($transaction) {
-			$this->client->rollbackTransaction($transaction);
+		$this->performClientAction(function ($client, $transaction) {
+			$client->rollbackTransaction($transaction);
 		}, true);
 		return $this;
 	}
@@ -131,7 +131,7 @@ class Transaction
 
 		$result = null;
 		if ($this->getId()) {
-			$result = $action($this);
+			$result = $action($this->client, $this);
 		}
 
 		$this->isClosed = $shouldClose;
