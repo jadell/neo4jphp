@@ -11,6 +11,7 @@ class Transaction
 {
 	protected $client;
 	protected $id;
+	protected $isClosed = false;
 
 	/**
 	 * Build the transaction and set its client
@@ -28,23 +29,25 @@ class Transaction
 	 * @param array   $statements a list of Cypher Query objects to add to the transaction
 	 * @param boolean $commit should this transaction be committed with these statements?
 	 * @return ResultSet
-	 * @todo: If the transaction is no longer open, don't pass to client, and throw an exception
 	 */
-	public function addStatements($statements, $commit)
+	public function addStatements($statements, $commit=false)
 	{
-		$result = $this->client->addStatementsToTransaction($this, $statements, $commit);
+		$result = $this->performClientAction(function ($transaction) use ($statements, $commit) {
+			return $this->client->addStatementsToTransaction($this, $statements, $commit);
+		}, $commit);
 		return $result;
 	}
 
 	/**
 	 * Commit this transaction immediately, without adding any new statements
 	 *
-	 * @todo: If the transaction is no longer open, don't pass to client
 	 * @return Transaction
 	 */
 	public function commit()
 	{
-		$this->client->addStatementsToTransaction($this, array(), true);
+		$this->performClientAction(function ($transaction) {
+			$this->client->addStatementsToTransaction($this, array(), true);
+		}, true);
 		return $this;
 	}
 
@@ -59,26 +62,38 @@ class Transaction
 	}
 
 	/**
+	 * Has this transaction been closed?
+	 *
+	 * @return boolean
+	 */
+	public function isClosed()
+	{
+		return $this->isClosed;
+	}
+
+	/**
 	 * Ask for more time to keep this transaction open
 	 *
-	 * @todo: If the transaction is no longer open, don't pass to client
 	 * @return Transaction
 	 */
 	public function keepAlive()
 	{
-		$this->client->addStatementsToTransaction($this);
+		$this->performClientAction(function ($transaction) {
+			$this->client->addStatementsToTransaction($transaction);
+		}, false);
 		return $this;
 	}
 
 	/**
 	 * Rollback the transaction
 	 *
-	 * @todo: If the transaction is no longer open, don't pass to client
 	 * @return Transaction
 	 */
 	public function rollback()
 	{
-		$this->client->rollbackTransaction($this);
+		$this->performClientAction(function ($transaction) {
+			$this->client->rollbackTransaction($transaction);
+		}, true);
 		return $this;
 	}
 
@@ -100,5 +115,27 @@ class Transaction
 
 		$this->id = $id;
 		return $this;
+	}
+
+	/**
+	 * Perform an action against the client
+	 *
+	 * @param callable $action
+	 * @param boolean  $shouldClose
+	 */
+	protected function performClientAction($action, $shouldClose)
+	{
+		if ($this->isClosed()) {
+			throw new Exception('Transaction is already closed');
+		}
+
+		$result = null;
+		if ($this->getId()) {
+			$result = $action($this);
+		}
+
+		$this->isClosed = $shouldClose;
+
+		return $result;
 	}
 }
