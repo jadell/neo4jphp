@@ -12,6 +12,7 @@ class Transaction
 	protected $client;
 	protected $id;
 	protected $isClosed = false;
+	protected $isError = false;
 
 	/**
 	 * Build the transaction and set its client
@@ -69,6 +70,16 @@ class Transaction
 	public function isClosed()
 	{
 		return $this->isClosed;
+	}
+
+	/**
+	 * Has this transaction experienced an error?
+	 *
+	 * @return boolean
+	 */
+	public function isError()
+	{
+		return $this->isError;
 	}
 
 	/**
@@ -131,7 +142,13 @@ class Transaction
 
 		$result = null;
 		if ($this->getId()) {
-			$result = $action($this->client, $this);
+			try {
+				$result = $action($this->client, $this);
+			} catch (\Exception $e) {
+				$this->isClosed = true;
+				$this->isError = true;
+				throw $e;
+			}
 		}
 
 		$this->isClosed = $shouldClose;

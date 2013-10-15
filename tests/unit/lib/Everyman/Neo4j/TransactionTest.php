@@ -67,6 +67,24 @@ class TransactionTest extends \PHPUnit_Framework_TestCase
 		$this->transaction->commit();
 	}
 
+	public function testCommit_ClientException_MarksTransactionClosedAndErrorAndThrowsException()
+	{
+		$exception = new \Everyman\Neo4j\Exception('some client error');
+
+		$this->client->expects($this->any())
+			->method('addStatementsToTransaction')
+			->will($this->throwException($exception));
+
+		try {
+			$this->transaction->commit();
+			$this->fail('Expected exception not thrown');
+		} catch (\Everyman\Neo4j\Exception $e) {
+			self::assertSame($exception, $e);
+			self::assertTrue($this->transaction->isClosed());
+			self::assertTrue($this->transaction->isError());
+		}
+	}
+
 	public function testRollback_DelegatesToClient()
 	{
 		$this->client->expects($this->once())
@@ -98,6 +116,24 @@ class TransactionTest extends \PHPUnit_Framework_TestCase
 		$this->transaction->rollback();
 	}
 
+	public function testRollback_ClientException_MarksTransactionClosedAndErrorAndThrowsException()
+	{
+		$exception = new \Everyman\Neo4j\Exception('some client error');
+
+		$this->client->expects($this->any())
+			->method('rollbackTransaction')
+			->will($this->throwException($exception));
+
+		try {
+			$this->transaction->rollback();
+			$this->fail('Expected exception not thrown');
+		} catch (\Everyman\Neo4j\Exception $e) {
+			self::assertSame($exception, $e);
+			self::assertTrue($this->transaction->isClosed());
+			self::assertTrue($this->transaction->isError());
+		}
+	}
+
 	public function testKeepAlive_DelegatesToClient()
 	{
 		$this->client->expects($this->once())
@@ -127,6 +163,24 @@ class TransactionTest extends \PHPUnit_Framework_TestCase
 
 		$this->setExpectedException('\Everyman\Neo4j\Exception', 'already closed');
 		$this->transaction->keepAlive();
+	}
+
+	public function testKeepAlive_ClientException_MarksTransactionClosedAndErrorAndThrowsException()
+	{
+		$exception = new \Everyman\Neo4j\Exception('some client error');
+
+		$this->client->expects($this->any())
+			->method('addStatementsToTransaction')
+			->will($this->throwException($exception));
+
+		try {
+			$this->transaction->keepAlive();
+			$this->fail('Expected exception not thrown');
+		} catch (\Everyman\Neo4j\Exception $e) {
+			self::assertSame($exception, $e);
+			self::assertTrue($this->transaction->isClosed());
+			self::assertTrue($this->transaction->isError());
+		}
 	}
 
 	public function testAddStatements_DelegatesToClient()
@@ -170,5 +224,23 @@ class TransactionTest extends \PHPUnit_Framework_TestCase
 			new Query($this->client, 'foo'),
 			new Query($this->client, 'bar'),
 		));
+	}
+
+	public function testAddStatements_ClientException_MarksTransactionClosedAndErrorAndThrowsException()
+	{
+		$exception = new \Everyman\Neo4j\Exception('some client error');
+
+		$this->client->expects($this->any())
+			->method('addStatementsToTransaction')
+			->will($this->throwException($exception));
+
+		try {
+			$this->transaction->addStatements(array(new Query($this->client, 'foo')));
+			$this->fail('Expected exception not thrown');
+		} catch (\Everyman\Neo4j\Exception $e) {
+			self::assertSame($exception, $e);
+			self::assertTrue($this->transaction->isClosed());
+			self::assertTrue($this->transaction->isError());
+		}
 	}
 }
