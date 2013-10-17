@@ -13,9 +13,10 @@ class Client
 
 	const RefNodeId = 0;
 
-	const CapabilityCypher  = 'cypher';
-	const CapabilityGremlin = 'gremlin';
-	const CapabilityLabel   = 'label';
+	const CapabilityCypher        = 'cypher';
+	const CapabilityGremlin       = 'gremlin';
+	const CapabilityLabel         = 'label';
+	const CapabilityTransactions  = 'transactions';
 
 	protected $transport = null;
 	protected $entityMapper = null;
@@ -84,7 +85,8 @@ class Client
 	 */
 	public function addStatementsToTransaction(Transaction $transaction, $statements=array(), $commit=false)
 	{
-		// Stub
+		$command = new Command\AddStatementsToTransaction($this, $transaction, $statements, $commit);
+		return $this->runCommand($command);
 	}
 
 	/**
@@ -104,6 +106,16 @@ class Client
 		}
 
 		return $this->runCommand(new Command\AddToIndex($this, $index, $entity, $key, $value));
+	}
+
+	/**
+	 * Begin a Cypher transaction
+	 *
+	 * @return Transaction
+	 */
+	public function beginTransaction()
+	{
+		return new Transaction($this);
 	}
 
 	/**
@@ -466,6 +478,7 @@ class Client
 
 		switch ($capability) {
 			case self::CapabilityLabel :
+			case self::CapabilityTransactions :
 				return $info['version']['major'] > 1;
 
 			case self::CapabilityCypher :

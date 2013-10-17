@@ -183,6 +183,28 @@ class TransactionTest extends \PHPUnit_Framework_TestCase
 		}
 	}
 
+	public function testAddStatements_NoId_DelegatesToClient()
+	{
+		$transaction = new Transaction($this->client);
+
+		$statements = array(
+			new Query($this->client, 'foo'),
+			new Query($this->client, 'bar'),
+		);
+		$commit = false;
+
+		$expected = new ResultSet($this->client, array());
+
+		$this->client->expects($this->once())
+			->method('addStatementsToTransaction')
+			->with($transaction, $statements, $commit)
+			->will($this->returnValue($expected));
+
+		$result = $transaction->addStatements($statements, $commit);
+		self::assertSame($expected, $result);
+		self::assertFalse($transaction->isClosed());
+	}
+
 	public function testAddStatements_DelegatesToClient()
 	{
 		$statements = array(

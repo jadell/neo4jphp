@@ -1,9 +1,6 @@
 <?php
 namespace Everyman\Neo4j;
 
-use Everyman\Neo4j\Cypher\Query,
-    Everyman\Neo4j\Query\ResultSet;
-
 /**
  * A transaction context for multiple Cypher statements across multiple requests
  */
@@ -27,15 +24,15 @@ class Transaction
 	/**
 	 * Add statements to this transaction
 	 *
-	 * @param array   $statements a list of Cypher Query objects to add to the transaction
+	 * @param array   $statements a list of Cypher\Query objects to add to the transaction
 	 * @param boolean $commit should this transaction be committed with these statements?
-	 * @return ResultSet
+	 * @return Query\ResultSet
 	 */
 	public function addStatements($statements, $commit=false)
 	{
 		$result = $this->performClientAction(function ($client, $transaction) use ($statements, $commit) {
 			return $client->addStatementsToTransaction($transaction, $statements, $commit);
-		}, $commit);
+		}, $commit, false);
 		return $result;
 	}
 
@@ -133,15 +130,16 @@ class Transaction
 	 *
 	 * @param callable $action
 	 * @param boolean  $shouldClose
+	 * @param boolean  $requireId
 	 */
-	protected function performClientAction($action, $shouldClose)
+	protected function performClientAction($action, $shouldClose, $requireId=true)
 	{
 		if ($this->isClosed()) {
 			throw new Exception('Transaction is already closed');
 		}
 
 		$result = null;
-		if ($this->getId()) {
+		if (!$requireId || $this->getId()) {
 			try {
 				$result = $action($this->client, $this);
 			} catch (\Exception $e) {
