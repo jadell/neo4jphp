@@ -608,7 +608,8 @@ class Client
 	 */
 	public function rollbackTransaction(Transaction $transaction)
 	{
-		// Stub
+		$command = new Command\RollbackTransaction($this, $transaction);
+		return $this->runCommand($command);
 	}
 
 	/**

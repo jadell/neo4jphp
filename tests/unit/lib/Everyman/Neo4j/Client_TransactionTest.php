@@ -280,16 +280,42 @@ class Client_TransactionTest extends \PHPUnit_Framework_TestCase
 
 	public function testRollback_HasTransactionId_SendsDelete()
 	{
-		$this->markTestIncomplete();
+		$transaction = new Transaction($this->client);
+		$transaction->setId(321);
+
+		$this->transport->expects($this->once())
+			->method('delete')
+			->with('/transaction/'.$transaction->getId())
+			->will($this->returnValue(array("code" => 200)));
+
+		$this->client->rollbackTransaction($transaction);
 	}
 
 	public function testRollback_NoTransactionId_ThrowsException()
 	{
-		$this->markTestIncomplete();
+		$transaction = new Transaction($this->client);
+
+		$this->transport->expects($this->never())
+			->method('delete');
+
+		$this->setExpectedException('\Everyman\Neo4j\Exception');
+		$this->client->rollbackTransaction($transaction);
 	}
 
 	public function testRollback_NoTransactionCapability_ThrowsException()
 	{
-		$this->markTestIncomplete();
+		$this->client = $this->getMock('Everyman\Neo4j\Client', array('hasCapability'), array($this->transport));
+		$this->client->expects($this->any())
+			->method('hasCapability')
+			->will($this->returnValue(false));
+
+		$transaction = new Transaction($this->client);
+		$transaction->setId(321);
+
+		$this->transport->expects($this->never())
+			->method('delete');
+
+		$this->setExpectedException('\Everyman\Neo4j\Exception');
+		$this->client->rollbackTransaction($transaction);
 	}
 }
