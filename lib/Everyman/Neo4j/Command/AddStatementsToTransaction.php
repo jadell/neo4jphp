@@ -112,7 +112,7 @@ class AddStatementsToTransaction extends Command
 			$this->throwException('Error in transaction', $code, $headers, $data);
 		}
 
-		if (!$this->transaction->getId()) {
+		if (!$this->transaction->getId() && !$this->commit) {
 			$this->setTransactionId($data);
 		}
 

@@ -192,8 +192,6 @@ class Client_TransactionTest extends \PHPUnit_Framework_TestCase
 		$commit = true;
 
 		$expectedResponse = array(
-			"commit" => $this->endpoint . '/transaction/321/commit',
-			"transaction" => array("expires" => "Wed, 16 Oct 2013 23:07:12 +0000"),
 			"errors" => array(),
 			"results" => array(),
 		);
