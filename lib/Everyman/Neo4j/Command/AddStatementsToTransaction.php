@@ -3,6 +3,7 @@ namespace Everyman\Neo4j\Command;
 
 use Everyman\Neo4j\Command,
 	Everyman\Neo4j\Client,
+	Everyman\Neo4j\Exception,
 	Everyman\Neo4j\Transaction,
 	Everyman\Neo4j\Cypher\Query,
 	Everyman\Neo4j\Query\ResultSet;
@@ -39,6 +40,10 @@ class AddStatementsToTransaction extends Command
 	 */
 	protected function getData()
 	{
+		if (!$this->statements && !$this->transaction->getId()) {
+			throw new Exception("Cannot keep-alive a transaction without an id");
+		}
+
 		$statements = array_map(array($this, 'formatStatement'), $this->statements);
 		return array('statements' => $statements);
 	}
@@ -75,7 +80,7 @@ class AddStatementsToTransaction extends Command
 	 */
 	protected function getPath()
 	{
-		if (!$this->client->hasCapability(Client::CapabilityTransactions)){
+		if (!$this->client->hasCapability(Client::CapabilityTransactions)) {
 			throw new Exception('Transactions unavailable');
 		}
 

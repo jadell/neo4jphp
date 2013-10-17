@@ -230,17 +230,54 @@ class Client_TransactionTest extends \PHPUnit_Framework_TestCase
 
 	public function testAddStatements_KeepAlive_HasTransactionId_SendsToTransportWithoutStatements()
 	{
-		$this->markTestIncomplete();
+		$transaction = new Transaction($this->client);
+		$transaction->setId(321);
+
+		$expectedRequest = array(
+			'statements' => array(),
+		);
+
+		$expectedResponse = array(
+			"commit" => $this->endpoint . '/transaction/321/commit',
+			"transaction" => array("expires" => "Wed, 16 Oct 2013 23:07:12 +0000"),
+			"errors" => array(),
+			"results" => array(),
+		);
+
+		$this->transport->expects($this->once())
+			->method('post')
+			->with('/transaction/'.$transaction->getId(), $expectedRequest)
+			->will($this->returnValue(array("code" => 200, "data" => $expectedResponse)));
+
+		$this->client->addStatementsToTransaction($transaction, array());
 	}
 
 	public function testAddStatements_KeepAlive_NoTransactionId_ThrowsException()
 	{
-		$this->markTestIncomplete();
+		$transaction = new Transaction($this->client);
+
+		$this->transport->expects($this->never())
+			->method('post');
+
+		$this->setExpectedException('\Everyman\Neo4j\Exception');
+		$this->client->addStatementsToTransaction($transaction, array());
 	}
 
 	public function testAddStatements_NoTransactionCapability_ThrowsException()
 	{
-		$this->markTestIncomplete();
+		$this->client = $this->getMock('Everyman\Neo4j\Client', array('hasCapability'), array($this->transport));
+		$this->client->expects($this->any())
+			->method('hasCapability')
+			->will($this->returnValue(false));
+
+		$queryA = new Cypher\Query($this->client, 'foobar');
+		$transaction = new Transaction($this->client);
+
+		$this->transport->expects($this->never())
+			->method('post');
+
+		$this->setExpectedException('\Everyman\Neo4j\Exception');
+		$this->client->addStatementsToTransaction($transaction, array($queryA));
 	}
 
 	public function testRollback_HasTransactionId_SendsDelete()
