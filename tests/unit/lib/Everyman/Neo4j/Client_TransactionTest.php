@@ -121,9 +121,7 @@ class Client_TransactionTest extends \PHPUnit_Framework_TestCase
 
 	public function testAddStatements_ExistingTransactionId_ReturnsResultSet()
 	{
-		$queryTemplateA = "This is the query template";
-		$queryParamsA = array('foo' => 'bar', 'baz' => 123);
-		$queryA = new Cypher\Query($this->client, $queryTemplateA, $queryParamsA);
+		$queryA = new Cypher\Query($this->client, 'foobar');
 
 		$transaction = new Transaction($this->client);
 		$transaction->setId(321);
@@ -138,7 +136,7 @@ class Client_TransactionTest extends \PHPUnit_Framework_TestCase
 		$this->transport->expects($this->once())
 			->method('post')
 			->with('/transaction/'.$transaction->getId())
-			->will($this->returnValue(array("code" => 201, "data" => $expectedResponse)));
+			->will($this->returnValue(array("code" => 200, "data" => $expectedResponse)));
 
 		$this->client->addStatementsToTransaction($transaction, array($queryA));
 		self::assertFalse($transaction->isClosed());
@@ -147,17 +145,87 @@ class Client_TransactionTest extends \PHPUnit_Framework_TestCase
 
 	public function testAddStatements_TransactionFailed_ThrowsException()
 	{
-		$this->markTestIncomplete();
+		$queryA = new Cypher\Query($this->client, 'foobar');
+		$transaction = new Transaction($this->client);
+
+		$expectedResponse = array(
+			"commit" => $this->endpoint . '/transaction/321/commit',
+			"transaction" => array("expires" => "Wed, 16 Oct 2013 23:07:12 +0000"),
+			"errors" => array(),
+			"results" => array(),
+		);
+
+		$this->transport->expects($this->once())
+			->method('post')
+			->with('/transaction')
+			->will($this->returnValue(array("code" => 400)));
+
+		$this->setExpectedException('\Everyman\Neo4j\Exception');
+		$this->client->addStatementsToTransaction($transaction, array($queryA));
 	}
 
-	public function testAddStatements_NewTransactionWithCommit_ReturnsResulSetAndMarksTransactionClosed()
+	public function testAddStatements_ErrorsGiven_ThrowsException()
 	{
-		$this->markTestIncomplete();
+		$queryA = new Cypher\Query($this->client, 'foobar');
+		$transaction = new Transaction($this->client);
+
+		$expectedResponse = array(
+			"commit" => $this->endpoint . '/transaction/321/commit',
+			"transaction" => array("expires" => "Wed, 16 Oct 2013 23:07:12 +0000"),
+			"errors" => array("foo bar error"),
+			"results" => array(),
+		);
+
+		$this->transport->expects($this->once())
+			->method('post')
+			->with('/transaction')
+			->will($this->returnValue(array("code" => 200, "data" => $expectedResponse)));
+
+		$this->setExpectedException('\Everyman\Neo4j\Exception');
+		$this->client->addStatementsToTransaction($transaction, array($queryA));
 	}
 
-	public function testAddStatements_ExistingTransactionWithCommit_ReturnsResulSetAndMarksTransactionClosed()
+	public function testAddStatements_NewTransactionWithCommit_ReturnsResulSet()
 	{
-		$this->markTestIncomplete();
+		$queryA = new Cypher\Query($this->client, 'foobar');
+		$transaction = new Transaction($this->client);
+		$commit = true;
+
+		$expectedResponse = array(
+			"commit" => $this->endpoint . '/transaction/321/commit',
+			"transaction" => array("expires" => "Wed, 16 Oct 2013 23:07:12 +0000"),
+			"errors" => array(),
+			"results" => array(),
+		);
+
+		$this->transport->expects($this->once())
+			->method('post')
+			->with('/transaction/commit')
+			->will($this->returnValue(array("code" => 200, "data" => $expectedResponse)));
+
+		$this->client->addStatementsToTransaction($transaction, array($queryA), $commit);
+	}
+
+	public function testAddStatements_ExistingTransactionWithCommit_ReturnsResulSet()
+	{
+		$queryA = new Cypher\Query($this->client, 'foobar');
+		$transaction = new Transaction($this->client);
+		$transaction->setId(321);
+		$commit = true;
+
+		$expectedResponse = array(
+			"commit" => $this->endpoint . '/transaction/321/commit',
+			"transaction" => array("expires" => "Wed, 16 Oct 2013 23:07:12 +0000"),
+			"errors" => array(),
+			"results" => array(),
+		);
+
+		$this->transport->expects($this->once())
+			->method('post')
+			->with('/transaction/'.$transaction->getId().'/commit')
+			->will($this->returnValue(array("code" => 200, "data" => $expectedResponse)));
+
+		$this->client->addStatementsToTransaction($transaction, array($queryA), $commit);
 	}
 
 	public function testAddStatements_KeepAlive_HasTransactionId_SendsToTransportWithoutStatements()

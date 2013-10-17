@@ -86,6 +86,10 @@ class AddStatementsToTransaction extends Command
 			$path .= '/'.$id;
 		}
 
+		if ($this->commit) {
+			$path .= '/commit';
+		}
+
 		return $path;
 	}
 
