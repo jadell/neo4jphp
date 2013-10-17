@@ -79,7 +79,14 @@ class AddStatementsToTransaction extends Command
 			throw new Exception('Transactions unavailable');
 		}
 
-		return '/transaction';
+		$path = '/transaction';
+
+		$id = $this->transaction->getId();
+		if ($id) {
+			$path .= '/'.$id;
+		}
+
+		return $path;
 	}
 
 	/**

@@ -117,12 +117,32 @@ class Client_TransactionTest extends \PHPUnit_Framework_TestCase
 		self::assertEquals(987, $transaction->getId());
 		self::assertFalse($transaction->isClosed());
 		self::assertFalse($transaction->isError());
-
 	}
 
 	public function testAddStatements_ExistingTransactionId_ReturnsResultSet()
 	{
-		$this->markTestIncomplete();
+		$queryTemplateA = "This is the query template";
+		$queryParamsA = array('foo' => 'bar', 'baz' => 123);
+		$queryA = new Cypher\Query($this->client, $queryTemplateA, $queryParamsA);
+
+		$transaction = new Transaction($this->client);
+		$transaction->setId(321);
+
+		$expectedResponse = array(
+			"commit" => $this->endpoint . '/transaction/321/commit',
+			"transaction" => array("expires" => "Wed, 16 Oct 2013 23:07:12 +0000"),
+			"errors" => array(),
+			"results" => array(),
+		);
+
+		$this->transport->expects($this->once())
+			->method('post')
+			->with('/transaction/'.$transaction->getId())
+			->will($this->returnValue(array("code" => 201, "data" => $expectedResponse)));
+
+		$this->client->addStatementsToTransaction($transaction, array($queryA));
+		self::assertFalse($transaction->isClosed());
+		self::assertFalse($transaction->isError());
 	}
 
 	public function testAddStatements_TransactionFailed_ThrowsException()
