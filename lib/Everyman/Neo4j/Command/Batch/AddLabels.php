@@ -47,7 +47,7 @@ class AddLabels extends Command
 			if ($reserved) {
 				$opData = array_merge($opData, $reserved->getCommand()->getData());
 			}
-			$path = '/node/'.$nodeId.'/labels';
+			$path = "{{$nodeId}}/labels";
 		} else {
 			$path = $this->base->getPath();
 		}
