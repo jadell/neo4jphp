@@ -65,7 +65,7 @@ class Client_Batch_LabelTest extends \PHPUnit_Framework_TestCase
 			array(
 				'id' => 0, 
 				'method' => 'POST', 
-				'to' => '/node/1/labels',
+				'to' => '{1}/labels',
 				'body' => array($labelName)
 			)
 		);
