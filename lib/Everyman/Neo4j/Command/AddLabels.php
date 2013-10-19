@@ -26,11 +26,11 @@ class AddLabels extends Command
 		if (!$labels) {
 			throw new \InvalidArgumentException("No labels given to set on node");
 		}
-/*
-		if (!$client->hasCapability(Client::CapabilityLabel)) {
+
+		if (!$client->isBatchStarted() && !$client->hasCapability(Client::CapabilityLabel)) {
 			throw new \RuntimeException('The connected Neo4j version does not have label capability');
 		}
-*/
+
 		parent::__construct($client);
 		$this->node = $node;
 		$this->labels = $labels;

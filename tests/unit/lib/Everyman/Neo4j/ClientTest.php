@@ -843,6 +843,14 @@ class ClientTest extends \PHPUnit_Framework_TestCase
 		$this->client->getServerInfo();
 	}
 
+	public function testIsBatchStarted()
+	{
+		$this->assertFalse($this->client->isBatchStarted());
+
+		$batch = $this->client->startBatch();
+		$this->assertTrue($this->client->isBatchStarted());
+	}
+
 	public function testStartBatch_MultipleCallsWithoutCommit_ReturnsSameBatch()
 	{
 		$batch = $this->client->startBatch();

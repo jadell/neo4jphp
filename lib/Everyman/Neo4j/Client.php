@@ -179,6 +179,16 @@ class Client
 	}
 
 	/**
+	 * Check if a batch is open
+	 *
+	 * @return boolean
+	 */
+	public function isBatchStarted()
+	{
+		return (boolean) $this->openBatch;
+	}
+
+	/**
 	 * Execute the given Cypher query and return the result
 	 *
 	 * @param Cypher\Query $query A Cypher query, or a query template.

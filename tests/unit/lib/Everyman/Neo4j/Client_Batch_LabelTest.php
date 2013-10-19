@@ -15,13 +15,14 @@ class Client_Batch_LabelTest extends \PHPUnit_Framework_TestCase
 			->method('getEndpoint')
 			->will($this->returnValue($this->endpoint));
 		$this->client = new Client($this->transport);
-
+		$this->client->startBatch();
+		
 		$this->batch = new Batch($this->client);
 
 		$this->client->getEntityCache()->setCache(new Cache\Variable());
 	}
 
-	public function testCommitBatch_CreateRelationship_Success_ReturnsTrue()
+	public function testCommitBatch_AddLabels_Success_ReturnsTrue()
 	{
 		$node = new Node($this->client);
 		$node->setId(123);
@@ -47,7 +48,7 @@ class Client_Batch_LabelTest extends \PHPUnit_Framework_TestCase
 		$this->assertTrue($result);
 	}
 
-	public function testCommitBatch_CreateRelationship_StartNodeUnidentified_ReturnsTrue()
+	public function testCommitBatch_AddLabels_NodeUnidentified_ReturnsTrue()
 	{
 		$node = new Node($this->client);
 
