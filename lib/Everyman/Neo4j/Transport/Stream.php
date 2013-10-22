@@ -23,6 +23,7 @@ class Stream extends BaseTransport
 					"Content-type: application/json\r\n"
 					. "Accept: application/json\r\n"
 					. "User-Agent: ".Version::userAgent()."\r\n"
+					. "X-Stream: true\r\n"
 			)
 		);
 
@@ -45,9 +46,26 @@ class Stream extends BaseTransport
 		}
 
 		$context = stream_context_create($context_options);
-		$response = file_get_contents($url, false, $context);
-		// $http_response_header is set by file_get_contents with the http:// wrapper
 
+		// Capture the E_WARNING emitted if fopen fails
+		$phpError = null;
+		set_error_handler(function($errorNo, $errorMsg, $errorFile) use ($phpError) { $phpError = $errorMsg; });
+
+		$fh = fopen($url, 'r', false, $context);
+
+		// Restore the normal PHP error handler
+		restore_error_handler();
+
+		if ($phpError === null) {
+		    $response = '';
+		    // Capture the stream
+		    while (!feof($fh)) {
+		        $response .= fread($fh, 8192);
+		    }
+		    fclose($fh);
+		}
+
+		// Catch error
 		preg_match('/^HTTP\/1\.[0-1] (\d{3})/', $http_response_header[0], $parts);
 		$code = $parts[1];
 
