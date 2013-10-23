@@ -24,12 +24,16 @@ class Transaction
 	/**
 	 * Add statements to this transaction
 	 *
-	 * @param array   $statements a list of Cypher\Query objects to add to the transaction
+	 * @param mixed   $statements a single or list of Cypher\Query objects to add to the transaction
 	 * @param boolean $commit should this transaction be committed with these statements?
 	 * @return Query\ResultSet
 	 */
 	public function addStatements($statements, $commit=false)
 	{
+		if (!is_array($statements)) {
+			$statements = array($statements);
+		}
+
 		$result = $this->performClientAction(function ($client, $transaction) use ($statements, $commit) {
 			return $client->addStatementsToTransaction($transaction, $statements, $commit);
 		}, $commit, false);

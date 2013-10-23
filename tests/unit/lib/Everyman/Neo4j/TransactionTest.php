@@ -225,6 +225,17 @@ class TransactionTest extends \PHPUnit_Framework_TestCase
 		self::assertTrue($this->transaction->isClosed());
 	}
 
+	public function testAddStatements_SingleQuery_WrapsQueryInArrayBeforeSendingToClient()
+	{
+		$statement = new Query($this->client, 'foo');
+
+		$this->client->expects($this->once())
+			->method('addStatementsToTransaction')
+			->with($this->transaction, array($statement));
+
+		$result = $this->transaction->addStatements($statement);
+	}
+
 	public function testAddStatements_NoCommit_TransactionOpen()
 	{
 		$statements = array(new Query($this->client, 'foo'));
