@@ -1,7 +1,8 @@
 <?php
 namespace Everyman\Neo4j\Transport;
 use Everyman\Neo4j\Transport as BaseTransport,
-    Everyman\Neo4j\Version;
+	Everyman\Neo4j\Version,
+	Everyman\Neo4j\Exception;
 
 /**
  * Class for communicating with an HTTP JSON endpoint over PHP streams
@@ -21,8 +22,9 @@ class Stream extends BaseTransport
 				'ignore_errors' => true,
 				'header'=>
 					"Content-type: application/json\r\n"
-					. "Accept: application/json\r\n"
+					. "Accept: application/json;stream=true\r\n"
 					. "User-Agent: ".Version::userAgent()."\r\n"
+					. "X-Stream: true\r\n"
 			)
 		);
 
@@ -45,9 +47,25 @@ class Stream extends BaseTransport
 		}
 
 		$context = stream_context_create($context_options);
-		$response = file_get_contents($url, false, $context);
-		// $http_response_header is set by file_get_contents with the http:// wrapper
 
+		// Throw an exception if fopen fails
+		set_error_handler(function($errorNo, $errorMsg, $errorFile) { throw new Exception("Can't open connection to ".$url); });
+
+		// Open the connection
+		$fh = fopen($url, 'r', false, $context);
+
+		// Restore the normal PHP error handler
+		restore_error_handler();
+
+		$response = '';
+
+		// Capture the stream
+		while (!feof($fh)) {
+			$response .= fread($fh, 8192);
+		}
+		fclose($fh);
+
+		// Catch error
 		preg_match('/^HTTP\/1\.[0-1] (\d{3})/', $http_response_header[0], $parts);
 		$code = $parts[1];
 
