@@ -193,7 +193,8 @@ class TransactionTest extends \PHPUnit_Framework_TestCase
 		);
 		$commit = false;
 
-		$expected = new ResultSet($this->client, array());
+		$expectedResult = new ResultSet($this->client, array());
+		$expected = array($expectedResult);
 
 		$this->client->expects($this->once())
 			->method('addStatementsToTransaction')
@@ -201,7 +202,7 @@ class TransactionTest extends \PHPUnit_Framework_TestCase
 			->will($this->returnValue($expected));
 
 		$result = $transaction->addStatements($statements, $commit);
-		self::assertSame($expected, $result);
+		self::assertSame($expected[0], $result[0]);
 		self::assertFalse($transaction->isClosed());
 	}
 
@@ -213,7 +214,8 @@ class TransactionTest extends \PHPUnit_Framework_TestCase
 		);
 		$commit = true;
 
-		$expected = new ResultSet($this->client, array());
+		$expectedResult = new ResultSet($this->client, array());
+		$expected = array($expectedResult);
 
 		$this->client->expects($this->once())
 			->method('addStatementsToTransaction')
@@ -221,7 +223,7 @@ class TransactionTest extends \PHPUnit_Framework_TestCase
 			->will($this->returnValue($expected));
 
 		$result = $this->transaction->addStatements($statements, $commit);
-		self::assertSame($expected, $result);
+		self::assertSame($expected[0], $result[0]);
 		self::assertTrue($this->transaction->isClosed());
 	}
 
@@ -229,11 +231,16 @@ class TransactionTest extends \PHPUnit_Framework_TestCase
 	{
 		$statement = new Query($this->client, 'foo');
 
+		$expectedResult = new ResultSet($this->client, array());
+		$expected = array($expectedResult);
+
 		$this->client->expects($this->once())
 			->method('addStatementsToTransaction')
-			->with($this->transaction, array($statement));
+			->with($this->transaction, array($statement))
+			->will($this->returnValue($expected));
 
 		$result = $this->transaction->addStatements($statement);
+		self::assertSame($expected[0], $result);
 	}
 
 	public function testAddStatements_NoCommit_TransactionOpen()

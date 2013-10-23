@@ -30,13 +30,20 @@ class Transaction
 	 */
 	public function addStatements($statements, $commit=false)
 	{
+		$unwrap = false;
 		if (!is_array($statements)) {
 			$statements = array($statements);
+			$unwrap = true;
 		}
 
 		$result = $this->performClientAction(function ($client, $transaction) use ($statements, $commit) {
 			return $client->addStatementsToTransaction($transaction, $statements, $commit);
 		}, $commit, false);
+
+		if ($unwrap) {
+			$result = reset($result);
+		}
+
 		return $result;
 	}
 
