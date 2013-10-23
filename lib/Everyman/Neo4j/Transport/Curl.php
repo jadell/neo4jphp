@@ -86,6 +86,10 @@ class Curl extends BaseTransport
 		$code = curl_getinfo($ch, CURLINFO_HTTP_CODE);
 		$headerSize = curl_getinfo($ch, CURLINFO_HEADER_SIZE);
 
+		if ($response === false) {
+			throw new Exception("Can't open connection to ".$url);
+		}
+
 		if (!$code) {
 			$code = 500;
 			$headerSize = 0;
