@@ -45,9 +45,10 @@ class Curl extends BaseTransport
 			CURLOPT_RETURNTRANSFER => true,
 			CURLOPT_HEADER => true,
 			CURLOPT_HTTPHEADER => array(
-				'Accept: application/json',
+				'Accept: application/json;stream=true',
 				'Content-type: application/json',
 				'User-Agent: '.Version::userAgent(),
+				'X-Stream: true'
 			),
 			CURLOPT_CUSTOMREQUEST => self::GET,
 			CURLOPT_POST => false,
