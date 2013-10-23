@@ -21,8 +21,9 @@ class Stream extends BaseTransport
 				'ignore_errors' => true,
 				'header'=>
 					"Content-type: application/json\r\n"
-					. "Accept: application/json\r\n"
+					. "Accept: application/json;stream=true\r\n"
 					. "User-Agent: ".Version::userAgent()."\r\n"
+					. "X-Stream: true\r\n"
 			)
 		);
 
