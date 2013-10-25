@@ -45,9 +45,10 @@ class Curl extends BaseTransport
 			CURLOPT_RETURNTRANSFER => true,
 			CURLOPT_HEADER => true,
 			CURLOPT_HTTPHEADER => array(
-				'Accept: application/json',
+				'Accept: application/json;stream=true',
 				'Content-type: application/json',
 				'User-Agent: '.Version::userAgent(),
+				'X-Stream: true'
 			),
 			CURLOPT_CUSTOMREQUEST => self::GET,
 			CURLOPT_POST => false,
@@ -84,6 +85,10 @@ class Curl extends BaseTransport
 		$response = curl_exec($ch);
 		$code = curl_getinfo($ch, CURLINFO_HTTP_CODE);
 		$headerSize = curl_getinfo($ch, CURLINFO_HEADER_SIZE);
+
+		if ($response === false) {
+			throw new Exception("Can't open connection to ".$url);
+		}
 
 		if (!$code) {
 			$code = 500;
