@@ -220,4 +220,20 @@ class NodeTest extends \PHPUnit_Framework_TestCase
 		$this->assertEquals($dir, $finder->getDirection());
 		$this->assertEquals($type, $finder->getType());
 	}
+
+	/**
+	 * Test for https://github.com/jadell/neo4jphp/issues/97
+	 */
+	public function testSerialization()
+	{
+		$node = new Node($this->client);
+		$node->setId(1);
+		$node->setProperties(array("prop1" => 1, "prop2" => 2));
+		$node->useLazyLoad(false);
+		$serializedNode = serialize($node);
+		$unserializedNode = unserialize($serializedNode);
+
+
+		$this->assertEquals($node->getProperties(), $unserializedNode->getProperties());
+	}
 }

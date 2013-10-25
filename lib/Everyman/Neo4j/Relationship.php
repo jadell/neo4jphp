@@ -15,6 +15,13 @@ class Relationship extends PropertyContainer
 	protected $type = null;
 
 	/**
+	 * Defines the properties that will be serialized
+	 */
+	public function __sleep()
+	{
+		return array('id', 'properties', 'lazyLoad', 'loaded', 'start', 'end', 'type');
+	}
+	/**
 	 * Delete this relationship
 	 *
 	 * @return PropertyContainer

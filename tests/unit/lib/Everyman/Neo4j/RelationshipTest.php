@@ -66,4 +66,35 @@ class RelationshipTest extends \PHPUnit_Framework_TestCase
 
 		$this->assertSame($this->relationship, $this->relationship->load());
 	}
+
+	/**
+	 * Test for https://github.com/jadell/neo4jphp/issues/97
+	 */
+	public function testSerialization()
+	{
+		$startNode = new Node($this->client);
+		$startNode->setId(1);
+		$startNode->setProperties(array("prop1" => 1, "prop2" => 2));
+
+		$endNode = new Node($this->client);
+		$endNode->setId(2);
+		$endNode->setProperties(array("prop3" => 3, "prop3" => 4));
+
+		$relationship = new Relationship($this->client);
+		$relationship->setStartNode($startNode);
+		$relationship->setEndNode($endNode);
+		$relationship->setType("myRelType");
+		$relationship->setProperties(array("relProp1" => 1, "relProp2" => 2));
+		$relationship->setId(10);
+		$relationship->useLazyLoad(false);
+
+		$serializedRel = serialize($relationship);
+		$unserializedRel = unserialize($serializedRel);
+
+		$this->assertEquals($relationship->getId(), $unserializedRel->getId());
+		$this->assertEquals($relationship->getProperties(), $unserializedRel->getProperties());
+		$this->assertEquals($relationship->getType(), $unserializedRel->getType());
+		$this->assertInstanceOf('Everyman\Neo4j\Node', $unserializedRel->getStartNode());
+		$this->assertInstanceOf('Everyman\Neo4j\Node', $unserializedRel->getEndNode());
+	}
 }

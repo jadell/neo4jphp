@@ -9,6 +9,14 @@ class Node extends PropertyContainer
 	protected $labels = null;
 
 	/**
+	 * Defines the properties that will be serialized
+	 */
+	public function __sleep()
+	{
+		return array('id', 'properties', 'lazyLoad', 'loaded');
+	}
+
+	/**
 	 * Add labels to this node
 	 *
 	 * @param array $labels
