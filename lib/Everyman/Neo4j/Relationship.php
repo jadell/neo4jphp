@@ -19,7 +19,7 @@ class Relationship extends PropertyContainer
 	 */
 	public function __sleep()
 	{
-		return array('id', 'properties', 'lazyLoad', 'loaded', 'start', 'end', 'type');
+		return array_merge(parent::__sleep(), array('start', 'end', 'type'));
 	}
 
 	/**
