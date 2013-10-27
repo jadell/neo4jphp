@@ -21,6 +21,7 @@ class Relationship extends PropertyContainer
 	{
 		return array('id', 'properties', 'lazyLoad', 'loaded', 'start', 'end', 'type');
 	}
+
 	/**
 	 * Delete this relationship
 	 *
@@ -124,6 +125,26 @@ class Relationship extends PropertyContainer
 	public function setType($type)
 	{
 		$this->type = $type;
+		return $this;
+	}
+
+	/**
+	 * Set the client of the relationship and the clients of
+	 * the start and end nodes
+	 * @param Client $client
+	 * @return Relationship
+	 */
+	public function setClient(Client $client)
+	{
+		$this->client = $client;
+
+		if ($this->getStartNode() !== null) {
+			$this->getStartNode()->setClient($client);
+		}
+
+		if ($this->getEndNode() !== null) {
+			$this->getEndNode()->setClient($client);
+		}
 		return $this;
 	}
 }

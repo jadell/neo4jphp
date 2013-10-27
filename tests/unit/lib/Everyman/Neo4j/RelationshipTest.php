@@ -96,5 +96,32 @@ class RelationshipTest extends \PHPUnit_Framework_TestCase
 		$this->assertEquals($relationship->getType(), $unserializedRel->getType());
 		$this->assertInstanceOf('Everyman\Neo4j\Node', $unserializedRel->getStartNode());
 		$this->assertInstanceOf('Everyman\Neo4j\Node', $unserializedRel->getEndNode());
+
+	}
+
+	/**
+	 * Assert that when the client object of the relationship
+	 * is set, the clients of its start and end nodes are
+	 * set too
+	 */
+	public function testSetClient()
+	{
+		$startNode = new Node($this->client);
+		$startNode->setId(1);
+
+		$endNode = new Node($this->client);
+		$endNode->setId(2);
+
+		$relationship = new Relationship($this->client);
+		$relationship->setStartNode($startNode);
+		$relationship->setEndNode($endNode);
+		$relationship->setType("myRelType");
+		$relationship->setId(1);
+
+		$newClient = $this->getMock('Everyman\Neo4j\Client', array(), array(), '', false);
+		$relationship->setClient($newClient);
+
+		$this->assertSame($newClient, $relationship->getStartNode()->getClient());
+		$this->assertSame($newClient, $relationship->getEndNode()->getClient());
 	}
 }
