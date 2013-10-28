@@ -119,4 +119,15 @@ class Relationship extends PropertyContainer
 		$this->type = $type;
 		return $this;
 	}
+
+
+	/**
+	 * Be sure to add our properties to the things to serialize
+	 *
+	 * @return array
+	 */
+	public function __sleep()
+	{
+		return array_merge(parent::__sleep(), array('start', 'end', 'type'));
+	}
 }
