@@ -69,9 +69,9 @@ class RelationshipTest extends \PHPUnit_Framework_TestCase
 
 	public function testSerialize_KeepsStartEndAndType()
 	{
-		$expectedStart = new Node($this->client)
+		$expectedStart = new Node($this->client);
 		$expectedStart->save();
-		$expectedEnd = new Node($this->client)
+		$expectedEnd = new Node($this->client);
 		$expectedEnd->save();
 		$expectedRel = $this->relationship
 			->setType($this->type)
