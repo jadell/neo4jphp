@@ -69,13 +69,16 @@ class RelationshipTest extends \PHPUnit_Framework_TestCase
 
 	public function testSerialize_KeepsStartEndAndType()
 	{
-		$expectedStart = (new Node($this->client))->save();
-		$expectedEnd = (new Node($this->client))->save();
+		$expectedStart = new Node($this->client)
+		$expectedStart->save();
+		$expectedEnd = new Node($this->client)
+		$expectedEnd->save();
 		$expectedRel = $this->relationship
 			->setType($this->type)
 			->setStartNode($expectedStart)
 			->setEndNode($expectedEnd)
 			->save();
+		// serialize and unserialize
 		$data = serialize($expectedRel);
 		$rel = unserialize($data);
 		// we must reset the client
