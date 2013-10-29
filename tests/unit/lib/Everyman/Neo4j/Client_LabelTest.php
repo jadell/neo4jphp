@@ -281,35 +281,16 @@ class Client_LabelTest extends \PHPUnit_Framework_TestCase
 		$labelA = $this->client->makeLabel($labelAName);
 		$labelB = $this->client->makeLabel($labelBName);
 
-		$expectedLabels = array('LOREMIPSUM', 'FOOBAR', 'BAZQUX');
-
-		$expectedQuery = "START n=node({nodeId}) SET n:{$labelAName}:{$labelBName} RETURN labels(n) AS labels";
-		$expectedParams = array("nodeId" => $nodeId);
-
-		$this->transport->expects($this->any())
-			->method('get')
-			->with('/')
-			->will($this->returnValue(array('code'=>200, 'data'=>array(
-				'neo4j_version' => '2.0.foo',
-				'cypher' => $this->endpoint.'/cypher',
-			))));
 		$this->transport->expects($this->once())
 			->method('post')
-			->with('/cypher', array(
-				'query'  => $expectedQuery,
-				'params' => $expectedParams,
+			->with('/node/' . $nodeId .'/labels', array(
+				$labelAName,
+				$labelBName,
 			))
-			->will($this->returnValue(array('code'=>200,'data'=>array(
-				'columns' => array('labels'),
-				'data' => array(array($expectedLabels)),
-			))));
+			->will($this->returnValue(array('code'=>204)));
 
-		$resultLabels = $this->client->addLabels($node, array($labelA, $labelB));
-		self::assertEquals(count($expectedLabels), count($resultLabels));
-		foreach ($resultLabels as $i => $label) {
-			self::assertInstanceOf('Everyman\Neo4j\Label', $label);
-			self::assertEquals($expectedLabels[$i], $label->getName());
-		}
+		$result = $this->client->addLabels($node, array($labelA, $labelB));;
+		self::assertTrue($result);
 	}
 
 	public function testAddLabels_NoLabelCapability_ThrowsException()

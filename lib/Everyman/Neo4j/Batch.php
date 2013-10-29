@@ -23,6 +23,18 @@ class Batch
 	}
 
 	/**
+	 * Add a set of labels to a node
+	 *
+	 * @param Node  $node
+	 * @param array $labels list of Label objects to add
+	 * @return integer
+	 */
+	public function addLabels(Node $node, $labels)
+	{
+		return $this->addOperation(new Batch\AddLabels($this, $node, $labels, $this->nextId()));
+	}
+
+	/**
 	 * Add the given entity to the given index with the given key/value
 	 *
 	 * @param Index $index

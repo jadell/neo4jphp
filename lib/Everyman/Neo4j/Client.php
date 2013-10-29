@@ -66,13 +66,16 @@ class Client
 	 *
 	 * @param Node  $node
 	 * @param array $labels list of Label objects to add
-	 * @return array of Label objects; the entire list of labels on the given node
-	 *   including the ones just added
+	 * @return boolean
 	 */
 	public function addLabels(Node $node, $labels)
 	{
-		$command = new Command\AddLabels($this, $node, $labels);
-		return $this->runCommand($command);
+		if ($this->openBatch) {
+			$this->openBatch->addLabels($node, $labels);
+			return true;
+		}
+
+		return $this->runCommand(new Command\AddLabels($this, $node, $labels));
 	}
 
 	/**
@@ -198,6 +201,16 @@ class Client
 	{
 		$this->openBatch = null;
 		return $this;
+	}
+
+	/**
+	 * Check if a batch is open
+	 *
+	 * @return boolean
+	 */
+	public function isBatchStarted()
+	{
+		return (boolean) $this->openBatch;
 	}
 
 	/**
