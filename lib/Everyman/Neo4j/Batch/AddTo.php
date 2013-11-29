@@ -24,7 +24,7 @@ class AddTo extends Operation
 	 * @param PropertyContainer $entity
 	 * @param string $key
 	 * @param string $value
- * @param integer $opId
+	 * @param integer $opId
 	 */
 	public function __construct(Batch $batch, Index $index, PropertyContainer $entity, $key, $value, $opId)
 	{
