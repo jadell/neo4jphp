@@ -10,9 +10,9 @@ class PropertyContainerTest extends \PHPUnit_Framework_TestCase
 	{
 		$this->client = $this->getMock('Everyman\Neo4j\Client', array(), array(), '', false);
 		$this->entity = $this->getMock('Everyman\Neo4j\PropertyContainer',
-			array('delete','save','load'), array($this->client));
+			array('delete','save','load', '__sleep'), array($this->client));
 	}
-	
+
 	public function testProperties_MagicNotSet_ReturnsNull()
 	{
 		$this->assertNull($this->entity->notset);
@@ -90,7 +90,7 @@ class PropertyContainerTest extends \PHPUnit_Framework_TestCase
 	{
 		$this->entity->expects($this->once())
 			->method('load');
-		
+
 		$this->entity->setId(123);
 		$this->entity->getProperties();
 		$this->entity->getProperties();
