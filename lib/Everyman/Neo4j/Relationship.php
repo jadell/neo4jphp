@@ -23,6 +23,27 @@ class Relationship extends PropertyContainer
 	 */
 	protected $type = null;
 
+
+	/**
+	 * @inheritdoc
+	 * @param Client $client
+	 * @return Relationship
+	 */
+	public function setClient(Client $client)
+	{
+		parent::setClient($client);
+		// set the client of our start and end nodes if they exists and doesn't have client yet
+		if ( $this->start && !$this->start->getClient() )
+		{
+			$this->start->setClient($client);
+		}
+		if ( $this->end && !$this->end->getClient() )
+		{
+			$this->end->setClient($client);
+		}
+		return $this;
+	}
+
 	/**
 	 * Delete this relationship
 	 *
