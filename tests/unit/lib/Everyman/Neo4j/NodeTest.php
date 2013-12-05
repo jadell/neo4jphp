@@ -223,13 +223,15 @@ class NodeTest extends \PHPUnit_Framework_TestCase
 
 	public function testSerialize_KeepsLabels()
 	{
-		$expectedLabels = $this->node->addLabels(array('foo', 'bar'));
+		$fooLabel = $this->client->makeLabel('foo');
+		$barLabel = $this->client->makeLabel('bar');
+		$expectedLabels = $this->node->addLabels(array($fooLabel, $barLabel));
 		$expectedNode = $this->node->save();
 		$data = serialize($expectedNode);
 		$node = unserialize($data);
 		// we must reset the client
 		$node->setClient($this->client);
-		
+
 		$this->assertEquals($expectedLabels, $node->getLabels(), 'The labels should be restored by unserialize');
 	}
 }
