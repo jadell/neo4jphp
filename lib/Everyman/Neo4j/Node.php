@@ -6,7 +6,33 @@ namespace Everyman\Neo4j;
  */
 class Node extends PropertyContainer
 {
+	/**
+	 * @var Label[] Our labels, or `null` if not loaded
+	 */
 	protected $labels = null;
+
+
+    /**
+     * @inheritdoc
+     * @param Client $client
+     * @return Node
+     */
+    public function setClient(Client $client)
+    {
+        parent::setClient($client);
+        // set the client of each label in case it's not set yet
+        if ( $this->labels )
+        {
+            foreach ( $this->labels as $label )
+            {
+                if ( !$label->getClient() )
+                {
+                    $label->setClient($client);
+                }
+            }
+        }
+        return $this;
+    }
 
 	/**
 	 * Add labels to this node
@@ -150,5 +176,15 @@ class Node extends PropertyContainer
 		$this->client->saveNode($this);
 		$this->useLazyLoad(false);
 		return $this;
+	}
+
+	/**
+	 * Be sure to add our properties to the things to serialize
+	 *
+	 * @return array
+	 */
+	public function __sleep()
+	{
+		return array_merge(parent::__sleep(), array('labels'));
 	}
 }

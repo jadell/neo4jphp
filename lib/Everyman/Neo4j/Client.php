@@ -25,7 +25,13 @@ class Client
 	protected $serverInfo = null;
 	protected $openBatch = null;
 
+	/**
+	 * @var callable The node factory
+	 */
 	protected $nodeFactory = null;
+	/**
+	 * @var callable The relation factory
+	 */
 	protected $relFactory = null;
 
 	/**
@@ -65,8 +71,8 @@ class Client
 	 * Add a set of labels to a node
 	 *
 	 * @param Node  $node
-	 * @param array $labels list of Label objects to add
-	 * @return array of Label objects; the entire list of labels on the given node
+	 * @param Label[] $labels list of Label objects to add
+	 * @return Label[] of Label objects; the entire list of labels on the given node
 	 *   including the ones just added
 	 */
 	public function addLabels(Node $node, $labels)
@@ -122,6 +128,7 @@ class Client
 	 * Commit a batch of operations
 	 *
 	 * @param Batch $batch
+	 * @throws Exception
 	 * @return boolean true on success
 	 */
 	public function commitBatch(Batch $batch=null)
@@ -312,6 +319,7 @@ class Client
 	 *
 	 * @param integer $id
 	 * @param boolean $force
+	 * @throws Exception
 	 * @return Node
 	 */
 	public function getNode($id, $force=false)
@@ -360,6 +368,7 @@ class Client
 	 * If a property and value are given, only return
 	 * nodes where the given property equals the value
 	 *
+	 * @param Label  $label
 	 * @param string $propertyName
 	 * @param mixed  $propertyValue
 	 * @return Query\Row
@@ -401,6 +410,7 @@ class Client
 	 *
 	 * @param integer $id
 	 * @param boolean $force
+	 * @throws Exception
 	 * @return Relationship
 	 */
 	public function getRelationship($id, $force=false)
@@ -559,6 +569,7 @@ class Client
 	 * Create a new node object bound to this client
 	 *
 	 * @param array $properties
+	 * @throws Exception
 	 * @return Node
 	 */
 	public function makeNode($properties=array())
@@ -575,6 +586,7 @@ class Client
 	 * Create a new relationship object bound to this client
 	 *
 	 * @param array $properties
+	 * @throws Exception
 	 * @return Relationship
 	 */
 	public function makeRelationship($properties=array())
@@ -605,6 +617,7 @@ class Client
 	 * Rollback the transaction
 	 *
 	 * @param Transaction $transaction
+	 * @return mixed
 	 */
 	public function rollbackTransaction(Transaction $transaction)
 	{
@@ -742,6 +755,7 @@ class Client
 	 * should be returned, but are not set by the factory function.
 	 *
 	 * @param callable $factory
+	 * @throws Exception
 	 * @return Client
 	 */
 	public function setNodeFactory($factory)
@@ -763,6 +777,7 @@ class Client
 	 * should be returned, but are not set by the factory function.
 	 *
 	 * @param callable $factory
+	 * @throws Exception
 	 * @return Client
 	 */
 	public function setRelationshipFactory($factory)
