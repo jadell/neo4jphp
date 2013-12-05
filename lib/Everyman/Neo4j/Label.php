@@ -9,7 +9,13 @@ namespace Everyman\Neo4j;
  */
 class Label
 {
+	/**
+	 * @var Client Our client
+	 */
 	protected $client;
+	/**
+	 * @var string Our name
+	 */
 	protected $name;
 
 	/**
@@ -17,6 +23,7 @@ class Label
 	 *
 	 * @param Client $client
 	 * @param string $name
+	 * @throws \InvalidArgumentException
 	 */
 	public function __construct(Client $client, $name)
 	{
@@ -46,7 +53,7 @@ class Label
 	 *
 	 * @param string $propertyName
 	 * @param mixed  $propertyValue
-	 * @return Row
+	 * @return Query\Row
 	 * @throws Exception on failure
 	 */
 	public function getNodes($propertyName=null, $propertyValue=null)

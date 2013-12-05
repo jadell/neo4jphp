@@ -6,11 +6,26 @@ namespace Everyman\Neo4j;
  */
 abstract class PropertyContainer
 {
+	/**
+	 * @var int our ID
+	 */
 	protected $id = null;
+	/**
+	 * @var Client Our client
+	 */
 	protected $client = null;
+	/**
+	 * @var array Our properties
+	 */
 	protected $properties = array();
 
+	/**
+	 * @var bool Are we in lazy load mode?
+	 */
 	protected $lazyLoad = true;
+	/**
+	 * @var bool Are we loaded?
+	 */
 	protected $loaded = false;
 
 	/**
@@ -42,7 +57,7 @@ abstract class PropertyContainer
 	{
 		return array_key_exists($key, $this->properties);
 	}
-	
+
 	public function __sleep()
 	{
 		return array('id', 'properties', 'lazyLoad', 'loaded');

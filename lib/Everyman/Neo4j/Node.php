@@ -6,6 +6,9 @@ namespace Everyman\Neo4j;
  */
 class Node extends PropertyContainer
 {
+	/**
+	 * @var Label[] Our labels, or `null` if not loaded
+	 */
 	protected $labels = null;
 
 	/**

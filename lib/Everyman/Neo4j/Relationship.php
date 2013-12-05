@@ -10,8 +10,17 @@ class Relationship extends PropertyContainer
 	const DirectionIn        = 'in';
 	const DirectionOut       = 'out';
 
+	/**
+	 * @var Node Our start node
+	 */
 	protected $start = null;
+	/**
+	 * @var Node Our end node
+	 */
 	protected $end = null;
+	/**
+	 * @var string Our type
+	 */
 	protected $type = null;
 
 	/**
