@@ -73,11 +73,11 @@ class GetNodesForLabel extends Command
             
 	            	if (is_int($propertyValue)) {
 	            		$propertyValue = rawurlencode($this->propertyValue);
-	                	$path .= "?{$propertyName}={$propertyValue}";
 	            	} else {
 	            		$propertyValue = rawurlencode("'".$this->propertyValue."'");
-	                	$path .= "?{$propertyName}=\"{$propertyValue}\"";
 	            	}
+	            	
+	            	$path .= "?{$propertyName}={$propertyValue}";
 		}
 		return $path;
 	}
