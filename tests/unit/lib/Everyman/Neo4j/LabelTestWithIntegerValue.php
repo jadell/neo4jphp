@@ -12,14 +12,28 @@ class LabelTestWithIntegerValue extends \PHPUnit_Framework_TestCase
 
         public function testGetNodes_PropertyWithIntegerValueGiven_CallsClientMethod()
         {
-                $label = new Label($this->client, 'foobar');
-                $property = 'baz';
-                $value = 1;
+                $labelName = 'FOOBAR';
+                $propertyName = 'baz';
+                $propertyValue = 1;
+                $label = new Label($this->client, $labelName);
 
-                $this->client->expects($this->once())
-                        ->method('getNodesForLabel')
-                        ->with($label, $property, $value);
+                $returnData = array(
+                        array(
+                                "self" => "http://localhost:7474/db/data/relationship/56",
+                                "data" => array($propertyName => $propertyValue),
+                        ),
+                );
 
-                $label->getNodes($property, $value);
+                $this->transport->expects($this->once())
+                        ->method('get')
+                        ->with("/label/{$labelName}/nodes?{$propertyName}={$propertyValue}")
+                        ->will($this->returnValue(array('code'=>200,'data'=>$returnData)));
+
+                $nodes = $this->client->getNodesForLabel($label, $propertyName, $propertyValue);
+                self::assertInstanceOf('Everyman\Neo4j\Query\Row', $nodes);
+                self::assertEquals(1, count($nodes));
+
+                self::assertInstanceOf('Everyman\Neo4j\Node', $nodes[0]);
+                self::assertEquals(56,  $nodes[0]->getId());
         }
 }
