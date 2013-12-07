@@ -9,7 +9,13 @@ namespace Everyman\Neo4j;
  */
 class Label
 {
+	/**
+	 * @var Client Our client
+	 */
 	protected $client;
+	/**
+	 * @var string Our name
+	 */
 	protected $name;
 
 	/**
@@ -17,6 +23,7 @@ class Label
 	 *
 	 * @param Client $client
 	 * @param string $name
+	 * @throws \InvalidArgumentException
 	 */
 	public function __construct(Client $client, $name)
 	{
@@ -24,8 +31,30 @@ class Label
 			throw new \InvalidArgumentException("Label name must be a string or number");
 		}
 
-		$this->client = $client;
+		$this->setClient($client);
 		$this->name = (string)$name;
+	}
+
+	/**
+	 * Set the client to use with this Label object
+	 *
+	 * @param Client $client
+	 * @return Label
+	 */
+	public function setClient( Client $client )
+	{
+		$this->client = $client;
+		return $this;
+	}
+
+	/**
+	 * Get our client
+	 *
+	 * @return Client
+	 */
+	public function getClient()
+	{
+		return $this->client;
 	}
 
 	/**
@@ -46,11 +75,21 @@ class Label
 	 *
 	 * @param string $propertyName
 	 * @param mixed  $propertyValue
-	 * @return Row
+	 * @return Query\Row
 	 * @throws Exception on failure
 	 */
 	public function getNodes($propertyName=null, $propertyValue=null)
 	{
 		return $this->client->getNodesForLabel($this, $propertyName, $propertyValue);
+	}
+
+	/**
+	 * Only serialize our name property
+	 *
+	 * @return array
+	 */
+	public function __sleep()
+	{
+		return array('name');
 	}
 }

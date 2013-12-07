@@ -66,4 +66,30 @@ class RelationshipTest extends \PHPUnit_Framework_TestCase
 
 		$this->assertSame($this->relationship, $this->relationship->load());
 	}
+
+	public function testSerialize_KeepsStartEndAndType()
+	{
+		$expectedStart = new Node($this->client);
+		$expectedStart->save();
+		$expectedEnd = new Node($this->client);
+		$expectedEnd->save();
+		$expectedRel = $this->relationship
+			->setType($this->type)
+			->setStartNode($expectedStart)
+			->setEndNode($expectedEnd)
+			->save();
+		// serialize and unserialize
+		$data = serialize($expectedRel);
+		$rel = unserialize($data);
+		// we must reset the client
+		$rel->setClient($this->client);
+		$start = $rel->getStartNode();
+		$end = $rel->getEndNode();
+
+		$this->assertEquals($expectedStart, $start, 'The start node should be restored by unserialize');
+		$this->assertEquals($expectedEnd, $end, 'The end node should be restored by unserialize');
+		$this->assertEquals($this->type, $rel->getType(), 'The type should be restored by unserialize');
+		$this->assertEquals($this->client, $start->getClient(), 'The client should be restored in the start node by setClient on the relation');
+		$this->assertEquals($this->client, $end->getClient(), 'The client should be restored in the end node by setClient on the relation');
+	}
 }
