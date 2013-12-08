@@ -70,22 +70,23 @@ class RelationshipTest extends \PHPUnit_Framework_TestCase
 	public function testSerialize_KeepsStartEndAndType()
 	{
 		$expectedStart = new Node($this->client);
-		$expectedStart->save();
+		$expectedStart->setId(123);
 		$expectedEnd = new Node($this->client);
-		$expectedEnd->save();
-		$expectedRel = $this->relationship
+		$expectedEnd->setId(456);
+		$this->relationship
 			->setType($this->type)
 			->setStartNode($expectedStart)
-			->setEndNode($expectedEnd)
-			->save();
+			->setEndNode($expectedEnd);
+
 		// serialize and unserialize
-		$data = serialize($expectedRel);
+		$data = serialize($this->relationship);
 		$rel = unserialize($data);
 		// we must reset the client
 		$rel->setClient($this->client);
 		$start = $rel->getStartNode();
 		$end = $rel->getEndNode();
 
+		$this->assertEquals($this->relationship, $rel, 'The relationship is restored by unserialize');
 		$this->assertEquals($expectedStart, $start, 'The start node should be restored by unserialize');
 		$this->assertEquals($expectedEnd, $end, 'The end node should be restored by unserialize');
 		$this->assertEquals($this->type, $rel->getType(), 'The type should be restored by unserialize');

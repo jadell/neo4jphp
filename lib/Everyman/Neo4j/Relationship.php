@@ -33,12 +33,10 @@ class Relationship extends PropertyContainer
 	{
 		parent::setClient($client);
 		// set the client of our start and end nodes if they exists and doesn't have client yet
-		if ( $this->start && !$this->start->getClient() )
-		{
+		if ($this->start && !$this->start->getClient()) {
 			$this->start->setClient($client);
 		}
-		if ( $this->end && !$this->end->getClient() )
-		{
+		if ($this->end && !$this->end->getClient()) {
 			$this->end->setClient($client);
 		}
 		return $this;

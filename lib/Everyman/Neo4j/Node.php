@@ -12,27 +12,24 @@ class Node extends PropertyContainer
 	protected $labels = null;
 
 
-    /**
-     * @inheritdoc
-     * @param Client $client
-     * @return Node
-     */
-    public function setClient(Client $client)
-    {
-        parent::setClient($client);
-        // set the client of each label in case it's not set yet
-        if ( $this->labels )
-        {
-            foreach ( $this->labels as $label )
-            {
-                if ( !$label->getClient() )
-                {
-                    $label->setClient($client);
-                }
-            }
-        }
-        return $this;
-    }
+	/**
+	 * @inheritdoc
+	 * @param Client $client
+	 * @return Node
+	 */
+	public function setClient(Client $client)
+	{
+		parent::setClient($client);
+		// set the client of each label in case it's not set yet
+		if ($this->labels) {
+			foreach ($this->labels as $label) {
+				if (!$label->getClient()) {
+					$label->setClient($client);
+				}
+			}
+		}
+		return $this;
+	}
 
 	/**
 	 * Add labels to this node

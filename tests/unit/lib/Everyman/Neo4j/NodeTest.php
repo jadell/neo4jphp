@@ -225,13 +225,22 @@ class NodeTest extends \PHPUnit_Framework_TestCase
 	{
 		$fooLabel = $this->client->makeLabel('foo');
 		$barLabel = $this->client->makeLabel('bar');
-		$expectedLabels = $this->node->addLabels(array($fooLabel, $barLabel));
-		$expectedNode = $this->node->save();
-		$data = serialize($expectedNode);
+		$expectedLabels = array($fooLabel, $barLabel);
+		$this->client->expects($this->once())
+			->method('addLabels')
+			->with($this->node, $expectedLabels)
+			->will($this->returnValue($expectedLabels));
+
+		$this->node->addLabels($expectedLabels);
+
+		$data = serialize($this->node);
 		$node = unserialize($data);
 		// we must reset the client
 		$node->setClient($this->client);
 
+		$this->assertEquals($this->node, $node, 'The node is restored by unserialize');
 		$this->assertEquals($expectedLabels, $node->getLabels(), 'The labels should be restored by unserialize');
+		$this->assertSame($this->client, $expectedLabels[0]->getClient(), 'The labels should have their client set');
+		$this->assertSame($this->client, $expectedLabels[1]->getClient(), 'The labels should have their client set');
 	}
 }
