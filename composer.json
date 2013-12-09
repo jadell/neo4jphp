@@ -12,6 +12,10 @@
     "php": ">=5.3.0",
     "ext-curl": "*"
   },
+  "require-dev": {
+    "phing/phing": "2.6.*",
+    "phpunit/phpunit": "3.7.*"
+  },
   "autoload": {
     "psr-0": {"Everyman\\Neo4j":"lib/"}
   }

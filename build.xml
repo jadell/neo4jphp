@@ -4,14 +4,9 @@
 
 	<!-- Target: test -->
 	<target name="test">
-		<phpunit bootstrap="tests/bootstrap.php">
-			<formatter type="summary" usefile="false" />
-			<batchtest>
-				<fileset dir="tests">
-					<include name="**/*Test.php" />
-				</fileset>
-			</batchtest>
-		</phpunit>
+		<exec executable="vendor/bin/phpunit" passthru="true" checkreturn="true">
+			<arg line="-c tests/phpunit.xml" />
+		</exec>
 	</target>
 
 	<!-- Target: build -->

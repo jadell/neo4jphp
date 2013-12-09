@@ -4,6 +4,8 @@ php:
   - 5.4
   - 5.5
 
-before_script: phpenv config-add phpconfig.ini
+before_script:
+    - phpenv config-add phpconfig.ini
+    - composer install --dev
 
-script: cd ./tests && phpunit
+script: ./vendor/bin/phing
