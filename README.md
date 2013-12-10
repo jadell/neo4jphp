@@ -41,13 +41,25 @@ http://github.com/jadell/neo4jphp/graphs/contributors
 
 All contributions are welcome! If you wish to contribute, please read the following guidelines:
 
+* Before implementing new features, [open an issue](https://github.com/jadell/neo4jphp/issues) describing the feature.
 * Include unit tests for any bug fixes or new features.
 * Include only one bug fix or new feature per pull request.
 * Make sure all unit tests run before submitting a pull request.
 * Follow the coding style of the existing code: tabs for indentation, class/method braces on newlines, spaces after commas, etc.
 * Contributing code means that you agree that any contributed code, documentation, or other artifacts may be released under the same license as the rest of the library.
 
-Special thanks to:
+### Quick Contributor Setup
+Install the developer tools:
+
+    > composer install --dev
+    
+After making your changes, run the unit tests and code style checker:
+
+    > vendor/bin/phing ci
+
+Pull requests will not be accepted unless all tests pass and all code meets the existing style guidelines.
+
+### Special Thanks
 * Jacob Hansson <jacob@voltvoodoo.com> - Cypher query support
 * Nigel Small <nigel@nigelsmall.name> - GEOFF import/export
   * [http://py2neo.org/](http://py2neo.org/)
