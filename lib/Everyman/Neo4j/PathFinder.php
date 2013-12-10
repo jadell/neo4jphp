@@ -40,7 +40,7 @@ class PathFinder
 	public function getAlgorithm()
 	{
 		return $this->algo;
-	}	
+	}
 
 	/**
 	 * Get the finder's client

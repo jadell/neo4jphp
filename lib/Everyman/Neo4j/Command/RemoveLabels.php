@@ -23,4 +23,3 @@ class RemoveLabels extends SetLabels
 		parent::__construct($client, $node, $labels, true);
 	}
 }
-

@@ -152,4 +152,3 @@ class AddStatementsToTransaction extends Command
 		$this->transaction->setId($id);
 	}
 }
-

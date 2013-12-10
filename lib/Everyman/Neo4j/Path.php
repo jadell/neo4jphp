@@ -54,7 +54,7 @@ class Path implements \Countable, \IteratorAggregate
 	{
 		return $this->context;
 	}
-	
+
 	/**
 	 * Get the end node
 	 *
@@ -86,7 +86,9 @@ class Path implements \Countable, \IteratorAggregate
 	 */
 	public function getIterator()
 	{
-		return $this->context == self::ContextNode ? new \ArrayIterator($this->nodes) : new \ArrayIterator($this->relationships);
+		return $this->context == self::ContextNode
+			? new \ArrayIterator($this->nodes)
+				: new \ArrayIterator($this->relationships);
 	}
 
 	/**
@@ -122,7 +124,7 @@ class Path implements \Countable, \IteratorAggregate
 		}
 		return null;
 	}
-	
+
 	/**
 	 * Set the context for iteration
 	 *

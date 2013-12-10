@@ -73,4 +73,3 @@ class SetLabels extends ExecuteCypherQuery
 		return $nodeLabels;
 	}
 }
-

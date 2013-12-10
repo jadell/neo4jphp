@@ -1,5 +1,6 @@
 <?php
 namespace Everyman\Neo4j\Command;
+
 use Everyman\Neo4j\Command,
 	Everyman\Neo4j\Client,
 	Everyman\Neo4j\Exception,
@@ -86,4 +87,3 @@ class SaveIndex extends Command
 		return true;
 	}
 }
-

@@ -6,7 +6,7 @@ namespace Everyman\Neo4j;
  */
 class Batch
 {
-    protected $client = null;
+	protected $client = null;
 
 	protected $committed = false;
 	protected $operations = array();
@@ -47,7 +47,7 @@ class Batch
 			throw new Exception('Cannot commit the same batch more than once.');
 		}
 		$this->committed = true;
-	
+
 		return $this->client->commitBatch($this);
 	}
 
@@ -71,7 +71,7 @@ class Batch
 	{
 		return $this->client;
 	}
-	
+
 	/**
 	 * Return the list of operations in this batch
 	 *
@@ -124,7 +124,7 @@ class Batch
 	{
 		return $this->addOperation(new Batch\Save($this, $entity, $this->nextId()));
 	}
-	
+
 	/**
 	 * Add an operation to the batch
 	 *

@@ -1,5 +1,6 @@
 <?php
 namespace Everyman\Neo4j\Command\Batch;
+
 use Everyman\Neo4j\Client,
 	Everyman\Neo4j\Node,
 	Everyman\Neo4j\Command\CreateNode as SingleCreateNode;
@@ -37,4 +38,3 @@ class CreateNode extends Command
 		return $opData;
 	}
 }
-

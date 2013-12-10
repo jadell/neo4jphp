@@ -1,5 +1,6 @@
 <?php
 namespace Everyman\Neo4j\Command\Batch;
+
 use Everyman\Neo4j\Client,
 	Everyman\Neo4j\Relationship,
 	Everyman\Neo4j\Command\UpdateRelationship as SingleUpdateRelationship;
@@ -37,4 +38,3 @@ class UpdateRelationship extends Command
 		return $opData;
 	}
 }
-

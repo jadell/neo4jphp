@@ -1,5 +1,6 @@
 <?php
 namespace Everyman\Neo4j\Command\Batch;
+
 use Everyman\Neo4j\Client,
 	Everyman\Neo4j\Index,
 	Everyman\Neo4j\Batch,
@@ -21,7 +22,7 @@ class RemoveFromIndex extends Command
 	 * @param string $value
 	 * @param integer $opId
 	 */
-	public function __construct(Client $client, Index $index, PropertyContainer $entity, $key=null, $value=null, $opId)
+	public function __construct(Client $client, Index $index, PropertyContainer $entity, $key, $value, $opId)
 	{
 		parent::__construct($client, new SingleRemoveFromIndex($client, $index, $entity, $key, $value), $opId);
 	}
@@ -41,4 +42,3 @@ class RemoveFromIndex extends Command
 		return $opData;
 	}
 }
-

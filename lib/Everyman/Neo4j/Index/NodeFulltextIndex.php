@@ -2,7 +2,7 @@
 namespace Everyman\Neo4j\Index;
 
 use Everyman\Neo4j\Client,
-    Everyman\Neo4j\Index\NodeIndex;
+	Everyman\Neo4j\Index\NodeIndex;
 
 /**
  * Represents a fulltext node index in the database

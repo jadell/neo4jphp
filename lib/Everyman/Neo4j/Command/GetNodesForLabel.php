@@ -1,5 +1,6 @@
 <?php
 namespace Everyman\Neo4j\Command;
+
 use Everyman\Neo4j\Command,
 	Everyman\Neo4j\Client,
 	Everyman\Neo4j\Label,
@@ -95,4 +96,3 @@ class GetNodesForLabel extends Command
 		return new Row($this->client, array_keys($data), $data);
 	}
 }
-

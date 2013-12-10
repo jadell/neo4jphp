@@ -1,5 +1,6 @@
 <?php
 namespace Everyman\Neo4j\Geoff;
+
 use Everyman\Neo4j\Exception,
 	Everyman\Neo4j\Path;
 
@@ -45,21 +46,27 @@ class Exporter
 		foreach ($nodes as $id => $node) {
 			$properties = $node->getProperties();
 			$format = $properties ? "(%s)\t%s\n" : "(%s)\n";
-			fprintf($handle, $format,
+			fprintf(
+				$handle,
+				$format,
 				$id,
-				json_encode($properties));
+				json_encode($properties)
+			);
 		}
 
 		foreach ($rels as $id => $rel) {
 			$properties = $rel->getProperties();
 			$format = "(%s)-[%s:%s]->(%s)";
 			$format .= $properties ? "\t%s\n" : "\n";
-			fprintf($handle, $format,
+			fprintf(
+				$handle,
+				$format,
 				$rel->getStartNode()->getId(),
 				$id,
 				$rel->getType(),
 				$rel->getEndNode()->getId(),
-				json_encode($properties));
+				json_encode($properties)
+			);
 		}
 	}
 }

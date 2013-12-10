@@ -1,5 +1,6 @@
 <?php
 namespace Everyman\Neo4j\Command\Batch;
+
 use Everyman\Neo4j\Command as SingleCommand,
 	Everyman\Neo4j\Client;
 
@@ -24,7 +25,7 @@ abstract class Command extends SingleCommand
 		$this->base = $base;
 		$this->opId = $opId;
 	}
-	
+
 	/**
 	 * Return the transport method to call
 	 *
@@ -82,4 +83,3 @@ abstract class Command extends SingleCommand
 		return $this->base->handleResult(200, $headers, $result);
 	}
 }
-

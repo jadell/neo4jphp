@@ -1,5 +1,6 @@
 <?php
 namespace Everyman\Neo4j\Command\Batch;
+
 use Everyman\Neo4j\Client,
 	Everyman\Neo4j\Node,
 	Everyman\Neo4j\Command\UpdateNode as SingleUpdateNode;
@@ -37,4 +38,3 @@ class UpdateNode extends Command
 		return $opData;
 	}
 }
-

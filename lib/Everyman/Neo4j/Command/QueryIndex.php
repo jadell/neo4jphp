@@ -1,5 +1,6 @@
 <?php
 namespace Everyman\Neo4j\Command;
+
 use Everyman\Neo4j\Command,
 	Everyman\Neo4j\Client,
 	Everyman\Neo4j\Exception,
@@ -32,9 +33,8 @@ class QueryIndex extends SearchIndex
 	protected function getPath()
 	{
 		$path = parent::getPath();
-		$path = join('/', array_slice(explode('/', $path), 0,4));
+		$path = join('/', array_slice(explode('/', $path), 0, 4));
 		$query = rawurlencode($this->key);
 		return $path . '?query=' . $query;
 	}
 }
-

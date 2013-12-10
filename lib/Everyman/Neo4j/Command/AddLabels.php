@@ -23,4 +23,3 @@ class AddLabels extends SetLabels
 		parent::__construct($client, $node, $labels, false);
 	}
 }
-

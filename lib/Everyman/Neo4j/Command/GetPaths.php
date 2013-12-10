@@ -1,5 +1,6 @@
 <?php
 namespace Everyman\Neo4j\Command;
+
 use Everyman\Neo4j\Command,
 	Everyman\Neo4j\Client,
 	Everyman\Neo4j\Exception,
@@ -34,7 +35,7 @@ class GetPaths extends Command
 	protected function getData()
 	{
 		$data = array();
-		
+
 		$end = $this->finder->getEndNode();
 		if (!$end || !$end->hasId()) {
 			throw new Exception('No end node id specified');
@@ -59,7 +60,7 @@ class GetPaths extends Command
 			}
 		}
 		$data['algorithm'] = $algo;
-				
+
 
 
 		$max = $this->finder->getMaxDepth();
@@ -68,7 +69,7 @@ class GetPaths extends Command
 		}
 		$data['max_depth'] = $max;
 		$data['max depth'] = $max;
-		
+
 		$type = $this->finder->getType();
 		$dir = $this->finder->getDirection();
 		if ($dir && !$type) {
@@ -80,7 +81,7 @@ class GetPaths extends Command
 			}
 			$data['relationships'] = $rel;
 		}
-		
+
 		return $data;
 	}
 
@@ -130,4 +131,3 @@ class GetPaths extends Command
 		return $paths;
 	}
 }
-

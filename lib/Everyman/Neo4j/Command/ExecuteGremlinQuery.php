@@ -2,8 +2,8 @@
 namespace Everyman\Neo4j\Command;
 
 use Everyman\Neo4j\EntityMapper,
-    Everyman\Neo4j\Exception,
-    Everyman\Neo4j\Command,
+	Everyman\Neo4j\Exception,
+	Everyman\Neo4j\Command,
 	Everyman\Neo4j\Client,
 	Everyman\Neo4j\Gremlin\Query,
 	Everyman\Neo4j\Query\ResultSet;
@@ -89,7 +89,7 @@ class ExecuteGremlinQuery extends Command
 	 * Normalized data has 'data' and 'columns' keys for result set.
 	 *
 	 * @param array $data
-	 * @return array 
+	 * @return array
 	 */
 	protected function normalizeData($data)
 	{
@@ -117,4 +117,3 @@ class ExecuteGremlinQuery extends Command
 		return $data;
 	}
 }
-

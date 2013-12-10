@@ -6,7 +6,7 @@ class Exception extends \Exception
 	protected $headers;
 	protected $data;
 
-	public function __construct($message, $code = 0, $headers = array(), $data = array())
+	public function __construct($message, $code=0, $headers=array(), $data=array())
 	{
 		$this->headers = $headers;
 		$this->data = $data;

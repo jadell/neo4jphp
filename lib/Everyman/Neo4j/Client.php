@@ -45,13 +45,13 @@ class Client
 		try {
 			if ($transport === null) {
 				$transport = new Transport\Curl();
-			} elseif (is_string($transport)) {
+			} else if (is_string($transport)) {
 				$transport = new Transport\Curl($transport, $port);
 			}
 		} catch (Exception $e) {
 			if ($transport === null) {
 				$transport = new Transport\Stream();
-			} elseif (is_string($transport)) {
+			} else if (is_string($transport)) {
 				$transport = new Transport\Stream($transport, $port);
 			}
 		}
@@ -487,11 +487,11 @@ class Client
 		$info = $this->getServerInfo();
 
 		switch ($capability) {
-			case self::CapabilityLabel :
-			case self::CapabilityTransactions :
+			case self::CapabilityLabel:
+			case self::CapabilityTransactions:
 				return $info['version']['major'] > 1;
 
-			case self::CapabilityCypher :
+			case self::CapabilityCypher:
 				if (isset($info['cypher'])) {
 					return $info['cypher'];
 				} else if (isset($info['extensions']['CypherPlugin']['execute_query'])) {
@@ -499,7 +499,7 @@ class Client
 				}
 				return false;
 
-			case self::CapabilityGremlin :
+			case self::CapabilityGremlin:
 				if (isset($info['extensions']['GremlinPlugin']['execute_script'])) {
 					return $info['extensions']['GremlinPlugin']['execute_script'];
 				}

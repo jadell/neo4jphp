@@ -1,5 +1,6 @@
 <?php
 namespace Everyman\Neo4j\Command;
+
 use Everyman\Neo4j\Command,
 	Everyman\Neo4j\Client;
 
@@ -54,4 +55,3 @@ class GetRelationshipTypes extends Command
 		return $data;
 	}
 }
-

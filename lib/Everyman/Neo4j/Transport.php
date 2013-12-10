@@ -54,7 +54,7 @@ abstract class Transport
 		if (!is_scalar($data)) {
 			if ($data) {
 				$keys = array_keys($data);
-				$nonNumeric = array_filter($keys, function ($var){
+				$nonNumeric = array_filter($keys, function ($var) {
 					return !is_int($var);
 				});
 				if ($nonNumeric) {
@@ -68,7 +68,7 @@ abstract class Transport
 		$encoded = json_encode($data);
 		return $encoded;
 	}
-	
+
 	/**
 	 * Make a request against the endpoint
 	 * Returned array has the following elements:
@@ -81,7 +81,7 @@ abstract class Transport
 	 * @param array  $data
 	 * @return array
 	 */
-	public abstract function makeRequest($method, $path, $data=array());
+	abstract public function makeRequest($method, $path, $data=array());
 
 	/**
 	 * Make a GET request

@@ -12,7 +12,7 @@ class Pager
 
 	protected $id = null;
 	protected $leaseTime = null;
-	protected $pageSize = null;	
+	protected $pageSize = null;
 
 	/**
 	 * Set the traversal to paginate

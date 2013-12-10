@@ -64,4 +64,3 @@ class Memcache implements Cache
 		return $this->memcache->set($key, $value, 0, $expire);
 	}
 }
-

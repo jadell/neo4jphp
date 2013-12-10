@@ -41,7 +41,7 @@ class Label
 	 * @param Client $client
 	 * @return Label
 	 */
-	public function setClient( Client $client )
+	public function setClient(Client $client)
 	{
 		$this->client = $client;
 		return $this;

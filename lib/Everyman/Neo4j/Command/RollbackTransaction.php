@@ -83,4 +83,3 @@ class RollbackTransaction extends Command
 		return true;
 	}
 }
-

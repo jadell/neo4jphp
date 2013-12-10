@@ -1,5 +1,6 @@
 <?php
 namespace Everyman\Neo4j\Geoff;
+
 use Everyman\Neo4j\Client,
 	Everyman\Neo4j\Exception,
 	Everyman\Neo4j\Node,
@@ -54,7 +55,7 @@ class Importer
 
 		return $batch;
 	}
-	
+
 	/**
 	 * Load a single line into the batch
 	 *
@@ -143,7 +144,7 @@ class Importer
 					}
 					$entity = $nodes[$entityId];
 					$type = Index::TypeNode;
-				} else  if ($openBrace == '[' && $closeBrace == ']') {
+				} else if ($openBrace == '[' && $closeBrace == ']') {
 					if (!isset($rels[$entityId])) {
 						throw new Exception("Invalid relationship reference on line {$lineNum}: $line");
 					}

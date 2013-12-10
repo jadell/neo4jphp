@@ -1,5 +1,6 @@
 <?php
 namespace Everyman\Neo4j\Transport;
+
 use Everyman\Neo4j\Transport as BaseTransport,
 	Everyman\Neo4j\Version,
 	Everyman\Neo4j\Exception;
@@ -62,12 +63,12 @@ class Curl extends BaseTransport
 		}
 
 		switch ($method) {
-			case self::DELETE :
+			case self::DELETE:
 				$options[CURLOPT_CUSTOMREQUEST] = self::DELETE;
 				break;
 
-			case self::POST :
-			case self::PUT :
+			case self::POST:
+			case self::PUT:
 				$dataString = $this->encodeData($data);
 				$options[CURLOPT_CUSTOMREQUEST] = $method;
 				$options[CURLOPT_POSTFIELDS] = $dataString;
@@ -76,7 +77,7 @@ class Curl extends BaseTransport
 				if (self::POST == $method) {
 					$options[CURLOPT_POST] = true;
 				}
-			break;
+				break;
 		}
 
 		$ch = $this->getHandle();
@@ -100,13 +101,13 @@ class Curl extends BaseTransport
 		$bodyData = json_decode($bodyString, true);
 
 		$headerString = substr($response, 0, $headerSize);
-		$headers = explode("\r\n",$headerString);
+		$headers = explode("\r\n", $headerString);
 		foreach ($headers as $i => $header) {
 			unset($headers[$i]);
-			$parts = explode(':',$header);
+			$parts = explode(':', $header);
 			if (isset($parts[1])) {
 				$name = trim(array_shift($parts));
-				$value = join(':',$parts);
+				$value = join(':', $parts);
 				$headers[$name] = $value;
 			}
 		}

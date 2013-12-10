@@ -1,5 +1,6 @@
 <?php
 namespace Everyman\Neo4j\Command\Batch;
+
 use Everyman\Neo4j\Client,
 	Everyman\Neo4j\Index,
 	Everyman\Neo4j\Batch,
@@ -66,4 +67,3 @@ class AddToIndex extends Command
 		return $opData;
 	}
 }
-

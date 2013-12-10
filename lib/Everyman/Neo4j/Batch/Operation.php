@@ -9,12 +9,12 @@ use Everyman\Neo4j\Batch,
  */
 abstract class Operation
 {
-    protected $batch = null;
-    protected $operation = null;
-    protected $entity = null;
-    protected $opId = null;
+	protected $batch = null;
+	protected $operation = null;
+	protected $entity = null;
+	protected $opId = null;
 
-    protected $reserved = false;
+	protected $reserved = false;
 
 	/**
 	 * Build the operation

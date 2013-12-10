@@ -24,9 +24,9 @@ class RemoveFrom extends Operation
 	 * @param PropertyContainer $entity
 	 * @param string $key
 	 * @param string $value
- * @param integer $opId
+	 * @param integer $opId
 	 */
-	public function __construct(Batch $batch, Index $index, PropertyContainer $entity, $key=null, $value=null, $opId)
+	public function __construct(Batch $batch, Index $index, PropertyContainer $entity, $key, $value, $opId)
 	{
 		parent::__construct($batch, 'removefrom', $entity, $opId);
 		$this->index = $index;
@@ -42,12 +42,18 @@ class RemoveFrom extends Operation
 	public function getCommand()
 	{
 		if (!$this->command) {
-			$this->command = new Command\RemoveFromIndex($this->batch->getClient(),
-				$this->index, $this->entity, $this->key, $this->value, $this->opId);
+			$this->command = new Command\RemoveFromIndex(
+				$this->batch->getClient(),
+				$this->index,
+				$this->entity,
+				$this->key,
+				$this->value,
+				$this->opId
+			);
 		}
 		return $this->command;
 	}
-	
+
 	/**
 	 * Based on this operations parameters, generate a consistent id
 	 *

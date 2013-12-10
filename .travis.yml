@@ -8,4 +8,4 @@ before_script:
     - phpenv config-add phpconfig.ini
     - composer install --dev
 
-script: ./vendor/bin/phing
+script: ./vendor/bin/phing ci

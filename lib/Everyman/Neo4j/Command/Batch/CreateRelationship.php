@@ -1,5 +1,6 @@
 <?php
 namespace Everyman\Neo4j\Command\Batch;
+
 use Everyman\Neo4j\Client,
 	Everyman\Neo4j\Batch,
 	Everyman\Neo4j\Relationship,
@@ -76,4 +77,3 @@ class CreateRelationship extends Command
 		return $opData;
 	}
 }
-

@@ -1,5 +1,6 @@
 <?php
 namespace Everyman\Neo4j\Command\Batch;
+
 use Everyman\Neo4j\Client,
 	Everyman\Neo4j\Batch;
 
@@ -23,7 +24,7 @@ class Commit extends Command
 		parent::__construct($client, $this, null);
 		$this->batch = $batch;
 	}
-	
+
 	/**
 	 * Return the data to pass
 	 *
@@ -56,4 +57,3 @@ class Commit extends Command
 		return $command->handleSingleResult($result);
 	}
 }
-

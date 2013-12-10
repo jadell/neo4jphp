@@ -116,4 +116,3 @@ abstract class Command
 		throw new Exception($message, $code, $headers, $data);
 	}
 }
-

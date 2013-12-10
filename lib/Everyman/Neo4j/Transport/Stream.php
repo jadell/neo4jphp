@@ -1,5 +1,6 @@
 <?php
 namespace Everyman\Neo4j\Transport;
+
 use Everyman\Neo4j\Transport as BaseTransport,
 	Everyman\Neo4j\Version,
 	Everyman\Neo4j\Exception;
@@ -29,16 +30,17 @@ class Stream extends BaseTransport
 		);
 
 		if ($this->username && $this->password) {
-			$context_options[$this->scheme]['header'] .= 'Authorization: Basic ' . base64_encode($this->username.':'.$this->password) . "\r\n";
+			$encodedAuth = base64_encode($this->username.':'.$this->password);
+			$context_options[$this->scheme]['header'] .= 'Authorization: Basic ' . $encodedAuth . "\r\n";
 		}
 
 		switch ($method) {
-			case self::DELETE :
+			case self::DELETE:
 				$context_options[$this->scheme]['method'] = self::DELETE;
 				break;
 
-			case self::POST :
-			case self::PUT :
+			case self::POST:
+			case self::PUT:
 				$dataString = $this->encodeData($data);
 				$context_options[$this->scheme]['method'] = $method;
 				$context_options[$this->scheme]['content'] = $dataString;

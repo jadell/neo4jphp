@@ -2,11 +2,11 @@
 namespace Everyman\Neo4j\Cache;
 
 use Everyman\Neo4j\Client,
-    Everyman\Neo4j\Exception,
-    Everyman\Neo4j\PropertyContainer,
-    Everyman\Neo4j\Node,
-    Everyman\Neo4j\Relationship,
-    Everyman\Neo4j\Cache;
+	Everyman\Neo4j\Exception,
+	Everyman\Neo4j\PropertyContainer,
+	Everyman\Neo4j\Node,
+	Everyman\Neo4j\Relationship,
+	Everyman\Neo4j\Cache;
 
 /**
  * Store and retrieve cached entities without hitting the server

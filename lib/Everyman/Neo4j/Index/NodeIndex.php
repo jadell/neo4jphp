@@ -2,7 +2,7 @@
 namespace Everyman\Neo4j\Index;
 
 use Everyman\Neo4j\Client,
-    Everyman\Neo4j\Index;
+	Everyman\Neo4j\Index;
 
 /**
  * Represents a node index in the database

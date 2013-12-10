@@ -51,7 +51,7 @@ class ExecutePagedTraversal extends ExecuteTraversal
 	protected function getPath()
 	{
 		$path = parent::getPath();
-		$path = str_replace('traverse','paged/traverse', $path);
+		$path = str_replace('traverse', 'paged/traverse', $path);
 
 		$id = $this->pager->getId();
 		if ($id) {
@@ -95,4 +95,3 @@ class ExecutePagedTraversal extends ExecuteTraversal
 		return parent::handleResult($code, $headers, $data);
 	}
 }
-
