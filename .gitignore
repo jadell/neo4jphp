@@ -3,3 +3,4 @@ build
 docs
 vendor/
 /.idea/
+composer.lock

@@ -1,0 +1,29 @@
+<?xml version="1.0"?>
+<ruleset name="Neo4jPHP">
+	<description>Code style guidelines for the Neo4jPHP library</description>
+
+	<rule ref="PSR2">
+		<exclude name="Generic.WhiteSpace.DisallowTabIndent" />
+		<exclude name="PSR2.ControlStructures.ElseIfDeclaration.NotAllowed" />
+		<!-- @todo: Replace this with a scope indent rule that respects tabs -->
+		<exclude name="Generic.WhiteSpace.ScopeIndent" />
+		<!-- @todo: This should change in a future BC-breaking version -->
+		<exclude name="Generic.NamingConventions.UpperCaseConstantName" />
+	</rule>
+
+	<rule ref="Generic.WhiteSpace.DisallowSpaceIndent" />
+	<rule ref="Squiz.ControlStructures.ElseIfDeclaration" />
+
+	<rule ref="Squiz.Functions.FunctionDeclarationArgumentSpacing">
+		<properties>
+			<property name="equalsSpacing" value="0" />
+		</properties>
+	</rule>
+
+	<!-- Fix for tab indenting -->
+	<rule ref="PSR2.ControlStructures.SwitchDeclaration">
+		<properties>
+			<property name="indent" value="1" />
+		</properties>
+	</rule>
+</ruleset>

@@ -3,14 +3,29 @@
 	<taskdef name="neo4jphpversion" classname="Neo4jPhpVersionTask" />
 
 	<!-- Target: test -->
-	<target name="test">
+	<target name="test" description="Verify all unit tests pass; fail if not">
 		<exec executable="vendor/bin/phpunit" passthru="true" checkreturn="true">
 			<arg line="-c tests/phpunit.xml" />
 		</exec>
 	</target>
 
+	<!-- Target: cs -->
+	<target name="cs" description="Verify that coding style guidelines are met; fail if not">
+		<exec executable="vendor/bin/phpcs" passthru="true" checkreturn="true">
+			<arg line="--standard=./tests/cs/ruleset.xml" />
+			<arg line="-s" />
+			<arg line="lib" />
+		</exec>
+	</target>
+
+	<!-- Target: ci -->
+	<target name="ci" description="Run all targets that verify CI build is good">
+		<phingcall target="test" />
+		<phingcall target="cs" />
+	</target>
+
 	<!-- Target: build -->
-	<target name="build">
+	<target name="build" description="Copy all package release files to a build directory">
 		<delete dir="./build" />
 		<mkdir dir="./build" />
 		<copy todir="./build">
@@ -23,7 +38,7 @@
 	</target>
 
 	<!-- Target: package -->
-	<target name="package" depends="build">
+	<target name="package" description="Package the release files into an executable PHAR" depends="build">
 		<neo4jphpversion property="version" />
 		<delete file="./neo4jphp.phar" />
 		<pharpackage
