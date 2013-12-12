@@ -56,6 +56,14 @@ Install the developer tools:
 After making your changes, run the unit tests and code style checker:
 
     > vendor/bin/phing ci
+    
+Run only unit tests:
+
+    > vendor/bin/phing test
+    
+Run only style checker:
+
+    > vendor/bin/phing cs
 
 Pull requests will not be accepted unless all tests pass and all code meets the existing style guidelines.
 
