@@ -6,8 +6,6 @@
 		<exclude name="Generic.WhiteSpace.DisallowTabIndent" />
 		<exclude name="PSR2.ControlStructures.ElseIfDeclaration.NotAllowed" />
 		<exclude name="PSR2.Namespaces.UseDeclaration.MultipleDeclarations" />
-		<!-- @todo: Replace this with a scope indent rule that respects tabs -->
-		<exclude name="Generic.WhiteSpace.ScopeIndent" />
 		<!-- @todo: This should change in a future BC-breaking version -->
 		<exclude name="Generic.NamingConventions.UpperCaseConstantName" />
 	</rule>
@@ -22,6 +20,11 @@
 	</rule>
 
 	<!-- Fix for tab indenting -->
+	<rule ref="Generic.WhiteSpace.ScopeIndent">
+		<properties>
+			<property name="indent" value="1" />
+		</properties>
+	</rule>
 	<rule ref="PSR2.ControlStructures.SwitchDeclaration">
 		<properties>
 			<property name="indent" value="1" />
