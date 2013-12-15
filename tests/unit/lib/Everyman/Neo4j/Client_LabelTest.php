@@ -146,33 +146,33 @@ class Client_LabelTest extends \PHPUnit_Framework_TestCase
 
 		$this->client->getNodesForLabel($label, $propertyName, $propertyValue);
 	}
-	
+
 	public function testGetNodesForLabel_PropertyWithIntegerValueGiven_CallsClientMethod()
-        {
-                $labelName = 'FOOBAR';
-                $propertyName = 'baz';
-                $propertyValue = 1;
-                $label = new Label($this->client, $labelName);
+	{
+		$labelName = 'FOOBAR';
+		$propertyName = 'baz';
+		$propertyValue = 1;
+		$label = new Label($this->client, $labelName);
 
-                $returnData = array(
-                        array(
-                                "self" => "http://localhost:7474/db/data/relationship/56",
-                                "data" => array($propertyName => $propertyValue),
-                        ),
-                );
+		$returnData = array(
+			array(
+				"self" => "http://localhost:7474/db/data/relationship/56",
+				"data" => array($propertyName => $propertyValue),
+			),
+		);
 
-                $this->transport->expects($this->once())
-                        ->method('get')
-                        ->with("/label/{$labelName}/nodes?{$propertyName}={$propertyValue}")
-                        ->will($this->returnValue(array('code'=>200,'data'=>$returnData)));
+		$this->transport->expects($this->once())
+			->method('get')
+			->with("/label/{$labelName}/nodes?{$propertyName}={$propertyValue}")
+			->will($this->returnValue(array('code'=>200,'data'=>$returnData)));
 
-                $nodes = $this->client->getNodesForLabel($label, $propertyName, $propertyValue);
-                self::assertInstanceOf('Everyman\Neo4j\Query\Row', $nodes);
-                self::assertEquals(1, count($nodes));
+		$nodes = $this->client->getNodesForLabel($label, $propertyName, $propertyValue);
+		self::assertInstanceOf('Everyman\Neo4j\Query\Row', $nodes);
+		self::assertEquals(1, count($nodes));
 
-                self::assertInstanceOf('Everyman\Neo4j\Node', $nodes[0]);
-                self::assertEquals(56,  $nodes[0]->getId());
-        }
+		self::assertInstanceOf('Everyman\Neo4j\Node', $nodes[0]);
+		self::assertEquals(56,  $nodes[0]->getId());
+	}
 
 	public function testGetNodesForLabel_PropertyNameWithoutValue_ThrowsException()
 	{

@@ -77,7 +77,7 @@ class GetNodesForLabel extends Command
 			} else {
 				$propertyValue = rawurlencode('"'.$this->propertyValue.'"');
 			}
-	            	
+
 			$path .= "?{$propertyName}={$propertyValue}";
 		}
 		return $path;
