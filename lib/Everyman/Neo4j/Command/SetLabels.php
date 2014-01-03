@@ -30,7 +30,7 @@ class SetLabels extends ExecuteCypherQuery
 		}
 
 		$nodeId = $node->getId();
-		if (!$nodeId) {
+		if (!is_numeric($nodeId)) {
 			throw new \InvalidArgumentException("Cannot set labels on an unsaved node");
 		}
 
