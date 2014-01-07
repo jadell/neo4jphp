@@ -72,10 +72,10 @@ class GetNodesForLabel extends Command
 
 			$propertyName = rawurlencode($this->propertyName);
 
-			if (is_numeric($this->propertyValue)) {
-				$propertyValue = rawurlencode($this->propertyValue);
-			} else {
+			if(is_string($this->propertyValue)){
 				$propertyValue = rawurlencode('"'.$this->propertyValue.'"');
+			}elseif(is_int($this->propertyValue) || is_float($this->propertyValue)){
+				$propertyValue = rawurlencode($this->propertyValue);
 			}
 
 			$path .= "?{$propertyName}={$propertyValue}";
