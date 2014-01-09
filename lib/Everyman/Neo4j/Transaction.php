@@ -146,7 +146,7 @@ class Transaction
 	protected function performClientAction($action, $shouldClose, $requireId=true)
 	{
 		if ($this->isClosed()) {
-			throw new Exception('Transaction is already closed');
+			return null;
 		}
 
 		$result = null;
