@@ -1,11 +1,12 @@
 language: php
-php:
+
+php: 
   - 5.3
   - 5.4
   - 5.5
 
 before_script:
-    - phpenv config-add phpconfig.ini
-    - composer install --dev
+  - curl -s http://getcomposer.org/installer | php
+  - php composer.phar install --dev
 
-script: ./vendor/bin/phing ci
+script: phpunit
