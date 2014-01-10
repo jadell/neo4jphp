@@ -1,6 +1,4 @@
-neo4jphp.phar
-build
-docs
-vendor/
-/.idea/
+/vendor
+composer.phar
 composer.lock
+.DS_Store

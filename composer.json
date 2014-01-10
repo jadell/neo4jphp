@@ -1,23 +1,27 @@
 {
-  "name": "witooh/neo4jphp",
-  "type": "library",
-  "description": "Wrapper for the Neo4j graph database REST interface",
-  "keywords": ["neo4j","graph","database"],
-  "homepage": "http://github.com/jadell/neo4jphp/wiki",
-  "license": "MIT",
-  "authors": [
-    {"name": "Josh Adell", "email": "josh.adell@gmail.com", "homepage": "http://joshadell.com"}
-  ],
-  "require": {
-    "php": ">=5.3.0",
-    "ext-curl": "*"
-  },
-  "require-dev": {
-    "phing/phing": "2.6.*",
-    "phpunit/phpunit": "3.7.*",
-    "squizlabs/php_codesniffer": "1.5.*"
-  },
-  "autoload": {
-    "psr-0": {"Everyman\\Neo4j":"lib/"}
-  }
+    "name": "witooh/neo4jphp",
+    "description": "",
+    "authors": [
+        {
+            "name": "witooh",
+            "email": "witoo@outlook.com"
+        }
+    ],
+    "require": {
+        "php": ">=5.3.0",
+        "guzzle/guzzle": "dev-master"
+    },
+    "require-dev": {
+        "illuminate/support": "~4",
+        "illuminate/validation": "~4",
+        "illuminate/foundation": "~4",
+        "mockery/mockery": "dev-master",
+        "way/laravel-test-helpers": "dev-master"
+    },
+    "autoload": {
+        "psr-0": {
+            "Witooh\\Neo4j": "src/"
+        }
+    },
+    "minimum-stability": "dev"
 }

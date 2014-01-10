@@ -1,0 +1,411 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="ChangeListManager">
+    <list default="true" id="eb2e3eec-0ee7-499a-8675-0c0f36adfc93" name="Default" comment="">
+      <change type="DELETED" beforePath="$PROJECT_DIR$/LICENSE" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/Neo4jPhpVersionTask.php" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/build.xml" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/docblox.dist.xml" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/examples/bacon.php" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/examples/batch_benchmarks.php" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/examples/cypher.php" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/examples/directions.php" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/examples/example_bootstrap.php" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/examples/gremlin.php" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/examples/indexing.php" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/examples/widgets.php" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/lib/Everyman/Neo4j/Batch.php" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/lib/Everyman/Neo4j/Batch/AddTo.php" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/lib/Everyman/Neo4j/Batch/Delete.php" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/lib/Everyman/Neo4j/Batch/Operation.php" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/lib/Everyman/Neo4j/Batch/RemoveFrom.php" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/lib/Everyman/Neo4j/Batch/Save.php" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/lib/Everyman/Neo4j/Cache.php" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/lib/Everyman/Neo4j/Cache/EntityCache.php" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/lib/Everyman/Neo4j/Cache/Memcache.php" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/lib/Everyman/Neo4j/Cache/Memcached.php" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/lib/Everyman/Neo4j/Cache/Null.php" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/lib/Everyman/Neo4j/Cache/Variable.php" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/lib/Everyman/Neo4j/Client.php" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/lib/Everyman/Neo4j/Command.php" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/lib/Everyman/Neo4j/Command/AddLabels.php" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/lib/Everyman/Neo4j/Command/AddStatementsToTransaction.php" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/lib/Everyman/Neo4j/Command/AddToIndex.php" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/lib/Everyman/Neo4j/Command/Batch/AddToIndex.php" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/lib/Everyman/Neo4j/Command/Batch/Command.php" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/lib/Everyman/Neo4j/Command/Batch/Commit.php" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/lib/Everyman/Neo4j/Command/Batch/CreateNode.php" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/lib/Everyman/Neo4j/Command/Batch/CreateRelationship.php" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/lib/Everyman/Neo4j/Command/Batch/DeleteNode.php" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/lib/Everyman/Neo4j/Command/Batch/DeleteRelationship.php" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/lib/Everyman/Neo4j/Command/Batch/RemoveFromIndex.php" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/lib/Everyman/Neo4j/Command/Batch/UpdateNode.php" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/lib/Everyman/Neo4j/Command/Batch/UpdateRelationship.php" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/lib/Everyman/Neo4j/Command/CreateNode.php" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/lib/Everyman/Neo4j/Command/CreateRelationship.php" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/lib/Everyman/Neo4j/Command/DeleteIndex.php" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/lib/Everyman/Neo4j/Command/DeleteNode.php" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/lib/Everyman/Neo4j/Command/DeleteRelationship.php" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/lib/Everyman/Neo4j/Command/ExecuteCypherQuery.php" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/lib/Everyman/Neo4j/Command/ExecuteGremlinQuery.php" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/lib/Everyman/Neo4j/Command/ExecutePagedTraversal.php" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/lib/Everyman/Neo4j/Command/ExecuteTraversal.php" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/lib/Everyman/Neo4j/Command/GetIndexes.php" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/lib/Everyman/Neo4j/Command/GetLabels.php" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/lib/Everyman/Neo4j/Command/GetNode.php" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/lib/Everyman/Neo4j/Command/GetNodeRelationships.php" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/lib/Everyman/Neo4j/Command/GetNodesForLabel.php" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/lib/Everyman/Neo4j/Command/GetPaths.php" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/lib/Everyman/Neo4j/Command/GetRelationship.php" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/lib/Everyman/Neo4j/Command/GetRelationshipTypes.php" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/lib/Everyman/Neo4j/Command/GetServerInfo.php" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/lib/Everyman/Neo4j/Command/QueryIndex.php" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/lib/Everyman/Neo4j/Command/RemoveFromIndex.php" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/lib/Everyman/Neo4j/Command/RemoveLabels.php" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/lib/Everyman/Neo4j/Command/RollbackTransaction.php" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/lib/Everyman/Neo4j/Command/SaveIndex.php" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/lib/Everyman/Neo4j/Command/SearchIndex.php" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/lib/Everyman/Neo4j/Command/SetLabels.php" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/lib/Everyman/Neo4j/Command/UpdateNode.php" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/lib/Everyman/Neo4j/Command/UpdateRelationship.php" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/lib/Everyman/Neo4j/Cypher/Query.php" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/lib/Everyman/Neo4j/EntityMapper.php" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/lib/Everyman/Neo4j/Exception.php" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/lib/Everyman/Neo4j/Geoff.php" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/lib/Everyman/Neo4j/Geoff/Exporter.php" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/lib/Everyman/Neo4j/Geoff/Importer.php" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/lib/Everyman/Neo4j/Gremlin/Query.php" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/lib/Everyman/Neo4j/Index.php" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/lib/Everyman/Neo4j/Index/NodeFulltextIndex.php" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/lib/Everyman/Neo4j/Index/NodeIndex.php" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/lib/Everyman/Neo4j/Index/RelationshipIndex.php" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/lib/Everyman/Neo4j/Label.php" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/lib/Everyman/Neo4j/Node.php" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/lib/Everyman/Neo4j/Pager.php" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/lib/Everyman/Neo4j/Path.php" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/lib/Everyman/Neo4j/PathFinder.php" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/lib/Everyman/Neo4j/PropertyContainer.php" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/lib/Everyman/Neo4j/Query.php" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/lib/Everyman/Neo4j/Query/ResultSet.php" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/lib/Everyman/Neo4j/Query/Row.php" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/lib/Everyman/Neo4j/Relationship.php" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/lib/Everyman/Neo4j/Transaction.php" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/lib/Everyman/Neo4j/Transport.php" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/lib/Everyman/Neo4j/Transport/Curl.php" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/lib/Everyman/Neo4j/Transport/Stream.php" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/lib/Everyman/Neo4j/Traversal.php" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/lib/Everyman/Neo4j/Version.php" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/phpconfig.ini" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/stub.php" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/tests/cs/ruleset.xml" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/tests/phpunit.xml" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/tests/unit/lib/Everyman/Neo4j/BatchTest.php" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/tests/unit/lib/Everyman/Neo4j/Cache/MemcacheTest.php" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/tests/unit/lib/Everyman/Neo4j/Cache/MemcachedTest.php" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/tests/unit/lib/Everyman/Neo4j/Cache/NullTest.php" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/tests/unit/lib/Everyman/Neo4j/Cache/VariableTest.php" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/tests/unit/lib/Everyman/Neo4j/ClientTest.php" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/tests/unit/lib/Everyman/Neo4j/Client_Batch_IndexTest.php" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/tests/unit/lib/Everyman/Neo4j/Client_Batch_NodeTest.php" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/tests/unit/lib/Everyman/Neo4j/Client_Batch_RelationshipTest.php" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/tests/unit/lib/Everyman/Neo4j/Client_CacheTest.php" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/tests/unit/lib/Everyman/Neo4j/Client_CypherTest.php" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/tests/unit/lib/Everyman/Neo4j/Client_GremlinTest.php" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/tests/unit/lib/Everyman/Neo4j/Client_IndexTest.php" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/tests/unit/lib/Everyman/Neo4j/Client_LabelTest.php" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/tests/unit/lib/Everyman/Neo4j/Client_PathTest.php" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/tests/unit/lib/Everyman/Neo4j/Client_TransactionTest.php" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/tests/unit/lib/Everyman/Neo4j/Client_TraversalTest.php" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/tests/unit/lib/Everyman/Neo4j/Cypher/QueryTest.php" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/tests/unit/lib/Everyman/Neo4j/EntityMapperTest.php" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/tests/unit/lib/Everyman/Neo4j/GeoffTest.php" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/tests/unit/lib/Everyman/Neo4j/Gremlin/QueryTest.php" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/tests/unit/lib/Everyman/Neo4j/IndexTest.php" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/tests/unit/lib/Everyman/Neo4j/LabelTest.php" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/tests/unit/lib/Everyman/Neo4j/NodeTest.php" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/tests/unit/lib/Everyman/Neo4j/PagerTest.php" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/tests/unit/lib/Everyman/Neo4j/PathFinderTest.php" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/tests/unit/lib/Everyman/Neo4j/PathTest.php" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/tests/unit/lib/Everyman/Neo4j/PropertyContainerTest.php" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/tests/unit/lib/Everyman/Neo4j/Query/ResultSetTest.php" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/tests/unit/lib/Everyman/Neo4j/Query/RowTest.php" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/tests/unit/lib/Everyman/Neo4j/RelationshipTest.php" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/tests/unit/lib/Everyman/Neo4j/TransactionTest.php" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/tests/unit/lib/Everyman/Neo4j/TransportTest.php" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/tests/unit/lib/Everyman/Neo4j/TraversalTest.php" afterPath="" />
+      <change type="MOVED" beforePath="$PROJECT_DIR$/readme.md" afterPath="$PROJECT_DIR$/readme.md" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.gitignore" afterPath="$PROJECT_DIR$/.gitignore" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.travis.yml" afterPath="$PROJECT_DIR$/.travis.yml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/composer.json" afterPath="$PROJECT_DIR$/composer.json" />
+    </list>
+    <ignored path="neo4jphp.iws" />
+    <ignored path=".idea/workspace.xml" />
+    <option name="TRACKING_ENABLED" value="true" />
+    <option name="SHOW_DIALOG" value="false" />
+    <option name="HIGHLIGHT_CONFLICTS" value="true" />
+    <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
+    <option name="LAST_RESOLUTION" value="IGNORE" />
+  </component>
+  <component name="ChangesViewManager" flattened_view="true" show_ignored="false" />
+  <component name="CreatePatchCommitExecutor">
+    <option name="PATCH_PATH" value="" />
+  </component>
+  <component name="DaemonCodeAnalyzer">
+    <disable_hints />
+  </component>
+  <component name="FavoritesManager">
+    <favorites_list name="neo4jphp" />
+  </component>
+  <component name="FileEditorManager">
+    <leaf />
+  </component>
+  <component name="FindManager">
+    <FindUsagesManager>
+      <setting name="OPEN_NEW_TAB" value="false" />
+    </FindUsagesManager>
+  </component>
+  <component name="Git.Settings">
+    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
+  </component>
+  <component name="IdeDocumentHistory">
+    <option name="changedFiles">
+      <list>
+        <option value="$PROJECT_DIR$/src/Witooh/Neo4j/Cypher/Data.php" />
+        <option value="$PROJECT_DIR$/src/Witooh/Neo4j/Cypher/DataCollection.php" />
+        <option value="$PROJECT_DIR$/src/Witooh/Neo4j/Cypher/Mapper.php" />
+        <option value="$PROJECT_DIR$/src/Witooh/Neo4j/Index/Index.php" />
+        <option value="$PROJECT_DIR$/src/Witooh/Neo4j/Neo4jClient.php" />
+        <option value="$PROJECT_DIR$/src/Witooh/Neo4j/Neo4jServiceProvider.php" />
+        <option value="$PROJECT_DIR$/src/Witooh/Neo4j/Neo4jException.php" />
+        <option value="$PROJECT_DIR$/src/Witooh/Neo4j/Cypher/Query.php" />
+      </list>
+    </option>
+  </component>
+  <component name="PhpWorkspaceProjectConfiguration" backward_compatibility_performed="true" />
+  <component name="ProjectFrameBounds">
+    <option name="y" value="22" />
+    <option name="width" value="1280" />
+    <option name="height" value="720" />
+  </component>
+  <component name="ProjectLevelVcsManager" settingsEditedManually="false">
+    <OptionsSetting value="true" id="Add" />
+    <OptionsSetting value="true" id="Remove" />
+    <OptionsSetting value="true" id="Checkout" />
+    <OptionsSetting value="true" id="Update" />
+    <OptionsSetting value="true" id="Status" />
+    <OptionsSetting value="true" id="Edit" />
+    <ConfirmationsSetting value="0" id="Add" />
+    <ConfirmationsSetting value="0" id="Remove" />
+  </component>
+  <component name="ProjectReloadState">
+    <option name="STATE" value="0" />
+  </component>
+  <component name="ProjectView">
+    <navigator currentView="ProjectPane" proportions="" version="1" splitterProportion="0.5">
+      <flattenPackages />
+      <showMembers />
+      <showModules />
+      <showLibraryContents />
+      <hideEmptyPackages />
+      <abbreviatePackageNames />
+      <autoscrollToSource />
+      <autoscrollFromSource />
+      <sortByType />
+    </navigator>
+    <panes>
+      <pane id="ProjectPane">
+        <subPane>
+          <PATH>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="neo4jphp" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
+            </PATH_ELEMENT>
+          </PATH>
+          <PATH>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="neo4jphp" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="neo4jphp" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+          </PATH>
+          <PATH>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="neo4jphp" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="neo4jphp" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="src" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="Witooh" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="Neo4j" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+          </PATH>
+          <PATH>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="neo4jphp" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="neo4jphp" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="src" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="Witooh" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="Neo4j" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="Cypher" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+          </PATH>
+        </subPane>
+      </pane>
+      <pane id="Scope" />
+    </panes>
+  </component>
+  <component name="PropertiesComponent">
+    <property name="last_opened_file_path" value="$PROJECT_DIR$" />
+    <property name="WebServerToolWindowFactoryState" value="false" />
+  </component>
+  <component name="RunManager">
+    <list size="0" />
+  </component>
+  <component name="ShelveChangesManager" show_recycled="false" />
+  <component name="TaskManager">
+    <task active="true" id="Default" summary="Default task">
+      <changelist id="eb2e3eec-0ee7-499a-8675-0c0f36adfc93" name="Default" comment="" />
+    </task>
+    <servers />
+  </component>
+  <component name="ToolWindowManager">
+    <frame x="0" y="22" width="1280" height="720" extended-state="6" />
+    <editor active="false" />
+    <layout>
+      <window_info id="Changes" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="-1" side_tool="false" content_ui="tabs" />
+      <window_info id="Terminal" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="-1" side_tool="false" content_ui="tabs" />
+      <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
+      <window_info id="Find" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.3295129" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
+      <window_info id="Database" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="-1" side_tool="false" content_ui="tabs" />
+      <window_info id="Structure" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
+      <window_info id="Project" active="true" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.25" sideWeight="0.5" order="0" side_tool="false" content_ui="combo" />
+      <window_info id="Debug" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.4" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
+      <window_info id="Favorites" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="-1" side_tool="true" content_ui="tabs" />
+      <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="-1" side_tool="true" content_ui="tabs" />
+      <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
+      <window_info id="Version Control" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="-1" side_tool="false" content_ui="tabs" />
+      <window_info id="Cvs" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="4" side_tool="false" content_ui="tabs" />
+      <window_info id="Message" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
+      <window_info id="Ant Build" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
+      <window_info id="Commander" active="false" anchor="right" auto_hide="false" internal_type="SLIDING" type="SLIDING" visible="false" weight="0.4" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
+      <window_info id="Inspection" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.4" sideWeight="0.5" order="5" side_tool="false" content_ui="tabs" />
+      <window_info id="Hierarchy" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="2" side_tool="false" content_ui="combo" />
+    </layout>
+  </component>
+  <component name="Vcs.Log.UiProperties">
+    <option name="RECENTLY_FILTERED_USERS">
+      <collection />
+    </option>
+  </component>
+  <component name="VcsContentAnnotationSettings">
+    <option name="myLimit" value="2678400000" />
+  </component>
+  <component name="VcsManagerConfiguration">
+    <option name="myTodoPanelSettings">
+      <TodoPanelSettings />
+    </option>
+  </component>
+  <component name="XDebuggerManager">
+    <breakpoint-manager />
+  </component>
+  <component name="editorHistoryManager">
+    <entry file="file://$PROJECT_DIR$/composer.json">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="0" column="0" selection-start="0" selection-end="0" vertical-scroll-proportion="-0.14285715" vertical-offset="92" max-vertical-offset="736">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/Witooh/Neo4j/Neo4jServiceProvider.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="15" column="7" selection-start="315" selection-end="315" vertical-scroll-proportion="0.5555556" vertical-offset="0" max-vertical-offset="1472">
+          <folding>
+            <element signature="e#31#70#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/Witooh/Neo4j/Cypher/Query.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="176" column="0" selection-start="3597" selection-end="3597" vertical-scroll-proportion="0.64285713" vertical-offset="3634" max-vertical-offset="5014">
+          <folding>
+            <element signature="e#38#61#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/Witooh/Neo4j/Cypher/Mapper.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="1" column="10" selection-start="16" selection-end="16" vertical-scroll-proportion="0.035714287" vertical-offset="0" max-vertical-offset="644">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/Witooh/Neo4j/Cypher/DataCollection.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="1" column="10" selection-start="16" selection-end="16" vertical-scroll-proportion="0.035714287" vertical-offset="0" max-vertical-offset="2691">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/Witooh/Neo4j/Cypher/Data.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="13" column="13" selection-start="275" selection-end="275" vertical-scroll-proportion="0.33229813" vertical-offset="85" max-vertical-offset="2668">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/Witooh/Neo4j/Neo4jException.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="13" column="5" selection-start="245" selection-end="245" vertical-scroll-proportion="0.4642857" vertical-offset="0" max-vertical-offset="644">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/Witooh/Neo4j/Neo4jClient.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="23" column="16" selection-start="394" selection-end="394" vertical-scroll-proportion="0.39285713" vertical-offset="276" max-vertical-offset="920">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/Witooh/Neo4j/Index/Index.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="5" column="13" selection-start="72" selection-end="72" vertical-scroll-proportion="0.17857143" vertical-offset="0" max-vertical-offset="1288">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+  </component>
+</project>
+
