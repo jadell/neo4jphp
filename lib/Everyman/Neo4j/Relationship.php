@@ -61,10 +61,9 @@ class Relationship extends PropertyContainer
 	 */
 	public function getEndNode()
 	{
-        if (null === $this->end) {
-            $this->loadProperties();
-        }
-        
+		if (null === $this->end) {
+			$this->loadProperties();
+		}
 		return $this->end;
 	}
 
@@ -75,10 +74,9 @@ class Relationship extends PropertyContainer
 	 */
 	public function getStartNode()
 	{
-        if (null === $this->start) {
-            $this->loadProperties();
-        }
-
+		if (null === $this->start) {
+			$this->loadProperties();
+		}
 		return $this->start;
 	}
 
