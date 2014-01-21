@@ -80,6 +80,7 @@ abstract class Command extends SingleCommand
 		if (isset($result['location'])) {
 			$headers['Location'] = $result['location'];
 		}
-		return $this->base->handleResult(200, $headers, $result);
+		$resultCode = isset($result['status']) ? $result['status'] : 200;
+		return $this->base->handleResult($resultCode, $headers, $result);
 	}
 }
