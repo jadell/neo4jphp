@@ -67,6 +67,40 @@ class RelationshipTest extends \PHPUnit_Framework_TestCase
 		$this->assertSame($this->relationship, $this->relationship->load());
 	}
 
+	public function testGetStartNode_NodeNotSet_LazyLoad()
+	{
+		$this->relationship->setId(123);
+		$this->client->expects($this->once())
+			->method('loadRelationship');
+
+		$this->relationship->getStartNode();
+	}
+
+	public function testGetEndNode_NodeNotSet_LazyLoad()
+	{
+		$this->relationship->setId(123);
+		$this->client->expects($this->once())
+			->method('loadRelationship');
+
+		$this->relationship->getEndNode();
+	}
+
+	public function testGetStartAndEndNode_NodesSet_DoesNotLazyLoad()
+	{
+		$startNode = new Node($this->client);
+		$endNode = new Node($this->client);
+
+		$this->relationship->setId(123);
+		$this->relationship->setStartNode($startNode);
+		$this->relationship->setEndNode($endNode);
+
+		$this->client->expects($this->never())
+			->method('loadRelationship');
+
+		$this->assertSame($startNode, $this->relationship->getStartNode());
+		$this->assertSame($endNode, $this->relationship->getEndNode());
+	}
+
 	public function testSerialize_KeepsStartEndAndType()
 	{
 		$expectedStart = new Node($this->client);
