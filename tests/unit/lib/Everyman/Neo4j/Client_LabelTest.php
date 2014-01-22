@@ -381,6 +381,35 @@ class Client_LabelTest extends \PHPUnit_Framework_TestCase
 		$this->client->addLabels($node, array($labelA));
 	}
 
+	public function testAddLabels_NodeIdZero_DoesNotThrowException()
+	{
+		$nodeId = 0;
+		$labelAName = 'FOOBAR';
+
+		$node = new Node($this->client);
+		$node->setId($nodeId);
+
+		$labelA = $this->client->makeLabel($labelAName);
+
+		$expectedQuery = "START n=node({nodeId}) SET n:{$labelAName} RETURN labels(n) AS labels";
+		$expectedParams = array("nodeId" => $nodeId);
+
+		$this->transport->expects($this->once())
+			->method('post')
+			->with('/cypher', array(
+				'query'  => $expectedQuery,
+				'params' => $expectedParams,
+			))
+			->will($this->returnValue(array('code'=>200,'data'=>array(
+				'columns' => array('labels'),
+				'data' => array(array(array($labelAName))),
+			))));
+
+		$resultLabels = $this->client->addLabels($node, array($labelA));
+		self::assertEquals(1, count($resultLabels));
+		self::assertEquals($labelAName, $resultLabels[0]->getName());
+	}
+
 	public function testAddLabels_NonLabelGiven_ThrowsException()
 	{
 		$labelAName = 'FOOBAR';
