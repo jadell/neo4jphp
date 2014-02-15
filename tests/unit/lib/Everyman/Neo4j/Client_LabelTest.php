@@ -300,7 +300,7 @@ class Client_LabelTest extends \PHPUnit_Framework_TestCase
 	{
 		$nodeId = 123;
 		$labelAName = 'FOOBAR';
-		$labelBName = 'BAZQUX';
+		$labelBName = 'BAZ QUX';
 
 		$node = new Node($this->client);
 		$node->setId($nodeId);
@@ -308,9 +308,9 @@ class Client_LabelTest extends \PHPUnit_Framework_TestCase
 		$labelA = $this->client->makeLabel($labelAName);
 		$labelB = $this->client->makeLabel($labelBName);
 
-		$expectedLabels = array('LOREMIPSUM', 'FOOBAR', 'BAZQUX');
+		$expectedLabels = array('LOREMIPSUM', $labelAName, $labelBName);
 
-		$expectedQuery = "START n=node({nodeId}) SET n:{$labelAName}:{$labelBName} RETURN labels(n) AS labels";
+		$expectedQuery = "START n=node({nodeId}) SET n:`{$labelAName}`:`{$labelBName}` RETURN labels(n) AS labels";
 		$expectedParams = array("nodeId" => $nodeId);
 
 		$this->transport->expects($this->any())
@@ -391,7 +391,7 @@ class Client_LabelTest extends \PHPUnit_Framework_TestCase
 
 		$labelA = $this->client->makeLabel($labelAName);
 
-		$expectedQuery = "START n=node({nodeId}) SET n:{$labelAName} RETURN labels(n) AS labels";
+		$expectedQuery = "START n=node({nodeId}) SET n:`{$labelAName}` RETURN labels(n) AS labels";
 		$expectedParams = array("nodeId" => $nodeId);
 
 		$this->transport->expects($this->once())
@@ -441,7 +441,7 @@ class Client_LabelTest extends \PHPUnit_Framework_TestCase
 	{
 		$nodeId = 123;
 		$labelAName = 'FOOBAR';
-		$labelBName = 'BAZQUX';
+		$labelBName = 'BAZ QUX';
 
 		$node = new Node($this->client);
 		$node->setId($nodeId);
@@ -449,9 +449,9 @@ class Client_LabelTest extends \PHPUnit_Framework_TestCase
 		$labelA = $this->client->makeLabel($labelAName);
 		$labelB = $this->client->makeLabel($labelBName);
 
-		$expectedLabels = array('LOREMIPSUM', 'FOOBAR', 'BAZQUX');
+		$expectedLabels = array('LOREMIPSUM', $labelAName, $labelBName);
 
-		$expectedQuery = "START n=node({nodeId}) REMOVE n:{$labelAName}:{$labelBName} RETURN labels(n) AS labels";
+		$expectedQuery = "START n=node({nodeId}) REMOVE n:`{$labelAName}`:`{$labelBName}` RETURN labels(n) AS labels";
 		$expectedParams = array("nodeId" => $nodeId);
 
 		$this->transport->expects($this->any())
