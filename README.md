@@ -34,7 +34,7 @@ Change `localhost` or `7474` to the host name and port of your Neo4j instance.
 
 Execute the script:
 
-    > php neo4jphp_connect_test
+    > php neo4jphp_connect_test.php
 
 If you see your server's information, then you have successfully connected!
 
