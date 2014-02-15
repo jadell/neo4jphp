@@ -1,4 +1,6 @@
 <?php
+trigger_error('The neo4jphp PHAR archive is no longer supported and will be removed in the future. Use Composer to install the library.', E_USER_DEPRECATED);
+
 Phar::mapPhar('neo4jphp.phar');
 spl_autoload_register(function ($className) {
 	if (strpos($className, 'Everyman\Neo4j\\') !== 0) {
@@ -41,7 +43,7 @@ HELP;
 
 	} else {
 		$port = empty($_SERVER['argv'][2]) ? 7474 : $_SERVER['argv'][2];
-		$client = new Everyman\Neo4j\Client(new Everyman\Neo4j\Transport($command, $port));
+		$client = new Everyman\Neo4j\Client($command, $port);
 		print_r($client->getServerInfo());
 	}
 
