@@ -58,7 +58,7 @@ class AddStatementsToTransaction extends Command
 	{
 		return array(
 			'statement'          => $statement->getQuery(),
-			'parameters'         => $statement->getParameters(),
+			'parameters'         => (object)$statement->getParameters(),
 			'resultDataContents' => array('rest'),
 		);
 	}

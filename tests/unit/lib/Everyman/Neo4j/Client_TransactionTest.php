@@ -43,12 +43,12 @@ class Client_TransactionTest extends \PHPUnit_Framework_TestCase
 			'statements' => array(
 				array(
 					'statement'  => $queryTemplateA,
-					'parameters' => $queryParamsA,
+					'parameters' => (object)$queryParamsA,
 					'resultDataContents' => array('rest'),
 				),
 				array(
 					'statement'  => $queryTemplateB,
-					'parameters' => $queryParamsB,
+					'parameters' => (object)$queryParamsB,
 					'resultDataContents' => array('rest'),
 				),
 			),
@@ -117,6 +117,48 @@ class Client_TransactionTest extends \PHPUnit_Framework_TestCase
 		self::assertEquals(987, $transaction->getId());
 		self::assertFalse($transaction->isClosed());
 		self::assertFalse($transaction->isError());
+	}
+
+	public function testAddStatements_NoParams_ParamsSentAsEmptyObject()
+	{
+		$queryTemplateA = "This is the query template";
+		$queryA = new Cypher\Query($this->client, $queryTemplateA);
+
+		$transaction = new Transaction($this->client);
+
+		$expectedRequest = array(
+			'statements' => array(
+				array(
+					'statement'  => $queryTemplateA,
+					'parameters' => (object)array(),
+					'resultDataContents' => array('rest'),
+				),
+			),
+		);
+
+		$expectedResponse = array(
+			"commit" => $this->endpoint . '/transaction/987/commit',
+			"transaction" => array("expires" => "Wed, 16 Oct 2013 23:07:12 +0000"),
+			"errors" => array(),
+			"results" => array(
+				// Result of queryA
+				array(
+					'columns' => array('name'),
+					'data' => array(
+						array("rest" => array('Brenda')),
+					)
+				),
+			),
+		);
+
+		$this->transport->expects($this->once())
+			->method('post')
+			->with('/transaction', $expectedRequest)
+			->will($this->returnValue(array("code" => 201, "data" => $expectedResponse)));
+
+		$result = $this->client->addStatementsToTransaction($transaction, array($queryA));
+		self::assertInternalType('array', $result);
+		self::assertEquals(1, count($result));
 	}
 
 	public function testAddStatements_ExistingTransactionId_ReturnsResultSet()
