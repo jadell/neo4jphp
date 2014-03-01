@@ -264,6 +264,27 @@ class Client_LabelTest extends \PHPUnit_Framework_TestCase
 		}
 	}
 
+	public function testGetLabels_NodeIdZero_ReturnsArrayOfLabelsAttachedToNode()
+	{
+		$nodeId = 0;
+		$node = new Node($this->client);
+		$node->setId($nodeId);
+
+		$returnData = array('FOOBAR', 'BAZQUX');
+
+		$this->transport->expects($this->once())
+			->method('get')
+			->with("/node/{$nodeId}/labels")
+			->will($this->returnValue(array('code'=>200,'data'=>$returnData)));
+
+		$labels = $this->client->getLabels($node);
+		self::assertEquals(count($returnData), count($labels));
+		foreach ($labels as $i => $label) {
+			self::assertInstanceOf('Everyman\Neo4j\Label', $label);
+			self::assertEquals($returnData[$i], $label->getName());
+		}
+	}
+
 	public function testGetLabels_NoNodeId_ThrowsException()
 	{
 		$node = new Node($this->client);
