@@ -36,7 +36,7 @@ class Path implements \Countable, \IteratorAggregate
 	}
 
 	/**
-	 * Get the number of relationships in this path
+	 * Get the number of relationships or nodes in this path depending on the context set
 	 *
 	 * @return integer
 	 */
@@ -76,7 +76,7 @@ class Path implements \Countable, \IteratorAggregate
 	 */
 	public function getLength()
 	{
-		return $this->count();
+		return count($this->relationships);
 	}
 
 	/**
