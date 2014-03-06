@@ -28,6 +28,7 @@ Create a script named `neo4jphp_connect_test.php`:
     
     $client = new Everyman\Neo4j\Client('localhost', 7474);
     print_r($client->getServerInfo());
+    ?>
 ```
 
 Change `localhost` or `7474` to the host name and port of your Neo4j instance.
