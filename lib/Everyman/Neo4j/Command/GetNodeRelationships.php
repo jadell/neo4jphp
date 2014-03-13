@@ -75,7 +75,8 @@ class GetNodeRelationships extends Command
 
 		$path = '/node/'.$this->node->getId().'/relationships/'.$this->dir;
 		if (!empty($this->types)) {
-			$path .= '/'.join('&', $this->types);
+			$types = array_map('rawurlencode', $this->types);
+			$path .= '/'.join('&', $types);
 		}
 
 		return $path;
