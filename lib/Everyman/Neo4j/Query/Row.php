@@ -52,15 +52,15 @@ class Row implements \Iterator, \Countable, \ArrayAccess
 
 	public function offsetGet($offset)
 	{
-        $offsetInt = $offset;
+		$offsetInt = $offset;
 
 		if (!is_integer($offset)) {
 			$offsetInt = array_search($offset, $this->columns);
 
-            if ($offsetInt === false) {
-                trigger_error("Undefined offset: {$offset}", E_USER_NOTICE);
-                return null;
-            }
+			if ($offsetInt === false) {
+				trigger_error("Undefined offset: {$offset}", E_USER_NOTICE);
+				return null;
+			}
 		}
 
 		if (!isset($this->data[$offsetInt])) {
