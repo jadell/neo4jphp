@@ -52,20 +52,27 @@ class Row implements \Iterator, \Countable, \ArrayAccess
 
 	public function offsetGet($offset)
 	{
+        $offsetInt = $offset;
+
 		if (!is_integer($offset)) {
-			$offset = array_search($offset, $this->columns);
+			$offsetInt = array_search($offset, $this->columns);
+
+            if ($offsetInt === false) {
+                trigger_error("Undefined offset: {$offset}", E_USER_NOTICE);
+                return null;
+            }
 		}
 
-		if (!isset($this->data[$offset])) {
-			$raw = $this->raw[$offset];
+		if (!isset($this->data[$offsetInt])) {
+			$raw = $this->raw[$offsetInt];
 			$data = $this->client->getEntityMapper()->getEntityFor($raw);
 			if (is_array($data)) {
 				$data = new Row($this->client, array_keys($raw), array_values($raw));
 			}
-			$this->data[$offset] = $data;
+			$this->data[$offsetInt] = $data;
 		}
 
-		return $this->data[$offset];
+		return $this->data[$offsetInt];
 	}
 
 	public function offsetSet($offset, $value)
