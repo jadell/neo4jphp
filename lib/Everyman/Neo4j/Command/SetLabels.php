@@ -43,6 +43,9 @@ class SetLabels extends Command
 	{
 		$data = array();
 		foreach ($this->labels as $label){
+			if (!($label instanceof Label)) {
+				throw new \InvalidArgumentException("Cannot set a non-label");
+			}
 			array_push($data, $label->getName());
 		}
 
