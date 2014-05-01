@@ -72,12 +72,24 @@ class Client
 	 *
 	 * @param Node  $node
 	 * @param Label[] $labels list of Label objects to add
-	 * @return Label[] of Label objects; the entire list of labels on the given node
-	 *   including the ones just added
+	 * @return boolean
 	 */
 	public function addLabels(Node $node, $labels)
 	{
 		$command = new Command\AddLabels($this, $node, $labels);
+		return $this->runCommand($command);
+	}
+
+	/**
+	 * Replace labels' node
+	 *
+	 * @param Node  $node
+	 * @param Label[] $labels list of Label objects to add
+	 * @return boolean
+	 */
+	public function replaceLabels(Node $node, $labels)
+	{
+		$command = new Command\SetLabels($this, $node, $labels);
 		return $this->runCommand($command);
 	}
 
@@ -651,14 +663,18 @@ class Client
 	 * Remove a set of labels from a node
 	 *
 	 * @param Node  $node
-	 * @param array $labels list of Label objects to remove
-	 * @return array of Label objects; the entire list of labels on the given node
-	 *   including the ones just added
+	 * @param Labels[] $labels set of labels object to remove
+	 * @return boolean
 	 */
 	public function removeLabels(Node $node, $labels)
 	{
-		$command = new Command\RemoveLabels($this, $node, $labels);
-		return $this->runCommand($command);
+		foreach($labels as $label){
+			$command = new Command\RemoveLabel($this, $node, $label);
+			$return = $this->runCommand($command);
+			if ($return == false)
+				break;
+		}
+		return $return;
 	}
 
 	/**

@@ -20,6 +20,6 @@ class AddLabels extends SetLabels
 	 */
 	public function __construct(Client $client, Node $node, $labels)
 	{
-		parent::__construct($client, $node, $labels, false);
+		parent::__construct($client, $node, $labels, true);
 	}
 }

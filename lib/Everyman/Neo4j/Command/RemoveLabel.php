@@ -13,11 +13,10 @@ use Everyman\Neo4j\Command,
  * @todo: Don't extend ExecuteCypherQuery, extract and use a more generic Command interface
  *        that proxies to an ExecuteCypherQuery command
  */
-class SetLabels extends Command
+class RemoveLabel extends Command
 {
-	protected $labels = null;
+	protected $label = null;
 	protected $node = null;
-	protected $add = false;
 
 	/**
 	 * Set the relationship to drive the command
@@ -25,12 +24,11 @@ class SetLabels extends Command
 	 * @param Client $client
 	 * @param Relationship $rel
 	 */
-	public function __construct(Client $client, Node $node, $labels, $add=false)
+	public function __construct(Client $client, Node $node, $label)
 	{
 		parent::__construct($client);
-		$this->labels = $labels;
+		$this->label = $label;
 		$this->node = $node;
-		$this->add = $add;
 	}
 
 
@@ -41,16 +39,7 @@ class SetLabels extends Command
 	 */
 	protected function getData()
 	{
-		$data = array();
-		foreach ($this->labels as $label){
-			if (!($label instanceof Label)) {
-				throw new \InvalidArgumentException("Cannot set a non-label");
-			}
-			array_push($data, $label->getName());
-		}
-
-
-		return $data;
+		return null;
 	}
 
 	/**
@@ -60,10 +49,7 @@ class SetLabels extends Command
 	 */
 	protected function getMethod()
 	{
-		if($this->add == true)
-			return 'post';
-		else
-			return 'put';
+		return 'delete';
 	}
 
 	/**
@@ -73,7 +59,8 @@ class SetLabels extends Command
 	 */
 	protected function getPath()
 	{
-		return '/node/'.$this->node->getId().'/labels';
+		$labelName = rawurlencode($this->label->getName());
+		return '/node/'.$this->node->getId().'/labels/'.$labelName;
 	}
 
 	/**
