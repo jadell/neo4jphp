@@ -35,11 +35,23 @@ class Node extends PropertyContainer
 	 * Add labels to this node
 	 *
 	 * @param array $labels
-	 * @return array of all the Labels on this node, including those just added
+	 * @return boolean
 	 */
 	public function addLabels($labels)
 	{
 		$this->labels = $this->client->addLabels($this, $labels);
+		return $this->labels;
+	}
+
+	/**
+	 * Set labels to this node
+	 *
+	 * @param array $labels
+	 * @return boolean
+	 */
+	public function replaceLabels($labels)
+	{
+		$this->labels = $this->client->replaceLabels($this, $labels);
 		return $this->labels;
 	}
 
@@ -154,7 +166,7 @@ class Node extends PropertyContainer
 	 * Remove labels from this node
 	 *
 	 * @param array $labels
-	 * @return array of all the Labels on this node, after removing the given labels
+	 * @return boolean
 	 */
 	public function removeLabels($labels)
 	{
