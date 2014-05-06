@@ -322,16 +322,20 @@ class Client_LabelTest extends \PHPUnit_Framework_TestCase
 		$nodeId = 123;
 		$labelAName = 'FOOBAR';
 		$labelBName = 'BAZ QUX';
+		$labelCName = 'HACK`THIS';
+
+		$escapedCName = 'HACK``THIS';
 
 		$node = new Node($this->client);
 		$node->setId($nodeId);
 
 		$labelA = $this->client->makeLabel($labelAName);
 		$labelB = $this->client->makeLabel($labelBName);
+		$labelC = $this->client->makeLabel($labelCName);
 
-		$expectedLabels = array('LOREMIPSUM', $labelAName, $labelBName);
+		$expectedLabels = array('LOREMIPSUM', $labelAName, $labelBName, $labelCName);
 
-		$expectedQuery = "START n=node({nodeId}) SET n:`{$labelAName}`:`{$labelBName}` RETURN labels(n) AS labels";
+		$expectedQuery = "START n=node({nodeId}) SET n:`{$labelAName}`:`{$labelBName}`:`{$escapedCName}` RETURN labels(n) AS labels";
 		$expectedParams = array("nodeId" => $nodeId);
 
 		$this->transport->expects($this->any())
@@ -352,7 +356,7 @@ class Client_LabelTest extends \PHPUnit_Framework_TestCase
 				'data' => array(array($expectedLabels)),
 			))));
 
-		$resultLabels = $this->client->addLabels($node, array($labelA, $labelB));
+		$resultLabels = $this->client->addLabels($node, array($labelA, $labelB, $labelC));
 		self::assertEquals(count($expectedLabels), count($resultLabels));
 		foreach ($resultLabels as $i => $label) {
 			self::assertInstanceOf('Everyman\Neo4j\Label', $label);
