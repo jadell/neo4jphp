@@ -754,6 +754,20 @@ class ClientTest extends \PHPUnit_Framework_TestCase
 		$this->assertEquals(123, $result[1]->getEndNode()->getId());
 	}
 
+	public function testGetNodeRelationships_UrlCharactersInTypeName_EncodesCorrectly()
+	{
+		$node = new Node($this->client);
+		$node->setId(123);
+		$types = array('FOO\TYPE','BAR?TYPE','BAZ/TYPE');
+
+		$this->transport->expects($this->once())
+			->method('get')
+			->with('/node/123/relationships/all/FOO%5CTYPE&BAR%3FTYPE&BAZ%2FTYPE')
+			->will($this->returnValue(array('code'=>200,'data'=>array())));
+
+		$result = $this->client->getNodeRelationships($node, $types);
+	}
+
 	public function testGetRelationshipTypes_ServerReturnsErrorCode_ThrowsException()
 	{
 		$this->transport->expects($this->once())
