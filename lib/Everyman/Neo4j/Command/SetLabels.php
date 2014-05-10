@@ -42,7 +42,8 @@ class SetLabels extends ExecuteCypherQuery
 			if (!($label instanceof Label)) {
 				throw new \InvalidArgumentException("Cannot set a non-label");
 			}
-			return "`".$label->getName()."`";
+			$name = str_replace('`', '``', $label->getName());
+			return "`{$name}`";
 		}, $labels));
 
 		$setCommand = $remove ? 'REMOVE' : 'SET';
