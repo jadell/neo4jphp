@@ -1,6 +1,9 @@
 <?php
 namespace Everyman\Neo4j;
 
+use Everyman\Neo4j\SpatialLayer,
+ Everyman\Neo4j\SpatialLayer\SimplePointLayer;
+
 class SpacialLayerTest extends \PHPUnit_Framework_TestCase
 {
 	protected $client = null;
@@ -9,7 +12,7 @@ class SpacialLayerTest extends \PHPUnit_Framework_TestCase
 	public function setUp()
 	{
 		$this->client   = $this->getMock('Everyman\Neo4j\Client', array(), array(), '', false);
-		$this->layer    = new SimplPointLayer($this->client, SpatialLayer::TypeSimplePoint, 'layername');
+		$this->layer    = new SimplePointLayer($this->client, SpatialLayer::TypeSimplePoint, 'layername');
 	}
 
 	public function testSave_SavesSelfUsingClient()
@@ -53,11 +56,11 @@ class SpacialLayerTest extends \PHPUnit_Framework_TestCase
 		$node = new Node($this->client);
         
 		$this->client->expects($this->once())
-			->method('findNodesInBBox')
+			->method('findNodesWithinBBox')
 			->with($this->layer, -25, 25, -50, 40)
 			->will($this->returnValue(array($node)));
 
-		$result = $this->layer->findNodesInBBox(-25, 25, -50, 40);
+		$result = $this->layer->findNodesWithinBBox(-25, 25, -50, 40);
 		$this->assertEquals(1, count($result));
 		$this->assertSame($node, $result[0]);
 	}
