@@ -34,7 +34,9 @@ class EntityMapper
 			if (array_key_exists('self', $value)) {
 				if (array_key_exists('type', $value)) {
 					$value = $this->makeRelationship($value);
-				} else {
+				} else if(array_key_exists('data', $value) && is_array($value['data']) && array_key_exists('geomencoder', $value['data'])) {
+                    $value = $this->makeSpatialLayer($value);
+                } else {
 					$value = $this->makeNode($value);
 				}
 			} else if (array_key_exists('nodes', $value) && array_key_exists('relationships', $value)) {
@@ -78,6 +80,31 @@ class EntityMapper
 	{
 		$rel = $this->getRelationshipFromUri($data['self']);
 		return $this->populateRelationship($rel, $data);
+	}
+    
+    /**
+	 * Generate and populate a spatial layer from the given data
+	 *
+	 * @param array $data
+	 * @return SpatialLayer
+	 */
+	public function makeSpatialLayer($data)
+	{
+		$rel = $this->getSpatialLayerFromUri($data['self']);
+		return $this->populateSpatialLayer($rel, $data);
+	}
+    
+    /**
+	 * Fill a spatial layer with data
+	 *
+	 * @param SpatialLayer $spatialLayer
+	 * @param array $data
+	 * @return SpatialLayer
+	 */
+	public function populateSpatialLayer(SpatialLayer $spatialLayer, $data)
+	{
+		
+		return $node;
 	}
 
 	/**
@@ -144,6 +171,18 @@ class EntityMapper
 		return $rel;
 	}
 
+    /**
+	 * Retrieve a spaltial layer by it's 'self' uri
+	 *
+	 * @param string $uri
+	 * @return SpatialLayer
+	 */
+	protected function getSpatialLayerFromUri($uri)
+	{
+		$relId = $this->getIdFromUri($uri);
+		return $this->client->getSpatialLayer($relId, true);
+	}
+    
 	/**
 	 * Retrieve a node by it's 'self' uri
 	 *

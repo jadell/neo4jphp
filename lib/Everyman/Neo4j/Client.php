@@ -17,6 +17,7 @@ class Client
 	const CapabilityGremlin       = 'gremlin';
 	const CapabilityLabel         = 'label';
 	const CapabilityTransactions  = 'transactions';
+    const CapabilitySpatialPlugin = 'spatial';
 
 	protected $transport = null;
 	protected $entityMapper = null;
@@ -504,6 +505,12 @@ class Client
 					return $info['extensions']['GremlinPlugin']['execute_script'];
 				}
 				return false;
+                
+            case self::CapabilitySpatialPlugin:
+				if (isset($info['extensions']['SpatialPlugin'])) {
+					return true;
+				}
+				return false;
 
 			default:
 				return false;
@@ -726,6 +733,80 @@ class Client
 		return $this->runCommand($command);
 	}
 
+    /**
+     * Create a new simple point layer
+     * 
+     * @param string $layer
+     * @param string $lon
+     * @param string $lat
+     * @return \Everyman\Neo4j\SpatialLayer\SimplePointLayer
+     */
+    public function makeSimplePointLayer($layer, $lon = null, $lat = null)
+	{
+        $simplePointLayer = new SpatialLayer\SimplePointLayer($this, $layer, $lat, $lon);
+        return $simplePointLayer;
+	}
+    
+    /**
+	 * Save the given layer
+	 *
+	 * @param SpatialLayer $layer
+	 * @return boolean
+	 */
+	public function saveLayer(SpatialLayer $layer)
+	{
+		return $this->runCommand(new Command\CreateSimplePointLayer($this, $layer));
+	}
+    
+    /**
+	 * Add an entity to a Layer
+	 *
+	 * @param SpatialLayer $layer
+	 * @param PropertyContainer $entity
+	 * @return boolean
+	 */
+	public function addToLayer(SpatialLayer $layer, PropertyContainer $entity)
+	{
+        // @todo implement batching support
+		return $this->runCommand(new Command\AddToLayer($this, $layer, $entity));
+	}
+    
+    /**
+     * Search for nodes within a specified distance of X and Y
+     * 
+     * @param \Everyman\Neo4j\SpatialLayer $layer
+     * @param float $pointX
+     * @param float $pointY
+     * @param float $distance
+     * @return array
+     */
+    public function findNodesWithinDistance(SpatialLayer $layer, $pointX, $pointY, $distance)
+    {
+        return $this->runCommand(new Command\FindNodesWithinDistance($this, $layer, $pointX, $pointY, $distance));
+    }
+    
+    /**
+     * Search for nodes within a specified bounding box area
+     * 
+     * @param \Everyman\Neo4j\SpatialLayer $layer
+     * @param type $pointX
+     * @param type $pointY
+     * @param type $distance
+     * @return type
+     */
+    public function findNodesInBBox(SpatialLayer $layer, $minX, $maxX, $minY, $maxY)
+    {
+        return $this->runCommand(new Command\FindNodesInBBox($this, $layer, $minX, $maxX, $minY, $maxY));
+    }
+    
+    
+    
+    
+    
+    
+    
+    
+    
 	/**
 	 * Set the cache to use
 	 *
