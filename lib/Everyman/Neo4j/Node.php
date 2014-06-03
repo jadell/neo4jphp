@@ -42,6 +42,17 @@ class Node extends PropertyContainer
 		$this->labels = $this->client->addLabels($this, $labels);
 		return $this->labels;
 	}
+    
+    /**
+	 * Add node to SimplePointLayer
+	 *
+	 * @param SimplePointLayer $layer
+	 * @return bool
+	 */
+	public function addToSimplePointLayer($layer)
+	{
+		return $this->client->addToLayer($layer, $this);
+	}
 
 	/**
 	 * Delete this node
