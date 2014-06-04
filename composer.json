@@ -20,5 +20,6 @@
   },
   "autoload": {
     "psr-0": {"Everyman\\Neo4j":"lib/"}
-  }
+  },
+  "version": "1.0.1-beta"
 }
