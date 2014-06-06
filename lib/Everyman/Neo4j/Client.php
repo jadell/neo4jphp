@@ -737,11 +737,11 @@ class Client
      * Create a new simple point layer
      * 
      * @param string $layer
-     * @param string $lon
      * @param string $lat
+     * @param string $lon
      * @return \Everyman\Neo4j\SpatialLayer\SimplePointLayer
      */
-    public function makeSimplePointLayer($layer, $lon = null, $lat = null)
+    public function makeSimplePointLayer($layer, $lat = null, $lon = null)
 	{
         $simplePointLayer = new SpatialLayer\SimplePointLayer($this, $layer, $lat, $lon);
         return $simplePointLayer;
