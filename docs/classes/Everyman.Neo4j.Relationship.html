@@ -1,0 +1,1581 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0"/>
+    <meta charset="utf-8"/>
+    <title>API Documentation</title>
+    <meta name="author" content=""/>
+    <meta name="description" content=""/>
+
+    <link href="https://netdna.bootstrapcdn.com/twitter-bootstrap/2.3.2/css/bootstrap-combined.no-icons.min.css" rel="stylesheet">
+    <link href="https://netdna.bootstrapcdn.com/font-awesome/3.2.1/css/font-awesome.min.css" rel="stylesheet">
+    <link href="../css/prism.css" rel="stylesheet" media="all"/>
+    <link href="../css/template.css" rel="stylesheet" media="all"/>
+    
+    <!--[if lt IE 9]>
+    <script src="https://html5shim.googlecode.com/svn/trunk/html5.js" type="text/javascript"></script>
+    <![endif]-->
+    <script src="https://code.jquery.com/jquery-1.11.0.min.js" type="text/javascript"></script>
+    <script src="https://code.jquery.com/ui/1.10.4/jquery-ui.min.js" type="text/javascript"></script>
+    <script src="https://netdna.bootstrapcdn.com/twitter-bootstrap/2.3.2/js/bootstrap.min.js"></script>
+    <script src="../js/jquery.smooth-scroll.js"></script>
+    <script src="../js/prism.min.js"></script>
+    <!-- TODO: Add http://jscrollpane.kelvinluck.com/ to style the scrollbars for browsers not using webkit-->
+    <script type="text/javascript">
+    function loadExternalCodeSnippets() {
+        Array.prototype.slice.call(document.querySelectorAll('pre[data-src]')).forEach(function (pre) {
+            var src = pre.getAttribute('data-src');
+            var extension = (src.match(/\.(\w+)$/) || [, ''])[1];
+            var language = 'php';
+
+            var code = document.createElement('code');
+            code.className = 'language-' + language;
+
+            pre.textContent = '';
+
+            code.textContent = 'Loading…';
+
+            pre.appendChild(code);
+
+            var xhr = new XMLHttpRequest();
+
+            xhr.open('GET', src, true);
+
+            xhr.onreadystatechange = function () {
+                if (xhr.readyState == 4) {
+
+                    if (xhr.status < 400 && xhr.responseText) {
+                        code.textContent = xhr.responseText;
+
+                        Prism.highlightElement(code);
+                    }
+                    else if (xhr.status >= 400) {
+                        code.textContent = '✖ Error ' + xhr.status + ' while fetching file: ' + xhr.statusText;
+                    }
+                    else {
+                        code.textContent = '✖ Error: File does not exist or is empty';
+                    }
+                }
+            };
+
+            xhr.send(null);
+        });
+    }
+
+    $(document).ready(function(){
+        loadExternalCodeSnippets();
+    });
+    $('#source-view').on('shown', function () {
+        loadExternalCodeSnippets();
+    })
+</script>
+
+    <link rel="shortcut icon" href="../images/favicon.ico"/>
+    <link rel="apple-touch-icon" href="../images/apple-touch-icon.png"/>
+    <link rel="apple-touch-icon" sizes="72x72" href="../images/apple-touch-icon-72x72.png"/>
+    <link rel="apple-touch-icon" sizes="114x114" href="../images/apple-touch-icon-114x114.png"/>
+</head>
+<body>
+
+<div class="navbar navbar-fixed-top">
+    <div class="navbar-inner">
+        <div class="container">
+            <a class="btn btn-navbar" data-toggle="collapse" data-target=".nav-collapse">
+                <i class="icon-ellipsis-vertical"></i>
+            </a>
+            <a class="brand" href="../index.html">API Documentation</a>
+
+            <div class="nav-collapse">
+                <ul class="nav pull-right">
+                                        <li class="dropdown">
+                        <a href="../index.html" class="dropdown-toggle" data-toggle="dropdown">
+                            API Documentation <b class="caret"></b>
+                        </a>
+                        <ul class="dropdown-menu">
+                                                        <li><a href="../namespaces/Everyman.html">\Everyman</a></li>
+                                                    </ul>
+                    </li>
+                                        <li class="dropdown" id="charts-menu">
+                        <a href="#" class="dropdown-toggle" data-toggle="dropdown">
+                            Charts <b class="caret"></b>
+                        </a>
+                        <ul class="dropdown-menu">
+                            <li>
+                                <a href="../graphs/class.html">
+                                    <i class="icon-list-alt"></i>&#160;Class hierarchy diagram
+                                </a>
+                            </li>
+                        </ul>
+                    </li>
+                    <li class="dropdown" id="reports-menu">
+                        <a href="#" class="dropdown-toggle" data-toggle="dropdown">
+                            Reports <b class="caret"></b>
+                        </a>
+                        <ul class="dropdown-menu">
+                            <li>
+                                <a href="../reports/errors.html">
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                        <i class="icon-list-alt"></i>&#160;Errors <span class="label label-info pull-right">225</span>
+                                </a>
+                            </li>
+                            <li>
+                                <a href="../reports/markers.html">
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                        <i class="icon-list-alt"></i>&#160;Markers <span class="label label-info pull-right">17</span>
+                                </a>
+                            </li>
+                            <li>
+                                <a href="../reports/deprecated.html">
+                                                                                                            <i class="icon-list-alt"></i>&#160;Deprecated <span class="label label-info pull-right">0</span>
+                                </a>
+                            </li>
+                        </ul>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </div>
+    <!--<div class="go_to_top">-->
+    <!--<a href="#___" style="color: inherit">Back to top&#160;&#160;<i class="icon-upload icon-white"></i></a>-->
+    <!--</div>-->
+</div>
+
+<div id="___" class="container-fluid">
+        <section class="row-fluid">
+        <div class="span2 sidebar">
+                                <div class="accordion" style="margin-bottom: 0">
+        <div class="accordion-group">
+            <div class="accordion-heading">
+                                    <a class="accordion-toggle " data-toggle="collapse" data-target="#namespace-1320740936"></a>
+                                <a href="../namespaces/default.html" style="margin-left: 30px; padding-left: 0">\</a>
+            </div>
+            <div id="namespace-1320740936" class="accordion-body collapse in">
+                <div class="accordion-inner">
+
+                                                    <div class="accordion" style="margin-bottom: 0">
+        <div class="accordion-group">
+            <div class="accordion-heading">
+                                    <a class="accordion-toggle collapsed" data-toggle="collapse" data-target="#namespace-1627774742"></a>
+                                <a href="../namespaces/Everyman.html" style="margin-left: 30px; padding-left: 0">Everyman</a>
+            </div>
+            <div id="namespace-1627774742" class="accordion-body collapse ">
+                <div class="accordion-inner">
+
+                                                    <div class="accordion" style="margin-bottom: 0">
+        <div class="accordion-group">
+            <div class="accordion-heading">
+                                    <a class="accordion-toggle collapsed" data-toggle="collapse" data-target="#namespace-1808408043"></a>
+                                <a href="../namespaces/Everyman.Neo4j.html" style="margin-left: 30px; padding-left: 0">Neo4j</a>
+            </div>
+            <div id="namespace-1808408043" class="accordion-body collapse ">
+                <div class="accordion-inner">
+
+                                                    <div class="accordion" style="margin-bottom: 0">
+        <div class="accordion-group">
+            <div class="accordion-heading">
+                                    <a class="accordion-toggle collapsed" data-toggle="collapse" data-target="#namespace-1918686769"></a>
+                                <a href="../namespaces/Everyman.Neo4j.Batch.html" style="margin-left: 30px; padding-left: 0">Batch</a>
+            </div>
+            <div id="namespace-1918686769" class="accordion-body collapse ">
+                <div class="accordion-inner">
+
+                    
+                    <ul>
+                                                                                                    <li class="class"><a href="../classes/Everyman.Neo4j.Batch.AddTo.html">AddTo</a></li>
+                                                    <li class="class"><a href="../classes/Everyman.Neo4j.Batch.Delete.html">Delete</a></li>
+                                                    <li class="class"><a href="../classes/Everyman.Neo4j.Batch.Operation.html">Operation</a></li>
+                                                    <li class="class"><a href="../classes/Everyman.Neo4j.Batch.RemoveFrom.html">RemoveFrom</a></li>
+                                                    <li class="class"><a href="../classes/Everyman.Neo4j.Batch.Save.html">Save</a></li>
+                                            </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+
+                                                    <div class="accordion" style="margin-bottom: 0">
+        <div class="accordion-group">
+            <div class="accordion-heading">
+                                    <a class="accordion-toggle collapsed" data-toggle="collapse" data-target="#namespace-754996430"></a>
+                                <a href="../namespaces/Everyman.Neo4j.Cache.html" style="margin-left: 30px; padding-left: 0">Cache</a>
+            </div>
+            <div id="namespace-754996430" class="accordion-body collapse ">
+                <div class="accordion-inner">
+
+                    
+                    <ul>
+                                                                                                    <li class="class"><a href="../classes/Everyman.Neo4j.Cache.EntityCache.html">EntityCache</a></li>
+                                                    <li class="class"><a href="../classes/Everyman.Neo4j.Cache.Memcache.html">Memcache</a></li>
+                                                    <li class="class"><a href="../classes/Everyman.Neo4j.Cache.Memcached.html">Memcached</a></li>
+                                                    <li class="class"><a href="../classes/Everyman.Neo4j.Cache.Null.html">Null</a></li>
+                                                    <li class="class"><a href="../classes/Everyman.Neo4j.Cache.Variable.html">Variable</a></li>
+                                            </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+
+                                                    <div class="accordion" style="margin-bottom: 0">
+        <div class="accordion-group">
+            <div class="accordion-heading">
+                                    <a class="accordion-toggle collapsed" data-toggle="collapse" data-target="#namespace-213223152"></a>
+                                <a href="../namespaces/Everyman.Neo4j.Command.html" style="margin-left: 30px; padding-left: 0">Command</a>
+            </div>
+            <div id="namespace-213223152" class="accordion-body collapse ">
+                <div class="accordion-inner">
+
+                                                    <div class="accordion" style="margin-bottom: 0">
+        <div class="accordion-group">
+            <div class="accordion-heading">
+                                    <a class="accordion-toggle collapsed" data-toggle="collapse" data-target="#namespace-1713857564"></a>
+                                <a href="../namespaces/Everyman.Neo4j.Command.Batch.html" style="margin-left: 30px; padding-left: 0">Batch</a>
+            </div>
+            <div id="namespace-1713857564" class="accordion-body collapse ">
+                <div class="accordion-inner">
+
+                    
+                    <ul>
+                                                                                                    <li class="class"><a href="../classes/Everyman.Neo4j.Command.Batch.AddToIndex.html">AddToIndex</a></li>
+                                                    <li class="class"><a href="../classes/Everyman.Neo4j.Command.Batch.Command.html">Command</a></li>
+                                                    <li class="class"><a href="../classes/Everyman.Neo4j.Command.Batch.Commit.html">Commit</a></li>
+                                                    <li class="class"><a href="../classes/Everyman.Neo4j.Command.Batch.CreateNode.html">CreateNode</a></li>
+                                                    <li class="class"><a href="../classes/Everyman.Neo4j.Command.Batch.CreateRelationship.html">CreateRelationship</a></li>
+                                                    <li class="class"><a href="../classes/Everyman.Neo4j.Command.Batch.DeleteNode.html">DeleteNode</a></li>
+                                                    <li class="class"><a href="../classes/Everyman.Neo4j.Command.Batch.DeleteRelationship.html">DeleteRelationship</a></li>
+                                                    <li class="class"><a href="../classes/Everyman.Neo4j.Command.Batch.RemoveFromIndex.html">RemoveFromIndex</a></li>
+                                                    <li class="class"><a href="../classes/Everyman.Neo4j.Command.Batch.UpdateNode.html">UpdateNode</a></li>
+                                                    <li class="class"><a href="../classes/Everyman.Neo4j.Command.Batch.UpdateRelationship.html">UpdateRelationship</a></li>
+                                            </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+
+                    
+                    <ul>
+                                                                                                    <li class="class"><a href="../classes/Everyman.Neo4j.Command.AddToIndex.html">AddToIndex</a></li>
+                                                    <li class="class"><a href="../classes/Everyman.Neo4j.Command.CreateNode.html">CreateNode</a></li>
+                                                    <li class="class"><a href="../classes/Everyman.Neo4j.Command.CreateRelationship.html">CreateRelationship</a></li>
+                                                    <li class="class"><a href="../classes/Everyman.Neo4j.Command.DeleteIndex.html">DeleteIndex</a></li>
+                                                    <li class="class"><a href="../classes/Everyman.Neo4j.Command.DeleteNode.html">DeleteNode</a></li>
+                                                    <li class="class"><a href="../classes/Everyman.Neo4j.Command.DeleteRelationship.html">DeleteRelationship</a></li>
+                                                    <li class="class"><a href="../classes/Everyman.Neo4j.Command.ExecuteCypherQuery.html">ExecuteCypherQuery</a></li>
+                                                    <li class="class"><a href="../classes/Everyman.Neo4j.Command.ExecuteGremlinQuery.html">ExecuteGremlinQuery</a></li>
+                                                    <li class="class"><a href="../classes/Everyman.Neo4j.Command.ExecutePagedTraversal.html">ExecutePagedTraversal</a></li>
+                                                    <li class="class"><a href="../classes/Everyman.Neo4j.Command.ExecuteTraversal.html">ExecuteTraversal</a></li>
+                                                    <li class="class"><a href="../classes/Everyman.Neo4j.Command.GetIndexes.html">GetIndexes</a></li>
+                                                    <li class="class"><a href="../classes/Everyman.Neo4j.Command.GetNode.html">GetNode</a></li>
+                                                    <li class="class"><a href="../classes/Everyman.Neo4j.Command.GetNodeRelationships.html">GetNodeRelationships</a></li>
+                                                    <li class="class"><a href="../classes/Everyman.Neo4j.Command.GetPaths.html">GetPaths</a></li>
+                                                    <li class="class"><a href="../classes/Everyman.Neo4j.Command.GetRelationship.html">GetRelationship</a></li>
+                                                    <li class="class"><a href="../classes/Everyman.Neo4j.Command.GetRelationshipTypes.html">GetRelationshipTypes</a></li>
+                                                    <li class="class"><a href="../classes/Everyman.Neo4j.Command.GetServerInfo.html">GetServerInfo</a></li>
+                                                    <li class="class"><a href="../classes/Everyman.Neo4j.Command.QueryIndex.html">QueryIndex</a></li>
+                                                    <li class="class"><a href="../classes/Everyman.Neo4j.Command.RemoveFromIndex.html">RemoveFromIndex</a></li>
+                                                    <li class="class"><a href="../classes/Everyman.Neo4j.Command.SaveIndex.html">SaveIndex</a></li>
+                                                    <li class="class"><a href="../classes/Everyman.Neo4j.Command.SearchIndex.html">SearchIndex</a></li>
+                                                    <li class="class"><a href="../classes/Everyman.Neo4j.Command.UpdateNode.html">UpdateNode</a></li>
+                                                    <li class="class"><a href="../classes/Everyman.Neo4j.Command.UpdateRelationship.html">UpdateRelationship</a></li>
+                                            </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+
+                                                    <div class="accordion" style="margin-bottom: 0">
+        <div class="accordion-group">
+            <div class="accordion-heading">
+                                    <a class="accordion-toggle collapsed" data-toggle="collapse" data-target="#namespace-946108027"></a>
+                                <a href="../namespaces/Everyman.Neo4j.Cypher.html" style="margin-left: 30px; padding-left: 0">Cypher</a>
+            </div>
+            <div id="namespace-946108027" class="accordion-body collapse ">
+                <div class="accordion-inner">
+
+                    
+                    <ul>
+                                                                                                    <li class="class"><a href="../classes/Everyman.Neo4j.Cypher.Query.html">Query</a></li>
+                                            </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+
+                                                    <div class="accordion" style="margin-bottom: 0">
+        <div class="accordion-group">
+            <div class="accordion-heading">
+                                    <a class="accordion-toggle collapsed" data-toggle="collapse" data-target="#namespace-610414457"></a>
+                                <a href="../namespaces/Everyman.Neo4j.Geoff.html" style="margin-left: 30px; padding-left: 0">Geoff</a>
+            </div>
+            <div id="namespace-610414457" class="accordion-body collapse ">
+                <div class="accordion-inner">
+
+                    
+                    <ul>
+                                                                                                    <li class="class"><a href="../classes/Everyman.Neo4j.Geoff.Exporter.html">Exporter</a></li>
+                                                    <li class="class"><a href="../classes/Everyman.Neo4j.Geoff.Importer.html">Importer</a></li>
+                                            </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+
+                                                    <div class="accordion" style="margin-bottom: 0">
+        <div class="accordion-group">
+            <div class="accordion-heading">
+                                    <a class="accordion-toggle collapsed" data-toggle="collapse" data-target="#namespace-2110871796"></a>
+                                <a href="../namespaces/Everyman.Neo4j.Gremlin.html" style="margin-left: 30px; padding-left: 0">Gremlin</a>
+            </div>
+            <div id="namespace-2110871796" class="accordion-body collapse ">
+                <div class="accordion-inner">
+
+                    
+                    <ul>
+                                                                                                    <li class="class"><a href="../classes/Everyman.Neo4j.Gremlin.Query.html">Query</a></li>
+                                            </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+
+                                                    <div class="accordion" style="margin-bottom: 0">
+        <div class="accordion-group">
+            <div class="accordion-heading">
+                                    <a class="accordion-toggle collapsed" data-toggle="collapse" data-target="#namespace-1052847753"></a>
+                                <a href="../namespaces/Everyman.Neo4j.Index.html" style="margin-left: 30px; padding-left: 0">Index</a>
+            </div>
+            <div id="namespace-1052847753" class="accordion-body collapse ">
+                <div class="accordion-inner">
+
+                    
+                    <ul>
+                                                                                                    <li class="class"><a href="../classes/Everyman.Neo4j.Index.NodeFulltextIndex.html">NodeFulltextIndex</a></li>
+                                                    <li class="class"><a href="../classes/Everyman.Neo4j.Index.NodeIndex.html">NodeIndex</a></li>
+                                                    <li class="class"><a href="../classes/Everyman.Neo4j.Index.RelationshipIndex.html">RelationshipIndex</a></li>
+                                            </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+
+                                                    <div class="accordion" style="margin-bottom: 0">
+        <div class="accordion-group">
+            <div class="accordion-heading">
+                                    <a class="accordion-toggle collapsed" data-toggle="collapse" data-target="#namespace-1651741018"></a>
+                                <a href="../namespaces/Everyman.Neo4j.Query.html" style="margin-left: 30px; padding-left: 0">Query</a>
+            </div>
+            <div id="namespace-1651741018" class="accordion-body collapse ">
+                <div class="accordion-inner">
+
+                    
+                    <ul>
+                                                                                                    <li class="class"><a href="../classes/Everyman.Neo4j.Query.ResultSet.html">ResultSet</a></li>
+                                                    <li class="class"><a href="../classes/Everyman.Neo4j.Query.Row.html">Row</a></li>
+                                            </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+
+                    
+                    <ul>
+                                                    <li class="interface"><a href="../classes/Everyman.Neo4j.Cache.html">Cache</a></li>
+                                                    <li class="interface"><a href="../classes/Everyman.Neo4j.Query.html">Query</a></li>
+                                                                                                    <li class="class"><a href="../classes/Everyman.Neo4j.Batch.html">Batch</a></li>
+                                                    <li class="class"><a href="../classes/Everyman.Neo4j.Client.html">Client</a></li>
+                                                    <li class="class"><a href="../classes/Everyman.Neo4j.Command.html">Command</a></li>
+                                                    <li class="class"><a href="../classes/Everyman.Neo4j.EntityMapper.html">EntityMapper</a></li>
+                                                    <li class="class"><a href="../classes/Everyman.Neo4j.Exception.html">Exception</a></li>
+                                                    <li class="class"><a href="../classes/Everyman.Neo4j.Geoff.html">Geoff</a></li>
+                                                    <li class="class"><a href="../classes/Everyman.Neo4j.Index.html">Index</a></li>
+                                                    <li class="class"><a href="../classes/Everyman.Neo4j.Node.html">Node</a></li>
+                                                    <li class="class"><a href="../classes/Everyman.Neo4j.Pager.html">Pager</a></li>
+                                                    <li class="class"><a href="../classes/Everyman.Neo4j.Path.html">Path</a></li>
+                                                    <li class="class"><a href="../classes/Everyman.Neo4j.PathFinder.html">PathFinder</a></li>
+                                                    <li class="class"><a href="../classes/Everyman.Neo4j.PropertyContainer.html">PropertyContainer</a></li>
+                                                    <li class="class"><a href="../classes/Everyman.Neo4j.Relationship.html">Relationship</a></li>
+                                                    <li class="class"><a href="../classes/Everyman.Neo4j.Transport.html">Transport</a></li>
+                                                    <li class="class"><a href="../classes/Everyman.Neo4j.Traversal.html">Traversal</a></li>
+                                            </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+
+                    
+                    <ul>
+                                                                                            </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+
+                    
+                    <ul>
+                                                                                            </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+
+        </div>
+    </section>
+    <section class="row-fluid">
+        <div class="span10 offset2">
+            <div class="row-fluid">
+                <div class="span8 content class">
+                    <nav>
+                                                <a href="../namespaces/Everyman.Neo4j.html">\Everyman\Neo4j</a> <i class="icon-level-up"></i>
+                                            </nav>
+                    <a href="#source-view" role="button" class="pull-right btn" data-toggle="modal"><i class="icon-code"></i></a>
+
+                    <h1><small>\Everyman\Neo4j</small>Relationship</h1>
+                    <p><em>Represents a relationship between two nodes</em></p>
+                    
+
+                    <section id="summary">
+                        <h2>Summary</h2>
+                        <section class="row-fluid heading">
+                            <section class="span4">
+                                <a href="#methods">Methods</a>
+                            </section>
+                            <section class="span4">
+                                <a href="#properties">Properties</a>
+                            </section>
+                            <section class="span4">
+                                <a href="#constants">Constants</a>
+                            </section>
+                        </section>
+                        <section class="row-fluid public">
+                            <section class="span4">
+                                                                    <a href="../classes/Everyman.Neo4j.PropertyContainer.html#method___construct" class="">__construct()</a><br />
+                                                                    <a href="../classes/Everyman.Neo4j.Relationship.html#method_delete" class="">delete()</a><br />
+                                                                    <a href="../classes/Everyman.Neo4j.Relationship.html#method_load" class="">load()</a><br />
+                                                                    <a href="../classes/Everyman.Neo4j.Relationship.html#method_save" class="">save()</a><br />
+                                                                    <a href="../classes/Everyman.Neo4j.PropertyContainer.html#method_getClient" class="">getClient()</a><br />
+                                                                    <a href="../classes/Everyman.Neo4j.PropertyContainer.html#method_getId" class="">getId()</a><br />
+                                                                    <a href="../classes/Everyman.Neo4j.PropertyContainer.html#method_getProperties" class="">getProperties()</a><br />
+                                                                    <a href="../classes/Everyman.Neo4j.PropertyContainer.html#method_getProperty" class="">getProperty()</a><br />
+                                                                    <a href="../classes/Everyman.Neo4j.PropertyContainer.html#method_hasId" class="">hasId()</a><br />
+                                                                    <a href="../classes/Everyman.Neo4j.PropertyContainer.html#method_removeProperty" class="">removeProperty()</a><br />
+                                                                    <a href="../classes/Everyman.Neo4j.PropertyContainer.html#method_setClient" class="">setClient()</a><br />
+                                                                    <a href="../classes/Everyman.Neo4j.PropertyContainer.html#method_setId" class="">setId()</a><br />
+                                                                    <a href="../classes/Everyman.Neo4j.PropertyContainer.html#method_setProperties" class="">setProperties()</a><br />
+                                                                    <a href="../classes/Everyman.Neo4j.PropertyContainer.html#method_setProperty" class="">setProperty()</a><br />
+                                                                    <a href="../classes/Everyman.Neo4j.PropertyContainer.html#method_useLazyLoad" class="">useLazyLoad()</a><br />
+                                                                    <a href="../classes/Everyman.Neo4j.Relationship.html#method_getEndNode" class="">getEndNode()</a><br />
+                                                                    <a href="../classes/Everyman.Neo4j.Relationship.html#method_getStartNode" class="">getStartNode()</a><br />
+                                                                    <a href="../classes/Everyman.Neo4j.Relationship.html#method_getType" class="">getType()</a><br />
+                                                                    <a href="../classes/Everyman.Neo4j.Relationship.html#method_setEndNode" class="">setEndNode()</a><br />
+                                                                    <a href="../classes/Everyman.Neo4j.Relationship.html#method_setStartNode" class="">setStartNode()</a><br />
+                                                                    <a href="../classes/Everyman.Neo4j.Relationship.html#method_setType" class="">setType()</a><br />
+                                                            </section>
+                            <section class="span4">
+                                                                    <em>No public properties found</em>
+                                                            </section>
+                            <section class="span4">
+                                                                    <a href="../classes/Everyman.Neo4j.Relationship.html#constant_DirectionAll" class="">DirectionAll</a><br />
+                                                                    <a href="../classes/Everyman.Neo4j.Relationship.html#constant_DirectionIn" class="">DirectionIn</a><br />
+                                                                    <a href="../classes/Everyman.Neo4j.Relationship.html#constant_DirectionOut" class="">DirectionOut</a><br />
+                                                            </section>
+                        </section>
+                        <section class="row-fluid protected">
+                            <section class="span4">
+                                                                    <a href="../classes/Everyman.Neo4j.PropertyContainer.html#method_loadProperties" class="">loadProperties()</a><br />
+                                                            </section>
+                            <section class="span4">
+                                                                    <a href="../classes/Everyman.Neo4j.PropertyContainer.html#property_id" class="">$id</a><br />
+                                                                    <a href="../classes/Everyman.Neo4j.PropertyContainer.html#property_client" class="">$client</a><br />
+                                                                    <a href="../classes/Everyman.Neo4j.PropertyContainer.html#property_properties" class="">$properties</a><br />
+                                                                    <a href="../classes/Everyman.Neo4j.PropertyContainer.html#property_lazyLoad" class="">$lazyLoad</a><br />
+                                                                    <a href="../classes/Everyman.Neo4j.Relationship.html#property_start" class="">$start</a><br />
+                                                                    <a href="../classes/Everyman.Neo4j.Relationship.html#property_end" class="">$end</a><br />
+                                                                    <a href="../classes/Everyman.Neo4j.Relationship.html#property_type" class="">$type</a><br />
+                                                            </section>
+                            <section class="span4">
+                                <em>N/A</em>
+                            </section>
+                        </section>
+                        <section class="row-fluid private">
+                            <section class="span4">
+                                                                    <em>No private methods found</em>
+                                                            </section>
+                            <section class="span4">
+                                                                    <em>No private properties found</em>
+                                                            </section>
+                            <section class="span4">
+                                <em>N/A</em>
+                            </section>
+                        </section>
+                    </section>
+                </div>
+                <aside class="span4 detailsbar">
+                                        
+                    
+                    <dl>
+                        <dt>File</dt>
+                            <dd><a href="../files/Relationship.html"><div class="path-wrapper">Relationship.php</div></a></dd>
+                                                <dt>Package</dt>
+                            <dd><div class="namespace-wrapper">\Default</div></dd>
+                                                <dt>Class hierarchy</dt>
+                            <dd class="hierarchy">
+                                                                                                                                                                                                                                                                                                
+                                        <div class="namespace-wrapper"><a href="../classes/Everyman.Neo4j.PropertyContainer.html">\Everyman\Neo4j\PropertyContainer</a></div>
+                                                                                                    <div class="namespace-wrapper">\Everyman\Neo4j\Relationship</div>
+                            </dd>
+
+                        
+                        
+                        
+                        
+                                                                        </dl>
+                    <h2>Tags</h2>
+                    <table class="table table-condensed">
+                                            <tr><td colspan="2"><em>None found</em></td></tr>
+                                        </table>
+                </aside>
+            </div>
+
+                                    <a id="constants" name="constants"></a>
+            <div class="row-fluid">
+                <div class="span8 content class">
+                    <h2>Constants</h2>
+                </div>
+                <aside class="span4 detailsbar"></aside>
+            </div>
+
+                                <div class="row-fluid">
+        <div class="span8 content class">
+            <a id="constant_DirectionAll" name="constant_DirectionAll" class="anchor"></a>
+            <article id="constant_DirectionAll" class="constant">
+                <h3 class="">DirectionAll</h3>
+                <pre class="signature">DirectionAll</pre>
+                <p><em></em></p>
+                
+            </article>
+        </div>
+        <aside class="span4 detailsbar">
+            <h1><i class="icon-arrow-down"></i></h1>
+                        <dl>
+                                                                            </dl>
+            <h2>Tags</h2>
+            <table class="table table-condensed">
+                                    <tr><td colspan="2"><em>None found</em></td></tr>
+                            </table>
+        </aside>
+    </div>
+
+                                    <div class="row-fluid">
+        <div class="span8 content class">
+            <a id="constant_DirectionIn" name="constant_DirectionIn" class="anchor"></a>
+            <article id="constant_DirectionIn" class="constant">
+                <h3 class="">DirectionIn</h3>
+                <pre class="signature">DirectionIn</pre>
+                <p><em></em></p>
+                
+            </article>
+        </div>
+        <aside class="span4 detailsbar">
+            <h1><i class="icon-arrow-down"></i></h1>
+                        <dl>
+                                                                            </dl>
+            <h2>Tags</h2>
+            <table class="table table-condensed">
+                                    <tr><td colspan="2"><em>None found</em></td></tr>
+                            </table>
+        </aside>
+    </div>
+
+                                    <div class="row-fluid">
+        <div class="span8 content class">
+            <a id="constant_DirectionOut" name="constant_DirectionOut" class="anchor"></a>
+            <article id="constant_DirectionOut" class="constant">
+                <h3 class="">DirectionOut</h3>
+                <pre class="signature">DirectionOut</pre>
+                <p><em></em></p>
+                
+            </article>
+        </div>
+        <aside class="span4 detailsbar">
+            <h1><i class="icon-arrow-down"></i></h1>
+                        <dl>
+                                                                            </dl>
+            <h2>Tags</h2>
+            <table class="table table-condensed">
+                                    <tr><td colspan="2"><em>None found</em></td></tr>
+                            </table>
+        </aside>
+    </div>
+
+                            
+                                    <a id="properties" name="properties"></a>
+            <div class="row-fluid">
+                <div class="span8 content class">
+                    <h2>Properties</h2>
+                </div>
+                <aside class="span4 detailsbar"></aside>
+            </div>
+
+                                                    <div class="row-fluid">
+        <div class="span8 content class">
+            <a id="property_id" name="property_id" class="anchor"></a>
+            <article class="property">
+                <h3 class="protected ">$id</h3>
+                <pre class="signature">$id : </pre>
+                <p><em></em></p>
+                
+
+                                <h4>Type</h4>
+                
+                                            </article>
+        </div>
+        <aside class="span4 detailsbar">
+            <h1><i class="icon-arrow-down"></i></h1>
+                        <dl>
+                                    <dt>Inherited from</dt>
+                    <dd><a href="../classes/Everyman.Neo4j.PropertyContainer.html"><div class="path-wrapper">\Everyman\Neo4j\PropertyContainer</div></a></dd>
+                                                            </dl>
+            <h2>Tags</h2>
+            <table class="table table-condensed">
+                                    <tr><td colspan="2"><em>None found</em></td></tr>
+                            </table>
+        </aside>
+    </div>
+
+                                    <div class="row-fluid">
+        <div class="span8 content class">
+            <a id="property_client" name="property_client" class="anchor"></a>
+            <article class="property">
+                <h3 class="protected ">$client</h3>
+                <pre class="signature">$client : </pre>
+                <p><em></em></p>
+                
+
+                                <h4>Type</h4>
+                
+                                            </article>
+        </div>
+        <aside class="span4 detailsbar">
+            <h1><i class="icon-arrow-down"></i></h1>
+                        <dl>
+                                    <dt>Inherited from</dt>
+                    <dd><a href="../classes/Everyman.Neo4j.PropertyContainer.html"><div class="path-wrapper">\Everyman\Neo4j\PropertyContainer</div></a></dd>
+                                                            </dl>
+            <h2>Tags</h2>
+            <table class="table table-condensed">
+                                    <tr><td colspan="2"><em>None found</em></td></tr>
+                            </table>
+        </aside>
+    </div>
+
+                                    <div class="row-fluid">
+        <div class="span8 content class">
+            <a id="property_properties" name="property_properties" class="anchor"></a>
+            <article class="property">
+                <h3 class="protected ">$properties</h3>
+                <pre class="signature">$properties : </pre>
+                <p><em></em></p>
+                
+
+                                <h4>Type</h4>
+                
+                                            </article>
+        </div>
+        <aside class="span4 detailsbar">
+            <h1><i class="icon-arrow-down"></i></h1>
+                        <dl>
+                                    <dt>Inherited from</dt>
+                    <dd><a href="../classes/Everyman.Neo4j.PropertyContainer.html"><div class="path-wrapper">\Everyman\Neo4j\PropertyContainer</div></a></dd>
+                                                            </dl>
+            <h2>Tags</h2>
+            <table class="table table-condensed">
+                                    <tr><td colspan="2"><em>None found</em></td></tr>
+                            </table>
+        </aside>
+    </div>
+
+                                    <div class="row-fluid">
+        <div class="span8 content class">
+            <a id="property_lazyLoad" name="property_lazyLoad" class="anchor"></a>
+            <article class="property">
+                <h3 class="protected ">$lazyLoad</h3>
+                <pre class="signature">$lazyLoad : </pre>
+                <p><em></em></p>
+                
+
+                                <h4>Type</h4>
+                
+                                            </article>
+        </div>
+        <aside class="span4 detailsbar">
+            <h1><i class="icon-arrow-down"></i></h1>
+                        <dl>
+                                    <dt>Inherited from</dt>
+                    <dd><a href="../classes/Everyman.Neo4j.PropertyContainer.html"><div class="path-wrapper">\Everyman\Neo4j\PropertyContainer</div></a></dd>
+                                                            </dl>
+            <h2>Tags</h2>
+            <table class="table table-condensed">
+                                    <tr><td colspan="2"><em>None found</em></td></tr>
+                            </table>
+        </aside>
+    </div>
+
+                                    <div class="row-fluid">
+        <div class="span8 content class">
+            <a id="property_start" name="property_start" class="anchor"></a>
+            <article class="property">
+                <h3 class="protected ">$start</h3>
+                <pre class="signature">$start : </pre>
+                <p><em></em></p>
+                
+
+                                <h4>Type</h4>
+                
+                                            </article>
+        </div>
+        <aside class="span4 detailsbar">
+            <h1><i class="icon-arrow-down"></i></h1>
+                        <dl>
+                                                            </dl>
+            <h2>Tags</h2>
+            <table class="table table-condensed">
+                                    <tr><td colspan="2"><em>None found</em></td></tr>
+                            </table>
+        </aside>
+    </div>
+
+                                    <div class="row-fluid">
+        <div class="span8 content class">
+            <a id="property_end" name="property_end" class="anchor"></a>
+            <article class="property">
+                <h3 class="protected ">$end</h3>
+                <pre class="signature">$end : </pre>
+                <p><em></em></p>
+                
+
+                                <h4>Type</h4>
+                
+                                            </article>
+        </div>
+        <aside class="span4 detailsbar">
+            <h1><i class="icon-arrow-down"></i></h1>
+                        <dl>
+                                                            </dl>
+            <h2>Tags</h2>
+            <table class="table table-condensed">
+                                    <tr><td colspan="2"><em>None found</em></td></tr>
+                            </table>
+        </aside>
+    </div>
+
+                                    <div class="row-fluid">
+        <div class="span8 content class">
+            <a id="property_type" name="property_type" class="anchor"></a>
+            <article class="property">
+                <h3 class="protected ">$type</h3>
+                <pre class="signature">$type : </pre>
+                <p><em></em></p>
+                
+
+                                <h4>Type</h4>
+                
+                                            </article>
+        </div>
+        <aside class="span4 detailsbar">
+            <h1><i class="icon-arrow-down"></i></h1>
+                        <dl>
+                                                            </dl>
+            <h2>Tags</h2>
+            <table class="table table-condensed">
+                                    <tr><td colspan="2"><em>None found</em></td></tr>
+                            </table>
+        </aside>
+    </div>
+
+                                            
+                                    <a id="methods" name="methods"></a>
+            <div class="row-fluid">
+                <div class="span8 content class"><h2>Methods</h2></div>
+                <aside class="span4 detailsbar"></aside>
+            </div>
+
+                                    <div class="row-fluid">
+        <div class="span8 content class">
+            <a id="method___construct" name="method___construct" class="anchor"></a>
+            <article class="method">
+                <h3 class="public ">__construct()</h3>
+                <a href="#source-view" role="button" class="pull-right btn" data-toggle="modal" style="font-size: 1.1em; padding: 9px 14px"><i class="icon-code"></i></a>
+                <pre class="signature" style="margin-right: 54px;">__construct(\Everyman\Neo4j\Client <span class="argument">$client</span>)</pre>
+                <p><em>Build the container and set its client</em></p>
+                
+
+                                    <h4>Parameters</h4>
+                    <table class="table table-condensed table-hover">
+                                                    <tr>
+                                <td><a href="../classes/Everyman.Neo4j.Client.html">\Everyman\Neo4j\Client</a></td>
+                                <td>$client </td>
+                                <td></td>
+                            </tr>
+                                            </table>
+                
+                
+                            </article>
+        </div>
+        <aside class="span4 detailsbar">
+            <h1><i class="icon-arrow-down"></i></h1>
+                                                            <dl>
+                                                    <dt>Inherited from</dt>
+                    <dd><a href="../classes/Everyman.Neo4j.PropertyContainer.html"><div class="path-wrapper">\Everyman\Neo4j\PropertyContainer</div></a></dd>
+                                                            </dl>
+            <h2>Tags</h2>
+            <table class="table table-condensed">
+                                    <tr><td colspan="2"><em>None found</em></td></tr>
+                            </table>
+        </aside>
+    </div>
+
+                                    <div class="row-fluid">
+        <div class="span8 content class">
+            <a id="method_delete" name="method_delete" class="anchor"></a>
+            <article class="method">
+                <h3 class="public ">delete()</h3>
+                <a href="#source-view" role="button" class="pull-right btn" data-toggle="modal" style="font-size: 1.1em; padding: 9px 14px"><i class="icon-code"></i></a>
+                <pre class="signature" style="margin-right: 54px;">delete() : \Everyman\Neo4j\PropertyContainer</pre>
+                <p><em>Delete this relationship</em></p>
+                
+
+                
+                                    <h4>Throws</h4>
+                    <dl>
+                                                    <dt>\Everyman\Neo4j\Exception</dt>
+                            <dd><p>on failure</p></dd>
+                                                                    </dl>
+                
+                                    <h4>Returns</h4>
+                    <a href="../classes/Everyman.Neo4j.PropertyContainer.html">\Everyman\Neo4j\PropertyContainer</a>
+                                                </article>
+        </div>
+        <aside class="span4 detailsbar">
+            <h1><i class="icon-arrow-down"></i></h1>
+                                                            <dl>
+                                                                            </dl>
+            <h2>Tags</h2>
+            <table class="table table-condensed">
+                                    <tr><td colspan="2"><em>None found</em></td></tr>
+                            </table>
+        </aside>
+    </div>
+
+                                    <div class="row-fluid">
+        <div class="span8 content class">
+            <a id="method_load" name="method_load" class="anchor"></a>
+            <article class="method">
+                <h3 class="public ">load()</h3>
+                <a href="#source-view" role="button" class="pull-right btn" data-toggle="modal" style="font-size: 1.1em; padding: 9px 14px"><i class="icon-code"></i></a>
+                <pre class="signature" style="margin-right: 54px;">load() : \Everyman\Neo4j\PropertyContainer</pre>
+                <p><em>Load this relationship</em></p>
+                
+
+                
+                                    <h4>Throws</h4>
+                    <dl>
+                                                    <dt>\Everyman\Neo4j\Exception</dt>
+                            <dd><p>on failure</p></dd>
+                                                                    </dl>
+                
+                                    <h4>Returns</h4>
+                    <a href="../classes/Everyman.Neo4j.PropertyContainer.html">\Everyman\Neo4j\PropertyContainer</a>
+                                                </article>
+        </div>
+        <aside class="span4 detailsbar">
+            <h1><i class="icon-arrow-down"></i></h1>
+                                                            <dl>
+                                                                            </dl>
+            <h2>Tags</h2>
+            <table class="table table-condensed">
+                                    <tr><td colspan="2"><em>None found</em></td></tr>
+                            </table>
+        </aside>
+    </div>
+
+                                    <div class="row-fluid">
+        <div class="span8 content class">
+            <a id="method_save" name="method_save" class="anchor"></a>
+            <article class="method">
+                <h3 class="public ">save()</h3>
+                <a href="#source-view" role="button" class="pull-right btn" data-toggle="modal" style="font-size: 1.1em; padding: 9px 14px"><i class="icon-code"></i></a>
+                <pre class="signature" style="margin-right: 54px;">save() : \Everyman\Neo4j\PropertyContainer</pre>
+                <p><em>Save this node</em></p>
+                
+
+                
+                                    <h4>Throws</h4>
+                    <dl>
+                                                    <dt>\Everyman\Neo4j\Exception</dt>
+                            <dd><p>on failure</p></dd>
+                                                                    </dl>
+                
+                                    <h4>Returns</h4>
+                    <a href="../classes/Everyman.Neo4j.PropertyContainer.html">\Everyman\Neo4j\PropertyContainer</a>
+                                                </article>
+        </div>
+        <aside class="span4 detailsbar">
+            <h1><i class="icon-arrow-down"></i></h1>
+                                                            <dl>
+                                                                            </dl>
+            <h2>Tags</h2>
+            <table class="table table-condensed">
+                                    <tr><td colspan="2"><em>None found</em></td></tr>
+                            </table>
+        </aside>
+    </div>
+
+                                    <div class="row-fluid">
+        <div class="span8 content class">
+            <a id="method_getClient" name="method_getClient" class="anchor"></a>
+            <article class="method">
+                <h3 class="public ">getClient()</h3>
+                <a href="#source-view" role="button" class="pull-right btn" data-toggle="modal" style="font-size: 1.1em; padding: 9px 14px"><i class="icon-code"></i></a>
+                <pre class="signature" style="margin-right: 54px;">getClient() : \Everyman\Neo4j\Client</pre>
+                <p><em>Get the entity&#039;s client</em></p>
+                
+
+                
+                
+                                    <h4>Returns</h4>
+                    <a href="../classes/Everyman.Neo4j.Client.html">\Everyman\Neo4j\Client</a>
+                                                </article>
+        </div>
+        <aside class="span4 detailsbar">
+            <h1><i class="icon-arrow-down"></i></h1>
+                                                            <dl>
+                                                    <dt>Inherited from</dt>
+                    <dd><a href="../classes/Everyman.Neo4j.PropertyContainer.html"><div class="path-wrapper">\Everyman\Neo4j\PropertyContainer</div></a></dd>
+                                                            </dl>
+            <h2>Tags</h2>
+            <table class="table table-condensed">
+                                    <tr><td colspan="2"><em>None found</em></td></tr>
+                            </table>
+        </aside>
+    </div>
+
+                                    <div class="row-fluid">
+        <div class="span8 content class">
+            <a id="method_getId" name="method_getId" class="anchor"></a>
+            <article class="method">
+                <h3 class="public ">getId()</h3>
+                <a href="#source-view" role="button" class="pull-right btn" data-toggle="modal" style="font-size: 1.1em; padding: 9px 14px"><i class="icon-code"></i></a>
+                <pre class="signature" style="margin-right: 54px;">getId() : integer</pre>
+                <p><em>Get the entity&#039;s id</em></p>
+                
+
+                
+                
+                                    <h4>Returns</h4>
+                    integer
+                                                </article>
+        </div>
+        <aside class="span4 detailsbar">
+            <h1><i class="icon-arrow-down"></i></h1>
+                                                            <dl>
+                                                    <dt>Inherited from</dt>
+                    <dd><a href="../classes/Everyman.Neo4j.PropertyContainer.html"><div class="path-wrapper">\Everyman\Neo4j\PropertyContainer</div></a></dd>
+                                                            </dl>
+            <h2>Tags</h2>
+            <table class="table table-condensed">
+                                    <tr><td colspan="2"><em>None found</em></td></tr>
+                            </table>
+        </aside>
+    </div>
+
+                                    <div class="row-fluid">
+        <div class="span8 content class">
+            <a id="method_getProperties" name="method_getProperties" class="anchor"></a>
+            <article class="method">
+                <h3 class="public ">getProperties()</h3>
+                <a href="#source-view" role="button" class="pull-right btn" data-toggle="modal" style="font-size: 1.1em; padding: 9px 14px"><i class="icon-code"></i></a>
+                <pre class="signature" style="margin-right: 54px;">getProperties() : array</pre>
+                <p><em>Return all properties</em></p>
+                
+
+                
+                
+                                    <h4>Returns</h4>
+                    array
+                                                </article>
+        </div>
+        <aside class="span4 detailsbar">
+            <h1><i class="icon-arrow-down"></i></h1>
+                                                            <dl>
+                                                    <dt>Inherited from</dt>
+                    <dd><a href="../classes/Everyman.Neo4j.PropertyContainer.html"><div class="path-wrapper">\Everyman\Neo4j\PropertyContainer</div></a></dd>
+                                                            </dl>
+            <h2>Tags</h2>
+            <table class="table table-condensed">
+                                    <tr><td colspan="2"><em>None found</em></td></tr>
+                            </table>
+        </aside>
+    </div>
+
+                                    <div class="row-fluid">
+        <div class="span8 content class">
+            <a id="method_getProperty" name="method_getProperty" class="anchor"></a>
+            <article class="method">
+                <h3 class="public ">getProperty()</h3>
+                <a href="#source-view" role="button" class="pull-right btn" data-toggle="modal" style="font-size: 1.1em; padding: 9px 14px"><i class="icon-code"></i></a>
+                <pre class="signature" style="margin-right: 54px;">getProperty(string <span class="argument">$property</span>) : mixed</pre>
+                <p><em>Return the named property</em></p>
+                
+
+                                    <h4>Parameters</h4>
+                    <table class="table table-condensed table-hover">
+                                                    <tr>
+                                <td>string</td>
+                                <td>$property </td>
+                                <td></td>
+                            </tr>
+                                            </table>
+                
+                
+                                    <h4>Returns</h4>
+                    mixed
+                                                </article>
+        </div>
+        <aside class="span4 detailsbar">
+            <h1><i class="icon-arrow-down"></i></h1>
+                                                            <dl>
+                                                    <dt>Inherited from</dt>
+                    <dd><a href="../classes/Everyman.Neo4j.PropertyContainer.html"><div class="path-wrapper">\Everyman\Neo4j\PropertyContainer</div></a></dd>
+                                                            </dl>
+            <h2>Tags</h2>
+            <table class="table table-condensed">
+                                    <tr><td colspan="2"><em>None found</em></td></tr>
+                            </table>
+        </aside>
+    </div>
+
+                                    <div class="row-fluid">
+        <div class="span8 content class">
+            <a id="method_hasId" name="method_hasId" class="anchor"></a>
+            <article class="method">
+                <h3 class="public ">hasId()</h3>
+                <a href="#source-view" role="button" class="pull-right btn" data-toggle="modal" style="font-size: 1.1em; padding: 9px 14px"><i class="icon-code"></i></a>
+                <pre class="signature" style="margin-right: 54px;">hasId() : boolean</pre>
+                <p><em>Is this entity identified?</em></p>
+                
+
+                
+                
+                                    <h4>Returns</h4>
+                    boolean
+                                                </article>
+        </div>
+        <aside class="span4 detailsbar">
+            <h1><i class="icon-arrow-down"></i></h1>
+                                                            <dl>
+                                                    <dt>Inherited from</dt>
+                    <dd><a href="../classes/Everyman.Neo4j.PropertyContainer.html"><div class="path-wrapper">\Everyman\Neo4j\PropertyContainer</div></a></dd>
+                                                            </dl>
+            <h2>Tags</h2>
+            <table class="table table-condensed">
+                                    <tr><td colspan="2"><em>None found</em></td></tr>
+                            </table>
+        </aside>
+    </div>
+
+                                    <div class="row-fluid">
+        <div class="span8 content class">
+            <a id="method_removeProperty" name="method_removeProperty" class="anchor"></a>
+            <article class="method">
+                <h3 class="public ">removeProperty()</h3>
+                <a href="#source-view" role="button" class="pull-right btn" data-toggle="modal" style="font-size: 1.1em; padding: 9px 14px"><i class="icon-code"></i></a>
+                <pre class="signature" style="margin-right: 54px;">removeProperty(string <span class="argument">$property</span>) : \Everyman\Neo4j\PropertyContainer</pre>
+                <p><em>Remove a property set on the entity</em></p>
+                
+
+                                    <h4>Parameters</h4>
+                    <table class="table table-condensed table-hover">
+                                                    <tr>
+                                <td>string</td>
+                                <td>$property </td>
+                                <td></td>
+                            </tr>
+                                            </table>
+                
+                
+                                    <h4>Returns</h4>
+                    <a href="../classes/Everyman.Neo4j.PropertyContainer.html">\Everyman\Neo4j\PropertyContainer</a>
+                                                </article>
+        </div>
+        <aside class="span4 detailsbar">
+            <h1><i class="icon-arrow-down"></i></h1>
+                                                            <dl>
+                                                    <dt>Inherited from</dt>
+                    <dd><a href="../classes/Everyman.Neo4j.PropertyContainer.html"><div class="path-wrapper">\Everyman\Neo4j\PropertyContainer</div></a></dd>
+                                                            </dl>
+            <h2>Tags</h2>
+            <table class="table table-condensed">
+                                    <tr><td colspan="2"><em>None found</em></td></tr>
+                            </table>
+        </aside>
+    </div>
+
+                                    <div class="row-fluid">
+        <div class="span8 content class">
+            <a id="method_setClient" name="method_setClient" class="anchor"></a>
+            <article class="method">
+                <h3 class="public ">setClient()</h3>
+                <a href="#source-view" role="button" class="pull-right btn" data-toggle="modal" style="font-size: 1.1em; padding: 9px 14px"><i class="icon-code"></i></a>
+                <pre class="signature" style="margin-right: 54px;">setClient(\Everyman\Neo4j\Client <span class="argument">$client</span>) : \Everyman\Neo4j\PropertyContainer</pre>
+                <p><em>Set the entity&#039;s client</em></p>
+                
+
+                                    <h4>Parameters</h4>
+                    <table class="table table-condensed table-hover">
+                                                    <tr>
+                                <td><a href="../classes/Everyman.Neo4j.Client.html">\Everyman\Neo4j\Client</a></td>
+                                <td>$client </td>
+                                <td></td>
+                            </tr>
+                                            </table>
+                
+                
+                                    <h4>Returns</h4>
+                    <a href="../classes/Everyman.Neo4j.PropertyContainer.html">\Everyman\Neo4j\PropertyContainer</a>
+                                                </article>
+        </div>
+        <aside class="span4 detailsbar">
+            <h1><i class="icon-arrow-down"></i></h1>
+                                                            <dl>
+                                                    <dt>Inherited from</dt>
+                    <dd><a href="../classes/Everyman.Neo4j.PropertyContainer.html"><div class="path-wrapper">\Everyman\Neo4j\PropertyContainer</div></a></dd>
+                                                            </dl>
+            <h2>Tags</h2>
+            <table class="table table-condensed">
+                                    <tr><td colspan="2"><em>None found</em></td></tr>
+                            </table>
+        </aside>
+    </div>
+
+                                    <div class="row-fluid">
+        <div class="span8 content class">
+            <a id="method_setId" name="method_setId" class="anchor"></a>
+            <article class="method">
+                <h3 class="public ">setId()</h3>
+                <a href="#source-view" role="button" class="pull-right btn" data-toggle="modal" style="font-size: 1.1em; padding: 9px 14px"><i class="icon-code"></i></a>
+                <pre class="signature" style="margin-right: 54px;">setId(integer <span class="argument">$id</span>) : \Everyman\Neo4j\PropertyContainer</pre>
+                <p><em>Set the entity&#039;s id</em></p>
+                
+
+                                    <h4>Parameters</h4>
+                    <table class="table table-condensed table-hover">
+                                                    <tr>
+                                <td>integer</td>
+                                <td>$id </td>
+                                <td></td>
+                            </tr>
+                                            </table>
+                
+                
+                                    <h4>Returns</h4>
+                    <a href="../classes/Everyman.Neo4j.PropertyContainer.html">\Everyman\Neo4j\PropertyContainer</a>
+                                                </article>
+        </div>
+        <aside class="span4 detailsbar">
+            <h1><i class="icon-arrow-down"></i></h1>
+                                                            <dl>
+                                                    <dt>Inherited from</dt>
+                    <dd><a href="../classes/Everyman.Neo4j.PropertyContainer.html"><div class="path-wrapper">\Everyman\Neo4j\PropertyContainer</div></a></dd>
+                                                            </dl>
+            <h2>Tags</h2>
+            <table class="table table-condensed">
+                                    <tr><td colspan="2"><em>None found</em></td></tr>
+                            </table>
+        </aside>
+    </div>
+
+                                    <div class="row-fluid">
+        <div class="span8 content class">
+            <a id="method_setProperties" name="method_setProperties" class="anchor"></a>
+            <article class="method">
+                <h3 class="public ">setProperties()</h3>
+                <a href="#source-view" role="button" class="pull-right btn" data-toggle="modal" style="font-size: 1.1em; padding: 9px 14px"><i class="icon-code"></i></a>
+                <pre class="signature" style="margin-right: 54px;">setProperties(array <span class="argument">$properties</span>) : \Everyman\Neo4j\PropertyContainer</pre>
+                <p><em>Set multiple properties on the entity</em></p>
+                
+
+                                    <h4>Parameters</h4>
+                    <table class="table table-condensed table-hover">
+                                                    <tr>
+                                <td>array</td>
+                                <td>$properties </td>
+                                <td></td>
+                            </tr>
+                                            </table>
+                
+                
+                                    <h4>Returns</h4>
+                    <a href="../classes/Everyman.Neo4j.PropertyContainer.html">\Everyman\Neo4j\PropertyContainer</a>
+                                                </article>
+        </div>
+        <aside class="span4 detailsbar">
+            <h1><i class="icon-arrow-down"></i></h1>
+                                                            <dl>
+                                                    <dt>Inherited from</dt>
+                    <dd><a href="../classes/Everyman.Neo4j.PropertyContainer.html"><div class="path-wrapper">\Everyman\Neo4j\PropertyContainer</div></a></dd>
+                                                            </dl>
+            <h2>Tags</h2>
+            <table class="table table-condensed">
+                                    <tr><td colspan="2"><em>None found</em></td></tr>
+                            </table>
+        </aside>
+    </div>
+
+                                    <div class="row-fluid">
+        <div class="span8 content class">
+            <a id="method_setProperty" name="method_setProperty" class="anchor"></a>
+            <article class="method">
+                <h3 class="public ">setProperty()</h3>
+                <a href="#source-view" role="button" class="pull-right btn" data-toggle="modal" style="font-size: 1.1em; padding: 9px 14px"><i class="icon-code"></i></a>
+                <pre class="signature" style="margin-right: 54px;">setProperty(string <span class="argument">$property</span>, mixed <span class="argument">$value</span>) : \Everyman\Neo4j\PropertyContainer</pre>
+                <p><em>Set a property on the entity</em></p>
+                
+
+                                    <h4>Parameters</h4>
+                    <table class="table table-condensed table-hover">
+                                                    <tr>
+                                <td>string</td>
+                                <td>$property </td>
+                                <td></td>
+                            </tr>
+                                                    <tr>
+                                <td>mixed</td>
+                                <td>$value </td>
+                                <td></td>
+                            </tr>
+                                            </table>
+                
+                
+                                    <h4>Returns</h4>
+                    <a href="../classes/Everyman.Neo4j.PropertyContainer.html">\Everyman\Neo4j\PropertyContainer</a>
+                                                </article>
+        </div>
+        <aside class="span4 detailsbar">
+            <h1><i class="icon-arrow-down"></i></h1>
+                                                            <dl>
+                                                    <dt>Inherited from</dt>
+                    <dd><a href="../classes/Everyman.Neo4j.PropertyContainer.html"><div class="path-wrapper">\Everyman\Neo4j\PropertyContainer</div></a></dd>
+                                                            </dl>
+            <h2>Tags</h2>
+            <table class="table table-condensed">
+                                    <tr><td colspan="2"><em>None found</em></td></tr>
+                            </table>
+        </aside>
+    </div>
+
+                                    <div class="row-fluid">
+        <div class="span8 content class">
+            <a id="method_useLazyLoad" name="method_useLazyLoad" class="anchor"></a>
+            <article class="method">
+                <h3 class="public ">useLazyLoad()</h3>
+                <a href="#source-view" role="button" class="pull-right btn" data-toggle="modal" style="font-size: 1.1em; padding: 9px 14px"><i class="icon-code"></i></a>
+                <pre class="signature" style="margin-right: 54px;">useLazyLoad(boolean <span class="argument">$lazyLoad</span>) : \Everyman\Neo4j\PropertyContainer</pre>
+                <p><em>Should this entity be lazy-loaded if necessary?</em></p>
+                
+
+                                    <h4>Parameters</h4>
+                    <table class="table table-condensed table-hover">
+                                                    <tr>
+                                <td>boolean</td>
+                                <td>$lazyLoad </td>
+                                <td></td>
+                            </tr>
+                                            </table>
+                
+                
+                                    <h4>Returns</h4>
+                    <a href="../classes/Everyman.Neo4j.PropertyContainer.html">\Everyman\Neo4j\PropertyContainer</a>
+                                                </article>
+        </div>
+        <aside class="span4 detailsbar">
+            <h1><i class="icon-arrow-down"></i></h1>
+                                                            <dl>
+                                                    <dt>Inherited from</dt>
+                    <dd><a href="../classes/Everyman.Neo4j.PropertyContainer.html"><div class="path-wrapper">\Everyman\Neo4j\PropertyContainer</div></a></dd>
+                                                            </dl>
+            <h2>Tags</h2>
+            <table class="table table-condensed">
+                                    <tr><td colspan="2"><em>None found</em></td></tr>
+                            </table>
+        </aside>
+    </div>
+
+                                    <div class="row-fluid">
+        <div class="span8 content class">
+            <a id="method_getEndNode" name="method_getEndNode" class="anchor"></a>
+            <article class="method">
+                <h3 class="public ">getEndNode()</h3>
+                <a href="#source-view" role="button" class="pull-right btn" data-toggle="modal" style="font-size: 1.1em; padding: 9px 14px"><i class="icon-code"></i></a>
+                <pre class="signature" style="margin-right: 54px;">getEndNode() : \Everyman\Neo4j\Node</pre>
+                <p><em>Get the end node</em></p>
+                
+
+                
+                
+                                    <h4>Returns</h4>
+                    <a href="../classes/Everyman.Neo4j.Node.html">\Everyman\Neo4j\Node</a>
+                                                </article>
+        </div>
+        <aside class="span4 detailsbar">
+            <h1><i class="icon-arrow-down"></i></h1>
+                                                            <dl>
+                                                                            </dl>
+            <h2>Tags</h2>
+            <table class="table table-condensed">
+                                    <tr><td colspan="2"><em>None found</em></td></tr>
+                            </table>
+        </aside>
+    </div>
+
+                                    <div class="row-fluid">
+        <div class="span8 content class">
+            <a id="method_getStartNode" name="method_getStartNode" class="anchor"></a>
+            <article class="method">
+                <h3 class="public ">getStartNode()</h3>
+                <a href="#source-view" role="button" class="pull-right btn" data-toggle="modal" style="font-size: 1.1em; padding: 9px 14px"><i class="icon-code"></i></a>
+                <pre class="signature" style="margin-right: 54px;">getStartNode() : \Everyman\Neo4j\Node</pre>
+                <p><em>Get the start node</em></p>
+                
+
+                
+                
+                                    <h4>Returns</h4>
+                    <a href="../classes/Everyman.Neo4j.Node.html">\Everyman\Neo4j\Node</a>
+                                                </article>
+        </div>
+        <aside class="span4 detailsbar">
+            <h1><i class="icon-arrow-down"></i></h1>
+                                                            <dl>
+                                                                            </dl>
+            <h2>Tags</h2>
+            <table class="table table-condensed">
+                                    <tr><td colspan="2"><em>None found</em></td></tr>
+                            </table>
+        </aside>
+    </div>
+
+                                    <div class="row-fluid">
+        <div class="span8 content class">
+            <a id="method_getType" name="method_getType" class="anchor"></a>
+            <article class="method">
+                <h3 class="public ">getType()</h3>
+                <a href="#source-view" role="button" class="pull-right btn" data-toggle="modal" style="font-size: 1.1em; padding: 9px 14px"><i class="icon-code"></i></a>
+                <pre class="signature" style="margin-right: 54px;">getType() : string</pre>
+                <p><em>Get the relationship type</em></p>
+                
+
+                
+                
+                                    <h4>Returns</h4>
+                    string
+                                                </article>
+        </div>
+        <aside class="span4 detailsbar">
+            <h1><i class="icon-arrow-down"></i></h1>
+                                                            <dl>
+                                                                            </dl>
+            <h2>Tags</h2>
+            <table class="table table-condensed">
+                                    <tr><td colspan="2"><em>None found</em></td></tr>
+                            </table>
+        </aside>
+    </div>
+
+                                    <div class="row-fluid">
+        <div class="span8 content class">
+            <a id="method_setEndNode" name="method_setEndNode" class="anchor"></a>
+            <article class="method">
+                <h3 class="public ">setEndNode()</h3>
+                <a href="#source-view" role="button" class="pull-right btn" data-toggle="modal" style="font-size: 1.1em; padding: 9px 14px"><i class="icon-code"></i></a>
+                <pre class="signature" style="margin-right: 54px;">setEndNode(\Everyman\Neo4j\Node <span class="argument">$end</span>) : \Everyman\Neo4j\Relationship</pre>
+                <p><em>Set the end node</em></p>
+                
+
+                                    <h4>Parameters</h4>
+                    <table class="table table-condensed table-hover">
+                                                    <tr>
+                                <td><a href="../classes/Everyman.Neo4j.Node.html">\Everyman\Neo4j\Node</a></td>
+                                <td>$end </td>
+                                <td></td>
+                            </tr>
+                                            </table>
+                
+                
+                                    <h4>Returns</h4>
+                    <a href="../classes/Everyman.Neo4j.Relationship.html">\Everyman\Neo4j\Relationship</a>
+                                                </article>
+        </div>
+        <aside class="span4 detailsbar">
+            <h1><i class="icon-arrow-down"></i></h1>
+                                                            <dl>
+                                                                            </dl>
+            <h2>Tags</h2>
+            <table class="table table-condensed">
+                                    <tr><td colspan="2"><em>None found</em></td></tr>
+                            </table>
+        </aside>
+    </div>
+
+                                    <div class="row-fluid">
+        <div class="span8 content class">
+            <a id="method_setStartNode" name="method_setStartNode" class="anchor"></a>
+            <article class="method">
+                <h3 class="public ">setStartNode()</h3>
+                <a href="#source-view" role="button" class="pull-right btn" data-toggle="modal" style="font-size: 1.1em; padding: 9px 14px"><i class="icon-code"></i></a>
+                <pre class="signature" style="margin-right: 54px;">setStartNode(\Everyman\Neo4j\Node <span class="argument">$start</span>) : \Everyman\Neo4j\Relationship</pre>
+                <p><em>Set the start node</em></p>
+                
+
+                                    <h4>Parameters</h4>
+                    <table class="table table-condensed table-hover">
+                                                    <tr>
+                                <td><a href="../classes/Everyman.Neo4j.Node.html">\Everyman\Neo4j\Node</a></td>
+                                <td>$start </td>
+                                <td></td>
+                            </tr>
+                                            </table>
+                
+                
+                                    <h4>Returns</h4>
+                    <a href="../classes/Everyman.Neo4j.Relationship.html">\Everyman\Neo4j\Relationship</a>
+                                                </article>
+        </div>
+        <aside class="span4 detailsbar">
+            <h1><i class="icon-arrow-down"></i></h1>
+                                                            <dl>
+                                                                            </dl>
+            <h2>Tags</h2>
+            <table class="table table-condensed">
+                                    <tr><td colspan="2"><em>None found</em></td></tr>
+                            </table>
+        </aside>
+    </div>
+
+                                    <div class="row-fluid">
+        <div class="span8 content class">
+            <a id="method_setType" name="method_setType" class="anchor"></a>
+            <article class="method">
+                <h3 class="public ">setType()</h3>
+                <a href="#source-view" role="button" class="pull-right btn" data-toggle="modal" style="font-size: 1.1em; padding: 9px 14px"><i class="icon-code"></i></a>
+                <pre class="signature" style="margin-right: 54px;">setType(string <span class="argument">$type</span>) : \Everyman\Neo4j\Relationship</pre>
+                <p><em>Set the type</em></p>
+                
+
+                                    <h4>Parameters</h4>
+                    <table class="table table-condensed table-hover">
+                                                    <tr>
+                                <td>string</td>
+                                <td>$type </td>
+                                <td></td>
+                            </tr>
+                                            </table>
+                
+                
+                                    <h4>Returns</h4>
+                    <a href="../classes/Everyman.Neo4j.Relationship.html">\Everyman\Neo4j\Relationship</a>
+                                                </article>
+        </div>
+        <aside class="span4 detailsbar">
+            <h1><i class="icon-arrow-down"></i></h1>
+                                                            <dl>
+                                                                            </dl>
+            <h2>Tags</h2>
+            <table class="table table-condensed">
+                                    <tr><td colspan="2"><em>None found</em></td></tr>
+                            </table>
+        </aside>
+    </div>
+
+                                                    <div class="row-fluid">
+        <div class="span8 content class">
+            <a id="method_loadProperties" name="method_loadProperties" class="anchor"></a>
+            <article class="method">
+                <h3 class="protected ">loadProperties()</h3>
+                <a href="#source-view" role="button" class="pull-right btn" data-toggle="modal" style="font-size: 1.1em; padding: 9px 14px"><i class="icon-code"></i></a>
+                <pre class="signature" style="margin-right: 54px;">loadProperties()</pre>
+                <p><em>Set up the properties array the first time we need it</em></p>
+                <p>This includes loading the properties from the server
+if we can get them.</p>
+
+                
+                
+                            </article>
+        </div>
+        <aside class="span4 detailsbar">
+            <h1><i class="icon-arrow-down"></i></h1>
+                                                            <dl>
+                                                    <dt>Inherited from</dt>
+                    <dd><a href="../classes/Everyman.Neo4j.PropertyContainer.html"><div class="path-wrapper">\Everyman\Neo4j\PropertyContainer</div></a></dd>
+                                                            </dl>
+            <h2>Tags</h2>
+            <table class="table table-condensed">
+                                    <tr><td colspan="2"><em>None found</em></td></tr>
+                            </table>
+        </aside>
+    </div>
+
+                                                    </div>
+    </section>
+
+    <div id="source-view" class="modal hide fade" tabindex="-1" role="dialog" aria-labelledby="source-view-label" aria-hidden="true">
+        <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+            <h3 id="source-view-label">Relationship.php</h3>
+        </div>
+        <div class="modal-body">
+            <pre data-src="../files/Relationship.php.txt" class="language-php line-numbers"></pre>
+        </div>
+    </div>
+
+    <footer class="row-fluid">
+        <section class="span10 offset2">
+            <section class="row-fluid">
+                <section class="span10 offset1">
+                    <section class="row-fluid footer-sections">
+                        <section class="span4">
+                                                        <h1><i class="icon-code"></i></h1>
+                            <div>
+                                <ul>
+                                                                            <li><a href="../namespaces/Everyman.html">\Everyman</a></li>
+                                                                    </ul>
+                            </div>
+                        </section>
+                        <section class="span4">
+                                                        <h1><i class="icon-bar-chart"></i></h1>
+                            <div>
+                                <ul>
+                                    <li><a href="../graphs/class.html">Class Hierarchy Diagram</a></li>
+                                </ul>
+                            </div>
+                        </section>
+                        <section class="span4">
+                                                        <h1><i class="icon-pushpin"></i></h1>
+                            <div>
+                                <ul>
+                                    <li><a href="../reports/errors.html">Errors</a></li>
+                                    <li><a href="../reports/markers.html">Markers</a></li>
+                                </ul>
+                            </div>
+                        </section>
+                    </section>
+                </section>
+            </section>
+            <section class="row-fluid">
+                <section class="span10 offset1">
+                    <hr />
+                    Documentation is powered by <a href="http://www.phpdoc.org/">phpDocumentor </a> and authored
+                    on July 10th, 2014 at 09:00.
+                </section>
+            </section>
+        </section>
+    </footer>
+</div>
+
+</body>
+</html>
