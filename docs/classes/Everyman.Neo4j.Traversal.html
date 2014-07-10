@@ -1,0 +1,1641 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0"/>
+    <meta charset="utf-8"/>
+    <title>API Documentation</title>
+    <meta name="author" content=""/>
+    <meta name="description" content=""/>
+
+    <link href="https://netdna.bootstrapcdn.com/twitter-bootstrap/2.3.2/css/bootstrap-combined.no-icons.min.css" rel="stylesheet">
+    <link href="https://netdna.bootstrapcdn.com/font-awesome/3.2.1/css/font-awesome.min.css" rel="stylesheet">
+    <link href="../css/prism.css" rel="stylesheet" media="all"/>
+    <link href="../css/template.css" rel="stylesheet" media="all"/>
+    
+    <!--[if lt IE 9]>
+    <script src="https://html5shim.googlecode.com/svn/trunk/html5.js" type="text/javascript"></script>
+    <![endif]-->
+    <script src="https://code.jquery.com/jquery-1.11.0.min.js" type="text/javascript"></script>
+    <script src="https://code.jquery.com/ui/1.10.4/jquery-ui.min.js" type="text/javascript"></script>
+    <script src="https://netdna.bootstrapcdn.com/twitter-bootstrap/2.3.2/js/bootstrap.min.js"></script>
+    <script src="../js/jquery.smooth-scroll.js"></script>
+    <script src="../js/prism.min.js"></script>
+    <!-- TODO: Add http://jscrollpane.kelvinluck.com/ to style the scrollbars for browsers not using webkit-->
+    <script type="text/javascript">
+    function loadExternalCodeSnippets() {
+        Array.prototype.slice.call(document.querySelectorAll('pre[data-src]')).forEach(function (pre) {
+            var src = pre.getAttribute('data-src');
+            var extension = (src.match(/\.(\w+)$/) || [, ''])[1];
+            var language = 'php';
+
+            var code = document.createElement('code');
+            code.className = 'language-' + language;
+
+            pre.textContent = '';
+
+            code.textContent = 'Loading…';
+
+            pre.appendChild(code);
+
+            var xhr = new XMLHttpRequest();
+
+            xhr.open('GET', src, true);
+
+            xhr.onreadystatechange = function () {
+                if (xhr.readyState == 4) {
+
+                    if (xhr.status < 400 && xhr.responseText) {
+                        code.textContent = xhr.responseText;
+
+                        Prism.highlightElement(code);
+                    }
+                    else if (xhr.status >= 400) {
+                        code.textContent = '✖ Error ' + xhr.status + ' while fetching file: ' + xhr.statusText;
+                    }
+                    else {
+                        code.textContent = '✖ Error: File does not exist or is empty';
+                    }
+                }
+            };
+
+            xhr.send(null);
+        });
+    }
+
+    $(document).ready(function(){
+        loadExternalCodeSnippets();
+    });
+    $('#source-view').on('shown', function () {
+        loadExternalCodeSnippets();
+    })
+</script>
+
+    <link rel="shortcut icon" href="../images/favicon.ico"/>
+    <link rel="apple-touch-icon" href="../images/apple-touch-icon.png"/>
+    <link rel="apple-touch-icon" sizes="72x72" href="../images/apple-touch-icon-72x72.png"/>
+    <link rel="apple-touch-icon" sizes="114x114" href="../images/apple-touch-icon-114x114.png"/>
+</head>
+<body>
+
+<div class="navbar navbar-fixed-top">
+    <div class="navbar-inner">
+        <div class="container">
+            <a class="btn btn-navbar" data-toggle="collapse" data-target=".nav-collapse">
+                <i class="icon-ellipsis-vertical"></i>
+            </a>
+            <a class="brand" href="../index.html">API Documentation</a>
+
+            <div class="nav-collapse">
+                <ul class="nav pull-right">
+                                        <li class="dropdown">
+                        <a href="../index.html" class="dropdown-toggle" data-toggle="dropdown">
+                            API Documentation <b class="caret"></b>
+                        </a>
+                        <ul class="dropdown-menu">
+                                                        <li><a href="../namespaces/Everyman.html">\Everyman</a></li>
+                                                    </ul>
+                    </li>
+                                        <li class="dropdown" id="charts-menu">
+                        <a href="#" class="dropdown-toggle" data-toggle="dropdown">
+                            Charts <b class="caret"></b>
+                        </a>
+                        <ul class="dropdown-menu">
+                            <li>
+                                <a href="../graphs/class.html">
+                                    <i class="icon-list-alt"></i>&#160;Class hierarchy diagram
+                                </a>
+                            </li>
+                        </ul>
+                    </li>
+                    <li class="dropdown" id="reports-menu">
+                        <a href="#" class="dropdown-toggle" data-toggle="dropdown">
+                            Reports <b class="caret"></b>
+                        </a>
+                        <ul class="dropdown-menu">
+                            <li>
+                                <a href="../reports/errors.html">
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                        <i class="icon-list-alt"></i>&#160;Errors <span class="label label-info pull-right">225</span>
+                                </a>
+                            </li>
+                            <li>
+                                <a href="../reports/markers.html">
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                        <i class="icon-list-alt"></i>&#160;Markers <span class="label label-info pull-right">17</span>
+                                </a>
+                            </li>
+                            <li>
+                                <a href="../reports/deprecated.html">
+                                                                                                            <i class="icon-list-alt"></i>&#160;Deprecated <span class="label label-info pull-right">0</span>
+                                </a>
+                            </li>
+                        </ul>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </div>
+    <!--<div class="go_to_top">-->
+    <!--<a href="#___" style="color: inherit">Back to top&#160;&#160;<i class="icon-upload icon-white"></i></a>-->
+    <!--</div>-->
+</div>
+
+<div id="___" class="container-fluid">
+        <section class="row-fluid">
+        <div class="span2 sidebar">
+                                <div class="accordion" style="margin-bottom: 0">
+        <div class="accordion-group">
+            <div class="accordion-heading">
+                                    <a class="accordion-toggle " data-toggle="collapse" data-target="#namespace-1358410371"></a>
+                                <a href="../namespaces/default.html" style="margin-left: 30px; padding-left: 0">\</a>
+            </div>
+            <div id="namespace-1358410371" class="accordion-body collapse in">
+                <div class="accordion-inner">
+
+                                                    <div class="accordion" style="margin-bottom: 0">
+        <div class="accordion-group">
+            <div class="accordion-heading">
+                                    <a class="accordion-toggle collapsed" data-toggle="collapse" data-target="#namespace-1525761814"></a>
+                                <a href="../namespaces/Everyman.html" style="margin-left: 30px; padding-left: 0">Everyman</a>
+            </div>
+            <div id="namespace-1525761814" class="accordion-body collapse ">
+                <div class="accordion-inner">
+
+                                                    <div class="accordion" style="margin-bottom: 0">
+        <div class="accordion-group">
+            <div class="accordion-heading">
+                                    <a class="accordion-toggle collapsed" data-toggle="collapse" data-target="#namespace-1564392050"></a>
+                                <a href="../namespaces/Everyman.Neo4j.html" style="margin-left: 30px; padding-left: 0">Neo4j</a>
+            </div>
+            <div id="namespace-1564392050" class="accordion-body collapse ">
+                <div class="accordion-inner">
+
+                                                    <div class="accordion" style="margin-bottom: 0">
+        <div class="accordion-group">
+            <div class="accordion-heading">
+                                    <a class="accordion-toggle collapsed" data-toggle="collapse" data-target="#namespace-1565031729"></a>
+                                <a href="../namespaces/Everyman.Neo4j.Batch.html" style="margin-left: 30px; padding-left: 0">Batch</a>
+            </div>
+            <div id="namespace-1565031729" class="accordion-body collapse ">
+                <div class="accordion-inner">
+
+                    
+                    <ul>
+                                                                                                    <li class="class"><a href="../classes/Everyman.Neo4j.Batch.AddTo.html">AddTo</a></li>
+                                                    <li class="class"><a href="../classes/Everyman.Neo4j.Batch.Delete.html">Delete</a></li>
+                                                    <li class="class"><a href="../classes/Everyman.Neo4j.Batch.Operation.html">Operation</a></li>
+                                                    <li class="class"><a href="../classes/Everyman.Neo4j.Batch.RemoveFrom.html">RemoveFrom</a></li>
+                                                    <li class="class"><a href="../classes/Everyman.Neo4j.Batch.Save.html">Save</a></li>
+                                            </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+
+                                                    <div class="accordion" style="margin-bottom: 0">
+        <div class="accordion-group">
+            <div class="accordion-heading">
+                                    <a class="accordion-toggle collapsed" data-toggle="collapse" data-target="#namespace-164378278"></a>
+                                <a href="../namespaces/Everyman.Neo4j.Cache.html" style="margin-left: 30px; padding-left: 0">Cache</a>
+            </div>
+            <div id="namespace-164378278" class="accordion-body collapse ">
+                <div class="accordion-inner">
+
+                    
+                    <ul>
+                                                                                                    <li class="class"><a href="../classes/Everyman.Neo4j.Cache.EntityCache.html">EntityCache</a></li>
+                                                    <li class="class"><a href="../classes/Everyman.Neo4j.Cache.Memcache.html">Memcache</a></li>
+                                                    <li class="class"><a href="../classes/Everyman.Neo4j.Cache.Memcached.html">Memcached</a></li>
+                                                    <li class="class"><a href="../classes/Everyman.Neo4j.Cache.Null.html">Null</a></li>
+                                                    <li class="class"><a href="../classes/Everyman.Neo4j.Cache.Variable.html">Variable</a></li>
+                                            </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+
+                                                    <div class="accordion" style="margin-bottom: 0">
+        <div class="accordion-group">
+            <div class="accordion-heading">
+                                    <a class="accordion-toggle collapsed" data-toggle="collapse" data-target="#namespace-724968106"></a>
+                                <a href="../namespaces/Everyman.Neo4j.Command.html" style="margin-left: 30px; padding-left: 0">Command</a>
+            </div>
+            <div id="namespace-724968106" class="accordion-body collapse ">
+                <div class="accordion-inner">
+
+                                                    <div class="accordion" style="margin-bottom: 0">
+        <div class="accordion-group">
+            <div class="accordion-heading">
+                                    <a class="accordion-toggle collapsed" data-toggle="collapse" data-target="#namespace-2143711259"></a>
+                                <a href="../namespaces/Everyman.Neo4j.Command.Batch.html" style="margin-left: 30px; padding-left: 0">Batch</a>
+            </div>
+            <div id="namespace-2143711259" class="accordion-body collapse ">
+                <div class="accordion-inner">
+
+                    
+                    <ul>
+                                                                                                    <li class="class"><a href="../classes/Everyman.Neo4j.Command.Batch.AddToIndex.html">AddToIndex</a></li>
+                                                    <li class="class"><a href="../classes/Everyman.Neo4j.Command.Batch.Command.html">Command</a></li>
+                                                    <li class="class"><a href="../classes/Everyman.Neo4j.Command.Batch.Commit.html">Commit</a></li>
+                                                    <li class="class"><a href="../classes/Everyman.Neo4j.Command.Batch.CreateNode.html">CreateNode</a></li>
+                                                    <li class="class"><a href="../classes/Everyman.Neo4j.Command.Batch.CreateRelationship.html">CreateRelationship</a></li>
+                                                    <li class="class"><a href="../classes/Everyman.Neo4j.Command.Batch.DeleteNode.html">DeleteNode</a></li>
+                                                    <li class="class"><a href="../classes/Everyman.Neo4j.Command.Batch.DeleteRelationship.html">DeleteRelationship</a></li>
+                                                    <li class="class"><a href="../classes/Everyman.Neo4j.Command.Batch.RemoveFromIndex.html">RemoveFromIndex</a></li>
+                                                    <li class="class"><a href="../classes/Everyman.Neo4j.Command.Batch.UpdateNode.html">UpdateNode</a></li>
+                                                    <li class="class"><a href="../classes/Everyman.Neo4j.Command.Batch.UpdateRelationship.html">UpdateRelationship</a></li>
+                                            </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+
+                    
+                    <ul>
+                                                                                                    <li class="class"><a href="../classes/Everyman.Neo4j.Command.AddToIndex.html">AddToIndex</a></li>
+                                                    <li class="class"><a href="../classes/Everyman.Neo4j.Command.CreateNode.html">CreateNode</a></li>
+                                                    <li class="class"><a href="../classes/Everyman.Neo4j.Command.CreateRelationship.html">CreateRelationship</a></li>
+                                                    <li class="class"><a href="../classes/Everyman.Neo4j.Command.DeleteIndex.html">DeleteIndex</a></li>
+                                                    <li class="class"><a href="../classes/Everyman.Neo4j.Command.DeleteNode.html">DeleteNode</a></li>
+                                                    <li class="class"><a href="../classes/Everyman.Neo4j.Command.DeleteRelationship.html">DeleteRelationship</a></li>
+                                                    <li class="class"><a href="../classes/Everyman.Neo4j.Command.ExecuteCypherQuery.html">ExecuteCypherQuery</a></li>
+                                                    <li class="class"><a href="../classes/Everyman.Neo4j.Command.ExecuteGremlinQuery.html">ExecuteGremlinQuery</a></li>
+                                                    <li class="class"><a href="../classes/Everyman.Neo4j.Command.ExecutePagedTraversal.html">ExecutePagedTraversal</a></li>
+                                                    <li class="class"><a href="../classes/Everyman.Neo4j.Command.ExecuteTraversal.html">ExecuteTraversal</a></li>
+                                                    <li class="class"><a href="../classes/Everyman.Neo4j.Command.GetIndexes.html">GetIndexes</a></li>
+                                                    <li class="class"><a href="../classes/Everyman.Neo4j.Command.GetNode.html">GetNode</a></li>
+                                                    <li class="class"><a href="../classes/Everyman.Neo4j.Command.GetNodeRelationships.html">GetNodeRelationships</a></li>
+                                                    <li class="class"><a href="../classes/Everyman.Neo4j.Command.GetPaths.html">GetPaths</a></li>
+                                                    <li class="class"><a href="../classes/Everyman.Neo4j.Command.GetRelationship.html">GetRelationship</a></li>
+                                                    <li class="class"><a href="../classes/Everyman.Neo4j.Command.GetRelationshipTypes.html">GetRelationshipTypes</a></li>
+                                                    <li class="class"><a href="../classes/Everyman.Neo4j.Command.GetServerInfo.html">GetServerInfo</a></li>
+                                                    <li class="class"><a href="../classes/Everyman.Neo4j.Command.QueryIndex.html">QueryIndex</a></li>
+                                                    <li class="class"><a href="../classes/Everyman.Neo4j.Command.RemoveFromIndex.html">RemoveFromIndex</a></li>
+                                                    <li class="class"><a href="../classes/Everyman.Neo4j.Command.SaveIndex.html">SaveIndex</a></li>
+                                                    <li class="class"><a href="../classes/Everyman.Neo4j.Command.SearchIndex.html">SearchIndex</a></li>
+                                                    <li class="class"><a href="../classes/Everyman.Neo4j.Command.UpdateNode.html">UpdateNode</a></li>
+                                                    <li class="class"><a href="../classes/Everyman.Neo4j.Command.UpdateRelationship.html">UpdateRelationship</a></li>
+                                            </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+
+                                                    <div class="accordion" style="margin-bottom: 0">
+        <div class="accordion-group">
+            <div class="accordion-heading">
+                                    <a class="accordion-toggle collapsed" data-toggle="collapse" data-target="#namespace-851888217"></a>
+                                <a href="../namespaces/Everyman.Neo4j.Cypher.html" style="margin-left: 30px; padding-left: 0">Cypher</a>
+            </div>
+            <div id="namespace-851888217" class="accordion-body collapse ">
+                <div class="accordion-inner">
+
+                    
+                    <ul>
+                                                                                                    <li class="class"><a href="../classes/Everyman.Neo4j.Cypher.Query.html">Query</a></li>
+                                            </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+
+                                                    <div class="accordion" style="margin-bottom: 0">
+        <div class="accordion-group">
+            <div class="accordion-heading">
+                                    <a class="accordion-toggle collapsed" data-toggle="collapse" data-target="#namespace-1829706059"></a>
+                                <a href="../namespaces/Everyman.Neo4j.Geoff.html" style="margin-left: 30px; padding-left: 0">Geoff</a>
+            </div>
+            <div id="namespace-1829706059" class="accordion-body collapse ">
+                <div class="accordion-inner">
+
+                    
+                    <ul>
+                                                                                                    <li class="class"><a href="../classes/Everyman.Neo4j.Geoff.Exporter.html">Exporter</a></li>
+                                                    <li class="class"><a href="../classes/Everyman.Neo4j.Geoff.Importer.html">Importer</a></li>
+                                            </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+
+                                                    <div class="accordion" style="margin-bottom: 0">
+        <div class="accordion-group">
+            <div class="accordion-heading">
+                                    <a class="accordion-toggle collapsed" data-toggle="collapse" data-target="#namespace-1506939174"></a>
+                                <a href="../namespaces/Everyman.Neo4j.Gremlin.html" style="margin-left: 30px; padding-left: 0">Gremlin</a>
+            </div>
+            <div id="namespace-1506939174" class="accordion-body collapse ">
+                <div class="accordion-inner">
+
+                    
+                    <ul>
+                                                                                                    <li class="class"><a href="../classes/Everyman.Neo4j.Gremlin.Query.html">Query</a></li>
+                                            </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+
+                                                    <div class="accordion" style="margin-bottom: 0">
+        <div class="accordion-group">
+            <div class="accordion-heading">
+                                    <a class="accordion-toggle collapsed" data-toggle="collapse" data-target="#namespace-1144219122"></a>
+                                <a href="../namespaces/Everyman.Neo4j.Index.html" style="margin-left: 30px; padding-left: 0">Index</a>
+            </div>
+            <div id="namespace-1144219122" class="accordion-body collapse ">
+                <div class="accordion-inner">
+
+                    
+                    <ul>
+                                                                                                    <li class="class"><a href="../classes/Everyman.Neo4j.Index.NodeFulltextIndex.html">NodeFulltextIndex</a></li>
+                                                    <li class="class"><a href="../classes/Everyman.Neo4j.Index.NodeIndex.html">NodeIndex</a></li>
+                                                    <li class="class"><a href="../classes/Everyman.Neo4j.Index.RelationshipIndex.html">RelationshipIndex</a></li>
+                                            </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+
+                                                    <div class="accordion" style="margin-bottom: 0">
+        <div class="accordion-group">
+            <div class="accordion-heading">
+                                    <a class="accordion-toggle collapsed" data-toggle="collapse" data-target="#namespace-1355412247"></a>
+                                <a href="../namespaces/Everyman.Neo4j.Query.html" style="margin-left: 30px; padding-left: 0">Query</a>
+            </div>
+            <div id="namespace-1355412247" class="accordion-body collapse ">
+                <div class="accordion-inner">
+
+                    
+                    <ul>
+                                                                                                    <li class="class"><a href="../classes/Everyman.Neo4j.Query.ResultSet.html">ResultSet</a></li>
+                                                    <li class="class"><a href="../classes/Everyman.Neo4j.Query.Row.html">Row</a></li>
+                                            </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+
+                    
+                    <ul>
+                                                    <li class="interface"><a href="../classes/Everyman.Neo4j.Cache.html">Cache</a></li>
+                                                    <li class="interface"><a href="../classes/Everyman.Neo4j.Query.html">Query</a></li>
+                                                                                                    <li class="class"><a href="../classes/Everyman.Neo4j.Batch.html">Batch</a></li>
+                                                    <li class="class"><a href="../classes/Everyman.Neo4j.Client.html">Client</a></li>
+                                                    <li class="class"><a href="../classes/Everyman.Neo4j.Command.html">Command</a></li>
+                                                    <li class="class"><a href="../classes/Everyman.Neo4j.EntityMapper.html">EntityMapper</a></li>
+                                                    <li class="class"><a href="../classes/Everyman.Neo4j.Exception.html">Exception</a></li>
+                                                    <li class="class"><a href="../classes/Everyman.Neo4j.Geoff.html">Geoff</a></li>
+                                                    <li class="class"><a href="../classes/Everyman.Neo4j.Index.html">Index</a></li>
+                                                    <li class="class"><a href="../classes/Everyman.Neo4j.Node.html">Node</a></li>
+                                                    <li class="class"><a href="../classes/Everyman.Neo4j.Pager.html">Pager</a></li>
+                                                    <li class="class"><a href="../classes/Everyman.Neo4j.Path.html">Path</a></li>
+                                                    <li class="class"><a href="../classes/Everyman.Neo4j.PathFinder.html">PathFinder</a></li>
+                                                    <li class="class"><a href="../classes/Everyman.Neo4j.PropertyContainer.html">PropertyContainer</a></li>
+                                                    <li class="class"><a href="../classes/Everyman.Neo4j.Relationship.html">Relationship</a></li>
+                                                    <li class="class"><a href="../classes/Everyman.Neo4j.Transport.html">Transport</a></li>
+                                                    <li class="class"><a href="../classes/Everyman.Neo4j.Traversal.html">Traversal</a></li>
+                                            </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+
+                    
+                    <ul>
+                                                                                            </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+
+                    
+                    <ul>
+                                                                                            </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+
+        </div>
+    </section>
+    <section class="row-fluid">
+        <div class="span10 offset2">
+            <div class="row-fluid">
+                <div class="span8 content class">
+                    <nav>
+                                                <a href="../namespaces/Everyman.Neo4j.html">\Everyman\Neo4j</a> <i class="icon-level-up"></i>
+                                            </nav>
+                    <a href="#source-view" role="button" class="pull-right btn" data-toggle="modal"><i class="icon-code"></i></a>
+
+                    <h1><small>\Everyman\Neo4j</small>Traversal</h1>
+                    <p><em>Holds the parameters for running a traversal</em></p>
+                    
+
+                    <section id="summary">
+                        <h2>Summary</h2>
+                        <section class="row-fluid heading">
+                            <section class="span4">
+                                <a href="#methods">Methods</a>
+                            </section>
+                            <section class="span4">
+                                <a href="#properties">Properties</a>
+                            </section>
+                            <section class="span4">
+                                <a href="#constants">Constants</a>
+                            </section>
+                        </section>
+                        <section class="row-fluid public">
+                            <section class="span4">
+                                                                    <a href="../classes/Everyman.Neo4j.Traversal.html#method___construct" class="">__construct()</a><br />
+                                                                    <a href="../classes/Everyman.Neo4j.Traversal.html#method_addRelationship" class="">addRelationship()</a><br />
+                                                                    <a href="../classes/Everyman.Neo4j.Traversal.html#method_getClient" class="">getClient()</a><br />
+                                                                    <a href="../classes/Everyman.Neo4j.Traversal.html#method_getMaxDepth" class="">getMaxDepth()</a><br />
+                                                                    <a href="../classes/Everyman.Neo4j.Traversal.html#method_getOrder" class="">getOrder()</a><br />
+                                                                    <a href="../classes/Everyman.Neo4j.Traversal.html#method_getPruneEvaluator" class="">getPruneEvaluator()</a><br />
+                                                                    <a href="../classes/Everyman.Neo4j.Traversal.html#method_getRelationships" class="">getRelationships()</a><br />
+                                                                    <a href="../classes/Everyman.Neo4j.Traversal.html#method_getResults" class="">getResults()</a><br />
+                                                                    <a href="../classes/Everyman.Neo4j.Traversal.html#method_getReturnFilter" class="">getReturnFilter()</a><br />
+                                                                    <a href="../classes/Everyman.Neo4j.Traversal.html#method_getSingleResult" class="">getSingleResult()</a><br />
+                                                                    <a href="../classes/Everyman.Neo4j.Traversal.html#method_getUniqueness" class="">getUniqueness()</a><br />
+                                                                    <a href="../classes/Everyman.Neo4j.Traversal.html#method_setMaxDepth" class="">setMaxDepth()</a><br />
+                                                                    <a href="../classes/Everyman.Neo4j.Traversal.html#method_setOrder" class="">setOrder()</a><br />
+                                                                    <a href="../classes/Everyman.Neo4j.Traversal.html#method_setPruneEvaluator" class="">setPruneEvaluator()</a><br />
+                                                                    <a href="../classes/Everyman.Neo4j.Traversal.html#method_setReturnFilter" class="">setReturnFilter()</a><br />
+                                                                    <a href="../classes/Everyman.Neo4j.Traversal.html#method_setUniqueness" class="">setUniqueness()</a><br />
+                                                            </section>
+                            <section class="span4">
+                                                                    <em>No public properties found</em>
+                                                            </section>
+                            <section class="span4">
+                                                                    <a href="../classes/Everyman.Neo4j.Traversal.html#constant_ReturnTypeNode" class="">ReturnTypeNode</a><br />
+                                                                    <a href="../classes/Everyman.Neo4j.Traversal.html#constant_ReturnTypeRelationship" class="">ReturnTypeRelationship</a><br />
+                                                                    <a href="../classes/Everyman.Neo4j.Traversal.html#constant_ReturnTypePath" class="">ReturnTypePath</a><br />
+                                                                    <a href="../classes/Everyman.Neo4j.Traversal.html#constant_ReturnTypeFullPath" class="">ReturnTypeFullPath</a><br />
+                                                                    <a href="../classes/Everyman.Neo4j.Traversal.html#constant_OrderDepthFirst" class="">OrderDepthFirst</a><br />
+                                                                    <a href="../classes/Everyman.Neo4j.Traversal.html#constant_OrderBreadthFirst" class="">OrderBreadthFirst</a><br />
+                                                                    <a href="../classes/Everyman.Neo4j.Traversal.html#constant_UniquenessNone" class="">UniquenessNone</a><br />
+                                                                    <a href="../classes/Everyman.Neo4j.Traversal.html#constant_UniquenessNodeGlobal" class="">UniquenessNodeGlobal</a><br />
+                                                                    <a href="../classes/Everyman.Neo4j.Traversal.html#constant_UniquenessRelationshipGlobal" class="">UniquenessRelationshipGlobal</a><br />
+                                                                    <a href="../classes/Everyman.Neo4j.Traversal.html#constant_UniquenessNodePath" class="">UniquenessNodePath</a><br />
+                                                                    <a href="../classes/Everyman.Neo4j.Traversal.html#constant_UniquenessRelationshipPath" class="">UniquenessRelationshipPath</a><br />
+                                                                    <a href="../classes/Everyman.Neo4j.Traversal.html#constant_Builtin" class="">Builtin</a><br />
+                                                                    <a href="../classes/Everyman.Neo4j.Traversal.html#constant_PruneNone" class="">PruneNone</a><br />
+                                                                    <a href="../classes/Everyman.Neo4j.Traversal.html#constant_ReturnAll" class="">ReturnAll</a><br />
+                                                                    <a href="../classes/Everyman.Neo4j.Traversal.html#constant_ReturnAllButStart" class="">ReturnAllButStart</a><br />
+                                                            </section>
+                        </section>
+                        <section class="row-fluid protected">
+                            <section class="span4">
+                                                                    <em>No protected methods found</em>
+                                                            </section>
+                            <section class="span4">
+                                                                    <a href="../classes/Everyman.Neo4j.Traversal.html#property_client" class="">$client</a><br />
+                                                                    <a href="../classes/Everyman.Neo4j.Traversal.html#property_order" class="">$order</a><br />
+                                                                    <a href="../classes/Everyman.Neo4j.Traversal.html#property_uniqueness" class="">$uniqueness</a><br />
+                                                                    <a href="../classes/Everyman.Neo4j.Traversal.html#property_maxDepth" class="">$maxDepth</a><br />
+                                                                    <a href="../classes/Everyman.Neo4j.Traversal.html#property_relationships" class="">$relationships</a><br />
+                                                                    <a href="../classes/Everyman.Neo4j.Traversal.html#property_pruneEvaluator" class="">$pruneEvaluator</a><br />
+                                                                    <a href="../classes/Everyman.Neo4j.Traversal.html#property_returnFilter" class="">$returnFilter</a><br />
+                                                            </section>
+                            <section class="span4">
+                                <em>N/A</em>
+                            </section>
+                        </section>
+                        <section class="row-fluid private">
+                            <section class="span4">
+                                                                    <em>No private methods found</em>
+                                                            </section>
+                            <section class="span4">
+                                                                    <em>No private properties found</em>
+                                                            </section>
+                            <section class="span4">
+                                <em>N/A</em>
+                            </section>
+                        </section>
+                    </section>
+                </div>
+                <aside class="span4 detailsbar">
+                                        
+                    
+                    <dl>
+                        <dt>File</dt>
+                            <dd><a href="../files/Traversal.html"><div class="path-wrapper">Traversal.php</div></a></dd>
+                                                <dt>Package</dt>
+                            <dd><div class="namespace-wrapper">\Default</div></dd>
+                                                <dt>Class hierarchy</dt>
+                            <dd class="hierarchy">
+                                                                                                                                                                    <div class="namespace-wrapper">\Everyman\Neo4j\Traversal</div>
+                            </dd>
+
+                        
+                        
+                        
+                        
+                                                                        </dl>
+                    <h2>Tags</h2>
+                    <table class="table table-condensed">
+                                            <tr><td colspan="2"><em>None found</em></td></tr>
+                                        </table>
+                </aside>
+            </div>
+
+                                    <a id="constants" name="constants"></a>
+            <div class="row-fluid">
+                <div class="span8 content class">
+                    <h2>Constants</h2>
+                </div>
+                <aside class="span4 detailsbar"></aside>
+            </div>
+
+                                <div class="row-fluid">
+        <div class="span8 content class">
+            <a id="constant_ReturnTypeNode" name="constant_ReturnTypeNode" class="anchor"></a>
+            <article id="constant_ReturnTypeNode" class="constant">
+                <h3 class="">ReturnTypeNode</h3>
+                <pre class="signature">ReturnTypeNode</pre>
+                <p><em></em></p>
+                
+            </article>
+        </div>
+        <aside class="span4 detailsbar">
+            <h1><i class="icon-arrow-down"></i></h1>
+                        <dl>
+                                                                            </dl>
+            <h2>Tags</h2>
+            <table class="table table-condensed">
+                                    <tr><td colspan="2"><em>None found</em></td></tr>
+                            </table>
+        </aside>
+    </div>
+
+                                    <div class="row-fluid">
+        <div class="span8 content class">
+            <a id="constant_ReturnTypeRelationship" name="constant_ReturnTypeRelationship" class="anchor"></a>
+            <article id="constant_ReturnTypeRelationship" class="constant">
+                <h3 class="">ReturnTypeRelationship</h3>
+                <pre class="signature">ReturnTypeRelationship</pre>
+                <p><em></em></p>
+                
+            </article>
+        </div>
+        <aside class="span4 detailsbar">
+            <h1><i class="icon-arrow-down"></i></h1>
+                        <dl>
+                                                                            </dl>
+            <h2>Tags</h2>
+            <table class="table table-condensed">
+                                    <tr><td colspan="2"><em>None found</em></td></tr>
+                            </table>
+        </aside>
+    </div>
+
+                                    <div class="row-fluid">
+        <div class="span8 content class">
+            <a id="constant_ReturnTypePath" name="constant_ReturnTypePath" class="anchor"></a>
+            <article id="constant_ReturnTypePath" class="constant">
+                <h3 class="">ReturnTypePath</h3>
+                <pre class="signature">ReturnTypePath</pre>
+                <p><em></em></p>
+                
+            </article>
+        </div>
+        <aside class="span4 detailsbar">
+            <h1><i class="icon-arrow-down"></i></h1>
+                        <dl>
+                                                                            </dl>
+            <h2>Tags</h2>
+            <table class="table table-condensed">
+                                    <tr><td colspan="2"><em>None found</em></td></tr>
+                            </table>
+        </aside>
+    </div>
+
+                                    <div class="row-fluid">
+        <div class="span8 content class">
+            <a id="constant_ReturnTypeFullPath" name="constant_ReturnTypeFullPath" class="anchor"></a>
+            <article id="constant_ReturnTypeFullPath" class="constant">
+                <h3 class="">ReturnTypeFullPath</h3>
+                <pre class="signature">ReturnTypeFullPath</pre>
+                <p><em></em></p>
+                
+            </article>
+        </div>
+        <aside class="span4 detailsbar">
+            <h1><i class="icon-arrow-down"></i></h1>
+                        <dl>
+                                                                            </dl>
+            <h2>Tags</h2>
+            <table class="table table-condensed">
+                                    <tr><td colspan="2"><em>None found</em></td></tr>
+                            </table>
+        </aside>
+    </div>
+
+                                    <div class="row-fluid">
+        <div class="span8 content class">
+            <a id="constant_OrderDepthFirst" name="constant_OrderDepthFirst" class="anchor"></a>
+            <article id="constant_OrderDepthFirst" class="constant">
+                <h3 class="">OrderDepthFirst</h3>
+                <pre class="signature">OrderDepthFirst</pre>
+                <p><em></em></p>
+                
+            </article>
+        </div>
+        <aside class="span4 detailsbar">
+            <h1><i class="icon-arrow-down"></i></h1>
+                        <dl>
+                                                                            </dl>
+            <h2>Tags</h2>
+            <table class="table table-condensed">
+                                    <tr><td colspan="2"><em>None found</em></td></tr>
+                            </table>
+        </aside>
+    </div>
+
+                                    <div class="row-fluid">
+        <div class="span8 content class">
+            <a id="constant_OrderBreadthFirst" name="constant_OrderBreadthFirst" class="anchor"></a>
+            <article id="constant_OrderBreadthFirst" class="constant">
+                <h3 class="">OrderBreadthFirst</h3>
+                <pre class="signature">OrderBreadthFirst</pre>
+                <p><em></em></p>
+                
+            </article>
+        </div>
+        <aside class="span4 detailsbar">
+            <h1><i class="icon-arrow-down"></i></h1>
+                        <dl>
+                                                                            </dl>
+            <h2>Tags</h2>
+            <table class="table table-condensed">
+                                    <tr><td colspan="2"><em>None found</em></td></tr>
+                            </table>
+        </aside>
+    </div>
+
+                                    <div class="row-fluid">
+        <div class="span8 content class">
+            <a id="constant_UniquenessNone" name="constant_UniquenessNone" class="anchor"></a>
+            <article id="constant_UniquenessNone" class="constant">
+                <h3 class="">UniquenessNone</h3>
+                <pre class="signature">UniquenessNone</pre>
+                <p><em></em></p>
+                
+            </article>
+        </div>
+        <aside class="span4 detailsbar">
+            <h1><i class="icon-arrow-down"></i></h1>
+                        <dl>
+                                                                            </dl>
+            <h2>Tags</h2>
+            <table class="table table-condensed">
+                                    <tr><td colspan="2"><em>None found</em></td></tr>
+                            </table>
+        </aside>
+    </div>
+
+                                    <div class="row-fluid">
+        <div class="span8 content class">
+            <a id="constant_UniquenessNodeGlobal" name="constant_UniquenessNodeGlobal" class="anchor"></a>
+            <article id="constant_UniquenessNodeGlobal" class="constant">
+                <h3 class="">UniquenessNodeGlobal</h3>
+                <pre class="signature">UniquenessNodeGlobal</pre>
+                <p><em></em></p>
+                
+            </article>
+        </div>
+        <aside class="span4 detailsbar">
+            <h1><i class="icon-arrow-down"></i></h1>
+                        <dl>
+                                                                            </dl>
+            <h2>Tags</h2>
+            <table class="table table-condensed">
+                                    <tr><td colspan="2"><em>None found</em></td></tr>
+                            </table>
+        </aside>
+    </div>
+
+                                    <div class="row-fluid">
+        <div class="span8 content class">
+            <a id="constant_UniquenessRelationshipGlobal" name="constant_UniquenessRelationshipGlobal" class="anchor"></a>
+            <article id="constant_UniquenessRelationshipGlobal" class="constant">
+                <h3 class="">UniquenessRelationshipGlobal</h3>
+                <pre class="signature">UniquenessRelationshipGlobal</pre>
+                <p><em></em></p>
+                
+            </article>
+        </div>
+        <aside class="span4 detailsbar">
+            <h1><i class="icon-arrow-down"></i></h1>
+                        <dl>
+                                                                            </dl>
+            <h2>Tags</h2>
+            <table class="table table-condensed">
+                                    <tr><td colspan="2"><em>None found</em></td></tr>
+                            </table>
+        </aside>
+    </div>
+
+                                    <div class="row-fluid">
+        <div class="span8 content class">
+            <a id="constant_UniquenessNodePath" name="constant_UniquenessNodePath" class="anchor"></a>
+            <article id="constant_UniquenessNodePath" class="constant">
+                <h3 class="">UniquenessNodePath</h3>
+                <pre class="signature">UniquenessNodePath</pre>
+                <p><em></em></p>
+                
+            </article>
+        </div>
+        <aside class="span4 detailsbar">
+            <h1><i class="icon-arrow-down"></i></h1>
+                        <dl>
+                                                                            </dl>
+            <h2>Tags</h2>
+            <table class="table table-condensed">
+                                    <tr><td colspan="2"><em>None found</em></td></tr>
+                            </table>
+        </aside>
+    </div>
+
+                                    <div class="row-fluid">
+        <div class="span8 content class">
+            <a id="constant_UniquenessRelationshipPath" name="constant_UniquenessRelationshipPath" class="anchor"></a>
+            <article id="constant_UniquenessRelationshipPath" class="constant">
+                <h3 class="">UniquenessRelationshipPath</h3>
+                <pre class="signature">UniquenessRelationshipPath</pre>
+                <p><em></em></p>
+                
+            </article>
+        </div>
+        <aside class="span4 detailsbar">
+            <h1><i class="icon-arrow-down"></i></h1>
+                        <dl>
+                                                                            </dl>
+            <h2>Tags</h2>
+            <table class="table table-condensed">
+                                    <tr><td colspan="2"><em>None found</em></td></tr>
+                            </table>
+        </aside>
+    </div>
+
+                                    <div class="row-fluid">
+        <div class="span8 content class">
+            <a id="constant_Builtin" name="constant_Builtin" class="anchor"></a>
+            <article id="constant_Builtin" class="constant">
+                <h3 class="">Builtin</h3>
+                <pre class="signature">Builtin</pre>
+                <p><em></em></p>
+                
+            </article>
+        </div>
+        <aside class="span4 detailsbar">
+            <h1><i class="icon-arrow-down"></i></h1>
+                        <dl>
+                                                                            </dl>
+            <h2>Tags</h2>
+            <table class="table table-condensed">
+                                    <tr><td colspan="2"><em>None found</em></td></tr>
+                            </table>
+        </aside>
+    </div>
+
+                                    <div class="row-fluid">
+        <div class="span8 content class">
+            <a id="constant_PruneNone" name="constant_PruneNone" class="anchor"></a>
+            <article id="constant_PruneNone" class="constant">
+                <h3 class="">PruneNone</h3>
+                <pre class="signature">PruneNone</pre>
+                <p><em></em></p>
+                
+            </article>
+        </div>
+        <aside class="span4 detailsbar">
+            <h1><i class="icon-arrow-down"></i></h1>
+                        <dl>
+                                                                            </dl>
+            <h2>Tags</h2>
+            <table class="table table-condensed">
+                                    <tr><td colspan="2"><em>None found</em></td></tr>
+                            </table>
+        </aside>
+    </div>
+
+                                    <div class="row-fluid">
+        <div class="span8 content class">
+            <a id="constant_ReturnAll" name="constant_ReturnAll" class="anchor"></a>
+            <article id="constant_ReturnAll" class="constant">
+                <h3 class="">ReturnAll</h3>
+                <pre class="signature">ReturnAll</pre>
+                <p><em></em></p>
+                
+            </article>
+        </div>
+        <aside class="span4 detailsbar">
+            <h1><i class="icon-arrow-down"></i></h1>
+                        <dl>
+                                                                            </dl>
+            <h2>Tags</h2>
+            <table class="table table-condensed">
+                                    <tr><td colspan="2"><em>None found</em></td></tr>
+                            </table>
+        </aside>
+    </div>
+
+                                    <div class="row-fluid">
+        <div class="span8 content class">
+            <a id="constant_ReturnAllButStart" name="constant_ReturnAllButStart" class="anchor"></a>
+            <article id="constant_ReturnAllButStart" class="constant">
+                <h3 class="">ReturnAllButStart</h3>
+                <pre class="signature">ReturnAllButStart</pre>
+                <p><em></em></p>
+                
+            </article>
+        </div>
+        <aside class="span4 detailsbar">
+            <h1><i class="icon-arrow-down"></i></h1>
+                        <dl>
+                                                                            </dl>
+            <h2>Tags</h2>
+            <table class="table table-condensed">
+                                    <tr><td colspan="2"><em>None found</em></td></tr>
+                            </table>
+        </aside>
+    </div>
+
+                            
+                                    <a id="properties" name="properties"></a>
+            <div class="row-fluid">
+                <div class="span8 content class">
+                    <h2>Properties</h2>
+                </div>
+                <aside class="span4 detailsbar"></aside>
+            </div>
+
+                                                    <div class="row-fluid">
+        <div class="span8 content class">
+            <a id="property_client" name="property_client" class="anchor"></a>
+            <article class="property">
+                <h3 class="protected ">$client</h3>
+                <pre class="signature">$client : </pre>
+                <p><em></em></p>
+                
+
+                                <h4>Type</h4>
+                
+                                            </article>
+        </div>
+        <aside class="span4 detailsbar">
+            <h1><i class="icon-arrow-down"></i></h1>
+                        <dl>
+                                                            </dl>
+            <h2>Tags</h2>
+            <table class="table table-condensed">
+                                    <tr><td colspan="2"><em>None found</em></td></tr>
+                            </table>
+        </aside>
+    </div>
+
+                                    <div class="row-fluid">
+        <div class="span8 content class">
+            <a id="property_order" name="property_order" class="anchor"></a>
+            <article class="property">
+                <h3 class="protected ">$order</h3>
+                <pre class="signature">$order : </pre>
+                <p><em></em></p>
+                
+
+                                <h4>Type</h4>
+                
+                                            </article>
+        </div>
+        <aside class="span4 detailsbar">
+            <h1><i class="icon-arrow-down"></i></h1>
+                        <dl>
+                                                            </dl>
+            <h2>Tags</h2>
+            <table class="table table-condensed">
+                                    <tr><td colspan="2"><em>None found</em></td></tr>
+                            </table>
+        </aside>
+    </div>
+
+                                    <div class="row-fluid">
+        <div class="span8 content class">
+            <a id="property_uniqueness" name="property_uniqueness" class="anchor"></a>
+            <article class="property">
+                <h3 class="protected ">$uniqueness</h3>
+                <pre class="signature">$uniqueness : </pre>
+                <p><em></em></p>
+                
+
+                                <h4>Type</h4>
+                
+                                            </article>
+        </div>
+        <aside class="span4 detailsbar">
+            <h1><i class="icon-arrow-down"></i></h1>
+                        <dl>
+                                                            </dl>
+            <h2>Tags</h2>
+            <table class="table table-condensed">
+                                    <tr><td colspan="2"><em>None found</em></td></tr>
+                            </table>
+        </aside>
+    </div>
+
+                                    <div class="row-fluid">
+        <div class="span8 content class">
+            <a id="property_maxDepth" name="property_maxDepth" class="anchor"></a>
+            <article class="property">
+                <h3 class="protected ">$maxDepth</h3>
+                <pre class="signature">$maxDepth : </pre>
+                <p><em></em></p>
+                
+
+                                <h4>Type</h4>
+                
+                                            </article>
+        </div>
+        <aside class="span4 detailsbar">
+            <h1><i class="icon-arrow-down"></i></h1>
+                        <dl>
+                                                            </dl>
+            <h2>Tags</h2>
+            <table class="table table-condensed">
+                                    <tr><td colspan="2"><em>None found</em></td></tr>
+                            </table>
+        </aside>
+    </div>
+
+                                    <div class="row-fluid">
+        <div class="span8 content class">
+            <a id="property_relationships" name="property_relationships" class="anchor"></a>
+            <article class="property">
+                <h3 class="protected ">$relationships</h3>
+                <pre class="signature">$relationships : </pre>
+                <p><em></em></p>
+                
+
+                                <h4>Type</h4>
+                
+                                            </article>
+        </div>
+        <aside class="span4 detailsbar">
+            <h1><i class="icon-arrow-down"></i></h1>
+                        <dl>
+                                                            </dl>
+            <h2>Tags</h2>
+            <table class="table table-condensed">
+                                    <tr><td colspan="2"><em>None found</em></td></tr>
+                            </table>
+        </aside>
+    </div>
+
+                                    <div class="row-fluid">
+        <div class="span8 content class">
+            <a id="property_pruneEvaluator" name="property_pruneEvaluator" class="anchor"></a>
+            <article class="property">
+                <h3 class="protected ">$pruneEvaluator</h3>
+                <pre class="signature">$pruneEvaluator : </pre>
+                <p><em></em></p>
+                
+
+                                <h4>Type</h4>
+                
+                                            </article>
+        </div>
+        <aside class="span4 detailsbar">
+            <h1><i class="icon-arrow-down"></i></h1>
+                        <dl>
+                                                            </dl>
+            <h2>Tags</h2>
+            <table class="table table-condensed">
+                                    <tr><td colspan="2"><em>None found</em></td></tr>
+                            </table>
+        </aside>
+    </div>
+
+                                    <div class="row-fluid">
+        <div class="span8 content class">
+            <a id="property_returnFilter" name="property_returnFilter" class="anchor"></a>
+            <article class="property">
+                <h3 class="protected ">$returnFilter</h3>
+                <pre class="signature">$returnFilter : </pre>
+                <p><em></em></p>
+                
+
+                                <h4>Type</h4>
+                
+                                            </article>
+        </div>
+        <aside class="span4 detailsbar">
+            <h1><i class="icon-arrow-down"></i></h1>
+                        <dl>
+                                                            </dl>
+            <h2>Tags</h2>
+            <table class="table table-condensed">
+                                    <tr><td colspan="2"><em>None found</em></td></tr>
+                            </table>
+        </aside>
+    </div>
+
+                                            
+                                    <a id="methods" name="methods"></a>
+            <div class="row-fluid">
+                <div class="span8 content class"><h2>Methods</h2></div>
+                <aside class="span4 detailsbar"></aside>
+            </div>
+
+                                    <div class="row-fluid">
+        <div class="span8 content class">
+            <a id="method___construct" name="method___construct" class="anchor"></a>
+            <article class="method">
+                <h3 class="public ">__construct()</h3>
+                <a href="#source-view" role="button" class="pull-right btn" data-toggle="modal" style="font-size: 1.1em; padding: 9px 14px"><i class="icon-code"></i></a>
+                <pre class="signature" style="margin-right: 54px;">__construct(\Everyman\Neo4j\Client <span class="argument">$client</span>)</pre>
+                <p><em>Build the traversal and set its client</em></p>
+                
+
+                                    <h4>Parameters</h4>
+                    <table class="table table-condensed table-hover">
+                                                    <tr>
+                                <td><a href="../classes/Everyman.Neo4j.Client.html">\Everyman\Neo4j\Client</a></td>
+                                <td>$client </td>
+                                <td></td>
+                            </tr>
+                                            </table>
+                
+                
+                            </article>
+        </div>
+        <aside class="span4 detailsbar">
+            <h1><i class="icon-arrow-down"></i></h1>
+                                                            <dl>
+                                                                            </dl>
+            <h2>Tags</h2>
+            <table class="table table-condensed">
+                                    <tr><td colspan="2"><em>None found</em></td></tr>
+                            </table>
+        </aside>
+    </div>
+
+                                    <div class="row-fluid">
+        <div class="span8 content class">
+            <a id="method_addRelationship" name="method_addRelationship" class="anchor"></a>
+            <article class="method">
+                <h3 class="public ">addRelationship()</h3>
+                <a href="#source-view" role="button" class="pull-right btn" data-toggle="modal" style="font-size: 1.1em; padding: 9px 14px"><i class="icon-code"></i></a>
+                <pre class="signature" style="margin-right: 54px;">addRelationship(string <span class="argument">$type</span>, string <span class="argument">$direction</span>) : \Everyman\Neo4j\Traversal</pre>
+                <p><em>Add a relationship type and direction</em></p>
+                
+
+                                    <h4>Parameters</h4>
+                    <table class="table table-condensed table-hover">
+                                                    <tr>
+                                <td>string</td>
+                                <td>$type </td>
+                                <td></td>
+                            </tr>
+                                                    <tr>
+                                <td>string</td>
+                                <td>$direction </td>
+                                <td></td>
+                            </tr>
+                                            </table>
+                
+                
+                                    <h4>Returns</h4>
+                    <a href="../classes/Everyman.Neo4j.Traversal.html">\Everyman\Neo4j\Traversal</a>
+                                                </article>
+        </div>
+        <aside class="span4 detailsbar">
+            <h1><i class="icon-arrow-down"></i></h1>
+                                                            <dl>
+                                                                            </dl>
+            <h2>Tags</h2>
+            <table class="table table-condensed">
+                                    <tr><td colspan="2"><em>None found</em></td></tr>
+                            </table>
+        </aside>
+    </div>
+
+                                    <div class="row-fluid">
+        <div class="span8 content class">
+            <a id="method_getClient" name="method_getClient" class="anchor"></a>
+            <article class="method">
+                <h3 class="public ">getClient()</h3>
+                <a href="#source-view" role="button" class="pull-right btn" data-toggle="modal" style="font-size: 1.1em; padding: 9px 14px"><i class="icon-code"></i></a>
+                <pre class="signature" style="margin-right: 54px;">getClient() : \Everyman\Neo4j\Client</pre>
+                <p><em>Get the finder&#039;s client</em></p>
+                
+
+                
+                
+                                    <h4>Returns</h4>
+                    <a href="../classes/Everyman.Neo4j.Client.html">\Everyman\Neo4j\Client</a>
+                                                </article>
+        </div>
+        <aside class="span4 detailsbar">
+            <h1><i class="icon-arrow-down"></i></h1>
+                                                            <dl>
+                                                                            </dl>
+            <h2>Tags</h2>
+            <table class="table table-condensed">
+                                    <tr><td colspan="2"><em>None found</em></td></tr>
+                            </table>
+        </aside>
+    </div>
+
+                                    <div class="row-fluid">
+        <div class="span8 content class">
+            <a id="method_getMaxDepth" name="method_getMaxDepth" class="anchor"></a>
+            <article class="method">
+                <h3 class="public ">getMaxDepth()</h3>
+                <a href="#source-view" role="button" class="pull-right btn" data-toggle="modal" style="font-size: 1.1em; padding: 9px 14px"><i class="icon-code"></i></a>
+                <pre class="signature" style="margin-right: 54px;">getMaxDepth() : integer</pre>
+                <p><em>Get the maximum allowed path length</em></p>
+                
+
+                
+                
+                                    <h4>Returns</h4>
+                    integer
+                                                </article>
+        </div>
+        <aside class="span4 detailsbar">
+            <h1><i class="icon-arrow-down"></i></h1>
+                                                            <dl>
+                                                                            </dl>
+            <h2>Tags</h2>
+            <table class="table table-condensed">
+                                    <tr><td colspan="2"><em>None found</em></td></tr>
+                            </table>
+        </aside>
+    </div>
+
+                                    <div class="row-fluid">
+        <div class="span8 content class">
+            <a id="method_getOrder" name="method_getOrder" class="anchor"></a>
+            <article class="method">
+                <h3 class="public ">getOrder()</h3>
+                <a href="#source-view" role="button" class="pull-right btn" data-toggle="modal" style="font-size: 1.1em; padding: 9px 14px"><i class="icon-code"></i></a>
+                <pre class="signature" style="margin-right: 54px;">getOrder() : string</pre>
+                <p><em>Return the order in which to traverse</em></p>
+                
+
+                
+                
+                                    <h4>Returns</h4>
+                    string
+                                                </article>
+        </div>
+        <aside class="span4 detailsbar">
+            <h1><i class="icon-arrow-down"></i></h1>
+                                                            <dl>
+                                                                            </dl>
+            <h2>Tags</h2>
+            <table class="table table-condensed">
+                                    <tr><td colspan="2"><em>None found</em></td></tr>
+                            </table>
+        </aside>
+    </div>
+
+                                    <div class="row-fluid">
+        <div class="span8 content class">
+            <a id="method_getPruneEvaluator" name="method_getPruneEvaluator" class="anchor"></a>
+            <article class="method">
+                <h3 class="public ">getPruneEvaluator()</h3>
+                <a href="#source-view" role="button" class="pull-right btn" data-toggle="modal" style="font-size: 1.1em; padding: 9px 14px"><i class="icon-code"></i></a>
+                <pre class="signature" style="margin-right: 54px;">getPruneEvaluator() : array</pre>
+                <p><em>Get the prune evaluator</em></p>
+                
+
+                
+                
+                                    <h4>Returns</h4>
+                    array
+                                            &mdash; <p>('language'=>..., 'body'=>...)</p>
+                                                </article>
+        </div>
+        <aside class="span4 detailsbar">
+            <h1><i class="icon-arrow-down"></i></h1>
+                                                            <dl>
+                                                                            </dl>
+            <h2>Tags</h2>
+            <table class="table table-condensed">
+                                    <tr><td colspan="2"><em>None found</em></td></tr>
+                            </table>
+        </aside>
+    </div>
+
+                                    <div class="row-fluid">
+        <div class="span8 content class">
+            <a id="method_getRelationships" name="method_getRelationships" class="anchor"></a>
+            <article class="method">
+                <h3 class="public ">getRelationships()</h3>
+                <a href="#source-view" role="button" class="pull-right btn" data-toggle="modal" style="font-size: 1.1em; padding: 9px 14px"><i class="icon-code"></i></a>
+                <pre class="signature" style="margin-right: 54px;">getRelationships() : array</pre>
+                <p><em>Get the relationship type and description</em></p>
+                
+
+                
+                
+                                    <h4>Returns</h4>
+                    array
+                                            &mdash; <p>('type'=>..., 'direction'=>...)</p>
+                                                </article>
+        </div>
+        <aside class="span4 detailsbar">
+            <h1><i class="icon-arrow-down"></i></h1>
+                                                            <dl>
+                                                                            </dl>
+            <h2>Tags</h2>
+            <table class="table table-condensed">
+                                    <tr><td colspan="2"><em>None found</em></td></tr>
+                            </table>
+        </aside>
+    </div>
+
+                                    <div class="row-fluid">
+        <div class="span8 content class">
+            <a id="method_getResults" name="method_getResults" class="anchor"></a>
+            <article class="method">
+                <h3 class="public ">getResults()</h3>
+                <a href="#source-view" role="button" class="pull-right btn" data-toggle="modal" style="font-size: 1.1em; padding: 9px 14px"><i class="icon-code"></i></a>
+                <pre class="signature" style="margin-right: 54px;">getResults(\Everyman\Neo4j\Node <span class="argument">$startNode</span>, string <span class="argument">$returnType</span>) : array</pre>
+                <p><em>Run the traversal, and return the results</em></p>
+                
+
+                                    <h4>Parameters</h4>
+                    <table class="table table-condensed table-hover">
+                                                    <tr>
+                                <td><a href="../classes/Everyman.Neo4j.Node.html">\Everyman\Neo4j\Node</a></td>
+                                <td>$startNode </td>
+                                <td></td>
+                            </tr>
+                                                    <tr>
+                                <td>string</td>
+                                <td>$returnType </td>
+                                <td></td>
+                            </tr>
+                                            </table>
+                
+                
+                                    <h4>Returns</h4>
+                    array
+                                                </article>
+        </div>
+        <aside class="span4 detailsbar">
+            <h1><i class="icon-arrow-down"></i></h1>
+                                                            <dl>
+                                                                            </dl>
+            <h2>Tags</h2>
+            <table class="table table-condensed">
+                                    <tr><td colspan="2"><em>None found</em></td></tr>
+                            </table>
+        </aside>
+    </div>
+
+                                    <div class="row-fluid">
+        <div class="span8 content class">
+            <a id="method_getReturnFilter" name="method_getReturnFilter" class="anchor"></a>
+            <article class="method">
+                <h3 class="public ">getReturnFilter()</h3>
+                <a href="#source-view" role="button" class="pull-right btn" data-toggle="modal" style="font-size: 1.1em; padding: 9px 14px"><i class="icon-code"></i></a>
+                <pre class="signature" style="margin-right: 54px;">getReturnFilter() : array</pre>
+                <p><em>Get the return filter</em></p>
+                
+
+                
+                
+                                    <h4>Returns</h4>
+                    array
+                                            &mdash; <p>('language'=>..., 'body'=>...)</p>
+                                                </article>
+        </div>
+        <aside class="span4 detailsbar">
+            <h1><i class="icon-arrow-down"></i></h1>
+                                                            <dl>
+                                                                            </dl>
+            <h2>Tags</h2>
+            <table class="table table-condensed">
+                                    <tr><td colspan="2"><em>None found</em></td></tr>
+                            </table>
+        </aside>
+    </div>
+
+                                    <div class="row-fluid">
+        <div class="span8 content class">
+            <a id="method_getSingleResult" name="method_getSingleResult" class="anchor"></a>
+            <article class="method">
+                <h3 class="public ">getSingleResult()</h3>
+                <a href="#source-view" role="button" class="pull-right btn" data-toggle="modal" style="font-size: 1.1em; padding: 9px 14px"><i class="icon-code"></i></a>
+                <pre class="signature" style="margin-right: 54px;">getSingleResult(\Everyman\Neo4j\Node <span class="argument">$startNode</span>, string <span class="argument">$returnType</span>) : mixed</pre>
+                <p><em>Run the traversal, and return the first result</em></p>
+                
+
+                                    <h4>Parameters</h4>
+                    <table class="table table-condensed table-hover">
+                                                    <tr>
+                                <td><a href="../classes/Everyman.Neo4j.Node.html">\Everyman\Neo4j\Node</a></td>
+                                <td>$startNode </td>
+                                <td></td>
+                            </tr>
+                                                    <tr>
+                                <td>string</td>
+                                <td>$returnType </td>
+                                <td></td>
+                            </tr>
+                                            </table>
+                
+                
+                                    <h4>Returns</h4>
+                    mixed
+                                                </article>
+        </div>
+        <aside class="span4 detailsbar">
+            <h1><i class="icon-arrow-down"></i></h1>
+                                                            <dl>
+                                                                            </dl>
+            <h2>Tags</h2>
+            <table class="table table-condensed">
+                                    <tr><td colspan="2"><em>None found</em></td></tr>
+                            </table>
+        </aside>
+    </div>
+
+                                    <div class="row-fluid">
+        <div class="span8 content class">
+            <a id="method_getUniqueness" name="method_getUniqueness" class="anchor"></a>
+            <article class="method">
+                <h3 class="public ">getUniqueness()</h3>
+                <a href="#source-view" role="button" class="pull-right btn" data-toggle="modal" style="font-size: 1.1em; padding: 9px 14px"><i class="icon-code"></i></a>
+                <pre class="signature" style="margin-right: 54px;">getUniqueness() : string</pre>
+                <p><em>Return the uniqueness of the traversal</em></p>
+                
+
+                
+                
+                                    <h4>Returns</h4>
+                    string
+                                                </article>
+        </div>
+        <aside class="span4 detailsbar">
+            <h1><i class="icon-arrow-down"></i></h1>
+                                                            <dl>
+                                                                            </dl>
+            <h2>Tags</h2>
+            <table class="table table-condensed">
+                                    <tr><td colspan="2"><em>None found</em></td></tr>
+                            </table>
+        </aside>
+    </div>
+
+                                    <div class="row-fluid">
+        <div class="span8 content class">
+            <a id="method_setMaxDepth" name="method_setMaxDepth" class="anchor"></a>
+            <article class="method">
+                <h3 class="public ">setMaxDepth()</h3>
+                <a href="#source-view" role="button" class="pull-right btn" data-toggle="modal" style="font-size: 1.1em; padding: 9px 14px"><i class="icon-code"></i></a>
+                <pre class="signature" style="margin-right: 54px;">setMaxDepth(integer <span class="argument">$max</span>) : \Everyman\Neo4j\Traversal</pre>
+                <p><em>Set the maximum allowed path length</em></p>
+                
+
+                                    <h4>Parameters</h4>
+                    <table class="table table-condensed table-hover">
+                                                    <tr>
+                                <td>integer</td>
+                                <td>$max </td>
+                                <td></td>
+                            </tr>
+                                            </table>
+                
+                
+                                    <h4>Returns</h4>
+                    <a href="../classes/Everyman.Neo4j.Traversal.html">\Everyman\Neo4j\Traversal</a>
+                                                </article>
+        </div>
+        <aside class="span4 detailsbar">
+            <h1><i class="icon-arrow-down"></i></h1>
+                                                            <dl>
+                                                                            </dl>
+            <h2>Tags</h2>
+            <table class="table table-condensed">
+                                    <tr><td colspan="2"><em>None found</em></td></tr>
+                            </table>
+        </aside>
+    </div>
+
+                                    <div class="row-fluid">
+        <div class="span8 content class">
+            <a id="method_setOrder" name="method_setOrder" class="anchor"></a>
+            <article class="method">
+                <h3 class="public ">setOrder()</h3>
+                <a href="#source-view" role="button" class="pull-right btn" data-toggle="modal" style="font-size: 1.1em; padding: 9px 14px"><i class="icon-code"></i></a>
+                <pre class="signature" style="margin-right: 54px;">setOrder(string <span class="argument">$order</span>) : \Everyman\Neo4j\Traversal</pre>
+                <p><em>Set the order in which to traverse</em></p>
+                
+
+                                    <h4>Parameters</h4>
+                    <table class="table table-condensed table-hover">
+                                                    <tr>
+                                <td>string</td>
+                                <td>$order </td>
+                                <td></td>
+                            </tr>
+                                            </table>
+                
+                
+                                    <h4>Returns</h4>
+                    <a href="../classes/Everyman.Neo4j.Traversal.html">\Everyman\Neo4j\Traversal</a>
+                                                </article>
+        </div>
+        <aside class="span4 detailsbar">
+            <h1><i class="icon-arrow-down"></i></h1>
+                                                            <dl>
+                                                                            </dl>
+            <h2>Tags</h2>
+            <table class="table table-condensed">
+                                    <tr><td colspan="2"><em>None found</em></td></tr>
+                            </table>
+        </aside>
+    </div>
+
+                                    <div class="row-fluid">
+        <div class="span8 content class">
+            <a id="method_setPruneEvaluator" name="method_setPruneEvaluator" class="anchor"></a>
+            <article class="method">
+                <h3 class="public ">setPruneEvaluator()</h3>
+                <a href="#source-view" role="button" class="pull-right btn" data-toggle="modal" style="font-size: 1.1em; padding: 9px 14px"><i class="icon-code"></i></a>
+                <pre class="signature" style="margin-right: 54px;">setPruneEvaluator(string <span class="argument">$language</span>, string <span class="argument">$body</span>) : \Everyman\Neo4j\Traversal</pre>
+                <p><em>Set the prune evaluator
+If language is one of the special builtin self::Prune* constants,
+the evaluator language will be set to &#039;builtin&#039; and the body
+will be set to the value of the constant.</em></p>
+                
+
+                                    <h4>Parameters</h4>
+                    <table class="table table-condensed table-hover">
+                                                    <tr>
+                                <td>string</td>
+                                <td>$language </td>
+                                <td></td>
+                            </tr>
+                                                    <tr>
+                                <td>string</td>
+                                <td>$body </td>
+                                <td></td>
+                            </tr>
+                                            </table>
+                
+                
+                                    <h4>Returns</h4>
+                    <a href="../classes/Everyman.Neo4j.Traversal.html">\Everyman\Neo4j\Traversal</a>
+                                                </article>
+        </div>
+        <aside class="span4 detailsbar">
+            <h1><i class="icon-arrow-down"></i></h1>
+                                                            <dl>
+                                                                            </dl>
+            <h2>Tags</h2>
+            <table class="table table-condensed">
+                                    <tr><td colspan="2"><em>None found</em></td></tr>
+                            </table>
+        </aside>
+    </div>
+
+                                    <div class="row-fluid">
+        <div class="span8 content class">
+            <a id="method_setReturnFilter" name="method_setReturnFilter" class="anchor"></a>
+            <article class="method">
+                <h3 class="public ">setReturnFilter()</h3>
+                <a href="#source-view" role="button" class="pull-right btn" data-toggle="modal" style="font-size: 1.1em; padding: 9px 14px"><i class="icon-code"></i></a>
+                <pre class="signature" style="margin-right: 54px;">setReturnFilter(string <span class="argument">$language</span>, string <span class="argument">$body</span>) : \Everyman\Neo4j\Traversal</pre>
+                <p><em>Set the return filter
+If language is one of the special builtin self::Return* constants,
+the filter language will be set to &#039;builtin&#039; and the body
+will be set to the value of the constant.</em></p>
+                
+
+                                    <h4>Parameters</h4>
+                    <table class="table table-condensed table-hover">
+                                                    <tr>
+                                <td>string</td>
+                                <td>$language </td>
+                                <td></td>
+                            </tr>
+                                                    <tr>
+                                <td>string</td>
+                                <td>$body </td>
+                                <td></td>
+                            </tr>
+                                            </table>
+                
+                
+                                    <h4>Returns</h4>
+                    <a href="../classes/Everyman.Neo4j.Traversal.html">\Everyman\Neo4j\Traversal</a>
+                                                </article>
+        </div>
+        <aside class="span4 detailsbar">
+            <h1><i class="icon-arrow-down"></i></h1>
+                                                            <dl>
+                                                                            </dl>
+            <h2>Tags</h2>
+            <table class="table table-condensed">
+                                    <tr><td colspan="2"><em>None found</em></td></tr>
+                            </table>
+        </aside>
+    </div>
+
+                                    <div class="row-fluid">
+        <div class="span8 content class">
+            <a id="method_setUniqueness" name="method_setUniqueness" class="anchor"></a>
+            <article class="method">
+                <h3 class="public ">setUniqueness()</h3>
+                <a href="#source-view" role="button" class="pull-right btn" data-toggle="modal" style="font-size: 1.1em; padding: 9px 14px"><i class="icon-code"></i></a>
+                <pre class="signature" style="margin-right: 54px;">setUniqueness(string <span class="argument">$uniqueness</span>) : \Everyman\Neo4j\Traversal</pre>
+                <p><em>Set the uniquenss</em></p>
+                
+
+                                    <h4>Parameters</h4>
+                    <table class="table table-condensed table-hover">
+                                                    <tr>
+                                <td>string</td>
+                                <td>$uniqueness </td>
+                                <td></td>
+                            </tr>
+                                            </table>
+                
+                
+                                    <h4>Returns</h4>
+                    <a href="../classes/Everyman.Neo4j.Traversal.html">\Everyman\Neo4j\Traversal</a>
+                                                </article>
+        </div>
+        <aside class="span4 detailsbar">
+            <h1><i class="icon-arrow-down"></i></h1>
+                                                            <dl>
+                                                                            </dl>
+            <h2>Tags</h2>
+            <table class="table table-condensed">
+                                    <tr><td colspan="2"><em>None found</em></td></tr>
+                            </table>
+        </aside>
+    </div>
+
+                                                                    </div>
+    </section>
+
+    <div id="source-view" class="modal hide fade" tabindex="-1" role="dialog" aria-labelledby="source-view-label" aria-hidden="true">
+        <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+            <h3 id="source-view-label">Traversal.php</h3>
+        </div>
+        <div class="modal-body">
+            <pre data-src="../files/Traversal.php.txt" class="language-php line-numbers"></pre>
+        </div>
+    </div>
+
+    <footer class="row-fluid">
+        <section class="span10 offset2">
+            <section class="row-fluid">
+                <section class="span10 offset1">
+                    <section class="row-fluid footer-sections">
+                        <section class="span4">
+                                                        <h1><i class="icon-code"></i></h1>
+                            <div>
+                                <ul>
+                                                                            <li><a href="../namespaces/Everyman.html">\Everyman</a></li>
+                                                                    </ul>
+                            </div>
+                        </section>
+                        <section class="span4">
+                                                        <h1><i class="icon-bar-chart"></i></h1>
+                            <div>
+                                <ul>
+                                    <li><a href="../graphs/class.html">Class Hierarchy Diagram</a></li>
+                                </ul>
+                            </div>
+                        </section>
+                        <section class="span4">
+                                                        <h1><i class="icon-pushpin"></i></h1>
+                            <div>
+                                <ul>
+                                    <li><a href="../reports/errors.html">Errors</a></li>
+                                    <li><a href="../reports/markers.html">Markers</a></li>
+                                </ul>
+                            </div>
+                        </section>
+                    </section>
+                </section>
+            </section>
+            <section class="row-fluid">
+                <section class="span10 offset1">
+                    <hr />
+                    Documentation is powered by <a href="http://www.phpdoc.org/">phpDocumentor </a> and authored
+                    on July 10th, 2014 at 09:00.
+                </section>
+            </section>
+        </section>
+    </footer>
+</div>
+
+</body>
+</html>

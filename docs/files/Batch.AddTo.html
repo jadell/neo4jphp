@@ -9,8 +9,8 @@
 
     <link href="https://netdna.bootstrapcdn.com/twitter-bootstrap/2.3.2/css/bootstrap-combined.no-icons.min.css" rel="stylesheet">
     <link href="https://netdna.bootstrapcdn.com/font-awesome/3.2.1/css/font-awesome.min.css" rel="stylesheet">
-    <link href="css/prism.css" rel="stylesheet" media="all"/>
-    <link href="css/template.css" rel="stylesheet" media="all"/>
+    <link href="../css/prism.css" rel="stylesheet" media="all"/>
+    <link href="../css/template.css" rel="stylesheet" media="all"/>
     
     <!--[if lt IE 9]>
     <script src="https://html5shim.googlecode.com/svn/trunk/html5.js" type="text/javascript"></script>
@@ -18,14 +18,62 @@
     <script src="https://code.jquery.com/jquery-1.11.0.min.js" type="text/javascript"></script>
     <script src="https://code.jquery.com/ui/1.10.4/jquery-ui.min.js" type="text/javascript"></script>
     <script src="https://netdna.bootstrapcdn.com/twitter-bootstrap/2.3.2/js/bootstrap.min.js"></script>
-    <script src="js/jquery.smooth-scroll.js"></script>
-    <script src="js/prism.min.js"></script>
+    <script src="../js/jquery.smooth-scroll.js"></script>
+    <script src="../js/prism.min.js"></script>
     <!-- TODO: Add http://jscrollpane.kelvinluck.com/ to style the scrollbars for browsers not using webkit-->
-    
-    <link rel="shortcut icon" href="images/favicon.ico"/>
-    <link rel="apple-touch-icon" href="images/apple-touch-icon.png"/>
-    <link rel="apple-touch-icon" sizes="72x72" href="images/apple-touch-icon-72x72.png"/>
-    <link rel="apple-touch-icon" sizes="114x114" href="images/apple-touch-icon-114x114.png"/>
+        <script type="text/javascript">
+        function loadExternalCodeSnippets() {
+            Array.prototype.slice.call(document.querySelectorAll('pre[data-src]')).forEach(function (pre) {
+                var src = pre.getAttribute('data-src');
+                var extension = (src.match(/\.(\w+)$/) || [, ''])[1];
+                var language = 'php';
+
+                var code = document.createElement('code');
+                code.className = 'language-' + language;
+
+                pre.textContent = '';
+
+                code.textContent = 'Loading…';
+
+                pre.appendChild(code);
+
+                var xhr = new XMLHttpRequest();
+
+                xhr.open('GET', src, true);
+
+                xhr.onreadystatechange = function () {
+                    if (xhr.readyState == 4) {
+
+                        if (xhr.status < 400 && xhr.responseText) {
+                            code.textContent = xhr.responseText;
+
+                            Prism.highlightElement(code);
+                        }
+                        else if (xhr.status >= 400) {
+                            code.textContent = '✖ Error ' + xhr.status + ' while fetching file: ' + xhr.statusText;
+                        }
+                        else {
+                            code.textContent = '✖ Error: File does not exist or is empty';
+                        }
+                    }
+                };
+
+                xhr.send(null);
+            });
+        }
+
+        $(document).ready(function(){
+            loadExternalCodeSnippets();
+        });
+        $('#source-view').on('shown', function () {
+            loadExternalCodeSnippets();
+        })
+    </script>
+
+    <link rel="shortcut icon" href="../images/favicon.ico"/>
+    <link rel="apple-touch-icon" href="../images/apple-touch-icon.png"/>
+    <link rel="apple-touch-icon" sizes="72x72" href="../images/apple-touch-icon-72x72.png"/>
+    <link rel="apple-touch-icon" sizes="114x114" href="../images/apple-touch-icon-114x114.png"/>
 </head>
 <body>
 
@@ -35,16 +83,16 @@
             <a class="btn btn-navbar" data-toggle="collapse" data-target=".nav-collapse">
                 <i class="icon-ellipsis-vertical"></i>
             </a>
-            <a class="brand" href="index.html">API Documentation</a>
+            <a class="brand" href="../index.html">API Documentation</a>
 
             <div class="nav-collapse">
                 <ul class="nav pull-right">
                                         <li class="dropdown">
-                        <a href="index.html" class="dropdown-toggle" data-toggle="dropdown">
+                        <a href="../index.html" class="dropdown-toggle" data-toggle="dropdown">
                             API Documentation <b class="caret"></b>
                         </a>
                         <ul class="dropdown-menu">
-                                                        <li><a href="namespaces/Everyman.html">\Everyman</a></li>
+                                                        <li><a href="../namespaces/Everyman.html">\Everyman</a></li>
                                                     </ul>
                     </li>
                                         <li class="dropdown" id="charts-menu">
@@ -53,7 +101,7 @@
                         </a>
                         <ul class="dropdown-menu">
                             <li>
-                                <a href="graphs/class.html">
+                                <a href="../graphs/class.html">
                                     <i class="icon-list-alt"></i>&#160;Class hierarchy diagram
                                 </a>
                             </li>
@@ -65,17 +113,17 @@
                         </a>
                         <ul class="dropdown-menu">
                             <li>
-                                <a href="reports/errors.html">
+                                <a href="../reports/errors.html">
                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                         <i class="icon-list-alt"></i>&#160;Errors <span class="label label-info pull-right">225</span>
                                 </a>
                             </li>
                             <li>
-                                <a href="reports/markers.html">
+                                <a href="../reports/markers.html">
                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                         <i class="icon-list-alt"></i>&#160;Markers <span class="label label-info pull-right">17</span>
                                 </a>
                             </li>
                             <li>
-                                <a href="reports/deprecated.html">
+                                <a href="../reports/deprecated.html">
                                                                                                             <i class="icon-list-alt"></i>&#160;Deprecated <span class="label label-info pull-right">0</span>
                                 </a>
                             </li>
@@ -96,46 +144,46 @@
                                 <div class="accordion" style="margin-bottom: 0">
         <div class="accordion-group">
             <div class="accordion-heading">
-                                    <a class="accordion-toggle " data-toggle="collapse" data-target="#namespace-612942172"></a>
-                                <a href="namespaces/default.html" style="margin-left: 30px; padding-left: 0">\</a>
+                                    <a class="accordion-toggle " data-toggle="collapse" data-target="#namespace-914492813"></a>
+                                <a href="../namespaces/default.html" style="margin-left: 30px; padding-left: 0">\</a>
             </div>
-            <div id="namespace-612942172" class="accordion-body collapse in">
+            <div id="namespace-914492813" class="accordion-body collapse in">
                 <div class="accordion-inner">
 
                                                     <div class="accordion" style="margin-bottom: 0">
         <div class="accordion-group">
             <div class="accordion-heading">
-                                    <a class="accordion-toggle collapsed" data-toggle="collapse" data-target="#namespace-492474927"></a>
-                                <a href="namespaces/Everyman.html" style="margin-left: 30px; padding-left: 0">Everyman</a>
+                                    <a class="accordion-toggle collapsed" data-toggle="collapse" data-target="#namespace-242978216"></a>
+                                <a href="../namespaces/Everyman.html" style="margin-left: 30px; padding-left: 0">Everyman</a>
             </div>
-            <div id="namespace-492474927" class="accordion-body collapse ">
+            <div id="namespace-242978216" class="accordion-body collapse ">
                 <div class="accordion-inner">
 
                                                     <div class="accordion" style="margin-bottom: 0">
         <div class="accordion-group">
             <div class="accordion-heading">
-                                    <a class="accordion-toggle collapsed" data-toggle="collapse" data-target="#namespace-1585471094"></a>
-                                <a href="namespaces/Everyman.Neo4j.html" style="margin-left: 30px; padding-left: 0">Neo4j</a>
+                                    <a class="accordion-toggle collapsed" data-toggle="collapse" data-target="#namespace-886980550"></a>
+                                <a href="../namespaces/Everyman.Neo4j.html" style="margin-left: 30px; padding-left: 0">Neo4j</a>
             </div>
-            <div id="namespace-1585471094" class="accordion-body collapse ">
+            <div id="namespace-886980550" class="accordion-body collapse ">
                 <div class="accordion-inner">
 
                                                     <div class="accordion" style="margin-bottom: 0">
         <div class="accordion-group">
             <div class="accordion-heading">
-                                    <a class="accordion-toggle collapsed" data-toggle="collapse" data-target="#namespace-1921011109"></a>
-                                <a href="namespaces/Everyman.Neo4j.Batch.html" style="margin-left: 30px; padding-left: 0">Batch</a>
+                                    <a class="accordion-toggle collapsed" data-toggle="collapse" data-target="#namespace-140172489"></a>
+                                <a href="../namespaces/Everyman.Neo4j.Batch.html" style="margin-left: 30px; padding-left: 0">Batch</a>
             </div>
-            <div id="namespace-1921011109" class="accordion-body collapse ">
+            <div id="namespace-140172489" class="accordion-body collapse ">
                 <div class="accordion-inner">
 
                     
                     <ul>
-                                                                                                    <li class="class"><a href="classes/Everyman.Neo4j.Batch.AddTo.html">AddTo</a></li>
-                                                    <li class="class"><a href="classes/Everyman.Neo4j.Batch.Delete.html">Delete</a></li>
-                                                    <li class="class"><a href="classes/Everyman.Neo4j.Batch.Operation.html">Operation</a></li>
-                                                    <li class="class"><a href="classes/Everyman.Neo4j.Batch.RemoveFrom.html">RemoveFrom</a></li>
-                                                    <li class="class"><a href="classes/Everyman.Neo4j.Batch.Save.html">Save</a></li>
+                                                                                                    <li class="class"><a href="../classes/Everyman.Neo4j.Batch.AddTo.html">AddTo</a></li>
+                                                    <li class="class"><a href="../classes/Everyman.Neo4j.Batch.Delete.html">Delete</a></li>
+                                                    <li class="class"><a href="../classes/Everyman.Neo4j.Batch.Operation.html">Operation</a></li>
+                                                    <li class="class"><a href="../classes/Everyman.Neo4j.Batch.RemoveFrom.html">RemoveFrom</a></li>
+                                                    <li class="class"><a href="../classes/Everyman.Neo4j.Batch.Save.html">Save</a></li>
                                             </ul>
                 </div>
             </div>
@@ -145,19 +193,19 @@
                                                     <div class="accordion" style="margin-bottom: 0">
         <div class="accordion-group">
             <div class="accordion-heading">
-                                    <a class="accordion-toggle collapsed" data-toggle="collapse" data-target="#namespace-1138429726"></a>
-                                <a href="namespaces/Everyman.Neo4j.Cache.html" style="margin-left: 30px; padding-left: 0">Cache</a>
+                                    <a class="accordion-toggle collapsed" data-toggle="collapse" data-target="#namespace-1408826576"></a>
+                                <a href="../namespaces/Everyman.Neo4j.Cache.html" style="margin-left: 30px; padding-left: 0">Cache</a>
             </div>
-            <div id="namespace-1138429726" class="accordion-body collapse ">
+            <div id="namespace-1408826576" class="accordion-body collapse ">
                 <div class="accordion-inner">
 
                     
                     <ul>
-                                                                                                    <li class="class"><a href="classes/Everyman.Neo4j.Cache.EntityCache.html">EntityCache</a></li>
-                                                    <li class="class"><a href="classes/Everyman.Neo4j.Cache.Memcache.html">Memcache</a></li>
-                                                    <li class="class"><a href="classes/Everyman.Neo4j.Cache.Memcached.html">Memcached</a></li>
-                                                    <li class="class"><a href="classes/Everyman.Neo4j.Cache.Null.html">Null</a></li>
-                                                    <li class="class"><a href="classes/Everyman.Neo4j.Cache.Variable.html">Variable</a></li>
+                                                                                                    <li class="class"><a href="../classes/Everyman.Neo4j.Cache.EntityCache.html">EntityCache</a></li>
+                                                    <li class="class"><a href="../classes/Everyman.Neo4j.Cache.Memcache.html">Memcache</a></li>
+                                                    <li class="class"><a href="../classes/Everyman.Neo4j.Cache.Memcached.html">Memcached</a></li>
+                                                    <li class="class"><a href="../classes/Everyman.Neo4j.Cache.Null.html">Null</a></li>
+                                                    <li class="class"><a href="../classes/Everyman.Neo4j.Cache.Variable.html">Variable</a></li>
                                             </ul>
                 </div>
             </div>
@@ -167,33 +215,33 @@
                                                     <div class="accordion" style="margin-bottom: 0">
         <div class="accordion-group">
             <div class="accordion-heading">
-                                    <a class="accordion-toggle collapsed" data-toggle="collapse" data-target="#namespace-1895753586"></a>
-                                <a href="namespaces/Everyman.Neo4j.Command.html" style="margin-left: 30px; padding-left: 0">Command</a>
+                                    <a class="accordion-toggle collapsed" data-toggle="collapse" data-target="#namespace-1104051956"></a>
+                                <a href="../namespaces/Everyman.Neo4j.Command.html" style="margin-left: 30px; padding-left: 0">Command</a>
             </div>
-            <div id="namespace-1895753586" class="accordion-body collapse ">
+            <div id="namespace-1104051956" class="accordion-body collapse ">
                 <div class="accordion-inner">
 
                                                     <div class="accordion" style="margin-bottom: 0">
         <div class="accordion-group">
             <div class="accordion-heading">
-                                    <a class="accordion-toggle collapsed" data-toggle="collapse" data-target="#namespace-1532102517"></a>
-                                <a href="namespaces/Everyman.Neo4j.Command.Batch.html" style="margin-left: 30px; padding-left: 0">Batch</a>
+                                    <a class="accordion-toggle collapsed" data-toggle="collapse" data-target="#namespace-1679552544"></a>
+                                <a href="../namespaces/Everyman.Neo4j.Command.Batch.html" style="margin-left: 30px; padding-left: 0">Batch</a>
             </div>
-            <div id="namespace-1532102517" class="accordion-body collapse ">
+            <div id="namespace-1679552544" class="accordion-body collapse ">
                 <div class="accordion-inner">
 
                     
                     <ul>
-                                                                                                    <li class="class"><a href="classes/Everyman.Neo4j.Command.Batch.AddToIndex.html">AddToIndex</a></li>
-                                                    <li class="class"><a href="classes/Everyman.Neo4j.Command.Batch.Command.html">Command</a></li>
-                                                    <li class="class"><a href="classes/Everyman.Neo4j.Command.Batch.Commit.html">Commit</a></li>
-                                                    <li class="class"><a href="classes/Everyman.Neo4j.Command.Batch.CreateNode.html">CreateNode</a></li>
-                                                    <li class="class"><a href="classes/Everyman.Neo4j.Command.Batch.CreateRelationship.html">CreateRelationship</a></li>
-                                                    <li class="class"><a href="classes/Everyman.Neo4j.Command.Batch.DeleteNode.html">DeleteNode</a></li>
-                                                    <li class="class"><a href="classes/Everyman.Neo4j.Command.Batch.DeleteRelationship.html">DeleteRelationship</a></li>
-                                                    <li class="class"><a href="classes/Everyman.Neo4j.Command.Batch.RemoveFromIndex.html">RemoveFromIndex</a></li>
-                                                    <li class="class"><a href="classes/Everyman.Neo4j.Command.Batch.UpdateNode.html">UpdateNode</a></li>
-                                                    <li class="class"><a href="classes/Everyman.Neo4j.Command.Batch.UpdateRelationship.html">UpdateRelationship</a></li>
+                                                                                                    <li class="class"><a href="../classes/Everyman.Neo4j.Command.Batch.AddToIndex.html">AddToIndex</a></li>
+                                                    <li class="class"><a href="../classes/Everyman.Neo4j.Command.Batch.Command.html">Command</a></li>
+                                                    <li class="class"><a href="../classes/Everyman.Neo4j.Command.Batch.Commit.html">Commit</a></li>
+                                                    <li class="class"><a href="../classes/Everyman.Neo4j.Command.Batch.CreateNode.html">CreateNode</a></li>
+                                                    <li class="class"><a href="../classes/Everyman.Neo4j.Command.Batch.CreateRelationship.html">CreateRelationship</a></li>
+                                                    <li class="class"><a href="../classes/Everyman.Neo4j.Command.Batch.DeleteNode.html">DeleteNode</a></li>
+                                                    <li class="class"><a href="../classes/Everyman.Neo4j.Command.Batch.DeleteRelationship.html">DeleteRelationship</a></li>
+                                                    <li class="class"><a href="../classes/Everyman.Neo4j.Command.Batch.RemoveFromIndex.html">RemoveFromIndex</a></li>
+                                                    <li class="class"><a href="../classes/Everyman.Neo4j.Command.Batch.UpdateNode.html">UpdateNode</a></li>
+                                                    <li class="class"><a href="../classes/Everyman.Neo4j.Command.Batch.UpdateRelationship.html">UpdateRelationship</a></li>
                                             </ul>
                 </div>
             </div>
@@ -202,47 +250,29 @@
 
                     
                     <ul>
-                                                                                                    <li class="class"><a href="classes/Everyman.Neo4j.Command.AddToIndex.html">AddToIndex</a></li>
-                                                    <li class="class"><a href="classes/Everyman.Neo4j.Command.CreateNode.html">CreateNode</a></li>
-                                                    <li class="class"><a href="classes/Everyman.Neo4j.Command.CreateRelationship.html">CreateRelationship</a></li>
-                                                    <li class="class"><a href="classes/Everyman.Neo4j.Command.DeleteIndex.html">DeleteIndex</a></li>
-                                                    <li class="class"><a href="classes/Everyman.Neo4j.Command.DeleteNode.html">DeleteNode</a></li>
-                                                    <li class="class"><a href="classes/Everyman.Neo4j.Command.DeleteRelationship.html">DeleteRelationship</a></li>
-                                                    <li class="class"><a href="classes/Everyman.Neo4j.Command.ExecuteCypherQuery.html">ExecuteCypherQuery</a></li>
-                                                    <li class="class"><a href="classes/Everyman.Neo4j.Command.ExecuteGremlinQuery.html">ExecuteGremlinQuery</a></li>
-                                                    <li class="class"><a href="classes/Everyman.Neo4j.Command.ExecutePagedTraversal.html">ExecutePagedTraversal</a></li>
-                                                    <li class="class"><a href="classes/Everyman.Neo4j.Command.ExecuteTraversal.html">ExecuteTraversal</a></li>
-                                                    <li class="class"><a href="classes/Everyman.Neo4j.Command.GetIndexes.html">GetIndexes</a></li>
-                                                    <li class="class"><a href="classes/Everyman.Neo4j.Command.GetNode.html">GetNode</a></li>
-                                                    <li class="class"><a href="classes/Everyman.Neo4j.Command.GetNodeRelationships.html">GetNodeRelationships</a></li>
-                                                    <li class="class"><a href="classes/Everyman.Neo4j.Command.GetPaths.html">GetPaths</a></li>
-                                                    <li class="class"><a href="classes/Everyman.Neo4j.Command.GetRelationship.html">GetRelationship</a></li>
-                                                    <li class="class"><a href="classes/Everyman.Neo4j.Command.GetRelationshipTypes.html">GetRelationshipTypes</a></li>
-                                                    <li class="class"><a href="classes/Everyman.Neo4j.Command.GetServerInfo.html">GetServerInfo</a></li>
-                                                    <li class="class"><a href="classes/Everyman.Neo4j.Command.QueryIndex.html">QueryIndex</a></li>
-                                                    <li class="class"><a href="classes/Everyman.Neo4j.Command.RemoveFromIndex.html">RemoveFromIndex</a></li>
-                                                    <li class="class"><a href="classes/Everyman.Neo4j.Command.SaveIndex.html">SaveIndex</a></li>
-                                                    <li class="class"><a href="classes/Everyman.Neo4j.Command.SearchIndex.html">SearchIndex</a></li>
-                                                    <li class="class"><a href="classes/Everyman.Neo4j.Command.UpdateNode.html">UpdateNode</a></li>
-                                                    <li class="class"><a href="classes/Everyman.Neo4j.Command.UpdateRelationship.html">UpdateRelationship</a></li>
-                                            </ul>
-                </div>
-            </div>
-        </div>
-    </div>
-
-                                                    <div class="accordion" style="margin-bottom: 0">
-        <div class="accordion-group">
-            <div class="accordion-heading">
-                                    <a class="accordion-toggle collapsed" data-toggle="collapse" data-target="#namespace-1898257476"></a>
-                                <a href="namespaces/Everyman.Neo4j.Cypher.html" style="margin-left: 30px; padding-left: 0">Cypher</a>
-            </div>
-            <div id="namespace-1898257476" class="accordion-body collapse ">
-                <div class="accordion-inner">
-
-                    
-                    <ul>
-                                                                                                    <li class="class"><a href="classes/Everyman.Neo4j.Cypher.Query.html">Query</a></li>
+                                                                                                    <li class="class"><a href="../classes/Everyman.Neo4j.Command.AddToIndex.html">AddToIndex</a></li>
+                                                    <li class="class"><a href="../classes/Everyman.Neo4j.Command.CreateNode.html">CreateNode</a></li>
+                                                    <li class="class"><a href="../classes/Everyman.Neo4j.Command.CreateRelationship.html">CreateRelationship</a></li>
+                                                    <li class="class"><a href="../classes/Everyman.Neo4j.Command.DeleteIndex.html">DeleteIndex</a></li>
+                                                    <li class="class"><a href="../classes/Everyman.Neo4j.Command.DeleteNode.html">DeleteNode</a></li>
+                                                    <li class="class"><a href="../classes/Everyman.Neo4j.Command.DeleteRelationship.html">DeleteRelationship</a></li>
+                                                    <li class="class"><a href="../classes/Everyman.Neo4j.Command.ExecuteCypherQuery.html">ExecuteCypherQuery</a></li>
+                                                    <li class="class"><a href="../classes/Everyman.Neo4j.Command.ExecuteGremlinQuery.html">ExecuteGremlinQuery</a></li>
+                                                    <li class="class"><a href="../classes/Everyman.Neo4j.Command.ExecutePagedTraversal.html">ExecutePagedTraversal</a></li>
+                                                    <li class="class"><a href="../classes/Everyman.Neo4j.Command.ExecuteTraversal.html">ExecuteTraversal</a></li>
+                                                    <li class="class"><a href="../classes/Everyman.Neo4j.Command.GetIndexes.html">GetIndexes</a></li>
+                                                    <li class="class"><a href="../classes/Everyman.Neo4j.Command.GetNode.html">GetNode</a></li>
+                                                    <li class="class"><a href="../classes/Everyman.Neo4j.Command.GetNodeRelationships.html">GetNodeRelationships</a></li>
+                                                    <li class="class"><a href="../classes/Everyman.Neo4j.Command.GetPaths.html">GetPaths</a></li>
+                                                    <li class="class"><a href="../classes/Everyman.Neo4j.Command.GetRelationship.html">GetRelationship</a></li>
+                                                    <li class="class"><a href="../classes/Everyman.Neo4j.Command.GetRelationshipTypes.html">GetRelationshipTypes</a></li>
+                                                    <li class="class"><a href="../classes/Everyman.Neo4j.Command.GetServerInfo.html">GetServerInfo</a></li>
+                                                    <li class="class"><a href="../classes/Everyman.Neo4j.Command.QueryIndex.html">QueryIndex</a></li>
+                                                    <li class="class"><a href="../classes/Everyman.Neo4j.Command.RemoveFromIndex.html">RemoveFromIndex</a></li>
+                                                    <li class="class"><a href="../classes/Everyman.Neo4j.Command.SaveIndex.html">SaveIndex</a></li>
+                                                    <li class="class"><a href="../classes/Everyman.Neo4j.Command.SearchIndex.html">SearchIndex</a></li>
+                                                    <li class="class"><a href="../classes/Everyman.Neo4j.Command.UpdateNode.html">UpdateNode</a></li>
+                                                    <li class="class"><a href="../classes/Everyman.Neo4j.Command.UpdateRelationship.html">UpdateRelationship</a></li>
                                             </ul>
                 </div>
             </div>
@@ -252,16 +282,15 @@
                                                     <div class="accordion" style="margin-bottom: 0">
         <div class="accordion-group">
             <div class="accordion-heading">
-                                    <a class="accordion-toggle collapsed" data-toggle="collapse" data-target="#namespace-481415279"></a>
-                                <a href="namespaces/Everyman.Neo4j.Geoff.html" style="margin-left: 30px; padding-left: 0">Geoff</a>
+                                    <a class="accordion-toggle collapsed" data-toggle="collapse" data-target="#namespace-934377533"></a>
+                                <a href="../namespaces/Everyman.Neo4j.Cypher.html" style="margin-left: 30px; padding-left: 0">Cypher</a>
             </div>
-            <div id="namespace-481415279" class="accordion-body collapse ">
+            <div id="namespace-934377533" class="accordion-body collapse ">
                 <div class="accordion-inner">
 
                     
                     <ul>
-                                                                                                    <li class="class"><a href="classes/Everyman.Neo4j.Geoff.Exporter.html">Exporter</a></li>
-                                                    <li class="class"><a href="classes/Everyman.Neo4j.Geoff.Importer.html">Importer</a></li>
+                                                                                                    <li class="class"><a href="../classes/Everyman.Neo4j.Cypher.Query.html">Query</a></li>
                                             </ul>
                 </div>
             </div>
@@ -271,15 +300,16 @@
                                                     <div class="accordion" style="margin-bottom: 0">
         <div class="accordion-group">
             <div class="accordion-heading">
-                                    <a class="accordion-toggle collapsed" data-toggle="collapse" data-target="#namespace-677367756"></a>
-                                <a href="namespaces/Everyman.Neo4j.Gremlin.html" style="margin-left: 30px; padding-left: 0">Gremlin</a>
+                                    <a class="accordion-toggle collapsed" data-toggle="collapse" data-target="#namespace-232827300"></a>
+                                <a href="../namespaces/Everyman.Neo4j.Geoff.html" style="margin-left: 30px; padding-left: 0">Geoff</a>
             </div>
-            <div id="namespace-677367756" class="accordion-body collapse ">
+            <div id="namespace-232827300" class="accordion-body collapse ">
                 <div class="accordion-inner">
 
                     
                     <ul>
-                                                                                                    <li class="class"><a href="classes/Everyman.Neo4j.Gremlin.Query.html">Query</a></li>
+                                                                                                    <li class="class"><a href="../classes/Everyman.Neo4j.Geoff.Exporter.html">Exporter</a></li>
+                                                    <li class="class"><a href="../classes/Everyman.Neo4j.Geoff.Importer.html">Importer</a></li>
                                             </ul>
                 </div>
             </div>
@@ -289,17 +319,15 @@
                                                     <div class="accordion" style="margin-bottom: 0">
         <div class="accordion-group">
             <div class="accordion-heading">
-                                    <a class="accordion-toggle collapsed" data-toggle="collapse" data-target="#namespace-776740977"></a>
-                                <a href="namespaces/Everyman.Neo4j.Index.html" style="margin-left: 30px; padding-left: 0">Index</a>
+                                    <a class="accordion-toggle collapsed" data-toggle="collapse" data-target="#namespace-545240942"></a>
+                                <a href="../namespaces/Everyman.Neo4j.Gremlin.html" style="margin-left: 30px; padding-left: 0">Gremlin</a>
             </div>
-            <div id="namespace-776740977" class="accordion-body collapse ">
+            <div id="namespace-545240942" class="accordion-body collapse ">
                 <div class="accordion-inner">
 
                     
                     <ul>
-                                                                                                    <li class="class"><a href="classes/Everyman.Neo4j.Index.NodeFulltextIndex.html">NodeFulltextIndex</a></li>
-                                                    <li class="class"><a href="classes/Everyman.Neo4j.Index.NodeIndex.html">NodeIndex</a></li>
-                                                    <li class="class"><a href="classes/Everyman.Neo4j.Index.RelationshipIndex.html">RelationshipIndex</a></li>
+                                                                                                    <li class="class"><a href="../classes/Everyman.Neo4j.Gremlin.Query.html">Query</a></li>
                                             </ul>
                 </div>
             </div>
@@ -309,16 +337,36 @@
                                                     <div class="accordion" style="margin-bottom: 0">
         <div class="accordion-group">
             <div class="accordion-heading">
-                                    <a class="accordion-toggle collapsed" data-toggle="collapse" data-target="#namespace-868421943"></a>
-                                <a href="namespaces/Everyman.Neo4j.Query.html" style="margin-left: 30px; padding-left: 0">Query</a>
+                                    <a class="accordion-toggle collapsed" data-toggle="collapse" data-target="#namespace-452943374"></a>
+                                <a href="../namespaces/Everyman.Neo4j.Index.html" style="margin-left: 30px; padding-left: 0">Index</a>
             </div>
-            <div id="namespace-868421943" class="accordion-body collapse ">
+            <div id="namespace-452943374" class="accordion-body collapse ">
                 <div class="accordion-inner">
 
                     
                     <ul>
-                                                                                                    <li class="class"><a href="classes/Everyman.Neo4j.Query.ResultSet.html">ResultSet</a></li>
-                                                    <li class="class"><a href="classes/Everyman.Neo4j.Query.Row.html">Row</a></li>
+                                                                                                    <li class="class"><a href="../classes/Everyman.Neo4j.Index.NodeFulltextIndex.html">NodeFulltextIndex</a></li>
+                                                    <li class="class"><a href="../classes/Everyman.Neo4j.Index.NodeIndex.html">NodeIndex</a></li>
+                                                    <li class="class"><a href="../classes/Everyman.Neo4j.Index.RelationshipIndex.html">RelationshipIndex</a></li>
+                                            </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+
+                                                    <div class="accordion" style="margin-bottom: 0">
+        <div class="accordion-group">
+            <div class="accordion-heading">
+                                    <a class="accordion-toggle collapsed" data-toggle="collapse" data-target="#namespace-9322678"></a>
+                                <a href="../namespaces/Everyman.Neo4j.Query.html" style="margin-left: 30px; padding-left: 0">Query</a>
+            </div>
+            <div id="namespace-9322678" class="accordion-body collapse ">
+                <div class="accordion-inner">
+
+                    
+                    <ul>
+                                                                                                    <li class="class"><a href="../classes/Everyman.Neo4j.Query.ResultSet.html">ResultSet</a></li>
+                                                    <li class="class"><a href="../classes/Everyman.Neo4j.Query.Row.html">Row</a></li>
                                             </ul>
                 </div>
             </div>
@@ -327,23 +375,23 @@
 
                     
                     <ul>
-                                                    <li class="interface"><a href="classes/Everyman.Neo4j.Cache.html">Cache</a></li>
-                                                    <li class="interface"><a href="classes/Everyman.Neo4j.Query.html">Query</a></li>
-                                                                                                    <li class="class"><a href="classes/Everyman.Neo4j.Batch.html">Batch</a></li>
-                                                    <li class="class"><a href="classes/Everyman.Neo4j.Client.html">Client</a></li>
-                                                    <li class="class"><a href="classes/Everyman.Neo4j.Command.html">Command</a></li>
-                                                    <li class="class"><a href="classes/Everyman.Neo4j.EntityMapper.html">EntityMapper</a></li>
-                                                    <li class="class"><a href="classes/Everyman.Neo4j.Exception.html">Exception</a></li>
-                                                    <li class="class"><a href="classes/Everyman.Neo4j.Geoff.html">Geoff</a></li>
-                                                    <li class="class"><a href="classes/Everyman.Neo4j.Index.html">Index</a></li>
-                                                    <li class="class"><a href="classes/Everyman.Neo4j.Node.html">Node</a></li>
-                                                    <li class="class"><a href="classes/Everyman.Neo4j.Pager.html">Pager</a></li>
-                                                    <li class="class"><a href="classes/Everyman.Neo4j.Path.html">Path</a></li>
-                                                    <li class="class"><a href="classes/Everyman.Neo4j.PathFinder.html">PathFinder</a></li>
-                                                    <li class="class"><a href="classes/Everyman.Neo4j.PropertyContainer.html">PropertyContainer</a></li>
-                                                    <li class="class"><a href="classes/Everyman.Neo4j.Relationship.html">Relationship</a></li>
-                                                    <li class="class"><a href="classes/Everyman.Neo4j.Transport.html">Transport</a></li>
-                                                    <li class="class"><a href="classes/Everyman.Neo4j.Traversal.html">Traversal</a></li>
+                                                    <li class="interface"><a href="../classes/Everyman.Neo4j.Cache.html">Cache</a></li>
+                                                    <li class="interface"><a href="../classes/Everyman.Neo4j.Query.html">Query</a></li>
+                                                                                                    <li class="class"><a href="../classes/Everyman.Neo4j.Batch.html">Batch</a></li>
+                                                    <li class="class"><a href="../classes/Everyman.Neo4j.Client.html">Client</a></li>
+                                                    <li class="class"><a href="../classes/Everyman.Neo4j.Command.html">Command</a></li>
+                                                    <li class="class"><a href="../classes/Everyman.Neo4j.EntityMapper.html">EntityMapper</a></li>
+                                                    <li class="class"><a href="../classes/Everyman.Neo4j.Exception.html">Exception</a></li>
+                                                    <li class="class"><a href="../classes/Everyman.Neo4j.Geoff.html">Geoff</a></li>
+                                                    <li class="class"><a href="../classes/Everyman.Neo4j.Index.html">Index</a></li>
+                                                    <li class="class"><a href="../classes/Everyman.Neo4j.Node.html">Node</a></li>
+                                                    <li class="class"><a href="../classes/Everyman.Neo4j.Pager.html">Pager</a></li>
+                                                    <li class="class"><a href="../classes/Everyman.Neo4j.Path.html">Path</a></li>
+                                                    <li class="class"><a href="../classes/Everyman.Neo4j.PathFinder.html">PathFinder</a></li>
+                                                    <li class="class"><a href="../classes/Everyman.Neo4j.PropertyContainer.html">PropertyContainer</a></li>
+                                                    <li class="class"><a href="../classes/Everyman.Neo4j.Relationship.html">Relationship</a></li>
+                                                    <li class="class"><a href="../classes/Everyman.Neo4j.Transport.html">Transport</a></li>
+                                                    <li class="class"><a href="../classes/Everyman.Neo4j.Traversal.html">Traversal</a></li>
                                             </ul>
                 </div>
             </div>
@@ -371,30 +419,38 @@
     <section class="row-fluid">
         <div class="span10 offset2">
             <div class="row-fluid">
-                <div class="span8 content namespace">
+                <div class="span8 content file">
                     <nav>
-                                                
-                                            </nav>
-                    <h1><small></small>\</h1>
+                                                                    </nav>
 
-                                        <h2>Namespaces</h2>
+                    <a href="#source-view" role="button" class="pull-right btn" data-toggle="modal"><i class="icon-code"></i></a>
+                    <h1><small>Batch</small>AddTo.php</h1>
+                    <p><em></em></p>
+                    
+
+                    
+                    
+                                        <h2>Classes</h2>
                     <table class="table table-hover">
-                                                    <tr>
-                                <td><a href="namespaces/Everyman.html">Everyman</a></td>
-                            </tr>
-                                            </table>
-                    
-                    
-                    
+                                            <tr>
+                            <td><a href="../classes/Everyman.Neo4j.Batch.AddTo.html">AddTo</a></td>
+                            <td><em>An add-to-index operation</em></td>
+                        </tr>
+                                        </table>
                                     </div>
 
                 <aside class="span4 detailsbar">
                     <dl>
-                        <dt>Namespace hierarchy</dt>
-                        <dd class="hierarchy">
-                                                                                                                                                <div class="namespace-wrapper">\</div>
-                        </dd>
+                                                    <dt>Package</dt>
+                            <dd><div class="namespace-wrapper">\Default</div></dd>
+                        
+                        
                     </dl>
+                    <h2>Tags</h2>
+                    <table class="table table-condensed">
+                                                    <tr><td colspan="2"><em>None found</em></td></tr>
+                                            </table>
+
                 </aside>
             </div>
 
@@ -402,6 +458,16 @@
             
         </div>
     </section>
+
+    <div id="source-view" class="modal hide fade" tabindex="-1" role="dialog" aria-labelledby="source-view-label" aria-hidden="true">
+        <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+            <h3 id="source-view-label"></h3>
+        </div>
+        <div class="modal-body">
+            <pre data-src="../files/Batch/AddTo.php.txt" class="language-php line-numbers"></pre>
+        </div>
+    </div>
 
     <footer class="row-fluid">
         <section class="span10 offset2">
@@ -412,7 +478,7 @@
                                                         <h1><i class="icon-code"></i></h1>
                             <div>
                                 <ul>
-                                                                            <li><a href="namespaces/Everyman.html">\Everyman</a></li>
+                                                                            <li><a href="../namespaces/Everyman.html">\Everyman</a></li>
                                                                     </ul>
                             </div>
                         </section>
@@ -420,7 +486,7 @@
                                                         <h1><i class="icon-bar-chart"></i></h1>
                             <div>
                                 <ul>
-                                    <li><a href="graphs/class.html">Class Hierarchy Diagram</a></li>
+                                    <li><a href="../graphs/class.html">Class Hierarchy Diagram</a></li>
                                 </ul>
                             </div>
                         </section>
@@ -428,8 +494,8 @@
                                                         <h1><i class="icon-pushpin"></i></h1>
                             <div>
                                 <ul>
-                                    <li><a href="reports/errors.html">Errors</a></li>
-                                    <li><a href="reports/markers.html">Markers</a></li>
+                                    <li><a href="../reports/errors.html">Errors</a></li>
+                                    <li><a href="../reports/markers.html">Markers</a></li>
                                 </ul>
                             </div>
                         </section>
