@@ -56,6 +56,10 @@ class Row implements \Iterator, \Countable, \ArrayAccess
 			$offset = array_search($offset, $this->columns);
 		}
 
+		if ($offset === false) {
+			return false;
+		}
+
 		if (!isset($this->data[$offset])) {
 			$raw = $this->raw[$offset];
 			$data = $this->client->getEntityMapper()->getEntityFor($raw);
