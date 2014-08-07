@@ -69,6 +69,9 @@ class RowTest extends \PHPUnit_Framework_TestCase
 		
 		$this->assertEquals(false, isset($row['blah']));
 		$this->assertEquals(false, isset($row[3]));
+
+		// Prevent regression of #136
+		$this->assertFalse($row['long and non-existing key']);
 	}
 
 	public function testArrayAccess_Set_ThrowsException()
