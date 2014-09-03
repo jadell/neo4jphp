@@ -61,7 +61,7 @@ class Curl extends BaseTransport
 			CURLOPT_POSTFIELDS => null,
 			CURLOPT_IPRESOLVE => CURL_IPRESOLVE_V4,
 		);
-        $options = array_merge($options, $this->extraOptions);
+        $options = $options + $this->extraOptions;
 
 		if ($this->username && $this->password) {
 			$options[CURLOPT_HTTPAUTH] = CURLAUTH_BASIC;
