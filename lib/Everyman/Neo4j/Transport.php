@@ -6,19 +6,19 @@ namespace Everyman\Neo4j;
  */
 abstract class Transport
 {
-	const GET    = 'GET';
-	const POST   = 'POST';
-	const PUT    = 'PUT';
-	const DELETE = 'DELETE';
+	const GET='GET';
+	const POST='POST';
+	const PUT='PUT';
+	const DELETE='DELETE';
 
-	protected $scheme = 'http';
-	protected $host = 'localhost';
-	protected $port = 7474;
-	protected $path = '/db/data';
-	protected $username = null;
-	protected $password = null;
+	protected $scheme='http';
+	protected $host='localhost';
+	protected $port=7474;
+	protected $path='/db/data';
+	protected $username=null;
+	protected $password=null;
 
-	protected $handle = null;
+	protected $handle=null;
 
 	/**
 	 * Set the host and port of the endpoint
@@ -28,8 +28,8 @@ abstract class Transport
 	 */
 	public function __construct($host='localhost', $port=7474)
 	{
-		$this->host = $host;
-		$this->port = $port;
+		$this->host=$host;
+		$this->port=$port;
 	}
 
 	/**
@@ -50,22 +50,22 @@ abstract class Transport
 	 */
 	public function encodeData($data)
 	{
-		$encoded = '';
+		$encoded='';
 		if (!is_scalar($data)) {
 			if ($data) {
-				$keys = array_keys($data);
-				$nonNumeric = array_filter($keys, function ($var) {
+				$keys=array_keys($data);
+				$nonNumeric=array_filter($keys, function ($var) {
 					return !is_int($var);
 				});
 				if ($nonNumeric) {
-					$data = (object)$data;
+					$data=(object)$data;
 				}
 			} else {
-				$data = (object)$data;
+				$data=(object)$data;
 			}
 		}
 
-		$encoded = json_encode($data);
+		$encoded=json_encode($data);
 		return $encoded;
 	}
 
@@ -78,7 +78,7 @@ abstract class Transport
 	 *
 	 * @param string $method
 	 * @param string $path
-	 * @param array  $data
+	 * @param array $data
 	 * @return array
 	 */
 	abstract public function makeRequest($method, $path, $data=array());
@@ -141,8 +141,8 @@ abstract class Transport
 	 */
 	public function setAuth($username=null, $password=null)
 	{
-		$this->username = $username;
-		$this->password = $password;
+		$this->username=$username;
+		$this->password=$password;
 		return $this;
 	}
 
@@ -156,7 +156,7 @@ abstract class Transport
 	 */
 	public function useHttps($useHttps=true)
 	{
-		$this->scheme = $useHttps ? 'https' : 'http';
+		$this->scheme=$useHttps ? 'https' : 'http';
 		return $this;
 	}
 }
