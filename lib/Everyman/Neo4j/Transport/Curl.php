@@ -12,7 +12,12 @@ class Curl extends BaseTransport
 {
 	protected $handle = null;
 
-	/**
+    /**
+     * @var array
+     */
+    private $extraOptions = array();
+
+    /**
 	 * @inherit
 	 */
 	public function __construct($host='localhost', $port=7474)
@@ -22,7 +27,7 @@ class Curl extends BaseTransport
 		}
 
 		parent::__construct($host, $port);
-	}
+    }
 
 	/**
 	 * Make sure the curl handle closes when we are done with the Transport
@@ -56,6 +61,7 @@ class Curl extends BaseTransport
 			CURLOPT_POSTFIELDS => null,
 			CURLOPT_IPRESOLVE => CURL_IPRESOLVE_V4,
 		);
+        $options = array_merge($options, $this->extraOptions);
 
 		if ($this->username && $this->password) {
 			$options[CURLOPT_HTTPAUTH] = CURLAUTH_BASIC;
@@ -131,4 +137,16 @@ class Curl extends BaseTransport
 		}
 		return $this->handle;
 	}
+
+    /**
+     * @param array $options
+     * @throws \Everyman\Neo4j\Exception
+     */
+    public function setExtraCurlOptions($options) {
+        if(!is_array($options)) {
+            throw new Exception("Options needs to be an array!");
+        }
+
+        $this->extraOptions = $options;
+    }
 }
