@@ -92,6 +92,52 @@ class Client_Batch_NodeTest extends \PHPUnit_Framework_TestCase
 		$this->assertFalse($this->client->getEntityCache()->getCachedEntity(123, 'node'));
 	}
 
+    public function testCommitBatch_Success_ReturnsTrue()
+    {
+        $node = new Node($this->client);
+        $node2 = new Node($this->client);
+
+        $request = array(
+            array('id' => 0, 'method' => 'POST', 'to' => '/node', 'body' => null),
+            array('id' => 1, 'method' => 'POST', 'to' => '/node', 'body' => null),
+        );
+
+        $return = array('code' => 200, 'data' => array(
+            array('id' => 0, 'location' => 'http://foo:1234/db/data/node/123', 'status' => 200),
+            array('id' => 1, 'location' => 'http://foo:1234/db/data/node/124', 'status' => 200),
+        ));
+
+        $this->batch->save($node);
+        $this->batch->save($node2);
+        $this->setupTransportExpectation($request, $this->returnValue($return));
+        $result = $this->client->commitBatch($this->batch);
+
+        $this->assertTrue($result);
+    }
+
+    public function testCommitBatch_Error_ReturnsFalse()
+    {
+        $node = new Node($this->client);
+        $node2 = new Node($this->client);
+        $node2->setId(122);
+
+        $request = array(
+            array('id' => 0, 'method' => 'POST', 'to' => '/node', 'body' => null),
+            array('id' => 1, 'method' => 'DELETE', 'to' => '/node/122'),
+        );
+
+        $return = array('code' => 200, 'data' => array(
+            array('id' => 0, 'location' => 'http://foo:1234/db/data/node/123', 'status' => 200),
+            array('id' => 1, 'status' => 404),
+        ));
+
+        $this->batch->save($node);
+        $this->batch->delete($node2);
+        $this->setupTransportExpectation($request, $this->returnValue($return));
+        $this->setExpectedException('\Everyman\Neo4j\Exception');
+        $this->client->commitBatch($this->batch);
+    }
+
 	protected function setupTransportExpectation($request, $will)
 	{
 		$this->transport->expects($this->once())
