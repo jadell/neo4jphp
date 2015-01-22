@@ -103,6 +103,28 @@ class NodeTest extends \PHPUnit_Framework_TestCase
 		$this->assertSame($label, $labels[0]);
 	}
 
+	public function testRemoveLabel_DelegatesToClient()
+	{
+		$expected = $this->node;
+		$expected->setId(123);
+		$matched = false;
+
+		$label = new Label($this->client, 'FOOBAR');
+
+		$this->client->expects($this->once())
+			->method('removeLabels')
+			// Have to do it this way because PHPUnit clones object parameters
+			->will($this->returnCallback(function (Node $actual, $labels) use ($expected, $label, &$matched) {
+				$matched = $expected->getId() == $actual->getId();
+				$matched = $matched && $label->getName() == $labels[0]->getName();
+				return array($label);
+			}));
+
+		$labels = $this->node->removeLabel($label);
+		$this->assertEquals(1, count($labels));
+		$this->assertSame($label, $labels[0]);
+	}
+
 	/**
 	 * Test for https://github.com/jadell/neo4jphp/issues/58
 	 */
