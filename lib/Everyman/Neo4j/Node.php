@@ -49,7 +49,7 @@ class Node extends PropertyContainer
 	* @param Label $label
 	* @return array of all the Labels on this node, including those just added
 	*/
-	public function addLabel($label)
+	public function addLabel(Label $label)
 	{
 		$labels = array($label);
 		return $this->addLabels($labels);
