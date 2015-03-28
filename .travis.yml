@@ -5,6 +5,7 @@ php:
   - 5.5
 
 before_script:
+    - pecl install -f memcached-2.1.0
     - phpenv config-add phpconfig.ini
     - composer install --dev
 
