@@ -8,8 +8,11 @@ class MemcachedTest extends \PHPUnit_Framework_TestCase
 
 	public function setUp()
 	{
-		if (!phpversion('memcached')) {
+		$memcachedVersion = phpversion('memcached');
+		if (!$memcachedVersion) {
 			$this->markTestSkipped('Memcached extension not enabled/installed');
+		} else if (version_compare($memcachedVersion, '2.2.0', '>=')) {
+			$this->markTestSkipped('Memcached tests can only be run with memcached extension 2.1.0 or lower');
 		}
 
 		$this->memcached = $this->getMock('\Memcached');
