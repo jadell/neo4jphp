@@ -47,6 +47,61 @@ class Client_CypherTest extends \PHPUnit_Framework_TestCase
 		$this->assertEquals(count($result), $resultCount);
 	}
 
+	public function testCypherQueryWithStats() {
+		$props = array(
+			'query' => 'CREATE (p:Person {person})',
+			'params' => array('person' => array('fname' => 'John')),
+		);
+
+		$this->transport->expects($this->once())
+			->method('get')
+			->with('/')
+			->will($this->returnValue(array('code'=>200, 'data'=>array(
+				'neo4j_version' => '1.5.foo',
+				'extensions' => array('CypherPlugin' => array(
+					'execute_query' => $this->endpoint.'/ext/CypherPlugin/graphdb/execute_query'
+				)),
+			))));
+		$this->transport->expects($this->once())
+			->method('post')
+			->with('/ext/CypherPlugin/graphdb/execute_query?includeStats=true', $props)
+			->will(
+				$this->returnValue(
+					array(
+						'code' => 200,
+						'data' => array(
+							'columns' => array(),
+							'data'    => array(),
+							'stats'   => array(
+								'relationships_created' => 0,
+								'nodes_deleted'         => 0,
+								'relationship_deleted'  => 0,
+								'indexes_added'         => 0,
+								'properties_set'        => 1,
+								'constraints_removed'   => 0,
+								'indexes_removed'       => 0,
+								'labels_removed'        => 0,
+								'constraints_added'     => 0,
+								'labels_added'          => 1,
+								'nodes_created'         => 1,
+								'contains_updates'      => TRUE,
+							),
+						)
+					)
+				)
+			);
+
+		$query = new Cypher\Query($this->client, $props['query'], $props['params'], TRUE);
+
+		$result = $this->client->executeCypherQuery($query);
+		$stats = $result->getStatistics();
+
+		$this->assertEquals(1, $stats->getNodesCreated());
+		$this->assertEquals(1, $stats->getLabelsAdded());
+		$this->assertEquals(1, $stats->getPropertiesSet());
+		$this->assertEquals(0, $stats->getRelationshipsCreated());
+	}
+
 	/**
 	 * @dataProvider dataProvider_TestCypherQuery
 	 */
