@@ -46,17 +46,20 @@ class QueryStatistics
 	public function __construct(array $data)
 	{
 		$this->relationshipsCreated = $data['relationships_created'];
-		$this->nodesDeleted         = $data['relationships_created'];
-		$this->relationshipsDeleted = $data['relationships_created'];
-		$this->indexesAdded         = $data['relationships_created'];
-		$this->propertiesSet        = $data['relationships_created'];
-		$this->constraintsRemoved   = $data['relationships_created'];
-		$this->indexesRemoved       = $data['relationships_created'];
-		$this->labelsRemoved        = $data['relationships_created'];
-		$this->constraintsAdded     = $data['relationships_created'];
-		$this->labelsAdded          = $data['relationships_created'];
-		$this->nodesCreated         = $data['relationships_created'];
-		$this->containsUpdates      = $data['relationships_created'];
+		$this->nodesDeleted         = $data['nodes_deleted'];
+
+		// NOTE: The key is NOT a typo! The Neo4j REST API *actually* returns the keys
+		// "relationships_created" (plural) and "relationship_deleted" (singular).
+		$this->relationshipsDeleted = $data['relationship_deleted'];
+		$this->indexesAdded         = $data['indexes_added'];
+		$this->propertiesSet        = $data['properties_set'];
+		$this->constraintsRemoved   = $data['constraints_removed'];
+		$this->indexesRemoved       = $data['indexes_removed'];
+		$this->labelsRemoved        = $data['labels_removed'];
+		$this->constraintsAdded     = $data['constraints_added'];
+		$this->labelsAdded          = $data['labels_added'];
+		$this->nodesCreated         = $data['nodes_created'];
+		$this->containsUpdates      = $data['contains_updates'];
 	}
 
 	/**
