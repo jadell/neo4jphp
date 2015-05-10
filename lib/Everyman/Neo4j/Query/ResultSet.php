@@ -11,9 +11,9 @@ class ResultSet implements \Iterator, \Countable, \ArrayAccess
 {
 	protected $client = null;
 
-	protected $rows = [];
-	protected $data = [];
-	protected $columns = [];
+	protected $rows = array();
+	protected $data = array();
+	protected $columns = array();
 	protected $position = 0;
 
 	/** @var QueryStatistics */

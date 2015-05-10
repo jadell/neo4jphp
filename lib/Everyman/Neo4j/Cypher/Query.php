@@ -15,7 +15,7 @@ class Query implements Neo4j\Query
 {
 	protected $client = null;
 	protected $template = null;
-	protected $vars = [];
+	protected $vars = array();
 
 	protected $result = null;
 
@@ -32,7 +32,7 @@ class Query implements Neo4j\Query
 	 * @param array $vars Replacement vars to inject into the query
 	 * @param bool $stats Set to TRUE to return query statistics
 	 */
-	public function __construct(Neo4j\Client $client, $template, $vars=[], $stats=FALSE)
+	public function __construct(Neo4j\Client $client, $template, $vars=array(), $stats=FALSE)
 	{
 		$this->client = $client;
 		$this->template = $template;
