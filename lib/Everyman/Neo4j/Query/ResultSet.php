@@ -11,10 +11,13 @@ class ResultSet implements \Iterator, \Countable, \ArrayAccess
 {
 	protected $client = null;
 
-	protected $rows = array();
-	protected $data = array();
-	protected $columns = array();
+	protected $rows = [];
+	protected $data = [];
+	protected $columns = [];
 	protected $position = 0;
+
+	/** @var QueryStatistics */
+	private $statistics;
 
 	/**
 	 * Set the array of results to represent
@@ -25,9 +28,15 @@ class ResultSet implements \Iterator, \Countable, \ArrayAccess
 	public function __construct(Client $client, $result)
 	{
 		$this->client = $client;
-		if (is_array($result) && array_key_exists('data', $result)) {
-			$this->data = $result['data'];
-			$this->columns = $result['columns'];
+		if (is_array($result)) {
+			if (array_key_exists('data', $result)) {
+				$this->data    = $result['data'];
+				$this->columns = $result['columns'];
+			}
+
+			if (array_key_exists('stats', $result)) {
+				$this->statistics = new QueryStatistics($result['stats']);
+			}
 		}
 	}
 
@@ -39,6 +48,15 @@ class ResultSet implements \Iterator, \Countable, \ArrayAccess
 	public function getColumns()
 	{
 		return $this->columns;
+	}
+
+	/**
+	 * Returns query statistics.
+	 * @return QueryStatistics
+	 */
+	public function getStatistics()
+	{
+		return $this->statistics;
 	}
 
 	// ArrayAccess API
