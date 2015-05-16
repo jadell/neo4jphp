@@ -32,7 +32,7 @@ class Query implements Neo4j\Query
 	 * @param array $vars Replacement vars to inject into the query
 	 * @param bool $stats Set to TRUE to return query statistics
 	 */
-	public function __construct(Neo4j\Client $client, $template, $vars=array(), $stats=FALSE)
+	public function __construct(Neo4j\Client $client, $template, $vars=array(), $stats=false)
 	{
 		$this->client = $client;
 		$this->template = $template;
