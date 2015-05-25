@@ -15,7 +15,7 @@ Install
 -------
 
 ### Using Composer
-1. From the command line `echo '{"require":{"everyman/neo4jphp":"dev-master"}}' > composer.json && composer install`
+1. From the command line `composer require "everyman/neo4jphp" "dev-master"`
 1. In your PHP script `require("vendor/autoload.php");`
 
 Connection Test
