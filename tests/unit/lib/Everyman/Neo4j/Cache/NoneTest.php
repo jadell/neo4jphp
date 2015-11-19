@@ -1,13 +1,13 @@
 <?php
 namespace Everyman\Neo4j\Cache;
 
-class NullTest extends \PHPUnit_Framework_TestCase
+class NoneTest extends \PHPUnit_Framework_TestCase
 {
 	protected $cache = null;
 
 	public function setUp()
 	{
-		$this->cache = new Null();
+		$this->cache = new None();
 	}
 
 	public function testDelete_ReturnsTrue()
