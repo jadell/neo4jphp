@@ -89,7 +89,7 @@ class EntityCache
 	protected function getCache()
 	{
 		if ($this->cache === null) {
-			$this->setCache(new Cache\Null(), $this->cacheTimeout);
+			$this->setCache(new Cache\None(), $this->cacheTimeout);
 		}
 		return $this->cache;
 	}
