@@ -64,7 +64,13 @@ class ExecuteCypherQuery extends Command
 			throw new Exception('Cypher unavailable');
 		}
 
-		return preg_replace('/^.+\/db\/data/', '', $url);
+		$path = preg_replace('/^.+\/db\/data/', '', $url);
+
+		if ($this->query->includeStats()) {
+			$path .= '?includeStats=true';
+		}
+
+		return $path;
 	}
 
 	/**

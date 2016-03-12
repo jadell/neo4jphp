@@ -20,17 +20,24 @@ class Query implements Neo4j\Query
 	protected $result = null;
 
 	/**
+	 * @var bool
+	 */
+	private $stats;
+
+	/**
 	 * Set the template to use
 	 *
 	 * @param Neo4j\Client $client
 	 * @param string $template A Cypher query string or template
 	 * @param array $vars Replacement vars to inject into the query
+	 * @param bool $stats Set to TRUE to return query statistics
 	 */
-	public function __construct(Neo4j\Client $client, $template, $vars=array())
+	public function __construct(Neo4j\Client $client, $template, $vars=array(), $stats=false)
 	{
 		$this->client = $client;
 		$this->template = $template;
 		$this->vars = $vars;
+		$this->stats = $stats;
 	}
 
 	/**
@@ -51,6 +58,14 @@ class Query implements Neo4j\Query
 	public function getParameters()
 	{
 		return $this->vars;
+	}
+
+	/**
+	 * @return bool
+	 */
+	public function includeStats()
+	{
+		return $this->stats;
 	}
 
 	/**
