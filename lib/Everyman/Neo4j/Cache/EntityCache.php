@@ -89,7 +89,7 @@ class EntityCache
 	protected function getCache()
 	{
 		if ($this->cache === null) {
-			$this->setCache(new Cache\Null(), $this->cacheTimeout);
+			$this->setCache(new Cache\None(), $this->cacheTimeout);
 		}
 		return $this->cache;
 	}
@@ -98,7 +98,7 @@ class EntityCache
 	 * Determine the cache key used to retrieve the given entity from the cache
 	 *
 	 * @param PropertyContainer $entity
-	 * @return string 
+	 * @return string
 	 */
 	protected function getEntityCacheKey(PropertyContainer $entity)
 	{

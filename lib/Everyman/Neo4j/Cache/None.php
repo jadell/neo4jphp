@@ -6,7 +6,7 @@ use Everyman\Neo4j\Cache;
 /**
  * Cache that always indicates success but does not store anything
  */
-class Null implements Cache
+class None implements Cache
 {
 	/**
 	 * Delete always succeeds
