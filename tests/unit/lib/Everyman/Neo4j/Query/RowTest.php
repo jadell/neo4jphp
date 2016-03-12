@@ -13,7 +13,13 @@ class RowTest extends \PHPUnit_Framework_TestCase
 	{
 		$this->client = new Client($this->getMock('Everyman\Neo4j\Transport', array(), array(), '', false));
 	}
-	
+
+	public function tearDown()
+	{
+		// just in case if testArrayAccessNonExistedValue fails and not set back $enabled to default value
+		\PHPUnit_Framework_Error_Notice::$enabled = true;
+	}
+
 	public function testCount()
 	{
 		$columns = array('name','age');
@@ -69,6 +75,23 @@ class RowTest extends \PHPUnit_Framework_TestCase
 		
 		$this->assertEquals(false, isset($row['blah']));
 		$this->assertEquals(false, isset($row[3]));
+	}
+
+	public function testArrayAccessNonExistedValue()
+	{
+		$columns = array('name');
+		$data = array('Brenda');
+
+		$row = new Row($this->client, $columns, $data);
+
+		// First check if we have null value
+
+		\PHPUnit_Framework_Error_Notice::$enabled = false;
+		$this->assertSame(null, $row['age']);
+		\PHPUnit_Framework_Error_Notice::$enabled = true;
+
+		$this->setExpectedException('PHPUnit_Framework_Error_Notice');
+		$this->assertSame(null, $row['age']);
 	}
 
 	public function testArrayAccess_Set_ThrowsException()
