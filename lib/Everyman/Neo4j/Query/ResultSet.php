@@ -50,10 +50,14 @@ class ResultSet implements \Iterator, \Countable, \ArrayAccess
 
 	public function offsetGet($offset)
 	{
-		if (!isset($this->rows[$offset])) {
+		if (! isset($this->rows[$offset])) {
+		    if (isset($this->data[$offset])) {
 			$this->rows[$offset] = new Row($this->client, $this->columns, $this->data[$offset]);
+		    } else {
+			return null;
+		    }
 		}
-		return $this->rows[$offset];
+        	return $this->rows[$offset];
 	}
 
 	public function offsetSet($offset, $value)
