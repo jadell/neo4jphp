@@ -10,14 +10,19 @@ use Everyman\Neo4j\Transport as BaseTransport,
  */
 class Curl extends BaseTransport
 {
-	protected $handle = null;
+	protected $handle=null;
+
+	/**
+	 * @var array
+	 */
+	private $extraOptions=array();
 
 	/**
 	 * @inherit
 	 */
 	public function __construct($host='localhost', $port=7474)
 	{
-		if (! function_exists('curl_init')) {
+		if (!function_exists('curl_init')) {
 			throw new Exception('cUrl extension not enabled/installed');
 		}
 
@@ -39,83 +44,84 @@ class Curl extends BaseTransport
 	 */
 	public function makeRequest($method, $path, $data=array())
 	{
-		$url = $this->getEndpoint().$path;
+		$url=$this->getEndpoint() . $path;
 
-		$options = array(
-			CURLOPT_URL => $url,
-			CURLOPT_RETURNTRANSFER => true,
-			CURLOPT_HEADER => true,
-			CURLOPT_HTTPHEADER => array(
+		$options=array(
+			CURLOPT_URL=>$url,
+			CURLOPT_RETURNTRANSFER=>true,
+			CURLOPT_HEADER=>true,
+			CURLOPT_HTTPHEADER=>array(
 				'Accept: application/json;stream=true',
 				'Content-type: application/json',
-				'User-Agent: '.Version::userAgent(),
+				'User-Agent: ' . Version::userAgent(),
 				'X-Stream: true'
 			),
-			CURLOPT_CUSTOMREQUEST => self::GET,
-			CURLOPT_POST => false,
-			CURLOPT_POSTFIELDS => null,
-			CURLOPT_IPRESOLVE => CURL_IPRESOLVE_V4,
+			CURLOPT_CUSTOMREQUEST=>self::GET,
+			CURLOPT_POST=>false,
+			CURLOPT_POSTFIELDS=>null,
+			CURLOPT_IPRESOLVE=>CURL_IPRESOLVE_V4,
 		);
+		$options=$options + $this->extraOptions;
 
 		if ($this->username && $this->password) {
-			$options[CURLOPT_HTTPAUTH] = CURLAUTH_BASIC;
-			$options[CURLOPT_USERPWD] = $this->username.':'.$this->password;
+			$options[CURLOPT_HTTPAUTH]=CURLAUTH_BASIC;
+			$options[CURLOPT_USERPWD]=$this->username . ':' . $this->password;
 		}
 
 		switch ($method) {
 			case self::DELETE:
-				$options[CURLOPT_CUSTOMREQUEST] = self::DELETE;
+				$options[CURLOPT_CUSTOMREQUEST]=self::DELETE;
 				break;
 
 			case self::POST:
 			case self::PUT:
-				$dataString = $this->encodeData($data);
-				$options[CURLOPT_CUSTOMREQUEST] = $method;
-				$options[CURLOPT_POSTFIELDS] = $dataString;
-				$options[CURLOPT_HTTPHEADER][] = 'Content-Length: '.strlen($dataString);
+				$dataString=$this->encodeData($data);
+				$options[CURLOPT_CUSTOMREQUEST]=$method;
+				$options[CURLOPT_POSTFIELDS]=$dataString;
+				$options[CURLOPT_HTTPHEADER][]='Content-Length: ' . strlen($dataString);
 
 				if (self::POST == $method) {
-					$options[CURLOPT_POST] = true;
+					$options[CURLOPT_POST]=true;
 				}
 				break;
 		}
 
-		$ch = $this->getHandle();
+		$ch=$this->getHandle();
 		curl_setopt_array($ch, $options);
 
-		$response = curl_exec($ch);
-		$code = curl_getinfo($ch, CURLINFO_HTTP_CODE);
-		$headerSize = curl_getinfo($ch, CURLINFO_HEADER_SIZE);
+		$response=curl_exec($ch);
+		$code=curl_getinfo($ch, CURLINFO_HTTP_CODE);
+		$headerSize=curl_getinfo($ch, CURLINFO_HEADER_SIZE);
 
 		if ($response === false) {
-			throw new Exception("Can't open connection to ".$url);
+			throw new Exception("Can't open connection to " . $url);
 		}
 
 		if (!$code) {
-			$code = 500;
-			$headerSize = 0;
-			$response = json_encode(array("error"=>curl_error($ch).' ['.curl_errno($ch).']'));
+			$code=500;
+			$headerSize=0;
+			$response=json_encode(array("error"=>curl_error($ch) . ' [' . curl_errno($ch) . ']'));
 		}
 
-		$bodyString = substr($response, $headerSize);
-		$bodyData = json_decode($bodyString, true);
+		$bodyString=substr($response, $headerSize);
+		$bodyData=json_decode($bodyString, true);
 
-		$headerString = substr($response, 0, $headerSize);
-		$headers = explode("\r\n", $headerString);
+		$headerString=substr($response, 0, $headerSize);
+		$headers=explode("\r\n", $headerString);
 		foreach ($headers as $i => $header) {
 			unset($headers[$i]);
-			$parts = explode(':', $header);
+			$parts=explode(':', $header);
 			if (isset($parts[1])) {
-				$name = trim(array_shift($parts));
-				$value = join(':', $parts);
-				$headers[$name] = $value;
+				$name=trim(array_shift($parts));
+				$value=join(':', $parts);
+				$headers[$name]=$value;
 			}
 		}
 
 		return array(
-			'code' => $code,
-			'headers' => $headers,
-			'data' => $bodyData,
+			'code'=>$code,
+			'headers'=>$headers,
+			'data'=>$bodyData,
 		);
 	}
 
@@ -127,8 +133,21 @@ class Curl extends BaseTransport
 	protected function getHandle()
 	{
 		if (!$this->handle) {
-			$this->handle = curl_init();
+			$this->handle=curl_init();
 		}
 		return $this->handle;
+	}
+
+	/**
+	 * @param array $options
+	 * @throws \Everyman\Neo4j\Exception
+	 */
+	public function setExtraCurlOptions($options)
+	{
+		if (!is_array($options)) {
+			throw new Exception("Options needs to be an array!");
+		}
+
+		$this->extraOptions=$options;
 	}
 }
