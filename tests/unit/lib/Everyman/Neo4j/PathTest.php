@@ -44,10 +44,7 @@ class PathTest extends \PHPUnit_Framework_TestCase
 	}
 
 	public function testGetLength_ReturnsInteger()
-	{
-		$this->assertEquals(count($this->nodes), $this->path->getLength());
-		$this->assertEquals(count($this->nodes), count($this->path));
-		
+	{		
 		$this->path->setContext(Path::ContextRelationship);
 
 		$this->assertEquals(count($this->rels), $this->path->getLength());

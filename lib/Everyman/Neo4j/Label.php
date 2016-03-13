@@ -92,4 +92,14 @@ class Label
 	{
 		return array('name');
 	}
+
+	/**
+	 * Return the label's name when accessed as a string
+	 * 
+	 * @return string
+	 */
+	public function __toString()
+	{
+		return $this->name;
+	}
 }
