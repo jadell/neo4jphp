@@ -1,12 +1,13 @@
 {
-  "name": "everyman/neo4jphp",
+  "name": "tomcorbett/neo4jphp",
   "type": "library",
   "description": "Wrapper for the Neo4j graph database REST interface",
   "keywords": ["neo4j","graph","database"],
   "homepage": "http://github.com/jadell/neo4jphp/wiki",
   "license": "MIT",
   "authors": [
-    {"name": "Josh Adell", "email": "josh.adell@gmail.com", "homepage": "http://joshadell.com"}
+    {"name": "Josh Adell", "email": "josh.adell@gmail.com", "homepage": "http://joshadell.com"},
+    {"name": "Thomas Corbett", "email": "thomas.michael.corbett@gmail.com"}
   ],
   "require": {
     "php": ">=5.3.0",
@@ -19,5 +20,6 @@
   },
   "autoload": {
     "psr-0": {"Everyman\\Neo4j":"lib/"}
-  }
+  },
+  "version": "1.0.1-beta"
 }
