@@ -65,7 +65,7 @@ abstract class Transport
 			}
 		}
 
-		$encoded = json_encode($data);
+		$encoded = json_encode($data, JSON_PRESERVE_ZERO_FRACTION);
 		return $encoded;
 	}
 
